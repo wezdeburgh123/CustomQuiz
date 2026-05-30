@@ -1567,19 +1567,46 @@
   const GENERATE_ENDPOINT = "/api/generate-quiz";
 
   async function callGenerator(themes, difficulty, count) {
+    const headers = { "Content-Type": "application/json" };
+    // Send Supabase-token så serveren kan verifisere abonnement (Fase B).
+    try {
+      if (window.CQAuth && window.CQAuth.getAccessToken) {
+        const t = await window.CQAuth.getAccessToken();
+        if (t) headers["Authorization"] = "Bearer " + t;
+      }
+    } catch (_) {}
     const response = await fetch(GENERATE_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({ themes, difficulty, count })
     });
     const bodyText = await response.text();
     let data;
     try { data = JSON.parse(bodyText); }
     catch (e) { throw new Error('Ugyldig svar fra serveren: ' + bodyText.slice(0, 160)); }
+    // Abonnement/innlogging kreves — egen feilkode så vi ikke demo-faller-tilbake.
+    if (response.status === 401 || response.status === 402 || response.status === 403) {
+      const err = new Error(data.error || 'Abonnement kreves');
+      err.code = 'SUBSCRIPTION';
+      throw err;
+    }
     if (!response.ok || data.error) {
       throw new Error(data.error || `HTTP ${response.status}`);
     }
     return data; // { title, lede, questions: [...] }
+  }
+
+  // Klient-side tilgangssjekk. Returnerer true hvis brukeren kan fortsette.
+  // Ikke konfigurert (anon-nøkkel ikke lagt inn) → ikke blokker (lokal/pre-launch).
+  async function ensureAccess() {
+    if (!window.CQAuth || !window.CQAuth.isConfigured || !window.CQAuth.isConfigured()) return true;
+    let token = null;
+    try { token = await window.CQAuth.getAccessToken(); } catch (_) {}
+    if (!token) { window.CQAuth.signIn(); return false; }
+    let premium = false;
+    try { premium = await window.CQAuth.isPremium(); } catch (_) {}
+    if (!premium) { window.location.href = 'arkiv.html#abonnement'; return false; }
+    return true;
   }
 
   function extractJSON(rawText) {
@@ -1658,6 +1685,9 @@
   async function generateQuiz() {
     const themes = getAllThemes();
     if (themes.length === 0) { alert('Velg minst ett tema først'); return; }
+    // Egen quiz-generering krever aktivt abonnement (Fase B). Ruter til
+    // innlogging eller abonnement hvis det mangler.
+    if (!(await ensureAccess())) return;
     const themeLabel = themes.length === 1 ? themes[0] : themes.join(' + ');
     const bannerTheme = themes[0]; // første valgte gir banner-bilde
     document.getElementById('loading-theme').textContent = `Lager quiz om "${themeLabel}"`;
@@ -1690,6 +1720,17 @@
       renderQuestion();
       showScreen('quiz');
     } catch (err) {
+      // Abonnement kreves — ikke gi demo-quiz, men rut til riktig sted.
+      if (err && err.code === 'SUBSCRIPTION') {
+        QuizLoader.stop();
+        if (window.CQAuth && window.CQAuth.getAccessToken && !(await window.CQAuth.getAccessToken())) {
+          window.CQAuth.signIn();
+        } else {
+          window.location.href = 'arkiv.html#abonnement';
+        }
+        showScreen('home');
+        return;
+      }
       console.warn('[Quiz] Live-generering feilet, faller tilbake til demo-bibliotek:', err);
       const quiz = pickFallbackQuiz(bannerTheme, state.count);
       if (quiz.difficulty) state.difficulty = quiz.difficulty; // bruk bibliotek-quizens eget nivå
@@ -1987,5 +2028,7 @@
   loadLibraryQuizFromUrl();
 </script>
 
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
 </body>
 </html>

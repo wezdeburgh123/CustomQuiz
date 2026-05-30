@@ -10,6 +10,6 @@
  *   - Project API keys: anon public → anonKey
  */
 window.CQ_SUPABASE = {
-  url: "PASTE_PROJECT_URL_HER",        // f.eks. https://abcd1234.supabase.co
-  anonKey: "PASTE_ANON_PUBLIC_KEY_HER" // lang "eyJ…"-streng
+  url: "https://agygcltvhkvokgpmwmxf.supabase.co",
+  anonKey: "PASTE_ANON_PUBLIC_KEY_HER" // lang "eyJ…"-streng — Settings → API → anon public
 };

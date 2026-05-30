@@ -10664,6 +10664,681 @@
           "explanation": "Akevitt smaksettes typisk med karve og dill, og mange varianter lagres på eikefat."
         }
       ]
+    },
+    {
+      "id": "film-06",
+      "num": "86",
+      "category": "film",
+      "categoryLabel": "Film og TV",
+      "title": "Den franske nybølgen",
+      "sub": "Unge kritikere som rev opp filmspråket på slutten av 1950-tallet.",
+      "lede": "Unge kritikere som rev opp filmspråket på slutten av 1950-tallet.",
+      "difficulty": "medium",
+      "rating": 4.4,
+      "plays": 174,
+      "date": "2026-05-30",
+      "questions": [
+        {
+          "category": "filmhistorie",
+          "q": "Den franske nybølgen («Nouvelle Vague») vokste fram rundt et innflytelsesrikt filmtidsskrift der flere av regissørene først jobbet som kritikere. Hvilket?",
+          "options": [
+            "Sight & Sound",
+            "Positif",
+            "Film Comment",
+            "Cahiers du cinéma"
+          ],
+          "correct": 3,
+          "explanation": "Truffaut, Godard og Rohmer skrev for Cahiers du cinéma før de regisserte, og kritikkarbeidet formet deres «auteur»-syn. Sight & Sound er britisk, og de andre tilhørte andre miljøer."
+        },
+        {
+          "category": "regissører",
+          "q": "François Truffauts debutfilm fra 1959 regnes som et gjennombrudd og følger den unge gutten Antoine Doinel. Hva heter den?",
+          "options": [
+            "À bout de souffle",
+            "Les quatre cents coups (400 slag)",
+            "Jules et Jim",
+            "Hiroshima mon amour"
+          ],
+          "correct": 1,
+          "explanation": "«Les quatre cents coups» (1959) var Truffauts debut og introduserte Antoine Doinel. À bout de souffle er Godards, Hiroshima mon amour er Resnais', og Jules et Jim kom først i 1962."
+        },
+        {
+          "category": "teknikk",
+          "q": "Jean-Luc Godards «À bout de souffle» (1960) ble stilmessig banebrytende særlig på grunn av én klippeteknikk som brøt med Hollywood-konvensjonen. Hvilken?",
+          "options": [
+            "Jump cuts (hoppklipp)",
+            "Overtoning",
+            "Kryssklipping",
+            "Match cut"
+          ],
+          "correct": 0,
+          "explanation": "Godard kuttet bort mellomledd i samme scene slik at bildet «hopper» — et bevisst brudd med usynlig kontinuitetsklipping. De andre teknikkene fantes allerede i klassisk Hollywood."
+        },
+        {
+          "category": "begreper",
+          "q": "Begrepet «auteur-teori», sentralt for nybølgen, hevder at filmens egentlige opphavsperson er …",
+          "options": [
+            "regissøren",
+            "produsenten",
+            "manusforfatteren",
+            "fotografen"
+          ],
+          "correct": 0,
+          "explanation": "Auteur-tanken løfter regissøren til filmens «forfatter» med personlig signatur — i opposisjon til studioenes manus- og produsentstyrte modell."
+        },
+        {
+          "category": "produksjon",
+          "q": "Mange nybølgefilmer ble spilt inn på gata med håndholdt kamera og naturlig lys. Hva var den viktigste praktiske grunnen til denne stilen?",
+          "options": [
+            "Fargefilm fantes ikke ennå",
+            "Små budsjetter tvang fram lette kameraer og eksisterende lys",
+            "Sensuren krevde utendørs opptak",
+            "Lydopptak var forbudt i studio"
+          ],
+          "correct": 1,
+          "explanation": "Begrensede midler gjorde tunge studiooppsett umulige, så de utnyttet lette kameraer og lyset som fantes — nøden ble til estetikk. Fargefilm og studiolyd fantes for lengst."
+        },
+        {
+          "category": "regissører",
+          "q": "Agnès Varda regnes som forløper og det fremste kvinnenavnet i miljøet. «Cléo de 5 à 7» (1962) er kjent for å fortelle nær …",
+          "options": [
+            "som drømmesekvenser",
+            "baklengs",
+            "i sanntid",
+            "gjennom flere tiår"
+          ],
+          "correct": 2,
+          "explanation": "Filmen følger Cléo nesten minutt for minutt i to timer, og tittelens «5 til 7» speiler den tilnærmede sanntiden — et grep som forsterker uroen mens hun venter på et prøvesvar."
+        },
+        {
+          "category": "kontekst",
+          "q": "Nybølgen oppsto sent på 1950-tallet. Hvilken bredere samfunnsfaktor bidro mest til at unge regissører fikk gjennomslag nettopp da?",
+          "options": [
+            "En stor, filminteressert etterkrigsungdom og billigere utstyr",
+            "Gjeninnføring av stumfilm",
+            "Fjernsynets forsvinning",
+            "Statlig forbud mot utenlandsk film"
+          ],
+          "correct": 0,
+          "explanation": "Etterkrigstidens unge publikum og rimeligere, lettere teknologi ga både marked og midler for et nytt filmspråk. Fjernsynet vokste tvert imot, og stumfilmen var forlengst forbi."
+        },
+        {
+          "category": "påvirkning",
+          "q": "«Cahiers»-kritikerne hyllet enkelte Hollywood-regissører som oversette «auteurer». Én amerikaner ble særlig opphøyd for sin suspense-signatur. Hvem?",
+          "options": [
+            "Cecil B. DeMille",
+            "Alfred Hitchcock",
+            "John Ford",
+            "Billy Wilder"
+          ],
+          "correct": 1,
+          "explanation": "Truffaut viet Hitchcock en hel intervjubok, og nybølgen så hans gjennomgående stil og tematikk som selve beviset på auteur-tanken. Ford og Wilder ble verdsatt, men Hitchcock ble bevegelsens fremste eksempel."
+        },
+        {
+          "category": "holdning",
+          "q": "Godard skal ha sagt at alt en film trenger er «en jente og en pistol». Utsagnet oppsummerer nybølgens forhold til …",
+          "options": [
+            "sjangerkonvensjoner de både brukte og lekte med",
+            "fargeteori",
+            "lydmiks",
+            "sensurregler"
+          ],
+          "correct": 0,
+          "explanation": "Sitatet peker på hvordan de lånte krim- og romantikk-klisjeer, men dekonstruerte dem ironisk — sjangeren ble råstoff for lek, ikke en mal å følge."
+        },
+        {
+          "category": "arv",
+          "q": "Hvilken senere internasjonal strømning ble tydelig inspirert av nybølgens frie form og lave budsjetter?",
+          "options": [
+            "Sovjetisk montasje på 1920-tallet",
+            "Amerikansk «New Hollywood» på 1960–70-tallet",
+            "Tysk ekspresjonisme",
+            "Italiensk stumfilm"
+          ],
+          "correct": 1,
+          "explanation": "Regissører som Scorsese og Coppola tok opp nybølgens regissørstyrte, eksperimentelle stil. De tre andre strømningene kom før nybølgen og kunne dermed ikke være inspirert av den."
+        }
+      ]
+    },
+    {
+      "id": "film-07",
+      "num": "87",
+      "category": "film",
+      "categoryLabel": "Film og TV",
+      "title": "Animasjonsfilmens gjennombrudd",
+      "sub": "Fra håndtegnede cels til datagrafikk — milepælene som endret tegnefilmen.",
+      "lede": "Fra håndtegnede cels til datagrafikk — milepælene som endret tegnefilmen.",
+      "difficulty": "medium",
+      "rating": 4.6,
+      "plays": 307,
+      "date": "2026-05-30",
+      "questions": [
+        {
+          "category": "milepæler",
+          "q": "«Toy Story» (1995) var skjellsettende av én teknisk grunn. Hvilken?",
+          "options": [
+            "Første film vist med 3D-briller",
+            "Første tegnefilm i farger",
+            "Første helaftens kinofilm laget heldigitalt med datagrafikk",
+            "Første film med lyd"
+          ],
+          "correct": 2,
+          "explanation": "«Toy Story» var den første hele kinofilmen laget utelukkende med datagenerert 3D-animasjon. Lyd, farge og 3D-briller fantes lenge før."
+        },
+        {
+          "category": "selskaper",
+          "q": "Studioet bak «Toy Story», Pixar, ble bygget opp fra en datagrafikk-avdeling kjøpt av en kjent gründer i 1986. Hvem?",
+          "options": [
+            "Steve Jobs",
+            "George Lucas",
+            "Bill Gates",
+            "Walt Disney"
+          ],
+          "correct": 0,
+          "explanation": "Jobs kjøpte grafikkavdelingen fra Lucasfilm og finansierte Pixar i årevis. Avdelingen kom riktignok fra Lucas, men det var Jobs som eide og bygde selskapet videre."
+        },
+        {
+          "category": "teknikk",
+          "q": "Før datateknologi ble tradisjonell tegnefilm laget ved at hver bevegelse ble tegnet på gjennomsiktige ark lagt oppå en fast bakgrunn. Hva kalles disse arkene?",
+          "options": [
+            "Negativer",
+            "Cels (celluloid-ark)",
+            "Matter",
+            "Storyboards"
+          ],
+          "correct": 1,
+          "explanation": "«Cels» lot animatørene bytte bare figuren mens bakgrunnen lå fast — derav uttrykket «cel-animasjon». Storyboard er planleggingsskisser, ikke selve animasjonsarkene."
+        },
+        {
+          "category": "internasjonalt",
+          "q": "Japansk animasjon («anime») fikk internasjonalt gjennomslag mye takket være ett studio og dets regissør bak «Min nabo Totoro». Hvilket studio?",
+          "options": [
+            "Madhouse",
+            "Toei Animation",
+            "Studio Ghibli",
+            "Sunrise"
+          ],
+          "correct": 2,
+          "explanation": "Hayao Miyazaki grunnla Studio Ghibli, som hevet anime til kunstnerisk anerkjennelse i Vesten. De andre studioene er kjente, men det var Ghibli som ble selve merkevaren for anime som filmkunst."
+        },
+        {
+          "category": "teknikk",
+          "q": "Disney introduserte i «Snøhvit» (1937) en teknikk som ga tegnefilmen dybde ved å filme flere lag i bevegelse. Hva het kameraet?",
+          "options": [
+            "IMAX-kameraet",
+            "Multiplan-kameraet",
+            "Steadicam",
+            "Technicolor-kameraet"
+          ],
+          "correct": 1,
+          "explanation": "Multiplan-kameraet filmet adskilte lag i ulik avstand, slik at forgrunn og bakgrunn beveget seg ulikt — en illusjon av dybde. Technicolor er en fargeprosess, ikke et dybdegrep."
+        },
+        {
+          "category": "historie",
+          "q": "«Snøhvit» var risikabel fordi ingen før hadde laget en helaftens tegnefilm. Hva kalte bransjen prosjektet mens det pågikk?",
+          "options": [
+            "«Det umulige eventyr»",
+            "«Disneys dårskap» (Disney's Folly)",
+            "«Den gylne film»",
+            "«Mikkes mesterverk»"
+          ],
+          "correct": 1,
+          "explanation": "Skeptikere trodde publikum ikke orket en lang tegnefilm og kalte det «Disney's Folly» — helt til suksessen motbeviste dem. Uttrykket er historisk dokumentert."
+        },
+        {
+          "category": "teknikk",
+          "q": "Hva er hovedforskjellen mellom stop-motion og tradisjonell tegnefilm?",
+          "options": [
+            "Stop-motion fotograferer fysiske objekter bilde for bilde",
+            "Stop-motion kan bare være svart-hvitt",
+            "Tegnefilm har aldri lyd",
+            "Stop-motion bruker bare datagrafikk"
+          ],
+          "correct": 0,
+          "explanation": "Stop-motion flytter virkelige dukker eller modeller litt mellom hvert stillbilde, mens tegnefilm tegnes. Begge kan ha lyd og farge, og stop-motion bruker nettopp ikke datagrafikk."
+        },
+        {
+          "category": "kuriosa",
+          "q": "Pixars filmer åpner ofte med en kortfilm. Dette springer ut av studioets tidlige år, da kortfilmene tjente et praktisk formål. Hvilket?",
+          "options": [
+            "Å unngå sensur",
+            "Å vise fram og teste ny animasjonsteknologi",
+            "Å fylle tomme kinosaler",
+            "Å trene stemmeskuespillere"
+          ],
+          "correct": 1,
+          "explanation": "Kortfilmer som «Luxo Jr.» demonstrerte teknikker — lys, bevegelse, materialer — før de ble brukt i spillefilm. Utviklingslaben ble etter hvert en tradisjon."
+        },
+        {
+          "category": "priser",
+          "q": "«Shrek» (2001) vant den aller første Oscar i en helt ny kategori. Hvilken?",
+          "options": [
+            "Beste manus",
+            "Beste visuelle effekter",
+            "Beste film",
+            "Beste animasjonsfilm"
+          ],
+          "correct": 3,
+          "explanation": "Akademiet opprettet kategorien «Beste animerte spillefilm» i 2001, og «Shrek» ble dens første vinner. De andre kategoriene fantes fra før."
+        },
+        {
+          "category": "utvikling",
+          "q": "Hvorfor ble datagenerert animasjon raskt dominerende framfor håndtegning på 2000-tallet?",
+          "options": [
+            "Håndtegning ble forbudt",
+            "Den var alltid billigere fra dag én",
+            "Den ga gjenbrukbare 3D-modeller og enklere endringer, tross høy startkostnad",
+            "Publikum kunne ikke høre forskjell på lyden"
+          ],
+          "correct": 2,
+          "explanation": "En 3D-modell kan animeres fra alle vinkler og justeres uten å tegnes på nytt — effektivt over tid. Det krevde tung investering først, så «billigere fra dag én» stemmer ikke."
+        }
+      ]
+    },
+    {
+      "id": "film-08",
+      "num": "88",
+      "category": "film",
+      "categoryLabel": "Film og TV",
+      "title": "Filmmusikk og komponister",
+      "sub": "Temaene og grepene som gjør at vi føler før vi forstår.",
+      "lede": "Temaene og grepene som gjør at vi føler før vi forstår.",
+      "difficulty": "medium",
+      "rating": 4.4,
+      "plays": 251,
+      "date": "2026-05-30",
+      "questions": [
+        {
+          "category": "komponister",
+          "q": "To toner, gjentatt stadig raskere, ble selve lyden av fare i «Haisommer» (1975). Hvem komponerte temaet?",
+          "options": [
+            "John Williams",
+            "Hans Zimmer",
+            "Bernard Herrmann",
+            "Ennio Morricone"
+          ],
+          "correct": 0,
+          "explanation": "Williams' enkle, truende motiv ga haien nærvær selv når den ikke var på skjermen. Zimmer og Morricone er like berømte, men kom med andre verk, og Herrmann tilhører en eldre generasjon."
+        },
+        {
+          "category": "komponister",
+          "q": "Den skjærende fiolinlyden i dusjscenen i «Psycho» (1960) ble skapt av en komponist som ofte samarbeidet med Hitchcock. Hvem?",
+          "options": [
+            "Max Steiner",
+            "Bernard Herrmann",
+            "Henry Mancini",
+            "John Williams"
+          ],
+          "correct": 1,
+          "explanation": "Herrmann var Hitchcocks faste komponist, og de stikkende strykerne er hans signatur. Williams var for ung, Mancini er kjent for jazzige temaer, og Steiner hørte til eldre Hollywood."
+        },
+        {
+          "category": "komponister",
+          "q": "Ennio Morricones musikk til spaghettiwesterns brukte uvanlige lyder som plystring og elektrisk gitar. Hvilken regissør samarbeidet han tettest med?",
+          "options": [
+            "Clint Eastwood",
+            "Akira Kurosawa",
+            "Federico Fellini",
+            "Sergio Leone"
+          ],
+          "correct": 3,
+          "explanation": "Morricone og Leone laget bl.a. «Den gode, den onde og den grusomme» sammen. Eastwood spilte i dem, men regisserte dem ikke, og Fellini og Kurosawa hørte til andre miljøer."
+        },
+        {
+          "category": "begreper",
+          "q": "Hva er forskjellen på «diegetisk» og «ikke-diegetisk» filmmusikk?",
+          "options": [
+            "Diegetisk er alltid klassisk",
+            "Diegetisk er uten instrumenter",
+            "Ikke-diegetisk spilles bare på slutten",
+            "Diegetisk musikk har en kilde i selve historien; ikke-diegetisk hører bare publikum"
+          ],
+          "correct": 3,
+          "explanation": "En radio en figur skrur på er diegetisk (finnes i scenen), mens et usynlig orkester som understreker stemningen er ikke-diegetisk. Skillet handler om kilden, ikke sjanger eller plassering."
+        },
+        {
+          "category": "begreper",
+          "q": "Et tilbakevendende musikalsk motiv knyttet til en bestemt figur eller idé kalles …",
+          "options": [
+            "ouverture",
+            "crescendo",
+            "kadens",
+            "ledemotiv (leitmotiv)"
+          ],
+          "correct": 3,
+          "explanation": "Et ledemotiv merker en karakter med sin egen melodi, slik Williams gjorde med Darth Vaders «Imperial March». Crescendo og kadens beskriver derimot dynamikk og avslutning, ikke gjentakelse."
+        },
+        {
+          "category": "teknikk",
+          "q": "Hans Zimmer bygger spenning i bl.a. «Inception» og «Dunkirk» med en teknikk som gir følelsen av en tone som stiger uendelig. Hva kalles den?",
+          "options": [
+            "Pizzicato",
+            "Shepard-tone",
+            "Glissando",
+            "Vibrato"
+          ],
+          "correct": 1,
+          "explanation": "Shepard-tonen legger lag i ulike oktaver slik at den virker å stige uten ende — perfekt for voksende uro. Vibrato og pizzicato er spilleteknikker, og glissando er en glidning mellom toner."
+        },
+        {
+          "category": "historie",
+          "q": "I stumfilmtiden hadde live-musikk en helt praktisk funksjon utover å sette stemning. Hvilken?",
+          "options": [
+            "Den var lovpålagt sensur",
+            "Den styrte filmhastigheten",
+            "Den overdøvet støyen fra projektoren og publikum",
+            "Den erstattet teksting"
+          ],
+          "correct": 2,
+          "explanation": "En pianist eller et orkester live dekket maskinstøyen og fylte stillheten i salen, i tillegg til å skape stemning. Musikken styrte verken hastighet eller fungerte som tekst."
+        },
+        {
+          "category": "kuriosa",
+          "q": "«2001: A Space Odyssey» droppet bestilt originalmusikk til fordel for kjente klassiske verk, bl.a. en wienervals i en romscene. Hvilket grep illustrerer dette?",
+          "options": [
+            "Musikk spilt baklengs",
+            "Bruk av eksisterende klassisk musikk i stedet for nykomponert",
+            "Kun elektronisk musikk",
+            "Helt stille film"
+          ],
+          "correct": 1,
+          "explanation": "Kubrick beholdt midlertidige klassiske spor (Strauss, Ligeti) framfor et bestilt partitur — et berømt eksempel på et «temp score» som ble den endelige musikken. Filmen var verken stille eller rent elektronisk."
+        },
+        {
+          "category": "virkemidler",
+          "q": "Hvorfor velger noen regissører å la spente scener gå helt uten musikk?",
+          "options": [
+            "Lyd ødelegger filmrullen",
+            "Sensur krever det",
+            "Det er alltid billigere",
+            "Stillhet kan øke ubehag og realisme ved å fjerne den trygge musikalske rammen"
+          ],
+          "correct": 3,
+          "explanation": "Når musikken forsvinner, mister publikum en emosjonell ledetråd og blir mer utrygge — stillheten blir et virkemiddel. Det handler om effekt, ikke pris eller teknikk."
+        },
+        {
+          "category": "priser",
+          "q": "Oscar for beste filmmusikk belønner …",
+          "options": [
+            "lydeffektene",
+            "den originale komponerte musikken skrevet for filmen",
+            "dialogen",
+            "beste bruk av en kjent poplåt"
+          ],
+          "correct": 1,
+          "explanation": "Prisen gjelder originalpartituret laget for filmen. Populærlåter hører til kategorien beste sang, mens lydeffekter og dialog dekkes av andre priser."
+        }
+      ]
+    },
+    {
+      "id": "sport-07",
+      "num": "89",
+      "category": "sport",
+      "categoryLabel": "Sport",
+      "title": "Tennisens Grand Slam",
+      "sub": "Fire turneringer, tre underlag — og logikken bak storslagene.",
+      "lede": "Fire turneringer, tre underlag — og logikken bak storslagene.",
+      "difficulty": "medium",
+      "rating": 4.4,
+      "plays": 343,
+      "date": "2026-05-30",
+      "questions": [
+        {
+          "category": "turneringer",
+          "q": "De fire Grand Slam-turneringene spilles på ulike underlag. Hvilken spilles på grus?",
+          "options": [
+            "Wimbledon",
+            "US Open",
+            "Australian Open",
+            "Franske mesterskap (Roland-Garros)"
+          ],
+          "correct": 3,
+          "explanation": "Roland-Garros er den eneste store turneringen på grus, et tregt underlag som favoriserer utholdende grunnlinjespillere. Wimbledon er gress, mens de to andre er hardcourt."
+        },
+        {
+          "category": "begreper",
+          "q": "At en spiller vinner alle fire Grand Slam-titler samme kalenderår kalles …",
+          "options": [
+            "en ekte Grand Slam",
+            "et gyllent sett",
+            "et Davis-sveip",
+            "en Masters-serie"
+          ],
+          "correct": 0,
+          "explanation": "Begrepet «Grand Slam» betegner nettopp alle fire samme år — en sjelden bragd. «Golden Slam» legger i tillegg til OL-gull, og de øvrige uttrykkene er enten oppdiktet eller gjelder lagturneringer."
+        },
+        {
+          "category": "taktikk",
+          "q": "Wimbledon spilles på gress, et raskt underlag. Hvilken spillestil belønnes typisk mest der?",
+          "options": [
+            "Lange grunnlinjedueller",
+            "Mest mulig høye baller",
+            "Defensivt motspill",
+            "Serv og volley / aggressivt nettspill"
+          ],
+          "correct": 3,
+          "explanation": "Gress gir lav, rask sprett og korte poeng, noe som favoriserer hard serv og angrep ved nettet. På grus, der ballen spretter høyt og tregt, lønner grunnlinjespill seg mer."
+        },
+        {
+          "category": "legender",
+          "q": "«Golden Slam» — alle fire majors pluss OL-gull samme år — er i singel bare oppnådd av én spiller (1988). Hvem?",
+          "options": [
+            "Steffi Graf",
+            "Serena Williams",
+            "Martina Navratilova",
+            "Monica Seles"
+          ],
+          "correct": 0,
+          "explanation": "Graf vant alle fire majors og OL-gull i 1988, fortsatt enestående i singel. Williams og Navratilova har mange majors, men ikke alle fire pluss OL-gull samme år."
+        },
+        {
+          "category": "regler",
+          "q": "Et tenniss-sett vinnes normalt ved seks game, men man må lede med to. Hva innføres oftest ved 6–6 for å avgjøre settet?",
+          "options": [
+            "Tiebreak",
+            "Sudden death-serv",
+            "Et gyllent game",
+            "Omkamp neste dag"
+          ],
+          "correct": 0,
+          "explanation": "Ved 6–6 spilles en tiebreak (vanligvis til sju poeng) for å unngå endeløse sett. Kravet om to games' ledelse gjelder ellers underveis i settet."
+        },
+        {
+          "category": "legender",
+          "q": "Federer, Nadal og Djokovic dominerte herretennisen lenge. Hvem er mest forbundet med rekordmange titler nettopp på grusen i Paris?",
+          "options": [
+            "Roger Federer",
+            "Novak Djokovic",
+            "Rafael Nadal",
+            "Andy Murray"
+          ],
+          "correct": 2,
+          "explanation": "Nadals spinntunge, utholdende grunnlinjespill passer grusen perfekt, og han har vunnet Roland-Garros et rekordhøyt antall ganger. Federer var sterkest på gress og hardcourt."
+        },
+        {
+          "category": "begreper",
+          "q": "«Game, set, match» ropes ut når …",
+          "options": [
+            "en spiller har vunnet nok sett til å ta hele kampen",
+            "det står likt",
+            "en spiller bryter serven",
+            "første game er over"
+          ],
+          "correct": 0,
+          "explanation": "Uttrykket markerer at det avgjørende settet — og dermed kampen — er vunnet. Det gjelder altså kampslutt, ikke et enkelt game eller et servebrudd."
+        },
+        {
+          "category": "regler",
+          "q": "I de fleste Grand Slam spiller herrene best av fem sett, damene best av tre. Hva er en praktisk konsekvens av dette?",
+          "options": [
+            "Herrene bruker større baner",
+            "Herrekamper kan vare vesentlig lenger og krever mer utholdenhet",
+            "Damekamper har flere baller i spill",
+            "Damene server alltid først"
+          ],
+          "correct": 1,
+          "explanation": "Flere nødvendige sett betyr potensielt mange timers spill, så fysisk utholdenhet blir avgjørende i herreklassen. Banestørrelse og baller er like for begge."
+        },
+        {
+          "category": "begreper",
+          "q": "Et «break point» i tennis oppstår når …",
+          "options": [
+            "settet er ferdig",
+            "serveren leder klart",
+            "ballen treffer nettet",
+            "mottakeren er ett poeng fra å vinne motstanderens servegame"
+          ],
+          "correct": 3,
+          "explanation": "Siden serveren normalt har fordelen, er det et «brudd» om mottakeren vinner servegamet — break point er sjansen til nettopp det. Et nett-treff på serv heter derimot «let»."
+        },
+        {
+          "category": "forståelse",
+          "q": "Hvorfor regnes det å vinne en major på alle tre underlagene (grus, gress, hardcourt) som et tegn på en komplett spiller?",
+          "options": [
+            "Reglene endres mellom underlagene",
+            "Hvert underlag krever ulik teknikk, fart og taktikk",
+            "Underlagene har ulik banestørrelse",
+            "Ballen har ulik farge"
+          ],
+          "correct": 1,
+          "explanation": "Sprett, fart og fotarbeid varierer kraftig mellom grus, gress og hard, så å mestre alle viser stor bredde. Regler og banemål er derimot de samme overalt."
+        }
+      ]
+    },
+    {
+      "id": "filosofi-06",
+      "num": "90",
+      "category": "filosofi",
+      "categoryLabel": "Filosofi",
+      "title": "Eksistensialismen",
+      "sub": "Frihet, ansvar og det absurde — fra Kierkegaard til Beauvoir.",
+      "lede": "Frihet, ansvar og det absurde — fra Kierkegaard til Beauvoir.",
+      "difficulty": "medium",
+      "rating": 4.9,
+      "plays": 365,
+      "date": "2026-05-30",
+      "questions": [
+        {
+          "category": "kjernebegreper",
+          "q": "Uttrykket «eksistensen går forut for essensen» er en kjerneformulering i eksistensialismen. Hvem formulerte den?",
+          "options": [
+            "Jean-Paul Sartre",
+            "Immanuel Kant",
+            "René Descartes",
+            "Platon"
+          ],
+          "correct": 0,
+          "explanation": "Sartre mente mennesket først finnes og deretter skaper sin egen mening — i motsetning til Platons forutbestemte «essenser». Kant og Descartes tilhører helt andre tradisjoner."
+        },
+        {
+          "category": "kjernebegreper",
+          "q": "Hva er hovedpoenget i at «eksistensen går forut for essensen»?",
+          "options": [
+            "Mennesket har ingen forhåndsgitt natur, men formes av sine valg",
+            "Sjelen finnes før kroppen",
+            "Gud bestemmer alt på forhånd",
+            "Tanker er medfødte"
+          ],
+          "correct": 0,
+          "explanation": "Påstanden snur den klassiske ideen om en fast menneskenatur: vi defineres av hva vi gjør, ikke av en mal. Derav følger det tunge ansvaret for egne valg."
+        },
+        {
+          "category": "tenkere",
+          "q": "Søren Kierkegaard, ofte kalt eksistensialismens far, var fra hvilket land?",
+          "options": [
+            "Frankrike",
+            "Tyskland",
+            "Danmark",
+            "Norge"
+          ],
+          "correct": 2,
+          "explanation": "Kierkegaard var dansk og skrev på 1840-tallet, lenge før de franske eksistensialistene. Tyskland ga oss Heidegger, mens Frankrike ga oss Sartre og Camus."
+        },
+        {
+          "category": "frihet",
+          "q": "Sartre hevdet at mennesket er «dømt til å være fritt». Hva er det paradoksale poenget?",
+          "options": [
+            "Frihet betyr fravær av valg",
+            "Vi kan ikke unnslippe ansvaret for å velge, selv ikke ved å la være",
+            "Frihet er forbudt ved lov",
+            "Bare noen få er frie"
+          ],
+          "correct": 1,
+          "explanation": "Selv det å unngå å velge er et valg — friheten er uunngåelig og dermed en byrde, ikke bare et gode. Ordet «dømt» fanger nettopp denne tvangen."
+        },
+        {
+          "category": "det absurde",
+          "q": "Albert Camus utforsket det «absurde» — spenningen mellom menneskets søken etter mening og …",
+          "options": [
+            "naturvitenskapens framskritt",
+            "et univers som ikke gir noe svar",
+            "statens lover",
+            "andre menneskers meninger"
+          ],
+          "correct": 1,
+          "explanation": "Det absurde oppstår når vårt krav om mening møter en taus, likegyldig verden. Camus' svar var å leve videre i trass, ikke å gi opp."
+        },
+        {
+          "category": "det absurde",
+          "q": "I «Myten om Sisyfos» bruker Camus en skikkelse dømt til evig å rulle en stein opp en bakke. Hva er hans overraskende konklusjon?",
+          "options": [
+            "Sisyfos burde gi opp",
+            "Man må tenke seg Sisyfos lykkelig",
+            "Steinen blir til slutt borte",
+            "Gudene angrer straffen"
+          ],
+          "correct": 1,
+          "explanation": "Camus mener Sisyfos eier sin skjebne ved å omfavne den meningsløse oppgaven — opprøret i seg selv gir verdighet. Poenget er ikke flukt, men aksept med åpne øyne."
+        },
+        {
+          "category": "tenkere",
+          "q": "Hvorfor regnes ofte ikke Camus som «ekte» eksistensialist, tross likhetene med Sartre?",
+          "options": [
+            "Han skrev aldri filosofi",
+            "Han levde for tidlig",
+            "Han trodde på forutbestemmelse",
+            "Han avviste selv merkelappen og var uenig med Sartre på sentrale punkter"
+          ],
+          "correct": 3,
+          "explanation": "Camus tok offentlig avstand fra etiketten og brøt med Sartre, blant annet om vold og politikk. Han skrev mye filosofisk, så «skrev aldri» og «for tidlig» stemmer ikke."
+        },
+        {
+          "category": "begreper",
+          "q": "«Angst» (eller «kvalme» hos Sartre) i eksistensialistisk forstand er først og fremst en reaksjon på …",
+          "options": [
+            "fysisk sykdom",
+            "erkjennelsen av egen radikale frihet og ansvar",
+            "frykt for konkrete farer",
+            "mangel på penger"
+          ],
+          "correct": 1,
+          "explanation": "Den eksistensielle angsten kommer av svimmelheten ved at ingenting bestemmer valgene mine. Den er ikke frykt for en bestemt trussel, men for friheten selv."
+        },
+        {
+          "category": "tenkere",
+          "q": "Simone de Beauvoir anvendte eksistensialistisk tenkning på kjønn i «Det annet kjønn», med påstanden «man fødes ikke til kvinne, man blir det». Hva betyr dette?",
+          "options": [
+            "Bare menn har frihet",
+            "Biologi avgjør alt",
+            "Kvinner finnes ikke",
+            "Kjønnsroller er sosialt formet, ikke fastlagt av naturen"
+          ],
+          "correct": 3,
+          "explanation": "Beauvoir overfører «eksistens forut for essens» til kjønn: kvinnerollen skapes av samfunnet, ikke av en medfødt essens — og kan derfor endres."
+        },
+        {
+          "category": "kritikk",
+          "q": "Hva er en vanlig kritikk mot eksistensialismens vekt på individuell frihet?",
+          "options": [
+            "At den krever tro på Gud",
+            "At den nekter mennesket å tenke",
+            "At den kan undervurdere hvordan samfunn og omstendigheter begrenser valg",
+            "At den forbyr vitenskap"
+          ],
+          "correct": 2,
+          "explanation": "Kritikere peker på at fattigdom, makt og struktur snevrer inn det reelle handlingsrommet — friheten er ikke like absolutt for alle. Eksistensialismen verken krever gudstro eller avviser vitenskap."
+        }
+      ]
     }
   ]
 }

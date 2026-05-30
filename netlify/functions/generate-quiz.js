@@ -134,6 +134,49 @@ async function callAnthropic(apiKey, model, prompt) {
   throw new Error("Ukjent svarstruktur fra Anthropic");
 }
 
+/**
+ * Fase B — server-side håndheving av abonnement.
+ * Returnerer null hvis OK å fortsette, ellers et HTTP-svar som avviser.
+ *
+ * Slås av med REQUIRE_SUBSCRIPTION=false (nyttig før betaling er live).
+ * Krever SUPABASE_URL + SUPABASE_ANON_KEY (verifiserer JWT) +
+ * SUPABASE_SERVICE_ROLE_KEY (slår opp abonnementsstatus). Mangler noen av
+ * disse, er porten AV (åpen) — så siden funker før Supabase er satt opp.
+ *
+ * Feiler LUKKET: hvis vi ikke klarer å verifisere, avvises kallet (beskytter
+ * mot at gratisbrukere brenner API-penger).
+ */
+async function requireSubscription(event) {
+  const { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY } = process.env;
+  const gateOn = process.env.REQUIRE_SUBSCRIPTION !== "false"
+    && SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_SERVICE_ROLE_KEY;
+  if (!gateOn) return null;
+
+  const deny = (code, msg) => ({ statusCode: code, headers: CORS_HEADERS, body: JSON.stringify({ error: msg }) });
+
+  const authz = event.headers.authorization || event.headers.Authorization || "";
+  const token = authz.replace(/^Bearer\s+/i, "").trim();
+  if (!token) return deny(401, "Logg inn for å generere egne quizer.");
+
+  try {
+    const { createClient } = require("@supabase/supabase-js");
+    const anon = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false } });
+    const { data: u, error } = await anon.auth.getUser(token);
+    if (error || !u || !u.user || !u.user.email) return deny(401, "Økten er ugyldig. Logg inn på nytt.");
+    const email = u.user.email.toLowerCase();
+
+    const svc = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+    const { data: sub, error: e2 } = await svc
+      .from("subscribers").select("status").eq("email", email).maybeSingle();
+    if (e2) throw new Error(e2.message);
+    if (!sub || sub.status !== "active") return deny(402, "Aktivt abonnement kreves for å generere egne quizer.");
+    return null; // OK
+  } catch (err) {
+    // Feil lukket — heller avvise enn å la generering skje uverifisert.
+    return deny(503, "Kunne ikke verifisere abonnement akkurat nå. Prøv igjen om litt.");
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers: CORS_HEADERS, body: "" };
@@ -141,6 +184,10 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: "Bruk POST." }) };
   }
+
+  // Fase B: krev aktivt abonnement (hopper over hvis ikke konfigurert).
+  const denied = await requireSubscription(event);
+  if (denied) return denied;
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {

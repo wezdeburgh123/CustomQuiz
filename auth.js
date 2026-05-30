@@ -168,6 +168,12 @@
   window.CQAuth = {
     getUser: function () { return currentUser; },
     getEmail: function () { return currentUser ? currentUser.email : null; },
+    // Supabase access_token (JWT) — sendes som Bearer til serverless for verifisering.
+    getAccessToken: async function () {
+      if (!client) return null;
+      try { var r = await client.auth.getSession(); return (r && r.data && r.data.session && r.data.session.access_token) || null; }
+      catch (_) { return null; }
+    },
     signIn: openLogin,
     signOut: async function () { if (client) { await client.auth.signOut(); } currentUser = null; renderHeader(); emitChange(); },
     onChange: function (cb) { document.addEventListener("cq-auth", function (e) { cb(e.detail.user); }); if (currentUser) cb(currentUser); },

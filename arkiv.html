@@ -763,6 +763,7 @@
   // State
   let currentSort = 'plays';
   let currentFilter = 'all';
+  let premium = false; // settes true for aktive abonnenter (via CQAuth)
 
   // Sort functions
   const SORTS = {
@@ -813,13 +814,15 @@
     }
     empty.style.display = 'none';
 
-    grid.innerHTML = items.map(q => `
-      <a class="quiz-card ${q.locked ? 'locked' : ''}"
-         href="${q.locked ? 'javascript:void(0)' : q.url}"
-         ${q.locked ? `onclick="openLockModal('${q.title.replace(/<\/?em>/g, '')}')"` : ''}>
+    grid.innerHTML = items.map(q => {
+      const locked = q.locked && !premium;
+      return `
+      <a class="quiz-card ${locked ? 'locked' : ''}"
+         href="${locked ? 'javascript:void(0)' : q.url}"
+         ${locked ? `onclick="openLockModal('${q.title.replace(/<\/?em>/g, '')}')"` : ''}>
         <div class="quiz-image" data-spot="${CATEGORY_TO_SPOT[q.category] || 'teal'}">
           <img src="IMG/${q.img}.jpg" alt="">
-          ${q.locked ? '<span class="lock-badge">Premium</span>' : ''}
+          ${locked ? '<span class="lock-badge">Premium</span>' : ''}
         </div>
         <div class="quiz-body">
           <div class="quiz-num">№ ${q.num} · ${q.categoryLabel}</div>
@@ -831,7 +834,7 @@
           </div>
         </div>
       </a>
-    `).join('');
+    `;}).join('');
   }
 
   // Sort buttons
@@ -856,7 +859,7 @@
 
   // Lock modal
   function openLockModal(quizTitle) {
-    document.getElementById('lock-modal-quiz').textContent = `«${quizTitle}» er en av 16 premium-utgaver i arkivet.`;
+    document.getElementById('lock-modal-quiz').textContent = `«${quizTitle}» er en premium-utgave. Abonnenter spiller hele arkivet.`;
     document.getElementById('lock-modal').classList.add('active');
   }
   function closeLockModal() {
@@ -964,7 +967,7 @@
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: q.date || '2026-05-28',
             url: 'quiz-app-v2.html?quiz=' + encodeURIComponent(q.id),
-            locked: false
+            locked: true   // biblioteket er premium; de 6 kuraterte over er gratis
           });
         });
       }
@@ -973,6 +976,22 @@
     }
     render();
   })();
+
+  // Åpne betalingsmodal direkte når man kommer fra arkiv.html#abonnement
+  // (f.eks. fra generatoren eller Min side).
+  if (window.location.hash === '#abonnement') {
+    setTimeout(openPayModal, 200);
+  }
+
+  // Lås opp biblioteket for aktive abonnenter. auth.js sender 'cq-auth' når
+  // innloggingsstatus er avgjort; vi sjekker abonnement server-side og re-render.
+  document.addEventListener('cq-auth', async () => {
+    try { premium = !!(window.CQAuth && await window.CQAuth.isPremium()); }
+    catch (_) { premium = false; }
+    const tease = document.querySelector('.subscribe-tease');
+    if (tease) tease.style.display = premium ? 'none' : '';
+    render();
+  });
 </script>
 
 <script src="supabase-config.js"></script>

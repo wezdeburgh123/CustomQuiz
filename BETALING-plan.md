@@ -61,8 +61,10 @@ Alt leser hemmeligheter fra env-variabler. Ingenting fungerer før kontoene unde
 ```
 ANTHROPIC_API_KEY            (finnes allerede)
 SITE_URL                     https://customquiz.no
-SUPABASE_URL                 https://xxxx.supabase.co
+SUPABASE_URL                 https://agygcltvhkvokgpmwmxf.supabase.co
+SUPABASE_ANON_KEY            (anon public — brukes server-side for å verifisere innlogging)
 SUPABASE_SERVICE_ROLE_KEY    (service_role — kun server)
+REQUIRE_SUBSCRIPTION         true   (sett "false" for å skru av paywall under testing)
 STRIPE_SECRET_KEY            sk_test_… → sk_live_…
 STRIPE_PRICE_ID              price_…
 STRIPE_WEBHOOK_SECRET        whsec_…
@@ -75,11 +77,13 @@ VIPPS_ENV                    test   (→ prod ved lansering)
 
 ---
 
+## Faser
+
+**Fase A — innlogging. ✅ BYGGET.** Magic link-innlogging (Supabase) via delt `auth.js` (injiserer «Logg inn»/«Min side» + login-modal selv), «Min side» (`min-side.html`) med abonnementsstatus, og e-postfeltet i betalingsmodalen forhåndsutfylles for innloggede. Inkludert i index/arkiv/quiz-app-v2/min-side.
+
+**Fase B — innholdslåsing. ✅ BYGGET.** Arkivet: 6 kuraterte gratis, hele biblioteket (84) er premium og låses opp for aktive abonnenter (via `cq-auth`-event + `/api/subscription-status`). Generatoren krever innlogging + aktivt abonnement; sender Supabase-JWT som Bearer. `generate-quiz.js` håndhever server-side (verifiserer JWT + `subscribers.status=active`) FØR Claude kalles — feiler lukket. Styres av `REQUIRE_SUBSCRIPTION` (sett "false" under testing før betaling er live). Merk: direkte `?quiz=<id>`-spilling av bibliotek-quizer er ikke hard-gatet (statisk innhold i bundelen) — soft-gating der er et senere valg.
+
 ## Hva JEG bygger videre (kode — neste faser)
-
-**Fase A — innlogging.** Magic link-innlogging (Supabase) i frontend, «Min side» (`min-side.html`) med abonnementsstatus, og at e-postfeltet i modalen forhåndsutfylles for innloggede.
-
-**Fase B — innholdslåsing.** Arkivet viser bare 6 quizer for gjester; generatoren krever aktivt abonnement. Viktigst: `generate-quiz.js` må sjekke `subscription-status` server-side før den kaller Claude (ellers kan betalingsmuren omgås og det koster deg API-penger).
 
 **Fase C — Vipps månedlig trekk.** En planlagt funksjon (daglig) som sender `charge` minst 1 dag før forfall på alle aktive Vipps-avtaler, og oppdaterer status ved feilet trekk. (Stripe håndterer fornyelse selv — Vipps må trekkes aktivt av oss.)
 
