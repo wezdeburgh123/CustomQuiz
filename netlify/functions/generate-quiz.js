@@ -1,0 +1,198 @@
+/**
+ * CustomQuiz — serverless quiz-generator
+ * ---------------------------------------
+ * Kjører på Netlify Functions. Holder Anthropic-nøkkelen på serveren
+ * (env-variabel ANTHROPIC_API_KEY), bygger prompten selv og returnerer
+ * et ferdig validert quiz-objekt. Nøkkelen eksponeres ALDRI i frontend.
+ *
+ * Forventer POST med JSON-body: { themes: string[], difficulty: "lett"|"medium"|"vanskelig", count: number }
+ * Svarer med: { title, lede, questions: [{ category, q, options[4], correct, explanation }] }
+ *
+ * Env:
+ *   ANTHROPIC_API_KEY  (påkrevd)  — din API-nøkkel
+ *   QUIZ_MODEL         (valgfri)  — overstyr modellnavn, f.eks. "claude-sonnet-4-6"
+ */
+
+const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
+const ANTHROPIC_VERSION = "2023-06-01";
+
+// Primær + reserve. QUIZ_MODEL (hvis satt) prøves alltid først.
+// Flere navn for robusthet: hvis ett ikke finnes på kontoen, prøves neste.
+const DEFAULT_MODELS = ["claude-sonnet-4-5", "claude-sonnet-4-6", "claude-3-5-sonnet-latest"];
+
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Content-Type": "application/json; charset=utf-8",
+};
+
+const DIFFICULTY_DESC = {
+  lett: "Kjente fakta og grunnleggende kunnskap. Sikter mot 70-85% treffrate.",
+  medium: "Krever ettertanke. Plausible distraktorer. Sikter mot 50-70% treffrate.",
+  vanskelig: "Utfordrende og spesifikt. Sikter mot 30-50% treffrate selv hos interesserte.",
+};
+
+function buildPrompt(themes, difficulty, count) {
+  const multiThemeInstruction =
+    themes.length > 1
+      ? `\nQuizen skal blande disse ${themes.length} temaene. Fordel spørsmålene så jevnt som mulig mellom dem. Sett "category" på hvert spørsmål til hvilket tema det tilhører. Rekkefølgen kan være variert — ikke alle av samme tema på rad.`
+      : "";
+
+  const themeBlock =
+    themes.length === 1
+      ? `temaet "${themes[0]}"`
+      : `disse temaene blandet: ${themes.map((t) => `"${t}"`).join(", ")}`;
+
+  return `Du er en quiz-generator. Du svarer KUN med rent JSON-objekt — ingen markdown-koder, ingen forklaring før eller etter, ingen hilsen.
+
+Oppgave: Lag en quiz på norsk om ${themeBlock}.${multiThemeInstruction}
+
+Nivå: ${difficulty}. ${DIFFICULTY_DESC[difficulty] || DIFFICULTY_DESC.medium}
+Antall spørsmål: ${count}
+
+Returner nøyaktig dette JSON-objektet (uten omkringliggende tekst):
+{"title":"kort tittel","lede":"én setning beskrivelse","questions":[{"category":"underkategori","q":"spørsmål?","options":["A","B","C","D"],"correct":0,"explanation":"kontekst"}]}
+
+Krav:
+- "correct" er heltallsindeks 0-3 som peker til riktig alternativ
+- Riktig svar varierer mellom posisjon 0, 1, 2, 3 (ikke alltid samme)
+- Distraktorer skal være plausible
+- Naturlig norsk språk (bokmål)
+- Bruk tankestrek (—) der det passer
+- Eksakt ${count} spørsmål
+- IKKE skriv noe annet enn JSON-objektet`;
+}
+
+// Robust JSON-uttrekk: tåler ev. markdown-fence eller tekst rundt objektet.
+function extractJSON(rawText) {
+  let text = String(rawText || "").trim();
+  text = text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+  const firstBrace = text.indexOf("{");
+  if (firstBrace === -1) throw new Error("Fant ingen JSON-struktur i svaret");
+  let depth = 0,
+    lastBrace = -1,
+    inString = false,
+    escape = false;
+  for (let i = firstBrace; i < text.length; i++) {
+    const ch = text[i];
+    if (escape) { escape = false; continue; }
+    if (ch === "\\") { escape = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === "{") depth++;
+    else if (ch === "}") { depth--; if (depth === 0) { lastBrace = i; break; } }
+  }
+  if (lastBrace === -1) throw new Error("Ufullstendig JSON-struktur");
+  return JSON.parse(text.slice(firstBrace, lastBrace + 1));
+}
+
+function validateQuiz(quiz, count) {
+  if (!quiz || typeof quiz !== "object") throw new Error("Svaret er ikke et objekt");
+  if (!Array.isArray(quiz.questions) || quiz.questions.length === 0)
+    throw new Error('JSON mangler "questions"-array');
+  quiz.questions.forEach((q, idx) => {
+    if (!q.q) throw new Error(`Spørsmål ${idx + 1}: mangler tekst`);
+    if (!Array.isArray(q.options) || q.options.length !== 4)
+      throw new Error(`Spørsmål ${idx + 1}: må ha nøyaktig 4 alternativer`);
+    if (typeof q.correct !== "number" || q.correct < 0 || q.correct > 3)
+      throw new Error(`Spørsmål ${idx + 1}: ugyldig "correct"-indeks`);
+    if (!q.category) q.category = "Blandet";
+    if (!q.explanation) q.explanation = "";
+  });
+  if (!quiz.title) quiz.title = "Quiz";
+  if (!quiz.lede) quiz.lede = "";
+  return quiz;
+}
+
+async function callAnthropic(apiKey, model, prompt) {
+  const response = await fetch(ANTHROPIC_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+      "anthropic-version": ANTHROPIC_VERSION,
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 4000,
+      messages: [{ role: "user", content: prompt }],
+    }),
+  });
+
+  const bodyText = await response.text();
+  if (!response.ok) {
+    const err = new Error(`HTTP ${response.status}: ${bodyText.slice(0, 300)}`);
+    err.status = response.status;
+    throw err;
+  }
+  const data = JSON.parse(bodyText);
+  if (data.error) throw new Error("API-feil: " + (data.error.message || JSON.stringify(data.error)));
+  if (Array.isArray(data.content)) return data.content.map((b) => b.text || "").join("");
+  if (typeof data.completion === "string") return data.completion;
+  if (typeof data.text === "string") return data.text;
+  throw new Error("Ukjent svarstruktur fra Anthropic");
+}
+
+exports.handler = async (event) => {
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 204, headers: CORS_HEADERS, body: "" };
+  }
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: "Bruk POST." }) };
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return {
+      statusCode: 500,
+      headers: CORS_HEADERS,
+      body: JSON.stringify({ error: "Serveren mangler ANTHROPIC_API_KEY. Legg den til i Netlify → Site settings → Environment variables." }),
+    };
+  }
+
+  // Parse + saniter input (begrenser bruk til quiz-generering, ikke fri prompt).
+  let themes, difficulty, count;
+  try {
+    const body = JSON.parse(event.body || "{}");
+    themes = Array.isArray(body.themes)
+      ? body.themes.map((t) => String(t).slice(0, 120).trim()).filter(Boolean).slice(0, 5)
+      : [];
+    difficulty = ["lett", "medium", "vanskelig"].includes(body.difficulty) ? body.difficulty : "medium";
+    count = Math.min(Math.max(parseInt(body.count, 10) || 10, 3), 15);
+  } catch (e) {
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: "Ugyldig JSON-body." }) };
+  }
+  if (themes.length === 0) {
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: "Mangler 'themes'." }) };
+  }
+
+  const prompt = buildPrompt(themes, difficulty, count);
+  const models = [process.env.QUIZ_MODEL, ...DEFAULT_MODELS].filter(Boolean);
+
+  let lastErr = null;
+  for (const model of models) {
+    try {
+      // Inntil 2 forsøk per modell — øker temperatur implisitt ved å be om nytt forsøk.
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const raw = await callAnthropic(apiKey, model, prompt);
+          const quiz = validateQuiz(extractJSON(raw), count);
+          return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(quiz) };
+        } catch (inner) {
+          lastErr = inner;
+          // Ved auth/kvote-feil: ikke fortsett å hamre — bryt ut til neste modell/feilmelding.
+          if (inner.status === 401 || inner.status === 403 || inner.status === 429) throw inner;
+        }
+      }
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+
+  return {
+    statusCode: 502,
+    headers: CORS_HEADERS,
+    body: JSON.stringify({ error: "Klarte ikke generere quiz.", detail: lastErr ? lastErr.message : "ukjent feil" }),
+  };
+};

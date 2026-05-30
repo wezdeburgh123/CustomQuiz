@@ -1,0 +1,21 @@
+# Avhengigheter
+node_modules/
+
+# Netlify
+.netlify/
+
+# Miljøvariabler — ALDRI sjekk inn nøkler
+.env
+.env.*
+!.env.example
+
+# OS-skrot
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Nattjobbens midlertidige input
+scripts/_natt-input.json

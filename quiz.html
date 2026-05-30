@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#15110d">
+<title>Allmennkunnskap № 01 - en quiz i ti bolker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="quizzes.js"></script>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #15110d;
+    --bg-soft: #211b15;
+    --bg-panel: #2a2218;
+    --cream: #f4ead4;
+    --cream-bright: #faf3e0;
+    --cream-dim: #c9bca0;
+    --ink-on-cream: #1a1612;
+    --terracotta: #e8784a;
+    --terracotta-deep: #c25a30;
+    --moss: #a8c08a;
+    --rule: #4a3f30;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(244,234,212,0.06) 1px, transparent 0);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .masthead {
+    border-top: 3px solid var(--cream);
+    border-bottom: 1px solid var(--cream-dim);
+    padding: 18px 0 14px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .masthead-left { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); display: flex; flex-direction: column; gap: 4px; }
+  .back-link { color: var(--cream-dim); text-decoration: none; font-size: 10px; letter-spacing: 0.14em; transition: color 0.2s; }
+  .back-link:hover { color: var(--terracotta); }
+  .masthead-right { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; text-align: right; color: var(--cream-dim); }
+
+  .welcome { animation: fadeUp 0.6s ease both; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 8vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    color: var(--cream-bright);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    font-weight: 300;
+    max-width: 560px;
+    margin-bottom: 40px;
+    color: var(--cream);
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--cream-dim);
+    border-bottom: 1px solid var(--cream-dim);
+    margin-bottom: 40px;
+  }
+  .meta-cell {
+    padding: 18px 16px;
+    border-right: 1px solid var(--cream-dim);
+  }
+  .meta-cell:last-child { border-right: none; }
+  .meta-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 6px; }
+  .meta-value { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; color: var(--cream-bright); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 30px;
+    background: var(--cream);
+    color: var(--ink-on-cream);
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn:hover { background: var(--terracotta); color: var(--cream-bright); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--cream-dim); }
+  .btn:active { transform: translate(0, 0); box-shadow: none; }
+  .btn-arrow { font-family: serif; font-size: 18px; }
+  .btn[disabled] { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+
+  .quiz-screen { display: none; animation: fadeUp 0.5s ease both; }
+  .quiz-screen.active { display: block; }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+  .progress-row span:first-child { color: var(--cream); }
+  .progress-bar {
+    height: 3px;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--cream-dim);
+    margin-bottom: 48px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--terracotta);
+    transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .category-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 20px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--terracotta);
+  }
+
+  .question-text {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 4.5vw, 40px);
+    line-height: 1.25;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--cream-bright);
+    margin-bottom: 40px;
+    font-variation-settings: "opsz" 96;
+  }
+
+  .options { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 22px;
+    background: var(--cream);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-on-cream);
+  }
+  .option:hover { background: var(--cream-bright); transform: translateX(4px); }
+  .option.selected { background: var(--terracotta); color: var(--cream-bright); }
+  .option.selected .option-letter { color: var(--cream-bright); }
+  .option-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--terracotta-deep);
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 24px;
+  }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; }
+  .step-counter { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); }
+
+  .score-block {
+    text-align: center;
+    margin: 32px 0 56px;
+    padding: 48px 24px;
+    border-top: 3px solid var(--cream);
+    border-bottom: 3px solid var(--cream);
+  }
+  .score-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+  .score-number {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(96px, 18vw, 180px);
+    line-height: 0.9;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--cream-bright);
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    margin-bottom: 8px;
+  }
+  .score-number em {
+    font-style: italic;
+    color: var(--terracotta);
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+  .score-out-of { font-family: 'Fraunces', serif; font-size: 20px; font-style: italic; color: var(--cream-dim); }
+  .verdict {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 300;
+    margin-top: 24px;
+    color: var(--cream);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+  }
+
+  .recap-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--cream-dim);
+  }
+
+  .recap-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .recap-item:last-of-type { border-bottom: 1px solid var(--cream-dim); }
+
+  .recap-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 10px;
+  }
+  .recap-q {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.35;
+    font-weight: 400;
+    color: var(--cream-bright);
+    margin-bottom: 16px;
+  }
+  .recap-answer-row {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+  .recap-answer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+  .recap-answer-value { font-family: 'Manrope', sans-serif; font-weight: 500; color: var(--cream); }
+  .recap-answer-value.correct { color: var(--moss); font-weight: 600; }
+  .recap-answer-value.wrong { color: var(--terracotta); text-decoration: line-through; opacity: 0.7; }
+  .recap-status {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    margin-bottom: 14px;
+  }
+  .recap-status.correct { background: var(--moss); color: var(--bg); }
+  .recap-status.wrong { background: var(--terracotta); color: var(--bg); }
+  .recap-explanation {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.55;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--cream);
+    margin-top: 14px;
+    padding-left: 16px;
+    border-left: 2px solid var(--terracotta);
+  }
+
+  .restart-row { margin-top: 48px; text-align: center; }
+
+  .related-section { margin-top: 64px; padding-top: 40px; border-top: 3px solid var(--cream); }
+  .related-header { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 28px; }
+  .related-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .related-card { display: flex; flex-direction: column; gap: 8px; padding: 22px 20px; background: var(--bg-soft); border: 1px solid var(--rule); text-decoration: none; transition: all 0.2s ease; position: relative; min-height: 140px; }
+  .related-card:hover { border-color: var(--terracotta); background: var(--bg-panel); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--rule); }
+  .related-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-dim); }
+  .related-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; line-height: 1.15; color: var(--cream-bright); margin-bottom: 4px; }
+  .related-sub { font-family: 'Manrope', sans-serif; font-size: 13px; color: var(--cream-dim); line-height: 1.4; }
+  .related-arrow { position: absolute; bottom: 18px; right: 20px; color: var(--terracotta); font-family: serif; font-size: 20px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 560px) {
+    .container { padding: 24px 20px 60px; }
+    .masthead { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .masthead-right { text-align: left; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .meta-cell { border-right: none; border-bottom: 1px solid var(--cream-dim); }
+    .meta-cell:last-child { border-bottom: none; }
+    .question-text { font-size: 26px; }
+    .recap-q { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="masthead">
+    <div class="masthead-left"><a href="index.html" class="back-link">← Alle quizer</a><span>Allmennkunnskap № 01</span></div>
+    <div class="masthead-right">Ti spørsmål · Blandede tema</div>
+  </header>
+
+  <section id="welcome" class="welcome">
+    <div class="eyebrow">En quiz for den nysgjerrige</div>
+    <h1>Hva <em>vet</em> du, egentlig?</h1>
+    <p class="lede">Ti spørsmål på tvers av historie, naturvitenskap, litteratur, geografi og kultur. Medium til vanskelig. Ingen pugg, men det hjelper å ha vært våken i klassen.</p>
+
+    <div class="meta-grid">
+      <div class="meta-cell">
+        <div class="meta-label">Spørsmål</div>
+        <div class="meta-value">10</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Tid</div>
+        <div class="meta-value">~7 min</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Nivå</div>
+        <div class="meta-value">Medium-hardt</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="startQuiz()">
+      Start quizen <span class="btn-arrow">→</span>
+    </button>
+  </section>
+
+  <section id="quiz" class="quiz-screen">
+    <div class="progress-row">
+      <span id="progress-text">Spørsmål 01 / 10</span>
+      <span id="progress-category">Historie</span>
+    </div>
+    <div class="progress-bar">
+      <div id="progress-fill" class="progress-fill" style="width: 10%"></div>
+    </div>
+
+    <div class="category-tag" id="category-tag">Historie</div>
+    <h2 class="question-text" id="question-text">Spørsmålet kommer her</h2>
+
+    <ul class="options" id="options-list"></ul>
+
+    <div class="quiz-nav">
+      <span class="step-counter" id="step-counter">01 / 10</span>
+      <button class="btn" id="next-btn" disabled onclick="nextQuestion()">
+        Neste <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="result" class="quiz-screen">
+    <div class="eyebrow">Resultat</div>
+    <h1 style="font-size: clamp(40px, 7vw, 64px);">Da var <em>fasiten</em> klar.</h1>
+
+    <div class="score-block">
+      <div class="score-label">Din skår</div>
+      <div class="score-number"><em id="score-num">0</em></div>
+      <div class="score-out-of">av ti mulige</div>
+      <p class="verdict" id="verdict">—</p>
+    </div>
+
+    <div class="recap-header">Gjennomgang av spørsmålene</div>
+    <div id="recap-list"></div>
+
+    <div class="related-section">
+      <div class="related-header">Du vil kanskje også like</div>
+      <div id="related-list" class="related-list"></div>
+    </div>
+
+    <div class="restart-row">
+      <button class="btn" onclick="restart()">
+        Ta quizen på nytt <span class="btn-arrow">↻</span>
+      </button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const questions = [
+    {
+      category: "Norsk historie",
+      q: "Hvilken dansk prins ble valgt til norsk konge etter unionsoppløsningen i 1905, og tok deretter navnet Haakon VII?",
+      options: ["Prins Christian av Danmark", "Prins Carl av Danmark", "Prins Valdemar av Danmark", "Prins Frederik av Danmark"],
+      correct: 1,
+      explanation: "Prins Carl (1872-1957) var sønnesønn av Christian IX. Etter en folkeavstemning hvor 79 % stemte for monarki, ble han konge og lot seg krone i Nidarosdomen sommeren 1906."
+    },
+    {
+      category: "Astronomi",
+      q: "Hvilken planet i solsystemet har den lengste rotasjonstiden, altså det lengste døgnet?",
+      options: ["Jupiter", "Merkur", "Saturn", "Venus"],
+      correct: 3,
+      explanation: "Ett venusdøgn varer 243 jorddager, lengre enn ett venusår på 225 jorddager. Venus roterer dessuten mot solens omløpsretning - en av få planeter med slik retrograd rotasjon."
+    },
+    {
+      category: "Litteratur",
+      q: "Hvilken roman ga Knut Hamsun Nobelprisen i litteratur i 1920?",
+      options: ["Sult", "Mysterier", "Markens Grøde", "Pan"],
+      correct: 2,
+      explanation: "Markens Grøde (1917) skildrer rydningsmannen Isak som bygger opp gården Sellanrå. Sult fra 1890 er kanskje mer berømt i dag, men det var bondeeposet som ga ham prisen."
+    },
+    {
+      category: "Geografi",
+      q: "Hvilken innsjø er størst i verden målt i overflateareal?",
+      options: ["Lake Superior", "Det kaspiske hav", "Viktoriasjøen", "Bajkalsjøen"],
+      correct: 1,
+      explanation: "Det kaspiske hav er ca. 371 000 km², over fem ganger større enn Lake Superior. Det kalles 'hav', men er teknisk sett en innsjø uten avløp. Bajkalsjøen er derimot verdens dypeste."
+    },
+    {
+      category: "Kjemi",
+      q: "Hva er det kjemiske symbolet for grunnstoffet wolfram?",
+      options: ["Wo", "Wf", "W", "Wm"],
+      correct: 2,
+      explanation: "Symbolet W kommer fra det tyske navnet wolfram. På engelsk heter grunnstoffet tungsten. Det har det høyeste smeltepunktet av alle metaller (3422 °C) og brukes blant annet i glødetråder."
+    },
+    {
+      category: "Filosofi",
+      q: "Hvilken dansk filosof regnes som eksistensialismens far?",
+      options: ["Harald Høffding", "Niels Bohr", "Søren Kierkegaard", "Georg Brandes"],
+      correct: 2,
+      explanation: "Kierkegaard (1813-1855) sentrerte tenkningen rundt den enkeltes valg, angst og tro. Sartre og Heidegger anerkjente begge gjelden til ham, selv om termen 'eksistensialisme' først ble brukt på 1900-tallet."
+    },
+    {
+      category: "Teknologihistorie",
+      q: "Hvem regnes ofte som verdens første dataprogrammerer, og skrev algoritmer for Charles Babbages Analytical Engine på 1840-tallet?",
+      options: ["Grace Hopper", "Ada Lovelace", "Hedy Lamarr", "Mary Somerville"],
+      correct: 1,
+      explanation: "Ada Lovelace skrev en algoritme for å beregne Bernoulli-tall. Maskinen ble aldri ferdigbygd i hennes levetid, men notatene hennes regnes som det første publiserte dataprogrammet."
+    },
+    {
+      category: "Klassisk musikk",
+      q: "Hvilken italiensk komponist skrev operaen 'La Bohème' (1896)?",
+      options: ["Giuseppe Verdi", "Gioachino Rossini", "Giacomo Puccini", "Vincenzo Bellini"],
+      correct: 2,
+      explanation: "Puccini (1858-1924) skrev også Tosca og Madama Butterfly. La Bohème følger sultne kunstnere i Paris og har vært den hyppigst oppførte operaen ved Metropolitan i New York."
+    },
+    {
+      category: "Idrettshistorie",
+      q: "I hvilken by ble de første moderne olympiske leker arrangert i 1896?",
+      options: ["Paris", "Roma", "London", "Athen"],
+      correct: 3,
+      explanation: "Lekene gikk i Athen 6.-15. april 1896 med 241 utøvere fra 14 nasjoner. Pierre de Coubertin sto bak gjenopplivingen, og maraton ble inkludert for første gang - til ære for det greske slaget."
+    },
+    {
+      category: "Anatomi",
+      q: "Hvilket er det største organet i menneskekroppen?",
+      options: ["Lever", "Hud", "Lunger", "Tarm"],
+      correct: 1,
+      explanation: "Huden veier rundt 4 kg hos en voksen og dekker ca. 2 m². Den regnes som organ fordi den består av flere vevstyper og har klare funksjoner: termoregulering, beskyttelse, sansing og D-vitaminsyntese."
+    }
+  ];
+
+  const QUIZ_ID = 'allmenn-01';
+
+  let currentIndex = 0;
+  let selectedOption = null;
+  let userAnswers = [];
+
+  function startQuiz() {
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('quiz').classList.add('active');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentIndex];
+    document.getElementById('progress-text').textContent = `Spørsmål ${String(currentIndex + 1).padStart(2, '0')} / 10`;
+    document.getElementById('progress-category').textContent = q.category;
+    document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+    document.getElementById('category-tag').textContent = q.category;
+    document.getElementById('question-text').textContent = q.q;
+    document.getElementById('step-counter').textContent = `${String(currentIndex + 1).padStart(2, '0')} / 10`;
+
+    const list = document.getElementById('options-list');
+    list.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, i) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.onclick = () => selectOption(i, btn);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+
+    selectedOption = null;
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.disabled = true;
+    nextBtn.innerHTML = currentIndex === questions.length - 1
+      ? 'Se resultat <span class="btn-arrow">→</span>'
+      : 'Neste <span class="btn-arrow">→</span>';
+
+    document.getElementById('quiz').style.animation = 'none';
+    void document.getElementById('quiz').offsetWidth;
+    document.getElementById('quiz').style.animation = 'fadeUp 0.4s ease both';
+  }
+
+  function selectOption(i, btn) {
+    document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedOption = i;
+    document.getElementById('next-btn').disabled = false;
+  }
+
+  function nextQuestion() {
+    userAnswers[currentIndex] = selectedOption;
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('quiz').classList.remove('active');
+    document.getElementById('result').classList.add('active');
+
+    const correctCount = userAnswers.filter((ans, i) => ans === questions[i].correct).length;
+    document.getElementById('score-num').textContent = correctCount;
+
+    const verdicts = [
+      "Det var en treg dag. Heldigvis er kunnskap noe man kan bygge på.",
+      "Noen treff. Det er et grunnlag å jobbe videre fra.",
+      "Helt OK, men det ligger flere svar gjemt der oppe.",
+      "Godt jobbet. Du svarer på alminnelig kunnskap med solid trygghet.",
+      "Imponerende. Du har fanget opp mer enn de fleste.",
+      "Eksepsjonelt. Quizmaster-nivå."
+    ];
+    let verdictIndex;
+    if (correctCount <= 2) verdictIndex = 0;
+    else if (correctCount <= 4) verdictIndex = 1;
+    else if (correctCount <= 6) verdictIndex = 2;
+    else if (correctCount === 7 || correctCount === 8) verdictIndex = 3;
+    else if (correctCount === 9) verdictIndex = 4;
+    else verdictIndex = 5;
+    document.getElementById('verdict').textContent = verdicts[verdictIndex];
+
+    const recapList = document.getElementById('recap-list');
+    recapList.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+
+    questions.forEach((q, i) => {
+      const userIdx = userAnswers[i];
+      const isCorrect = userIdx === q.correct;
+      const item = document.createElement('div');
+      item.className = 'recap-item';
+
+      let answerHtml = '';
+      if (isCorrect) {
+        answerHtml = `
+          <div class="recap-answer-row">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value correct">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>`;
+      } else {
+        answerHtml = `
+          <div class="recap-answer-row">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value wrong">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>
+          <div class="recap-answer-row">
+            <span class="recap-answer-label">Riktig</span>
+            <span class="recap-answer-value correct">${letters[q.correct]}. ${q.options[q.correct]}</span>
+          </div>`;
+      }
+
+      item.innerHTML = `
+        <div class="recap-num">${String(i + 1).padStart(2, '0')} · ${q.category}</div>
+        <div class="recap-q">${q.q}</div>
+        <span class="recap-status ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? 'Riktig' : 'Feil'}</span>
+        ${answerHtml}
+        <div class="recap-explanation">${q.explanation}</div>
+      `;
+      recapList.appendChild(item);
+    });
+
+    renderRelated();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderRelated() {
+    if (!window.getRelatedQuizzes) return;
+    const related = window.getRelatedQuizzes(QUIZ_ID, 3);
+    const list = document.getElementById('related-list');
+    if (!list) return;
+    list.innerHTML = '';
+    related.forEach(q => {
+      const a = document.createElement('a');
+      a.href = q.file;
+      a.className = 'related-card';
+      a.innerHTML = `
+        <div class="related-num">№ ${q.number} · ${q.eyebrow}</div>
+        <div class="related-title">${q.title}</div>
+        <div class="related-sub">${q.subtitle}</div>
+        <span class="related-arrow">→</span>
+      `;
+      list.appendChild(a);
+    });
+  }
+
+  function restart() {
+    currentIndex = 0;
+    selectedOption = null;
+    userAnswers = [];
+    document.getElementById('result').classList.remove('active');
+    document.getElementById('welcome').style.display = 'block';
+    document.getElementById('welcome').style.animation = 'none';
+    void document.getElementById('welcome').offsetWidth;
+    document.getElementById('welcome').style.animation = 'fadeUp 0.5s ease both';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

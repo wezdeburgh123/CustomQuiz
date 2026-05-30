@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kategori-illustrasjoner — Retning C (spot color)</title>
+<style>
+  :root {
+    --bg: #F5F0E6;
+    --bg-soft: #FBF7EE;
+    --ink: #1F1A14;
+    --ink-mute: #7A6F5A;
+    --rule: #E2D8C2;
+    --accent: #0A6E5A;
+    --accent-deep: #074538;
+
+    /* Spot colors — retning C */
+    --spot-teal: #0A6E5A;      /* signatur — Mix, Custom */
+    --spot-moss: #5C7A3C;      /* natur — Geografi */
+    --spot-cobalt: #2C4A8F;    /* analytisk — Teknologi, Naturvitenskap */
+    --spot-terracotta: #B05238;/* jord, fortid — Norsk historie, Film */
+    --spot-plum: #6B3050;      /* kontemplativ — Filosofi, Litteratur, Musikk, Verdenshistorie */
+    --spot-saffron: #C68A2E;   /* energi, varme — Sport, Kunst */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 64px 24px 96px;
+    position: relative;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(31,26,20,0.04) 1px, transparent 0);
+    background-size: 4px 4px;
+    z-index: 0;
+  }
+
+  .wrap { max-width: 980px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 1.12;
+    margin: 0 0 16px;
+    letter-spacing: -0.01em;
+  }
+  h1 em { font-style: italic; font-variation-settings: "opsz" 144; }
+  .lede {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: 640px;
+    margin: 0 0 32px;
+  }
+  .rule { height: 0.5px; background: var(--rule); margin: 32px 0; border: 0; }
+
+  /* Toggle */
+  .controls {
+    display: flex; gap: 8px; align-items: center;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: 999px;
+    padding: 6px;
+    width: fit-content;
+    margin-bottom: 32px;
+  }
+  .controls button {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--ink-mute);
+    border: 0;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .controls button.active {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 24px;
+    margin: 48px 0 8px;
+  }
+  .section-note {
+    color: var(--ink-mute);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 24px;
+    max-width: 580px;
+  }
+
+  /* Palette strip */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .swatch {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+  }
+  .swatch span {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bg);
+    line-height: 1.3;
+  }
+
+  /* Category grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 420px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+  .card:hover { transform: translateY(-2px); }
+
+  .img-frame {
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-soft);
+  }
+
+  /* The trick: a spot-color flat underneath, and the etching image on top
+     with mix-blend-mode: multiply. The cream paper of the image becomes
+     tinted with the spot color; the teal linework stays as inky lines. */
+  .img-frame::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: var(--spot, transparent);
+    opacity: var(--spot-opacity, 0);
+    transition: opacity 0.25s ease;
+  }
+  .img-frame img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    mix-blend-mode: var(--blend, normal);
+    transition: filter 0.25s ease;
+    filter: var(--filter, none);
+  }
+
+  /* When in spot mode, switch blend + tint */
+  body.spot .img-frame {
+    --spot-opacity: 0.55;
+    --blend: multiply;
+    --filter: contrast(1.02);
+  }
+
+  /* Per-category spot assignments */
+  .c-mix      { --spot: var(--spot-teal); }
+  .c-custom   { --spot: var(--spot-teal); }
+  .c-geografi { --spot: var(--spot-moss); }
+  .c-natur    { --spot: var(--spot-cobalt); }
+  .c-tek      { --spot: var(--spot-cobalt); }
+  .c-norsk    { --spot: var(--spot-terracotta); }
+  .c-film     { --spot: var(--spot-terracotta); }
+  .c-verden   { --spot: var(--spot-terracotta); }
+  .c-lit      { --spot: var(--spot-plum); }
+  .c-filo     { --spot: var(--spot-plum); }
+  .c-musikk   { --spot: var(--spot-saffron); }
+  .c-sport    { --spot: var(--spot-saffron); }
+  .c-kunst    { --spot: var(--spot-saffron); }
+
+  .meta {
+    padding: 12px 14px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.005em;
+  }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--spot);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  body.spot .dot { opacity: 1; }
+
+  .footnote {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-mute);
+    background: var(--bg-soft);
+    border-left: 2px solid var(--accent);
+    padding: 14px 18px;
+    margin-top: 40px;
+    border-radius: 0 6px 6px 0;
+  }
+  .footnote strong { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body class="spot">
+
+<div class="wrap">
+
+  <div class="eyebrow">CustomQuiz · designkritikk · mockup</div>
+  <h1>Kategori-illustrasjoner — <em>retning C</em></h1>
+  <p class="lede">
+    Behold linjeverket og håndverket. Bytt halvparten av motivene fra antikke artefakter til moderne ekvivalenter, og legg én spot-farge under hver kategori. Resultatet: kategoriene pulserer, men identiteten holdes samlet.
+  </p>
+
+  <div class="controls" role="tablist">
+    <button id="btn-before" type="button">Før (original)</button>
+    <button id="btn-after" type="button" class="active">Etter (spot color)</button>
+  </div>
+
+  <h2>Palett</h2>
+  <p class="section-note">Seks farger som roterer på tvers av 13 kategorier. Teal er fortsatt signatur — den brukes på de nøytrale (Mix, Custom). De andre fem dekker tematisk gruppering.</p>
+  <div class="palette">
+    <div class="swatch" style="background: var(--spot-teal);"><span>Teal<br>#0A6E5A</span></div>
+    <div class="swatch" style="background: var(--spot-moss);"><span>Moss<br>#5C7A3C</span></div>
+    <div class="swatch" style="background: var(--spot-cobalt);"><span>Kobolt<br>#2C4A8F</span></div>
+    <div class="swatch" style="background: var(--spot-terracotta);"><span>Terra<br>#B05238</span></div>
+    <div class="swatch" style="background: var(--spot-plum);"><span>Plomme<br>#6B3050</span></div>
+    <div class="swatch" style="background: var(--spot-saffron);"><span>Saffron<br>#C68A2E</span></div>
+  </div>
+
+  <h2>Kategori-grid</h2>
+  <p class="section-note">Demoen bruker dagens bilder — spot-fargene er lagt på via CSS-blend (multiply). Når illustrasjonene faktisk regenereres, vil flaten ligge bevisst i komposisjonen, ikke som en filter over hele bildet. Men prinsippet er det samme.</p>
+
+  <div class="grid">
+
+    <div class="card c-mix">
+      <div class="img-frame"><img src="IMG/kategori-mix.jpg" alt=""></div>
+      <div class="meta"><span class="title">Mix</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-geografi">
+      <div class="img-frame"><img src="IMG/kategori-geografi.jpg" alt=""></div>
+      <div class="meta"><span class="title">Geografi</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-natur">
+      <div class="img-frame"><img src="IMG/kategori-naturvitenskap.jpg" alt=""></div>
+      <div class="meta"><span class="title">Naturvitenskap</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-tek">
+      <div class="img-frame"><img src="IMG/kategori-teknologi.jpg" alt=""></div>
+      <div class="meta"><span class="title">Teknologi</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-musikk">
+      <div class="img-frame"><img src="IMG/kategori-musikk.jpg" alt=""></div>
+      <div class="meta"><span class="title">Musikk</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-filo">
+      <div class="img-frame"><img src="IMG/kategori-filosofi.jpg" alt=""></div>
+      <div class="meta"><span class="title">Filosofi</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-lit">
+      <div class="img-frame"><img src="IMG/kategori-litteratur.jpg" alt=""></div>
+      <div class="meta"><span class="title">Litteratur</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-kunst">
+      <div class="img-frame"><img src="IMG/kategori-kunst.jpg" alt=""></div>
+      <div class="meta"><span class="title">Kunst</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-film">
+      <div class="img-frame"><img src="IMG/kategori-film.jpg" alt=""></div>
+      <div class="meta"><span class="title">Film og TV</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-sport">
+      <div class="img-frame"><img src="IMG/kategori-sport.jpg" alt=""></div>
+      <div class="meta"><span class="title">Sport</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-norsk">
+      <div class="img-frame"><img src="IMG/kategori-norsk-historie.jpg" alt=""></div>
+      <div class="meta"><span class="title">Norsk historie</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-verden">
+      <div class="img-frame"><img src="IMG/kategori-verdenshistorie.jpg" alt=""></div>
+      <div class="meta"><span class="title">Verdenshistorie</span><span class="dot"></span></div>
+    </div>
+
+    <div class="card c-custom">
+      <div class="img-frame"><img src="IMG/kategori-custom.jpg" alt=""></div>
+      <div class="meta"><span class="title">Custom</span><span class="dot"></span></div>
+    </div>
+
+  </div>
+
+  <hr class="rule">
+
+  <h2>Tematisk fargetilordning</h2>
+  <p class="section-note">Ikke tilfeldig. Fargen forsterker innholdets karakter.</p>
+
+  <div class="grid" style="grid-template-columns: 1fr; gap: 0;">
+    <div style="display:grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-bottom: 0.5px solid var(--rule);">
+      <div style="display:flex; align-items:center; gap:10px;"><span class="dot" style="width:14px;height:14px;background:var(--spot-teal);opacity:1;"></span><strong style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Teal</strong></div>
+      <div><strong>Mix, Custom</strong> — signaturfargen brukes på de nøytrale/abstrakte kategoriene. Holder identiteten forankret.</div>
+    </div>
+    <div style="display:grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-bottom: 0.5px solid var(--rule);">
+      <div style="display:flex; align-items:center; gap:10px;"><span class="dot" style="width:14px;height:14px;background:var(--spot-moss);opacity:1;"></span><strong style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Moss</strong></div>
+      <div><strong>Geografi</strong> — natur, terreng, kart.</div>
+    </div>
+    <div style="display:grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-bottom: 0.5px solid var(--rule);">
+      <div style="display:flex; align-items:center; gap:10px;"><span class="dot" style="width:14px;height:14px;background:var(--spot-cobalt);opacity:1;"></span><strong style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Kobolt</strong></div>
+      <div><strong>Teknologi, Naturvitenskap</strong> — analytisk, kjølig, presist.</div>
+    </div>
+    <div style="display:grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-bottom: 0.5px solid var(--rule);">
+      <div style="display:flex; align-items:center; gap:10px;"><span class="dot" style="width:14px;height:14px;background:var(--spot-terracotta);opacity:1;"></span><strong style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Terracotta</strong></div>
+      <div><strong>Norsk historie, Verdenshistorie, Film og TV</strong> — jord, fortid, det fortalte.</div>
+    </div>
+    <div style="display:grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-bottom: 0.5px solid var(--rule);">
+      <div style="display:flex; align-items:center; gap:10px;"><span class="dot" style="width:14px;height:14px;background:var(--spot-plum);opacity:1;"></span><strong style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Plomme</strong></div>
+      <div><strong>Filosofi, Litteratur</strong> — kontemplativ, refleksiv, "etterklang".</div>
+    </div>
+    <div style="display:grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0;">
+      <div style="display:flex; align-items:center; gap:10px;"><span class="dot" style="width:14px;height:14px;background:var(--spot-saffron);opacity:1;"></span><strong style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Saffron</strong></div>
+      <div><strong>Sport, Kunst, Musikk</strong> — energi, uttrykk, varme.</div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <strong>Viktig om denne mockupen:</strong> Den bruker dagens bilder med en CSS-blend over hele bildet. Det er en grov demo av prinsippet — i den faktiske leveransen vil spot-flaten være en bevisst del av komposisjonen (f.eks. en oker-flate <em>bak</em> fiolinen, en kobolt-flekk <em>under</em> globusen). Se <code>prompt-bibliotek.md §3b</code> for ferdige prompts klare til Midjourney/Imagine — der modernizeres også motivene (rotasjonstelefon → smartphone-silhuett, foldekart → globus, fiolin → mikrofon).
+  </div>
+
+</div>
+
+<script>
+  const btnBefore = document.getElementById('btn-before');
+  const btnAfter = document.getElementById('btn-after');
+  btnBefore.addEventListener('click', () => {
+    document.body.classList.remove('spot');
+    btnBefore.classList.add('active');
+    btnAfter.classList.remove('active');
+  });
+  btnAfter.addEventListener('click', () => {
+    document.body.classList.add('spot');
+    btnAfter.classList.add('active');
+    btnBefore.classList.remove('active');
+  });
+</script>
+
+</body>
+</html>

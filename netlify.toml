@@ -1,0 +1,44 @@
+# CustomQuiz — Netlify-konfig
+# Statisk side (ingen build) + serverless-funksjon for AI-generering.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Funksjonene kjører på Node 18+ (global fetch tilgjengelig, ingen avhengigheter).
+[functions]
+  node_bundler = "esbuild"
+
+# Pene URL-er: /api/* -> funksjoner
+[[redirects]]
+  from = "/api/generate-quiz"
+  to = "/.netlify/functions/generate-quiz"
+  status = 200
+
+# Betaling — Stripe (kort + Apple Pay)
+[[redirects]]
+  from = "/api/create-checkout"
+  to = "/.netlify/functions/create-checkout"
+  status = 200
+
+[[redirects]]
+  from = "/api/stripe-webhook"
+  to = "/.netlify/functions/stripe-webhook"
+  status = 200
+
+# Betaling — Vipps Recurring
+[[redirects]]
+  from = "/api/vipps-agreement"
+  to = "/.netlify/functions/vipps-agreement"
+  status = 200
+
+[[redirects]]
+  from = "/api/vipps-callback"
+  to = "/.netlify/functions/vipps-callback"
+  status = 200
+
+# Abonnementsstatus (innholdslåsing)
+[[redirects]]
+  from = "/api/subscription-status"
+  to = "/.netlify/functions/subscription-status"
+  status = 200

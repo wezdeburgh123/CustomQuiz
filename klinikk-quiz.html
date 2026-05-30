@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#15110d">
+<title>Hud, hender, helbredelse - Allmennkunnskap № 05</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="quizzes.js"></script>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #15110d;
+    --bg-soft: #211b15;
+    --bg-panel: #2a2218;
+    --cream: #f4ead4;
+    --cream-bright: #faf3e0;
+    --cream-dim: #c9bca0;
+    --ink-on-cream: #1a1612;
+    --terracotta: #e8784a;
+    --terracotta-deep: #c25a30;
+    --moss: #a8c08a;
+    --rule: #4a3f30;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(244,234,212,0.06) 1px, transparent 0);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .masthead {
+    border-top: 3px solid var(--cream);
+    border-bottom: 1px solid var(--cream-dim);
+    padding: 18px 0 14px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .masthead-left { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); display: flex; flex-direction: column; gap: 4px; }
+  .back-link { color: var(--cream-dim); text-decoration: none; font-size: 10px; letter-spacing: 0.14em; transition: color 0.2s; }
+  .back-link:hover { color: var(--terracotta); }
+  .masthead-right { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; text-align: right; color: var(--cream-dim); }
+
+  .welcome { animation: fadeUp 0.6s ease both; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 80px);
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    color: var(--cream-bright);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    font-weight: 300;
+    max-width: 580px;
+    margin-bottom: 40px;
+    color: var(--cream);
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--cream-dim);
+    border-bottom: 1px solid var(--cream-dim);
+    margin-bottom: 40px;
+  }
+  .meta-cell {
+    padding: 18px 16px;
+    border-right: 1px solid var(--cream-dim);
+  }
+  .meta-cell:last-child { border-right: none; }
+  .meta-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 6px; }
+  .meta-value { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; color: var(--cream-bright); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 30px;
+    background: var(--cream);
+    color: var(--ink-on-cream);
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn:hover { background: var(--terracotta); color: var(--cream-bright); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--cream-dim); }
+  .btn:active { transform: translate(0, 0); box-shadow: none; }
+  .btn-arrow { font-family: serif; font-size: 18px; }
+  .btn[disabled] { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+
+  .quiz-screen { display: none; animation: fadeUp 0.5s ease both; }
+  .quiz-screen.active { display: block; }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+  .progress-row span:first-child { color: var(--cream); }
+  .progress-bar {
+    height: 3px;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--cream-dim);
+    margin-bottom: 48px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--terracotta);
+    transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .category-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 20px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--terracotta);
+  }
+
+  .question-text {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(26px, 4.2vw, 38px);
+    line-height: 1.25;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--cream-bright);
+    margin-bottom: 40px;
+    font-variation-settings: "opsz" 96;
+  }
+
+  .options { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 22px;
+    background: var(--cream);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-on-cream);
+  }
+  .option:hover { background: var(--cream-bright); transform: translateX(4px); }
+  .option.selected { background: var(--terracotta); color: var(--cream-bright); }
+  .option.selected .option-letter { color: var(--cream-bright); }
+  .option-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--terracotta-deep);
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 24px;
+  }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; }
+  .step-counter { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); }
+
+  .score-block {
+    text-align: center;
+    margin: 32px 0 56px;
+    padding: 48px 24px;
+    border-top: 3px solid var(--cream);
+    border-bottom: 3px solid var(--cream);
+  }
+  .score-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+  .score-number {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(96px, 18vw, 180px);
+    line-height: 0.9;
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--cream-bright);
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    margin-bottom: 8px;
+  }
+  .score-number em {
+    font-style: italic;
+    color: var(--terracotta);
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+  .score-out-of { font-family: 'Fraunces', serif; font-size: 20px; font-style: italic; color: var(--cream-dim); }
+  .verdict {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 300;
+    margin-top: 24px;
+    color: var(--cream);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+  }
+
+  .recap-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--cream-dim);
+  }
+
+  .recap-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .recap-item:last-of-type { border-bottom: 1px solid var(--cream-dim); }
+
+  .recap-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 10px; }
+  .recap-q { font-family: 'Fraunces', serif; font-size: 22px; line-height: 1.35; font-weight: 400; color: var(--cream-bright); margin-bottom: 16px; }
+  .recap-answer-row { display: flex; gap: 14px; align-items: baseline; margin-bottom: 8px; font-size: 15px; }
+  .recap-answer-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); min-width: 80px; flex-shrink: 0; }
+  .recap-answer-value { font-family: 'Manrope', sans-serif; font-weight: 500; color: var(--cream); }
+  .recap-answer-value.correct { color: var(--moss); font-weight: 600; }
+  .recap-answer-value.wrong { color: var(--terracotta); text-decoration: line-through; opacity: 0.7; }
+  .recap-status { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 11px; margin-bottom: 14px; }
+  .recap-status.correct { background: var(--moss); color: var(--bg); }
+  .recap-status.wrong { background: var(--terracotta); color: var(--bg); }
+  .recap-explanation { font-family: 'Fraunces', serif; font-size: 17px; line-height: 1.55; font-style: italic; font-weight: 300; color: var(--cream); margin-top: 14px; padding-left: 16px; border-left: 2px solid var(--terracotta); }
+
+  .restart-row { margin-top: 48px; text-align: center; }
+
+  .related-section { margin-top: 64px; padding-top: 40px; border-top: 3px solid var(--cream); }
+  .related-header { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 28px; }
+  .related-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .related-card { display: flex; flex-direction: column; gap: 8px; padding: 22px 20px; background: var(--bg-soft); border: 1px solid var(--rule); text-decoration: none; transition: all 0.2s ease; position: relative; min-height: 140px; }
+  .related-card:hover { border-color: var(--terracotta); background: var(--bg-panel); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--rule); }
+  .related-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-dim); }
+  .related-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; line-height: 1.15; color: var(--cream-bright); margin-bottom: 4px; }
+  .related-sub { font-family: 'Manrope', sans-serif; font-size: 13px; color: var(--cream-dim); line-height: 1.4; }
+  .related-arrow { position: absolute; bottom: 18px; right: 20px; color: var(--terracotta); font-family: serif; font-size: 20px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 560px) {
+    .container { padding: 24px 20px 60px; }
+    .masthead { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .masthead-right { text-align: left; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .meta-cell { border-right: none; border-bottom: 1px solid var(--cream-dim); }
+    .meta-cell:last-child { border-bottom: none; }
+    .question-text { font-size: 24px; }
+    .recap-q { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="masthead">
+    <div class="masthead-left"><a href="index.html" class="back-link">← Alle quizer</a><span>Allmennkunnskap № 05</span></div>
+    <div class="masthead-right">Klinikk · Ti spørsmål</div>
+  </header>
+
+  <section id="welcome" class="welcome">
+    <div class="eyebrow">Klinikk og kropp</div>
+    <h1>Hud, hender, <em>helbredelse</em>.</h1>
+    <p class="lede">Ti spørsmål fra grenselandet mellom hudpleie, fysioterapi, fotpleie og litt energiarbeid. Sympatisk i tonen, presis i fagspråket - for deg som vet at salicylsyre og glykolsyre ikke gjør samme jobb.</p>
+
+    <div class="meta-grid">
+      <div class="meta-cell">
+        <div class="meta-label">Spørsmål</div>
+        <div class="meta-value">10</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Tid</div>
+        <div class="meta-value">~8 min</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-label">Nivå</div>
+        <div class="meta-value">Fag</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="startQuiz()">
+      Start quizen <span class="btn-arrow">→</span>
+    </button>
+  </section>
+
+  <section id="quiz" class="quiz-screen">
+    <div class="progress-row">
+      <span id="progress-text">Spørsmål 01 / 10</span>
+      <span id="progress-category">Kategori</span>
+    </div>
+    <div class="progress-bar">
+      <div id="progress-fill" class="progress-fill" style="width: 10%"></div>
+    </div>
+
+    <div class="category-tag" id="category-tag">Kategori</div>
+    <h2 class="question-text" id="question-text">Spørsmålet kommer her</h2>
+
+    <ul class="options" id="options-list"></ul>
+
+    <div class="quiz-nav">
+      <span class="step-counter" id="step-counter">01 / 10</span>
+      <button class="btn" id="next-btn" disabled onclick="nextQuestion()">
+        Neste <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="result" class="quiz-screen">
+    <div class="eyebrow">Resultat</div>
+    <h1 style="font-size: clamp(40px, 7vw, 64px);">Da var <em>fasiten</em> klar.</h1>
+
+    <div class="score-block">
+      <div class="score-label">Din skår</div>
+      <div class="score-number"><em id="score-num">0</em></div>
+      <div class="score-out-of">av ti mulige</div>
+      <p class="verdict" id="verdict">—</p>
+    </div>
+
+    <div class="recap-header">Gjennomgang av spørsmålene</div>
+    <div id="recap-list"></div>
+
+    <div class="related-section">
+      <div class="related-header">Du vil kanskje også like</div>
+      <div id="related-list" class="related-list"></div>
+    </div>
+
+    <div class="restart-row">
+      <button class="btn" onclick="restart()">
+        Ta quizen på nytt <span class="btn-arrow">↻</span>
+      </button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const questions = [
+    {
+      category: "Hudpleie · syrer",
+      q: "Salicylsyre er populært i produkter mot akne og uren hud. Hva er den viktigste kjemiske forskjellen fra AHA-syrer som glykolsyre og melkesyre?",
+      options: [
+        "Salicylsyre er en sterkere syre og virker raskere",
+        "Salicylsyre er fettløselig og kan trenge inn i porene",
+        "Salicylsyre virker bare ved pH under 4",
+        "Salicylsyre er et peptid, ikke en hydroksysyre"
+      ],
+      correct: 1,
+      explanation: "AHA-syrer (alfa-hydroksy) er hydrofile og virker på selve hudoverflaten. BHA - beta-hydroksy, altså salicylsyre - er lipofil og kan løse seg i talgen og trenge ned i porene. Derfor brukes den mot akne og komedoner, mens AHA er førstevalget for tørr og solskadet hud. pH spiller en rolle for begge, men fettløseligheten er den definerende forskjellen."
+    },
+    {
+      category: "Hudpleie · retinoider",
+      q: "Når retinol påføres huden må det omdannes biokjemisk til den aktive formen retinsyre. Hvor mange trinn krever den omdanningen?",
+      options: [
+        "Ett trinn",
+        "To trinn",
+        "Tre trinn",
+        "Fire trinn"
+      ],
+      correct: 1,
+      explanation: "Retinol omdannes først til retinaldehyd, deretter til retinsyre - to enzymatiske trinn. Hvert trinn reduserer styrken omtrent tidoblet, så ren retinsyre (Tretinoin, reseptbelagt) er rundt 100 ganger sterkere enn vanlig retinol. Retinaldehyd er populært som et mellomalternativ - bare ett trinn unna virkning, men uten resept."
+    },
+    {
+      category: "Hudpleie · solbeskyttelse",
+      q: "SPF 50 markedsføres ofte som vesentlig bedre enn SPF 30. Hvor mye mer UVB blokkerer SPF 50 i praksis?",
+      options: [
+        "Omtrent ett prosentpoeng mer",
+        "Omtrent dobbelt så mye",
+        "Omtrent 20 prosent mer",
+        "Det er helt avhengig av hudtype"
+      ],
+      correct: 0,
+      explanation: "SPF 30 blokkerer cirka 97 % av UVB-strålene, SPF 50 blokkerer cirka 98 %. Forskjellen er marginal, men kan likevel ha betydning ved langvarig eksponering eller særlig sensitiv hud. SPF-tallet angir teoretisk forlenget tid før forbrenning, ikke hvor mye stråling som slipper gjennom - en hyppig misforståelse, også blant ansatte i bransjen."
+    },
+    {
+      category: "Fysioterapi · anatomi",
+      q: "Fascia har fått mye oppmerksomhet i moderne fysioterapi. Hva består fascia i hovedsak av?",
+      options: [
+        "Muskelceller med kontraktil evne",
+        "Fettvev og blodkar",
+        "Tett bindevev, hovedsakelig kollagen",
+        "Lymfevev og ekstracellulær væske"
+      ],
+      correct: 2,
+      explanation: "Fascia er bindevev - hovedsakelig type I-kollagen - som omslutter og forbinder muskler, organer, sener og nerver. Nyere forskning viser at fascia er rik på sensoriske nerver og fungerer som et proprioceptivt sansevev, ikke bare passiv emballasje rundt muskulaturen. Det er det biologiske grunnlaget for teknikker som myofascial release og strukturell integrasjon."
+    },
+    {
+      category: "Massasje · klassisk teknikk",
+      q: "I klassisk svensk massasje brukes begrepet «effleurage». Hva betyr det konkret?",
+      options: [
+        "Dype, statiske trykkpunkter mot triggerpunkter",
+        "Lette, glidende strøk",
+        "Rytmisk klapping eller perkusjon",
+        "Friksjon tvers på muskelfibrene"
+      ],
+      correct: 1,
+      explanation: "Effleurage - fra fransk «effleurer», å streife - er lette glidende strøk, brukt til å åpne og avslutte en behandling og fordele olje. De fire klassiske svenske grunnteknikkene er effleurage, petrissage (knaing), tapotement (rytmisk klapping) og friksjon (sirkulær eller tverrgående). Per Henrik Ling systematiserte teknikkene tidlig på 1800-tallet."
+    },
+    {
+      category: "Lymfedrenasje",
+      q: "Manuell lymfedrenasje etter Vodder-metoden bruker et bestemt trykknivå. Hvor lett er trykket, sammenlignet med en vanlig klassisk massasje?",
+      options: [
+        "Omtrent likt",
+        "Litt lettere",
+        "Vesentlig lettere - bare nok til å forskyve huden",
+        "Tyngre, for å presse væske ut av vevet"
+      ],
+      correct: 2,
+      explanation: "Lymfedrenasje bruker et svært lett trykk, ofte beskrevet som «nok til å bevege huden, men ikke nok til å rødme den». Lymfekarene ligger overfladisk i huden, og for hardt trykk lukker dem heller enn å åpne dem. Bevegelsene gjøres alltid retningsbestemt mot nærmeste lymfeknutestasjon - ikke vilkårlig. Emil og Estrid Vodder utviklet metoden på 1930-tallet."
+    },
+    {
+      category: "Fysioterapi · trening",
+      q: "Det engelske faguttrykket DOMS beskriver muskelsmertene som typisk kommer dagen etter hard trening. Når topper smertene seg vanligvis?",
+      options: [
+        "Umiddelbart, under selve treningen",
+        "Innen et par timer",
+        "Mellom 24 og 72 timer etter belastningen",
+        "Cirka en uke etterpå"
+      ],
+      correct: 2,
+      explanation: "DOMS - Delayed Onset Muscle Soreness - topper seg typisk 24-72 timer etter trening og kan vare opp til en uke. Den knyttes hovedsakelig til ekssentrisk muskelarbeid og mikroskader i muskelfibre og bindevev. Den umiddelbare «brenningen» under selve treningen er noe annet - der er det opphopning av hydrogenioner og metabolitter som spiller hovedrollen, ikke melkesyre alene, slik myten lenge påsto."
+    },
+    {
+      category: "Fotpleie · diagnose",
+      q: "Hallux valgus er en av de vanligste tilstandene fotterapeuter møter. Hva beskriver det?",
+      options: [
+        "Soppinfeksjon under stortåneglen",
+        "Skjevstilling av stortåen mot de andre tærne, med knast på innsiden av foten",
+        "Smerter i hælen ved første skritt om morgenen",
+        "Inngrodd negl med betennelse"
+      ],
+      correct: 1,
+      explanation: "Hallux valgus er en skjevstilling der stortåens grunnledd bøyer seg utover og selve tåen vinkles inn mot de andre tærne. Det skaper den karakteristiske knasten («bunion») på innsiden av foten. Genetikk, fottype og trange sko er hovedårsakene. De fleste behandles konservativt med ortoser, avlastning og sko med god tåboks - operasjon er siste utvei."
+    },
+    {
+      category: "Fotpleie · anatomi",
+      q: "Hvor i kroppen finner du plantarfascien?",
+      options: [
+        "På utsiden av låret, fra hofte til kne",
+        "Langs ryggraden, mellom korsbenet og nakken",
+        "Under foten, fra hælbenet og fram til tærnes grunnledd",
+        "Rundt skulderbladet og overarmen"
+      ],
+      correct: 2,
+      explanation: "Plantarfascien er en kraftig bindevevsstreng på undersiden av foten, fra hælbenet (calcaneus) og fram til tærne. Den støtter fotens lengdebue som en buestreng. Betennelse eller mikroriving her - plantar fasciitt - gir den klassiske hælsmerten ved første skritt om morgenen, særlig hyppig hos løpere og folk som står mye på harde underlag."
+    },
+    {
+      category: "Healing · tradisjon",
+      q: "I tradisjonell indisk yoga- og healing-lære refereres det til et system av «hovedchakraer» langs kroppens midtlinje. Hvor mange er det vanligvis snakk om?",
+      options: [
+        "Fem",
+        "Sju",
+        "Tolv",
+        "Tjueén"
+      ],
+      correct: 1,
+      explanation: "Det tradisjonelle systemet beskriver sju hovedchakraer langs kroppens midtakse, fra rotchakra (muladhara) ved haleben til kronechakra (sahasrara) på toppen av hodet. Noen tibetanske og esoteriske retninger opererer med tolv eller flere, og enkelte moderne healing-systemer legger til chakraer over hodet og under føttene - men sju er det mest utbredte i moderne yoga-, reiki- og healing-praksis."
+    }
+  ];
+
+  const QUIZ_ID = 'klinikk';
+
+  let currentIndex = 0;
+  let selectedOption = null;
+  let userAnswers = [];
+
+  function startQuiz() {
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('quiz').classList.add('active');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentIndex];
+    document.getElementById('progress-text').textContent = `Spørsmål ${String(currentIndex + 1).padStart(2, '0')} / 10`;
+    document.getElementById('progress-category').textContent = q.category;
+    document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+    document.getElementById('category-tag').textContent = q.category;
+    document.getElementById('question-text').textContent = q.q;
+    document.getElementById('step-counter').textContent = `${String(currentIndex + 1).padStart(2, '0')} / 10`;
+
+    const list = document.getElementById('options-list');
+    list.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, i) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.onclick = () => selectOption(i, btn);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+
+    selectedOption = null;
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.disabled = true;
+    nextBtn.innerHTML = currentIndex === questions.length - 1
+      ? 'Se resultat <span class="btn-arrow">→</span>'
+      : 'Neste <span class="btn-arrow">→</span>';
+
+    document.getElementById('quiz').style.animation = 'none';
+    void document.getElementById('quiz').offsetWidth;
+    document.getElementById('quiz').style.animation = 'fadeUp 0.4s ease both';
+  }
+
+  function selectOption(i, btn) {
+    document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedOption = i;
+    document.getElementById('next-btn').disabled = false;
+  }
+
+  function nextQuestion() {
+    userAnswers[currentIndex] = selectedOption;
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('quiz').classList.remove('active');
+    document.getElementById('result').classList.add('active');
+
+    const correctCount = userAnswers.filter((ans, i) => ans === questions[i].correct).length;
+    document.getElementById('score-num').textContent = correctCount;
+
+    const verdicts = [
+      "Du har knapt vært på et behandlingsrom. Det er en del fag å bygge her.",
+      "Du har snuset på fagfeltet, men ikke bodd der.",
+      "Sånn passe oversikt. Litt mer klinikktid skader ikke.",
+      "Solid grunnforståelse. Du følger med fra sidelinjen.",
+      "Klare faginstinkter. Jobber du i bransjen, kanskje?",
+      "Full pott. Kollegial nikk - du KAN dette."
+    ];
+    let verdictIndex;
+    if (correctCount <= 2) verdictIndex = 0;
+    else if (correctCount <= 4) verdictIndex = 1;
+    else if (correctCount <= 6) verdictIndex = 2;
+    else if (correctCount === 7 || correctCount === 8) verdictIndex = 3;
+    else if (correctCount === 9) verdictIndex = 4;
+    else verdictIndex = 5;
+    document.getElementById('verdict').textContent = verdicts[verdictIndex];
+
+    const recapList = document.getElementById('recap-list');
+    recapList.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+
+    questions.forEach((q, i) => {
+      const userIdx = userAnswers[i];
+      const isCorrect = userIdx === q.correct;
+      const item = document.createElement('div');
+      item.className = 'recap-item';
+
+      let answerHtml = '';
+      if (isCorrect) {
+        answerHtml = `
+          <div class="recap-answer-row">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value correct">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>`;
+      } else {
+        answerHtml = `
+          <div class="recap-answer-row">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value wrong">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>
+          <div class="recap-answer-row">
+            <span class="recap-answer-label">Riktig</span>
+            <span class="recap-answer-value correct">${letters[q.correct]}. ${q.options[q.correct]}</span>
+          </div>`;
+      }
+
+      item.innerHTML = `
+        <div class="recap-num">${String(i + 1).padStart(2, '0')} · ${q.category}</div>
+        <div class="recap-q">${q.q}</div>
+        <span class="recap-status ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? 'Riktig' : 'Feil'}</span>
+        ${answerHtml}
+        <div class="recap-explanation">${q.explanation}</div>
+      `;
+      recapList.appendChild(item);
+    });
+
+    renderRelated();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderRelated() {
+    if (!window.getRelatedQuizzes) return;
+    const related = window.getRelatedQuizzes(QUIZ_ID, 3);
+    const list = document.getElementById('related-list');
+    if (!list) return;
+    list.innerHTML = '';
+    related.forEach(q => {
+      const a = document.createElement('a');
+      a.href = q.file;
+      a.className = 'related-card';
+      a.innerHTML = `
+        <div class="related-num">№ ${q.number} · ${q.eyebrow}</div>
+        <div class="related-title">${q.title}</div>
+        <div class="related-sub">${q.subtitle}</div>
+        <span class="related-arrow">→</span>
+      `;
+      list.appendChild(a);
+    });
+  }
+
+  function restart() {
+    currentIndex = 0;
+    selectedOption = null;
+    userAnswers = [];
+    document.getElementById('result').classList.remove('active');
+    document.getElementById('welcome').style.display = 'block';
+    document.getElementById('welcome').style.animation = 'none';
+    void document.getElementById('welcome').offsetWidth;
+    document.getElementById('welcome').style.animation = 'fadeUp 0.5s ease both';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<title>CustomQuiz № 04 — Oslo, puber, gater og litt rart</title>
+<meta name="description" content="CustomQuiz № 04 — Tigerbyens baksider. Puber, gater og folklore som ikke står i turistbrosjyrene.">
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
+<link rel="apple-touch-icon" href="IMG/signature.jpg">
+
+<!-- Open Graph -->
+<meta property="og:title" content="CustomQuiz № 04 — Oslo, puber, gater og litt rart">
+<meta property="og:description" content="CustomQuiz № 04 — Tigerbyens baksider. Puber, gater og folklore som ikke står i turistbrosjyrene.">
+<meta property="og:image" content="IMG/og.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://customquiz.no">
+<meta property="og:locale" content="nb_NO">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CustomQuiz № 04 — Oslo, puber, gater og litt rart">
+<meta name="twitter:description" content="CustomQuiz № 04 — Tigerbyens baksider. Puber, gater og folklore som ikke står i turistbrosjyrene.">
+<meta name="twitter:image" content="IMG/og.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #F5F0E6;
+    --bg-soft:      #FBF7EE;
+    --bg-deep:      #ECE3CE;
+    --ink:          #1F1A14;
+    --ink-soft:     #4B4338;
+    --ink-mute:     #7A6F5A;
+    --rule:         #E2D8C2;
+    --rule-strong:  #C9BD9F;
+    --accent:       #0A6E5A;
+    --accent-soft:  #C9E2D8;
+    --accent-deep:  #074538;
+    --success:      #2D7A4C;
+    --success-soft: #DDE9D7;
+    --danger:       #A82E1F;
+    --danger-soft:  #F3D9D2;
+    --r-pill:       999px;
+    --r-card:       16px;
+    --r-md:         8px;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-sans:    'Manrope', 'Inter', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .container { max-width: 760px; margin: 0 auto; padding: 40px 24px 96px; position: relative; z-index: 2; }
+  .masthead {
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 16px 0 14px;
+    margin-bottom: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .masthead-left, .masthead-right {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .masthead-left { color: var(--ink); }
+  .masthead-right { text-align: right; }
+  .masthead-brand { color: var(--accent); font-weight: 500; }
+  .back-link { color: var(--ink-mute); text-decoration: none; font-size: 10px; letter-spacing: 0.18em; transition: color 200ms ease; }
+  .back-link:hover { color: var(--accent); }
+
+  /* Kategori-banner på welcome-skjermen */
+  .welcome-banner {
+    width: 100%;
+    aspect-ratio: 5 / 2;
+    border-radius: var(--r-card);
+    overflow: hidden;
+    margin-bottom: 32px;
+    border: 0.5px solid var(--rule);
+    background: var(--bg-soft);
+  }
+  .welcome-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .welcome { animation: fadeUp 0.5s ease both; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede {
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1.45;
+    font-weight: 400;
+    max-width: 580px;
+    margin-bottom: 40px;
+    color: var(--ink-soft);
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  .meta-cell { padding: 18px 16px; border-right: 1px solid var(--rule); }
+  .meta-cell:last-child { border-right: none; }
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+  .meta-value {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    background: var(--accent);
+    color: var(--bg-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  }
+  .btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  .btn-arrow { font-family: var(--font-display); font-size: 17px; line-height: 1; }
+  .btn[disabled] { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--rule-strong);
+  }
+  .btn-secondary:hover { background: transparent; color: var(--accent-deep); border-color: var(--accent); }
+
+  .quiz-screen { display: none; animation: fadeUp 0.4s ease both; }
+  .quiz-screen.active { display: block; }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .progress-row span:first-child { color: var(--ink); }
+  .progress-bar {
+    height: 3px;
+    background: var(--rule);
+    margin-bottom: 56px;
+    border-radius: var(--r-pill);
+    overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 200ms ease; }
+
+  .category-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--accent);
+  }
+  .question-text {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 40px;
+    font-variation-settings: "opsz" 96;
+  }
+
+  .options { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    text-align: left;
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .option:hover { border-color: var(--accent); }
+  .option.selected { background: var(--accent); color: var(--bg-soft); border-color: var(--accent); }
+  .option.selected .option-letter { color: var(--bg-soft); }
+  .option-letter {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 16px;
+  }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .step-counter { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); }
+
+  .score-block {
+    text-align: center;
+    margin: 32px 0 64px;
+    padding: 56px 24px;
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .score-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .score-number {
+    font-family: var(--font-display);
+    font-size: clamp(88px, 16vw, 160px);
+    line-height: 0.9;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-variation-settings: "opsz" 144;
+  }
+  .score-number em { font-style: italic; color: var(--accent); }
+  .score-out-of { font-family: var(--font-display); font-size: 18px; font-style: italic; color: var(--ink-mute); }
+  .verdict {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    margin-top: 24px;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.45;
+  }
+
+  .share-row { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 56px; }
+  .share-grid { font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.1em; line-height: 1; color: var(--ink); }
+
+  .recap-header {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 32px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .recap-item { padding: 28px 0; border-bottom: 1px solid var(--rule); }
+  .recap-item:last-of-type { border-bottom: 1px solid var(--rule-strong); }
+  .recap-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+  }
+  .recap-q {
+    font-family: var(--font-display);
+    font-size: 21px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 18px;
+    font-variation-settings: "opsz" 36;
+  }
+  .recap-status {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-bottom: 16px;
+    border-radius: var(--r-md);
+  }
+  .recap-status.correct { background: var(--success-soft); color: var(--success); }
+  .recap-status.wrong   { background: var(--danger-soft);  color: var(--danger);  }
+  .recap-answer-row {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    font-size: 15px;
+    border-radius: var(--r-md);
+  }
+  .recap-answer-row.correct { background: var(--success-soft); border-left: 3px solid var(--success); }
+  .recap-answer-row.wrong   { background: var(--danger-soft);  border-left: 3px solid var(--danger);  }
+  .recap-answer-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    min-width: 76px;
+    flex-shrink: 0;
+  }
+  .recap-answer-value { font-family: var(--font-sans); font-weight: 500; color: var(--ink); }
+  .recap-answer-value.correct { color: var(--success); }
+  .recap-answer-value.wrong   { color: var(--danger); text-decoration: line-through; opacity: 0.85; }
+  .recap-explanation {
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.55;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-top: 16px;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+
+  .related-section { margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--rule-strong); }
+  .related-header {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+  .related-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 40px; }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 20px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-card);
+    text-decoration: none;
+    transition: border-color 200ms ease, background 200ms ease;
+    position: relative;
+    min-height: 130px;
+  }
+  .related-card:hover { border-color: var(--accent); background: var(--bg-deep); }
+  .related-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); }
+  .related-title { font-family: var(--font-display); font-size: 20px; font-weight: 500; line-height: 1.2; color: var(--ink); margin-bottom: 4px; font-variation-settings: "opsz" 36; }
+  .related-sub { font-family: var(--font-sans); font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .related-arrow { position: absolute; bottom: 16px; right: 20px; color: var(--accent); font-family: var(--font-display); font-size: 20px; }
+
+  .restart-row { margin-top: 56px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 560px) {
+    .container { padding: 24px 20px 72px; }
+    .masthead { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .masthead-right { text-align: left; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .meta-cell { border-right: none; border-bottom: 1px solid var(--rule); }
+    .meta-cell:last-child { border-bottom: none; }
+    .question-text { font-size: 22px; }
+    .recap-q { font-size: 18px; }
+    .quiz-nav { flex-direction: column-reverse; align-items: stretch; }
+    .quiz-nav .btn { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="masthead">
+    <div class="masthead-left">
+      <a href="index.html" class="back-link">← Alle quizer</a>
+      <span><span class="masthead-brand">CustomQuiz</span> · № 04</span>
+    </div>
+    <div class="masthead-right">Oslo · puber, gater og småtteri</div>
+  </header>
+
+  <section id="welcome" class="welcome">
+    <div class="welcome-banner">
+      <img src="IMG/kategori-geografi.jpg" alt="">
+    </div>
+    <div class="eyebrow">Hovedstaden bak fasaden</div>
+    <h1>Tigerbyens <em>baksider</em>.</h1>
+    <p class="lede">Ti spørsmål om puber med historie, gatenavn med rar opprinnelse, og litt folklore som ikke står i turistbrosjyrene. Tjuver, piler, drikkende forfattere — alt på sin plass.</p>
+
+    <div class="meta-grid">
+      <div class="meta-cell"><div class="meta-label">Spørsmål</div><div class="meta-value">10</div></div>
+      <div class="meta-cell"><div class="meta-label">Tid</div><div class="meta-value">~7 min</div></div>
+      <div class="meta-cell"><div class="meta-label">Nivå</div><div class="meta-value">Medium</div></div>
+    </div>
+
+    <button class="btn" onclick="startQuiz()">Start quizen <span class="btn-arrow">→</span></button>
+  </section>
+
+  <section id="quiz" class="quiz-screen">
+    <div class="progress-row">
+      <span id="progress-text">Spørsmål 01 / 10</span>
+      <span id="progress-category">Kategori</span>
+    </div>
+    <div class="progress-bar"><div id="progress-fill" class="progress-fill" style="width: 10%"></div></div>
+    <div class="category-tag" id="category-tag">Kategori</div>
+    <h2 class="question-text" id="question-text">Spørsmålet kommer her</h2>
+    <ul class="options" id="options-list"></ul>
+    <div class="quiz-nav">
+      <span class="step-counter" id="step-counter">01 / 10</span>
+      <button class="btn" id="next-btn" disabled onclick="nextQuestion()">Neste <span class="btn-arrow">→</span></button>
+    </div>
+  </section>
+
+  <section id="result" class="quiz-screen">
+    <div class="eyebrow">Resultat</div>
+    <h1>Da var <em>fasiten</em> klar.</h1>
+    <div class="score-block">
+      <div class="score-label">Din skår</div>
+      <div class="score-number"><em id="score-num">0</em></div>
+      <div class="score-out-of">av ti mulige</div>
+      <p class="verdict" id="verdict">—</p>
+    </div>
+    <div class="share-row">
+      <div class="share-grid" id="share-grid">— — — — — — — — — —</div>
+      <button class="btn btn-secondary" onclick="copyShare()" id="share-btn">Kopier resultat <span class="btn-arrow">↗</span></button>
+    </div>
+    <div class="recap-header">Gjennomgang av spørsmålene</div>
+    <div id="recap-list"></div>
+    <div class="related-section">
+      <div class="related-header">Du vil kanskje også like</div>
+      <div id="related-list" class="related-list"></div>
+    </div>
+    <div class="restart-row">
+      <button class="btn" onclick="restart()">Ta quizen på nytt <span class="btn-arrow">↻</span></button>
+    </div>
+  </section>
+</div>
+<script>
+  const questions = [{"category": "Kallenavn", "q": "Oslo har vært kjent som 'Tigerstaden' i over 150 år. Hvor stammer kallenavnet opprinnelig fra?", "options": ["En tigerunge på Tøyen Zoologisk hage på 1880-tallet", "Et dikt av Bjørnstjerne Bjørnson fra 1870", "Et politisk slagord fra arbeiderbevegelsen rundt 1900", "En lederartikkel i Morgenbladet på 1850-tallet"], "correct": 1, "explanation": "I diktet 'Sidste Sang' (1870) skildret Bjørnstjerne Bjørnson Kristiania som en farlig 'Tigerstad' der unge mennesker fra landsbygda kunne miste seg selv. Til byens 1000-årsjubileum i år 2000 satte Elena Engelsen opp den 4,5 meter lange bronseskulpturen 'Tigeren' foran Oslo S."}, {"category": "Stedsnavn", "q": "Hva er den historiske bakgrunnen for navnet Tjuvholmen?", "options": ["Smuglere brukte holmen til å gjemme tollunngåtte varer", "Det var et offentlig henrettelsessted for tyver på 17-1800-tallet", "Svenske pirater plyndret skip her på 1600-tallet", "Sjøfolk gjemte gull og varer fra reisene sine"], "correct": 1, "explanation": "Tjuvholmen var faktisk henrettelsessted for tyver og forbrytere på 1700- og 1800-tallet, ofte med publikum til stede som avskrekkende eksempel. I dag er det blant Norges dyreste boligområder, en heller markant statusforvandling for et hjørne av byen."}, {"category": "Spisesteder", "q": "I hvilket år ble Engebret Café etablert, ofte regnet som Oslos eldste eksisterende restaurant i sammenhengende drift?", "options": ["1827", "1857", "1881", "1903"], "correct": 1, "explanation": "Engebret Café i Bankplassen 1, rett ved Akershus, åpnet i 1857 og har stort sett bevart interiøret siden. Henrik Ibsen, Edvard Grieg og Bjørnstjerne Bjørnson var alle stamgjester. Bygningen er fra 1700-tallet."}, {"category": "Litteratur og puber", "q": "Hvilken norsk forfatter har gjort restauranten Schrøder på St. Hanshaugen kjent over hele landet gjennom sine kriminalromaner?", "options": ["Karin Fossum", "Anne Holt", "Jo Nesbø", "Jørn Lier Horst"], "correct": 2, "explanation": "Schrøder i Waldemar Thranes gate er stamlokalet til den alkoholiserte etterforskeren Harry Hole i Jo Nesbøs romanserie. Den faktiske restauranten har eksistert siden 1956 og holder fortsatt på den autentiske, lett nedslitte brunpub-stilen."}, {"category": "Gatenavn", "q": "Hva er den historiske bakgrunnen for gatenavnet Pilestredet?", "options": ["Det vokste piletrær langs ferdselsåren", "En kjøpmann ved navn Pyle bodde og handlet der", "Gaten var smal som en pil", "Pilegrimsruten mot Trondheim startet her"], "correct": 0, "explanation": "Pilestredet er en av Oslos eldste gateløp. Navnet kommer fra piletrærne (Salix) som vokste langs veien da området ennå var landlig utenfor de gamle byportene. Ordet 'stredet' betyr smalt smug eller passasje."}, {"category": "Stamgjester", "q": "Hvilken norsk forfatter regnes som Grand Cafés mest berømte faste gjest, kjent for sine daglige aperitif-besøk fram til 1906?", "options": ["Knut Hamsun", "Henrik Ibsen", "Sigrid Undset", "Bjørnstjerne Bjørnson"], "correct": 1, "explanation": "Henrik Ibsen tok daglig spasertur fra hjemmet sitt i Arbins gate til Grand Café fra 1895 og fram til kort før han døde i 1906. Hans faste bord er fortsatt markert, og Per Krohgs veggmaleri fra 1928 viser Kristiania-kulturen rundt år 1900 med Ibsen i sentrum."}, {"category": "Gater med profesjon", "q": "Akersgata har lenge hatt et bestemt yrkesmiljø som har preget identiteten. Hva er gaten mest kjent for?", "options": ["Antikvariater og bokhandlere", "Avisredaksjoner", "Advokat- og rettskontorer", "Klassiske kafeer og konditorier"], "correct": 1, "explanation": "Akersgata er 'pressens gate' i Oslo, med redaksjonene til Aftenposten, VG, Dagbladet og andre. Uttrykket 'i Akersgata sier man at...' viste til at noe var snakkis i mediemiljøet. Etter at flere aviser har flyttet til Bjørvika, har miljøet endret seg."}, {"category": "Folkelige kallenavn", "q": "Den klassiske restauranten Olympen i Grønland er kjent for et kjælent folkelig kallenavn. Hva heter den i folkemunne?", "options": ["Lommen", "Lompa", "Lampen", "Lampegrøa"], "correct": 1, "explanation": "Olympen i Grønlandsleiret 15 har holdt på siden 1892 og kalles 'Lompa' i folkemunne. Stedet har bevart det meste av interiøret fra 1920-tallet, inkludert et stort veggmaleri av Per Krohg som viser arbeidsfolk i Grønland-strøket."}, {"category": "Gamle bygninger", "q": "Hva regnes som den eldste eksisterende bygningen i Oslo som fortsatt er i bruk?", "options": ["Akershus festning", "Oslo domkirke", "Gamle Aker kirke", "Oslo Ladegård"], "correct": 2, "explanation": "Gamle Aker kirke ble reist rundt 1100-tallet i romansk stil av kalkstein og er Oslos eldste stående bygning, fortsatt aktiv menighetskirke. Akershus kom rundt 1290, og Oslo domkirke ble innviet først i 1697. Gamle Aker ble restaurert flere ganger på 1800-tallet."}, {"category": "Bevart historie", "q": "Damstredet og Telthusbakken er blant Oslos mest fotograferte gater. Hva gjør dem spesielle?", "options": ["Velbevarte trehus fra tidlig 1800-tall", "Eldste brosteinslagte gateløp i byen", "Norges første gatebelysning ble satt opp her", "Var sete for Christianias myndigheter på 1600-tallet"], "correct": 0, "explanation": "Damstredet og nabostredet Telthusbakken har en sjelden samling små trehus fra tidlig 1800-tall — et glimt av hvordan store deler av byen så ut før murtvangen ble innført på 1830-tallet etter flere store bybranner. Edvard Munch bodde en periode i Telthusbakken 5."}];
+  const verdicts  = ["Du må definitivt bruke flere kvelder ute. Skål.", "Du kjenner byen overflatisk — tid for å vandre bak Karl Johan.", "Du har holdt det gående i Oslo en stund. Greit grunnlag.", "Solid. Du vet hvor stamlokalene ligger og hvorfor.", "Innfødt, eller bare veldig observant. Imponerende oversikt.", "Full pott. Du er sannsynligvis enten guide eller stamgjest."];
+  const quizNum   = "№ 04";
+
+  let currentIndex = 0;
+  let selectedOption = null;
+  let userAnswers = [];
+
+  function startQuiz() {
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('quiz').classList.add('active');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentIndex];
+    document.getElementById('progress-text').textContent = `Spørsmål ${String(currentIndex + 1).padStart(2, '0')} / 10`;
+    document.getElementById('progress-category').textContent = q.category;
+    document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+    document.getElementById('category-tag').textContent = q.category;
+    document.getElementById('question-text').textContent = q.q;
+    document.getElementById('step-counter').textContent = `${String(currentIndex + 1).padStart(2, '0')} / 10`;
+    const list = document.getElementById('options-list');
+    list.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, i) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.onclick = () => selectOption(i, btn);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+    selectedOption = null;
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.disabled = true;
+    nextBtn.innerHTML = currentIndex === questions.length - 1
+      ? 'Se resultat <span class="btn-arrow">→</span>'
+      : 'Neste <span class="btn-arrow">→</span>';
+    document.getElementById('quiz').style.animation = 'none';
+    void document.getElementById('quiz').offsetWidth;
+    document.getElementById('quiz').style.animation = 'fadeUp 0.4s ease both';
+  }
+
+  function selectOption(i, btn) {
+    document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedOption = i;
+    document.getElementById('next-btn').disabled = false;
+  }
+
+  function nextQuestion() {
+    userAnswers[currentIndex] = selectedOption;
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('quiz').classList.remove('active');
+    document.getElementById('result').classList.add('active');
+    const correctCount = userAnswers.filter((ans, i) => ans === questions[i].correct).length;
+    document.getElementById('score-num').textContent = correctCount;
+    let v;
+    if (correctCount <= 2) v = 0;
+    else if (correctCount <= 4) v = 1;
+    else if (correctCount <= 6) v = 2;
+    else if (correctCount === 7 || correctCount === 8) v = 3;
+    else if (correctCount === 9) v = 4;
+    else v = 5;
+    document.getElementById('verdict').textContent = verdicts[v];
+    const grid = userAnswers.map((ans, i) => ans === questions[i].correct ? '🟩' : '⬛').join('');
+    document.getElementById('share-grid').textContent = grid;
+    const recapList = document.getElementById('recap-list');
+    recapList.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    questions.forEach((q, i) => {
+      const userIdx = userAnswers[i];
+      const isCorrect = userIdx === q.correct;
+      const item = document.createElement('div');
+      item.className = 'recap-item';
+      let answerHtml = '';
+      if (isCorrect) {
+        answerHtml = `
+          <div class="recap-answer-row correct">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value correct">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>`;
+      } else {
+        answerHtml = `
+          <div class="recap-answer-row wrong">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value wrong">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>
+          <div class="recap-answer-row correct">
+            <span class="recap-answer-label">Riktig</span>
+            <span class="recap-answer-value correct">${letters[q.correct]}. ${q.options[q.correct]}</span>
+          </div>`;
+      }
+      item.innerHTML = `
+        <div class="recap-num">${String(i + 1).padStart(2, '0')} · ${q.category}</div>
+        <div class="recap-q">${q.q}</div>
+        <span class="recap-status ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? 'Riktig' : 'Feil'}</span>
+        ${answerHtml}
+        <div class="recap-explanation">${q.explanation}</div>
+      `;
+      recapList.appendChild(item);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyShare() {
+    const grid = document.getElementById('share-grid').textContent;
+    const score = document.getElementById('score-num').textContent;
+    const text = `CustomQuiz ${quizNum} · ${score}/10\n${grid}\ncustomquiz.no`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('share-btn');
+      const original = btn.innerHTML;
+      btn.innerHTML = 'Kopiert <span class="btn-arrow">✓</span>';
+      setTimeout(() => { btn.innerHTML = original; }, 1800);
+    });
+  }
+
+  function restart() {
+    currentIndex = 0;
+    selectedOption = null;
+    userAnswers = [];
+    document.getElementById('result').classList.remove('active');
+    document.getElementById('welcome').style.display = 'block';
+    document.getElementById('welcome').style.animation = 'none';
+    void document.getElementById('welcome').offsetWidth;
+    document.getElementById('welcome').style.animation = 'fadeUp 0.5s ease both';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

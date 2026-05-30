@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<title>CustomQuiz № 02 — andre runde</title>
+<meta name="description" content="CustomQuiz № 02 — Tilbake for mer? Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.">
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
+<link rel="apple-touch-icon" href="IMG/signature.jpg">
+
+<!-- Open Graph -->
+<meta property="og:title" content="CustomQuiz № 02 — andre runde">
+<meta property="og:description" content="CustomQuiz № 02 — Tilbake for mer? Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.">
+<meta property="og:image" content="IMG/og.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://customquiz.no">
+<meta property="og:locale" content="nb_NO">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CustomQuiz № 02 — andre runde">
+<meta name="twitter:description" content="CustomQuiz № 02 — Tilbake for mer? Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.">
+<meta name="twitter:image" content="IMG/og.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #F5F0E6;
+    --bg-soft:      #FBF7EE;
+    --bg-deep:      #ECE3CE;
+    --ink:          #1F1A14;
+    --ink-soft:     #4B4338;
+    --ink-mute:     #7A6F5A;
+    --rule:         #E2D8C2;
+    --rule-strong:  #C9BD9F;
+    --accent:       #0A6E5A;
+    --accent-soft:  #C9E2D8;
+    --accent-deep:  #074538;
+    --success:      #2D7A4C;
+    --success-soft: #DDE9D7;
+    --danger:       #A82E1F;
+    --danger-soft:  #F3D9D2;
+    --r-pill:       999px;
+    --r-card:       16px;
+    --r-md:         8px;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-sans:    'Manrope', 'Inter', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .container { max-width: 760px; margin: 0 auto; padding: 40px 24px 96px; position: relative; z-index: 2; }
+  .masthead {
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 16px 0 14px;
+    margin-bottom: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .masthead-left, .masthead-right {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .masthead-left { color: var(--ink); }
+  .masthead-right { text-align: right; }
+  .masthead-brand { color: var(--accent); font-weight: 500; }
+  .back-link { color: var(--ink-mute); text-decoration: none; font-size: 10px; letter-spacing: 0.18em; transition: color 200ms ease; }
+  .back-link:hover { color: var(--accent); }
+
+  /* Kategori-banner på welcome-skjermen */
+  .welcome-banner {
+    width: 100%;
+    aspect-ratio: 5 / 2;
+    border-radius: var(--r-card);
+    overflow: hidden;
+    margin-bottom: 32px;
+    border: 0.5px solid var(--rule);
+    background: var(--bg-soft);
+  }
+  .welcome-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .welcome { animation: fadeUp 0.5s ease both; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede {
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1.45;
+    font-weight: 400;
+    max-width: 580px;
+    margin-bottom: 40px;
+    color: var(--ink-soft);
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  .meta-cell { padding: 18px 16px; border-right: 1px solid var(--rule); }
+  .meta-cell:last-child { border-right: none; }
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+  .meta-value {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    background: var(--accent);
+    color: var(--bg-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  }
+  .btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  .btn-arrow { font-family: var(--font-display); font-size: 17px; line-height: 1; }
+  .btn[disabled] { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--rule-strong);
+  }
+  .btn-secondary:hover { background: transparent; color: var(--accent-deep); border-color: var(--accent); }
+
+  .quiz-screen { display: none; animation: fadeUp 0.4s ease both; }
+  .quiz-screen.active { display: block; }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .progress-row span:first-child { color: var(--ink); }
+  .progress-bar {
+    height: 3px;
+    background: var(--rule);
+    margin-bottom: 56px;
+    border-radius: var(--r-pill);
+    overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 200ms ease; }
+
+  .category-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--accent);
+  }
+  .question-text {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 40px;
+    font-variation-settings: "opsz" 96;
+  }
+
+  .options { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    text-align: left;
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .option:hover { border-color: var(--accent); }
+  .option.selected { background: var(--accent); color: var(--bg-soft); border-color: var(--accent); }
+  .option.selected .option-letter { color: var(--bg-soft); }
+  .option-letter {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 16px;
+  }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .step-counter { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); }
+
+  .score-block {
+    text-align: center;
+    margin: 32px 0 64px;
+    padding: 56px 24px;
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .score-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .score-number {
+    font-family: var(--font-display);
+    font-size: clamp(88px, 16vw, 160px);
+    line-height: 0.9;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-variation-settings: "opsz" 144;
+  }
+  .score-number em { font-style: italic; color: var(--accent); }
+  .score-out-of { font-family: var(--font-display); font-size: 18px; font-style: italic; color: var(--ink-mute); }
+  .verdict {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    margin-top: 24px;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.45;
+  }
+
+  .share-row { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 56px; }
+  .share-grid { font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.1em; line-height: 1; color: var(--ink); }
+
+  .recap-header {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 32px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .recap-item { padding: 28px 0; border-bottom: 1px solid var(--rule); }
+  .recap-item:last-of-type { border-bottom: 1px solid var(--rule-strong); }
+  .recap-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+  }
+  .recap-q {
+    font-family: var(--font-display);
+    font-size: 21px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 18px;
+    font-variation-settings: "opsz" 36;
+  }
+  .recap-status {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-bottom: 16px;
+    border-radius: var(--r-md);
+  }
+  .recap-status.correct { background: var(--success-soft); color: var(--success); }
+  .recap-status.wrong   { background: var(--danger-soft);  color: var(--danger);  }
+  .recap-answer-row {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    font-size: 15px;
+    border-radius: var(--r-md);
+  }
+  .recap-answer-row.correct { background: var(--success-soft); border-left: 3px solid var(--success); }
+  .recap-answer-row.wrong   { background: var(--danger-soft);  border-left: 3px solid var(--danger);  }
+  .recap-answer-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    min-width: 76px;
+    flex-shrink: 0;
+  }
+  .recap-answer-value { font-family: var(--font-sans); font-weight: 500; color: var(--ink); }
+  .recap-answer-value.correct { color: var(--success); }
+  .recap-answer-value.wrong   { color: var(--danger); text-decoration: line-through; opacity: 0.85; }
+  .recap-explanation {
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.55;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-top: 16px;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+
+  .related-section { margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--rule-strong); }
+  .related-header {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+  .related-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 40px; }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 20px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-card);
+    text-decoration: none;
+    transition: border-color 200ms ease, background 200ms ease;
+    position: relative;
+    min-height: 130px;
+  }
+  .related-card:hover { border-color: var(--accent); background: var(--bg-deep); }
+  .related-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); }
+  .related-title { font-family: var(--font-display); font-size: 20px; font-weight: 500; line-height: 1.2; color: var(--ink); margin-bottom: 4px; font-variation-settings: "opsz" 36; }
+  .related-sub { font-family: var(--font-sans); font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .related-arrow { position: absolute; bottom: 16px; right: 20px; color: var(--accent); font-family: var(--font-display); font-size: 20px; }
+
+  .restart-row { margin-top: 56px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 560px) {
+    .container { padding: 24px 20px 72px; }
+    .masthead { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .masthead-right { text-align: left; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .meta-cell { border-right: none; border-bottom: 1px solid var(--rule); }
+    .meta-cell:last-child { border-bottom: none; }
+    .question-text { font-size: 22px; }
+    .recap-q { font-size: 18px; }
+    .quiz-nav { flex-direction: column-reverse; align-items: stretch; }
+    .quiz-nav .btn { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="masthead">
+    <div class="masthead-left">
+      <a href="index.html" class="back-link">← Alle quizer</a>
+      <span><span class="masthead-brand">CustomQuiz</span> · № 02</span>
+    </div>
+    <div class="masthead-right">Ti spørsmål · Blandede tema</div>
+  </header>
+
+  <section id="welcome" class="welcome">
+    <div class="welcome-banner">
+      <img src="IMG/kategori-mix.jpg" alt="">
+    </div>
+    <div class="eyebrow">Andre runde</div>
+    <h1>Tilbake for <em>mer</em>?</h1>
+    <p class="lede">Ti nye spørsmål, samme nivå. Vikingtid og kvantefysikk, magisk realisme og store maleriske brudd. Litt verden, litt detalj, litt det du burde visst men kanskje har glemt.</p>
+
+    <div class="meta-grid">
+      <div class="meta-cell"><div class="meta-label">Spørsmål</div><div class="meta-value">10</div></div>
+      <div class="meta-cell"><div class="meta-label">Tid</div><div class="meta-value">~7 min</div></div>
+      <div class="meta-cell"><div class="meta-label">Nivå</div><div class="meta-value">Medium-hardt</div></div>
+    </div>
+
+    <button class="btn" onclick="startQuiz()">Start quizen <span class="btn-arrow">→</span></button>
+  </section>
+
+  <section id="quiz" class="quiz-screen">
+    <div class="progress-row">
+      <span id="progress-text">Spørsmål 01 / 10</span>
+      <span id="progress-category">Kategori</span>
+    </div>
+    <div class="progress-bar"><div id="progress-fill" class="progress-fill" style="width: 10%"></div></div>
+    <div class="category-tag" id="category-tag">Kategori</div>
+    <h2 class="question-text" id="question-text">Spørsmålet kommer her</h2>
+    <ul class="options" id="options-list"></ul>
+    <div class="quiz-nav">
+      <span class="step-counter" id="step-counter">01 / 10</span>
+      <button class="btn" id="next-btn" disabled onclick="nextQuestion()">Neste <span class="btn-arrow">→</span></button>
+    </div>
+  </section>
+
+  <section id="result" class="quiz-screen">
+    <div class="eyebrow">Resultat</div>
+    <h1>Da var <em>fasiten</em> klar.</h1>
+    <div class="score-block">
+      <div class="score-label">Din skår</div>
+      <div class="score-number"><em id="score-num">0</em></div>
+      <div class="score-out-of">av ti mulige</div>
+      <p class="verdict" id="verdict">—</p>
+    </div>
+    <div class="share-row">
+      <div class="share-grid" id="share-grid">— — — — — — — — — —</div>
+      <button class="btn btn-secondary" onclick="copyShare()" id="share-btn">Kopier resultat <span class="btn-arrow">↗</span></button>
+    </div>
+    <div class="recap-header">Gjennomgang av spørsmålene</div>
+    <div id="recap-list"></div>
+    <div class="related-section">
+      <div class="related-header">Du vil kanskje også like</div>
+      <div id="related-list" class="related-list"></div>
+    </div>
+    <div class="restart-row">
+      <button class="btn" onclick="restart()">Ta quizen på nytt <span class="btn-arrow">↻</span></button>
+    </div>
+  </section>
+</div>
+<script>
+  const questions = [{"category": "Norsk historie", "q": "Hvilken norsk konge falt i slaget ved Stamford Bridge i England i september 1066, en hendelse som ofte regnes som slutten på vikingtiden?", "options": ["Olav Tryggvason", "Magnus den Gode", "Harald Hardråde", "Sverre Sigurdsson"], "correct": 2, "explanation": "Harald Sigurdsson Hardråde (Harald III) regnes som 'den siste viking'. Slaget fant sted 25. september 1066, bare tre uker før Harald Godwinson selv falt for Vilhelm Erobreren ved Hastings."}, {"category": "Kvantefysikk", "q": "Hvem formulerte usikkerhetsprinsippet i kvantemekanikken, som sier at posisjon og bevegelsesmengde ikke kan måles eksakt samtidig?", "options": ["Niels Bohr", "Erwin Schrödinger", "Werner Heisenberg", "Max Planck"], "correct": 2, "explanation": "Heisenberg publiserte prinsippet i 1927. Det er ikke en målefeil, men en fundamental egenskap ved naturen på kvantenivå: jo mer presist du kjenner posisjonen, desto mer usikker er bevegelsesmengden."}, {"category": "Geografi", "q": "Hvilket er verdens minste suverene stat målt i areal?", "options": ["Monaco", "San Marino", "Vatikanstaten", "Liechtenstein"], "correct": 2, "explanation": "Vatikanstaten er bare 0,49 km², mindre enn Frognerparken. Den oppsto i 1929 gjennom Lateranavtalen mellom pave Pius XI og Mussolini-regimet, og har rundt 800 innbyggere."}, {"category": "Latin-Amerika / litteratur", "q": "Hvilken forfatter skrev romanen 'Hundre års ensomhet' (1967), et hovedverk i magisk realisme?", "options": ["Mario Vargas Llosa", "Jorge Luis Borges", "Pablo Neruda", "Gabriel García Márquez"], "correct": 3, "explanation": "García Márquez (1927-2014) fortalte historien om familien Buendía i den fiktive byen Macondo. Han fikk Nobelprisen i 1982, og romanen er solgt i over 50 millioner eksemplarer på 46 språk."}, {"category": "Biokjemi", "q": "Hva er et annet vanlig navn på Krebs-syklusen, den sentrale metabolske prosessen i mitokondriene?", "options": ["Glykolysen", "Sitronsyresyklusen", "Pentosefosfatveien", "Calvin-syklusen"], "correct": 1, "explanation": "Sitronsyresyklusen heter den fordi det første mellomproduktet er sitronsyre (citrat). Hans Krebs beskrev den i 1937 og fikk Nobelprisen i 1953. Calvin-syklusen er derimot fotosyntesens karbonfiksering."}, {"category": "Verdenshistorie", "q": "I hvilket år falt Konstantinopel til osmanene under sultan Mehmet II, en hendelse som regnes som slutten på Det østromerske riket?", "options": ["1389", "1453", "1492", "1521"], "correct": 1, "explanation": "Byen falt 29. mai 1453 etter 53 dagers beleiring. Mehmet II var bare 21 år. Hendelsen regnes ofte som overgangen fra middelalder til tidlig moderne tid, og bidro til å sende greske lærde og manuskripter mot vest."}, {"category": "Kunsthistorie", "q": "Hvilken kunstretning grunnla Pablo Picasso og Georges Braque rundt 1907-1908, kjennetegnet av oppbrutte former og flere perspektiver i samme bilde?", "options": ["Surrealismen", "Futurismen", "Kubismen", "Dadaismen"], "correct": 2, "explanation": "Kubismen brøt med renessansens sentralperspektiv og viste objekter fra flere vinkler samtidig. Picassos 'Les Demoiselles d'Avignon' (1907) regnes som det første kubistiske verket. Surrealismen kom senere, på 1920-tallet."}, {"category": "Matematikkens historie", "q": "Hvilken britisk matematiker la i 1994 fram beviset for Fermats siste teorem, et problem som hadde stått ubesvart i 357 år?", "options": ["Andrew Wiles", "Grigori Perelman", "Terence Tao", "John Nash"], "correct": 0, "explanation": "Wiles ved Princeton jobbet syv år i hemmelighet. Da første versjon hadde en feil, brukte han enda et år sammen med Richard Taylor for å fikse den. Perelman løste forresten Poincaré-konjekturen i 2003."}, {"category": "Populærmusikk", "q": "Hvilket Beatles-album fra 1967 regnes ofte som musikkhistoriens første store konseptalbum og en milepæl i innspillingsteknikk?", "options": ["Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "Abbey Road", "The White Album"], "correct": 1, "explanation": "Sgt. Pepper's kom i juni 1967 og blandet sjangre fra music hall til indisk klassisk. George Martins studiogrep, som overdubbing og strykere på 'A Day in the Life', endret hva en pop-LP kunne være."}, {"category": "Vitenskapshistorie", "q": "I hvilket år publiserte James Watson og Francis Crick sin modell av DNA-molekylets dobbelthelixstruktur i tidsskriftet Nature?", "options": ["1945", "1953", "1962", "1969"], "correct": 1, "explanation": "Artikkelen kom i april 1953 og var bare én side lang. Modellen hvilte sterkt på Rosalind Franklins røntgenkrystallografi (særlig 'Photo 51'), uten at hun var kreditert. Franklin døde i 1958, fire år før Nobelprisen ble delt ut til Watson, Crick og Wilkins."}];
+  const verdicts  = ["Det var en treg dag. Heldigvis er kunnskap noe man kan bygge på.", "Noen treff. Det er et grunnlag å jobbe videre fra.", "Helt OK, men det ligger flere svar gjemt der oppe.", "Godt jobbet. Du svarer på alminnelig kunnskap med solid trygghet.", "Imponerende. Du har fanget opp mer enn de fleste.", "Eksepsjonelt. Quizmaster-nivå."];
+  const quizNum   = "№ 02";
+
+  let currentIndex = 0;
+  let selectedOption = null;
+  let userAnswers = [];
+
+  function startQuiz() {
+    document.getElementById('welcome').style.display = 'none';
+    document.getElementById('quiz').classList.add('active');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentIndex];
+    document.getElementById('progress-text').textContent = `Spørsmål ${String(currentIndex + 1).padStart(2, '0')} / 10`;
+    document.getElementById('progress-category').textContent = q.category;
+    document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+    document.getElementById('category-tag').textContent = q.category;
+    document.getElementById('question-text').textContent = q.q;
+    document.getElementById('step-counter').textContent = `${String(currentIndex + 1).padStart(2, '0')} / 10`;
+    const list = document.getElementById('options-list');
+    list.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, i) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.onclick = () => selectOption(i, btn);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+    selectedOption = null;
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.disabled = true;
+    nextBtn.innerHTML = currentIndex === questions.length - 1
+      ? 'Se resultat <span class="btn-arrow">→</span>'
+      : 'Neste <span class="btn-arrow">→</span>';
+    document.getElementById('quiz').style.animation = 'none';
+    void document.getElementById('quiz').offsetWidth;
+    document.getElementById('quiz').style.animation = 'fadeUp 0.4s ease both';
+  }
+
+  function selectOption(i, btn) {
+    document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedOption = i;
+    document.getElementById('next-btn').disabled = false;
+  }
+
+  function nextQuestion() {
+    userAnswers[currentIndex] = selectedOption;
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('quiz').classList.remove('active');
+    document.getElementById('result').classList.add('active');
+    const correctCount = userAnswers.filter((ans, i) => ans === questions[i].correct).length;
+    document.getElementById('score-num').textContent = correctCount;
+    let v;
+    if (correctCount <= 2) v = 0;
+    else if (correctCount <= 4) v = 1;
+    else if (correctCount <= 6) v = 2;
+    else if (correctCount === 7 || correctCount === 8) v = 3;
+    else if (correctCount === 9) v = 4;
+    else v = 5;
+    document.getElementById('verdict').textContent = verdicts[v];
+    const grid = userAnswers.map((ans, i) => ans === questions[i].correct ? '🟩' : '⬛').join('');
+    document.getElementById('share-grid').textContent = grid;
+    const recapList = document.getElementById('recap-list');
+    recapList.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    questions.forEach((q, i) => {
+      const userIdx = userAnswers[i];
+      const isCorrect = userIdx === q.correct;
+      const item = document.createElement('div');
+      item.className = 'recap-item';
+      let answerHtml = '';
+      if (isCorrect) {
+        answerHtml = `
+          <div class="recap-answer-row correct">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value correct">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>`;
+      } else {
+        answerHtml = `
+          <div class="recap-answer-row wrong">
+            <span class="recap-answer-label">Ditt svar</span>
+            <span class="recap-answer-value wrong">${letters[userIdx]}. ${q.options[userIdx]}</span>
+          </div>
+          <div class="recap-answer-row correct">
+            <span class="recap-answer-label">Riktig</span>
+            <span class="recap-answer-value correct">${letters[q.correct]}. ${q.options[q.correct]}</span>
+          </div>`;
+      }
+      item.innerHTML = `
+        <div class="recap-num">${String(i + 1).padStart(2, '0')} · ${q.category}</div>
+        <div class="recap-q">${q.q}</div>
+        <span class="recap-status ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? 'Riktig' : 'Feil'}</span>
+        ${answerHtml}
+        <div class="recap-explanation">${q.explanation}</div>
+      `;
+      recapList.appendChild(item);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyShare() {
+    const grid = document.getElementById('share-grid').textContent;
+    const score = document.getElementById('score-num').textContent;
+    const text = `CustomQuiz ${quizNum} · ${score}/10\n${grid}\ncustomquiz.no`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('share-btn');
+      const original = btn.innerHTML;
+      btn.innerHTML = 'Kopiert <span class="btn-arrow">✓</span>';
+      setTimeout(() => { btn.innerHTML = original; }, 1800);
+    });
+  }
+
+  function restart() {
+    currentIndex = 0;
+    selectedOption = null;
+    userAnswers = [];
+    document.getElementById('result').classList.remove('active');
+    document.getElementById('welcome').style.display = 'block';
+    document.getElementById('welcome').style.animation = 'none';
+    void document.getElementById('welcome').offsetWidth;
+    document.getElementById('welcome').style.animation = 'fadeUp 0.5s ease both';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

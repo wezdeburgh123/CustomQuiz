@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<title>CustomQuiz — daglige quizer på norsk</title>
+<meta name="description" content="Skreddersydde quizer på norsk, generert akkurat nå. Ny quiz hver morgen.">
+
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
+<link rel="apple-touch-icon" href="IMG/signature.jpg">
+
+<!-- Open Graph -->
+<meta property="og:title" content="CustomQuiz — daglige quizer på norsk">
+<meta property="og:description" content="Skreddersydde quizer på norsk, generert akkurat nå. Ny quiz hver morgen.">
+<meta property="og:image" content="IMG/og.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://customquiz.no">
+<meta property="og:locale" content="nb_NO">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CustomQuiz — daglige quizer på norsk">
+<meta name="twitter:description" content="Skreddersydde quizer på norsk, generert akkurat nå.">
+<meta name="twitter:image" content="IMG/og.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('pre-reveal');</script>
+<style>
+  :root {
+    --bg:           #F5F0E6;
+    --bg-soft:      #FBF7EE;
+    --bg-deep:      #ECE3CE;
+    --ink:          #1F1A14;
+    --ink-soft:     #4B4338;
+    --ink-mute:     #7A6F5A;
+    --rule:         #E2D8C2;
+    --rule-strong:  #C9BD9F;
+    --accent:       #0A6E5A;
+    --accent-soft:  #C9E2D8;
+    --accent-deep:  #074538;
+    /* Spot-color-system for kategori-illustrasjoner (retning C, 28. mai 2026) */
+    --spot-teal:        #0A6E5A;
+    --spot-moss:        #5C7A3C;
+    --spot-cobalt:      #2C4A8F;
+    --spot-terracotta:  #B05238;
+    --spot-plum:        #6B3050;
+    --spot-saffron:     #C68A2E;
+    --r-pill:       999px;
+    --r-card:       16px;
+    --r-md:         8px;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-sans:    'Manrope', 'Inter', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  /* Spot-color overlay på kategori-bilder.
+     Bruk: <div class="quiz-image" data-spot="moss"><img …></div>.
+     Mens vi venter på regenererte illustrasjoner anvender vi spot-fargen
+     som CSS-blend. Når bildene er regenerert med flaten innebygd, kan
+     denne blokken slettes — eller opacity settes til 0. */
+  [data-spot] { position: relative; }
+  [data-spot]::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: var(--spot, transparent);
+    opacity: 0.55;
+    z-index: 1;
+    pointer-events: none;
+  }
+  [data-spot] > img {
+    position: relative;
+    z-index: 2;
+    mix-blend-mode: multiply;
+  }
+  [data-spot="teal"]       { --spot: var(--spot-teal); }
+  [data-spot="moss"]       { --spot: var(--spot-moss); }
+  [data-spot="cobalt"]     { --spot: var(--spot-cobalt); }
+  [data-spot="terracotta"] { --spot: var(--spot-terracotta); }
+  [data-spot="plum"]       { --spot: var(--spot-plum); }
+  [data-spot="saffron"]    { --spot: var(--spot-saffron); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .container { max-width: 920px; margin: 0 auto; padding: 32px 24px 96px; position: relative; z-index: 2; }
+
+  /* Masthead with logo */
+  .masthead {
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 20px 0;
+    margin-bottom: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .masthead-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    transition: opacity 200ms ease;
+  }
+  .masthead-logo:hover { opacity: 0.82; }
+  .masthead-mark {
+    height: 48px;
+    width: 48px;
+    object-fit: contain;
+    display: block;
+    /* Bildet har krem bakgrunn — smelter sømløst inn */
+  }
+  .masthead-wordmark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 40;
+  }
+  @media (max-width: 560px) {
+    .masthead-mark { height: 40px; width: 40px; }
+    .masthead-wordmark { font-size: 18px; }
+  }
+  /* Intro ved sidelast: Q males inn, så ordmerke, så resten av menyen */
+  .masthead-mark {
+    -webkit-mask-image: linear-gradient(108deg, #000 0 40%, rgba(0,0,0,0) 50%);
+            mask-image: linear-gradient(108deg, #000 0 40%, rgba(0,0,0,0) 50%);
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-size: 300% 100%; mask-size: 300% 100%;
+    -webkit-mask-position: 100% 0; mask-position: 100% 0;
+    animation: genBrush 0.9s cubic-bezier(.42, 0, .2, 1) 0.15s forwards;
+  }
+  .masthead-wordmark {
+    opacity: 0;
+    transform: translateX(-8px);
+    animation: introFade 0.55s ease 0.6s forwards;
+  }
+  .masthead-meta {
+    opacity: 0;
+    transform: translateY(-4px);
+    animation: introFade 0.6s ease 1.05s forwards;
+  }
+  @keyframes introFade { to { opacity: 1; transform: none; } }
+  /* Resten av siden fader inn blokk for blokk etter menyens intro */
+  html.pre-reveal .container > *:not(.masthead) {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  html.pre-reveal .container > *:not(.masthead).is-in {
+    opacity: 1;
+    transform: none;
+  }
+  /* Hero og generator: la blokken være synlig, men forskyv tekst og bilde
+     hver for seg så de kommer inn litt ulikt */
+  html.pre-reveal .container > .hero,
+  html.pre-reveal .container > .app-section {
+    opacity: 1;
+    transform: none;
+  }
+  html.pre-reveal .hero-text,
+  html.pre-reveal .hero-image,
+  html.pre-reveal .app-section > div,
+  html.pre-reveal .app-section-image {
+    opacity: 0;
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  html.pre-reveal .hero-text        { transform: translateY(14px); }
+  html.pre-reveal .hero-image       { transform: translateY(20px) scale(.985); }
+  html.pre-reveal .app-section > div     { transform: translateY(14px); }
+  html.pre-reveal .app-section-image     { transform: translateY(20px) scale(.985); }
+  html.pre-reveal .hero.is-in .hero-text             { opacity: 1; transform: none; transition-delay: .04s; }
+  html.pre-reveal .hero.is-in .hero-image            { opacity: 1; transform: none; transition-delay: .26s; }
+  html.pre-reveal .app-section.is-in > div           { opacity: 1; transform: none; transition-delay: .04s; }
+  html.pre-reveal .app-section.is-in .app-section-image { opacity: 1; transform: none; transition-delay: .26s; }
+  @media (prefers-reduced-motion: reduce) {
+    .masthead-mark {
+      -webkit-mask-image: none; mask-image: none; animation: none;
+    }
+    .masthead-wordmark, .masthead-meta {
+      opacity: 1; transform: none; animation: none;
+    }
+    html.pre-reveal .container > *:not(.masthead),
+    html.pre-reveal .hero-text,
+    html.pre-reveal .hero-image,
+    html.pre-reveal .app-section > div,
+    html.pre-reveal .app-section-image {
+      opacity: 1; transform: none; transition: none;
+    }
+  }
+  .masthead-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .masthead-link {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 200ms ease;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+  }
+  .masthead-link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .masthead-sep {
+    color: var(--rule-strong);
+  }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 48px;
+    align-items: stretch;
+    margin-bottom: 80px;
+  }
+  .hero-text {
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(48px, 6.5vw, 84px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin-bottom: 24px;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede {
+    font-family: var(--font-display);
+    font-size: 21px;
+    line-height: 1.45;
+    font-weight: 400;
+    margin-bottom: 36px;
+    color: var(--ink-soft);
+    max-width: 480px;
+  }
+  .hero-image {
+    border-radius: var(--r-card);
+    overflow: hidden;
+    border: 0.5px solid var(--rule-strong);
+    min-height: 480px;
+    background: var(--bg-deep);
+  }
+  .hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* CTA */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    background: var(--accent);
+    color: var(--bg-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-pill);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 200ms ease, border-color 200ms ease;
+  }
+  .btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  .btn-arrow { font-family: var(--font-display); font-size: 17px; line-height: 1; }
+
+  /* Section */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule-strong);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .section-meta { color: var(--ink-mute); font-weight: 400; }
+
+  /* Quiz grid */
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 72px;
+  }
+  .quiz-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-card);
+    text-decoration: none;
+    transition: border-color 200ms ease, background 200ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .quiz-card:hover { border-color: var(--accent); }
+  .quiz-card:hover .quiz-image img { transform: scale(1.025); }
+  .quiz-image {
+    aspect-ratio: 5 / 3;
+    background: var(--bg);
+    overflow: hidden;
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .quiz-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 220ms ease;
+  }
+  .quiz-body {
+    padding: 18px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .quiz-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .quiz-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.18;
+    color: var(--ink);
+    font-variation-settings: "opsz" 36;
+  }
+  .quiz-title em { font-style: italic; color: var(--accent); }
+  .quiz-sub {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    margin-bottom: 4px;
+  }
+  .quiz-rating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+  }
+  .quiz-stars {
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    font-size: 13px;
+  }
+  .quiz-stars .empty { color: var(--rule-strong); }
+  .quiz-plays { font-variant-numeric: tabular-nums; }
+  .quiz-card.featured {
+    grid-column: span 2;
+  }
+  .quiz-card.featured .quiz-image { aspect-ratio: 16 / 7; }
+  .quiz-card.featured .quiz-title { font-size: 28px; }
+
+  /* How it works */
+  .three-up {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 72px;
+    padding: 32px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .three-up-item h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 10px;
+    font-variation-settings: "opsz" 36;
+  }
+  .three-up-item h3 em { font-style: italic; color: var(--accent); }
+  .three-up-item p {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .three-up-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  /* App CTA section */
+  .app-section {
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-card);
+    padding: 40px 36px;
+    margin-bottom: 72px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 36px;
+    align-items: center;
+  }
+  .app-section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 14px;
+    font-variation-settings: "opsz" 96;
+  }
+  .app-section h2 em { font-style: italic; color: var(--accent); }
+  .app-section p {
+    font-family: var(--font-display);
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .app-section-image {
+    border-radius: var(--r-card);
+    overflow: hidden;
+    border: 0.5px solid var(--rule-strong);
+    aspect-ratio: 1/1;
+    background: var(--bg);
+    max-width: 280px;
+    justify-self: center;
+  }
+  .app-section-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Generator-animasjon: logo males inn, så tre tilfeldige tema fader inn */
+  .gen-anim {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 30px 26px;
+    /* Samme tone som papiret i logo-JPG-en, så firkanten smelter inn */
+    background: #F6ECDC;
+    /* Bredere boks med fleksibel høyde — chips skal aldri blø ut */
+    aspect-ratio: auto;
+    overflow: visible;
+    width: 100%;
+    max-width: 380px;
+    min-height: 340px;
+  }
+  .gen-anim-logo {
+    position: relative;
+    width: 58%;
+    aspect-ratio: 1 / 1;
+    background: url('IMG/logo-variant.jpg') center / contain no-repeat;
+    -webkit-mask-image: linear-gradient(108deg, #000 0 40%, rgba(0,0,0,0) 50%);
+            mask-image: linear-gradient(108deg, #000 0 40%, rgba(0,0,0,0) 50%);
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: 300% 100%;
+            mask-size: 300% 100%;
+    -webkit-mask-position: 100% 0;
+            mask-position: 100% 0;
+  }
+  /* Myk fade: papiret toner ut i boksfargen mot kantene — ingen hard firkant */
+  .gen-anim-logo::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    background: radial-gradient(closest-side, rgba(246,236,220,0) 60%, #F6ECDC 94%);
+    pointer-events: none;
+  }
+  .gen-anim.play .gen-anim-logo {
+    animation: genBrush 1.15s cubic-bezier(.42, 0, .2, 1) forwards;
+  }
+  @keyframes genBrush {
+    from { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+    to   { -webkit-mask-position: 0% 0;   mask-position: 0% 0; }
+  }
+  .gen-anim-combo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 30px;
+  }
+  .gen-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 12px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-pill);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .gen-chip.show { opacity: 1; transform: none; }
+  .gen-chip-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--spot, var(--accent));
+    flex-shrink: 0;
+  }
+  .gen-chip[data-spot-name="teal"]       { --spot: var(--spot-teal); }
+  .gen-chip[data-spot-name="moss"]       { --spot: var(--spot-moss); }
+  .gen-chip[data-spot-name="cobalt"]     { --spot: var(--spot-cobalt); }
+  .gen-chip[data-spot-name="terracotta"] { --spot: var(--spot-terracotta); }
+  .gen-chip[data-spot-name="plum"]       { --spot: var(--spot-plum); }
+  .gen-chip[data-spot-name="saffron"]    { --spot: var(--spot-saffron); }
+  .gen-plus {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--accent);
+    opacity: 0;
+    transform: scale(.5);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .gen-plus.show { opacity: 1; transform: scale(1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gen-anim-logo {
+      -webkit-mask-position: 0% 0; mask-position: 0% 0;
+    }
+    .gen-chip, .gen-plus { opacity: 1; transform: none; }
+  }
+
+  /* "Slik gjør andre" — eksempel-tema */
+  .examples {
+    margin-bottom: 80px;
+  }
+  .examples-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .example-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: all 180ms ease;
+  }
+  .example-pill::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .example-pill:hover {
+    background: var(--bg-deep);
+    border-color: var(--accent);
+  }
+
+  /* Kategori-snarveier — "Bla etter tema" */
+  .theme-shortcuts {
+    margin-bottom: 64px;
+  }
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+  }
+  .theme-chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-md);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    transition: all 180ms ease;
+  }
+  .theme-chip-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--spot, var(--accent));
+    flex-shrink: 0;
+  }
+  .theme-chip[data-spot-name="teal"]       { --spot: var(--spot-teal); }
+  .theme-chip[data-spot-name="moss"]       { --spot: var(--spot-moss); }
+  .theme-chip[data-spot-name="cobalt"]     { --spot: var(--spot-cobalt); }
+  .theme-chip[data-spot-name="terracotta"] { --spot: var(--spot-terracotta); }
+  .theme-chip[data-spot-name="plum"]       { --spot: var(--spot-plum); }
+  .theme-chip[data-spot-name="saffron"]    { --spot: var(--spot-saffron); }
+  .theme-chip:hover {
+    border-color: var(--spot, var(--accent));
+    background: var(--bg);
+  }
+
+  /* "Se hele arkivet" CTA */
+  .archive-cta {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 96px;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .btn-ghost:hover {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* Om-seksjon — "Slik fungerer det" */
+  .about-section {
+    border-top: 0.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+    padding: 56px 0;
+    margin-bottom: 80px;
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about-section h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(26px, 3vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 0;
+  }
+  .about-section h2 em { font-style: italic; color: var(--accent); }
+  .about-section p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .about-section p:last-child { margin-bottom: 0; }
+  .about-more { margin-top: 4px; }
+  .about-more > summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: opacity 180ms ease;
+  }
+  .about-more > summary::-webkit-details-marker { display: none; }
+  .about-more > summary::after { content: "+"; font-size: 15px; line-height: 1; }
+  .about-more[open] > summary::after { content: "–"; }
+  .about-more[open] > summary { margin-bottom: 14px; }
+  .about-more > summary:hover { opacity: 0.7; }
+
+  /* FAQ */
+  .faq {
+    margin-bottom: 80px;
+  }
+  .faq-list {
+    border-top: 0.5px solid var(--rule);
+  }
+  .faq-item {
+    border-bottom: 0.5px solid var(--rule);
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 22px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    transition: color 180ms ease;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { color: var(--accent); }
+  .faq-item summary::after {
+    content: "+";
+    font-family: var(--font-display);
+    font-size: 28px;
+    line-height: 1;
+    color: var(--ink-mute);
+    transition: transform 220ms ease, color 220ms ease;
+    flex-shrink: 0;
+  }
+  .faq-item[open] summary::after {
+    content: "−";
+    color: var(--accent);
+  }
+  .faq-item summary em { font-style: italic; color: var(--accent); }
+  .faq-answer {
+    padding: 0 0 24px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 640px;
+  }
+  .faq-answer p { margin-bottom: 12px; }
+  .faq-answer p:last-child { margin-bottom: 0; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--rule-strong);
+    padding: 32px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  footer .brand { color: var(--accent); font-weight: 500; }
+  footer a { color: var(--ink-mute); text-decoration: none; transition: color 180ms ease; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; gap: 32px; }
+    .hero-text { padding-right: 0; }
+    .hero-image { order: -1; aspect-ratio: 16/10; min-height: 0; }
+    .three-up { grid-template-columns: 1fr; gap: 28px; }
+    .app-section { grid-template-columns: 1fr; padding: 32px 24px; }
+    .app-section-image { max-width: 220px; }
+    .quiz-card.featured { grid-column: span 1; }
+    .quiz-card.featured .quiz-title { font-size: 26px; }
+    .about-section { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+    .theme-grid { grid-template-columns: repeat(2, 1fr); }
+    .faq-item summary { font-size: 17px; }
+    footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+  @media (max-width: 560px) {
+    .masthead { flex-wrap: wrap; gap: 12px; }
+    .masthead-meta { font-size: 10px; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="masthead">
+    <a class="masthead-logo" href="index.html" aria-label="CustomQuiz hjem">
+      <img class="masthead-mark" src="IMG/logo-variant.jpg" alt="">
+      <span class="masthead-wordmark">CustomQuiz</span>
+    </a>
+    <nav class="masthead-meta">
+      <a href="arkiv.html" class="masthead-link">Arkivet</a>
+      <span class="masthead-sep">·</span>
+      <span>Daglig quiz · Norsk</span>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="eyebrow">Ny utgave hver morgen</div>
+      <h1>Du <em>vet</em> mindre enn du tror. Heldigvis.</h1>
+      <p class="lede">En quiz om dagen er starten på løsningen. Velg blant tolv kuraterte tema — eller skriv ditt eget, fra norsk historie til japansk matkultur. Ta den alene, eller sammen med venner rundt bordet.</p>
+      <a class="btn" href="quiz-app-v2.html">Start dagens quiz <span class="btn-arrow">→</span></a>
+    </div>
+    <div class="hero-image">
+      <img id="hero-img" src="IMG/hero.jpg" alt="Kategori-illustrasjon fra Allmennkunnskap">
+    </div>
+  </section>
+
+  <!-- THREE-UP -->
+  <section class="three-up">
+    <div class="three-up-item">
+      <div class="three-up-num">01</div>
+      <h3>Velg ditt <em>tema</em></h3>
+      <p>12 kuraterte tema — fra norsk historie til kvantefysikk — eller skriv ditt eget. Du bestemmer både emne, nivå og lengde.</p>
+    </div>
+    <div class="three-up-item">
+      <div class="three-up-num">02</div>
+      <h3>AI, du og <em>vennene dine</em> skriver spørsmålene</h3>
+      <p>Hver quiz blir generert i øyeblikket. Norsk språk, plausible distraktorer, kort forklaring til hvert svar.</p>
+    </div>
+    <div class="three-up-item">
+      <div class="three-up-num">03</div>
+      <h3>Bygg en <em>streak</em></h3>
+      <p>Én quiz om dagen holder hjernen våken. Vi husker poengene dine og minner deg når neste ligger klar.</p>
+    </div>
+  </section>
+
+  <!-- APP CTA -->
+  <section class="app-section">
+    <div>
+      <div class="eyebrow">Generatoren</div>
+      <h2>Lag en <em>egen quiz</em> på sekunder.</h2>
+      <p>Tema-velger, nivåkontroll, antall spørsmål. Skriv «japansk matkultur» eller «Romerrikets fall» — og den genereres på flekken.</p>
+      <a class="btn" href="quiz-app-v2.html">Åpne generatoren <span class="btn-arrow">→</span></a>
+    </div>
+    <div class="app-section-image gen-anim" id="gen-anim" role="img" aria-label="Kombiner tre tema til din egen quiz">
+      <div class="gen-anim-logo" aria-hidden="true"></div>
+      <div class="gen-anim-combo" id="gen-combo" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- SLIK GJØR ANDRE -->
+  <section class="examples">
+    <div class="section-label">
+      <span>Slik gjør andre</span>
+      <span class="section-meta">Sist genererte tema</span>
+    </div>
+    <div class="examples-row">
+      <a class="example-pill" href="quiz-app-v2.html?quiz=verdenshistorie-06">Romerrikets fall</a>
+      <a class="example-pill" href="quiz-app-v2.html?quiz=geografi-06">Japansk matkultur</a>
+      <a class="example-pill" href="quiz-app-v2.html?quiz=teknologi-06">Motorsykkelens historie</a>
+      <a class="example-pill" href="quiz-app-v2.html?quiz=kunst-06">Surrealismens malere</a>
+      <a class="example-pill" href="quiz-app-v2.html?quiz=vitenskap-07">Kvantemekanikkens fedre</a>
+      <a class="example-pill" href="quiz-app-v2.html?quiz=filosofi-02">Stoikerne</a>
+      <a class="example-pill" href="quiz-app-v2.html?quiz=film-05">Stanley Kubrick</a>
+      <a class="example-pill" href="quiz-app-v2.html?quiz=geografi-07">Norske vinregioner</a>
+    </div>
+  </section>
+
+  <!-- QUIZ ARCHIVE -->
+  <div class="section-label">
+    <span>Arkivet · mest spilt</span>
+    <span class="section-meta">Seks utgaver · ratings fra leserne</span>
+  </div>
+  <section class="quiz-grid">
+
+    <a class="quiz-card featured" href="quiz-v2.html">
+      <div class="quiz-image" data-spot="teal"><img src="IMG/kategori-mix.jpg" alt=""></div>
+      <div class="quiz-body">
+        <div class="quiz-num">№ 01 · Blandet</div>
+        <div class="quiz-title">Hva <em>vet</em> du, egentlig?</div>
+        <div class="quiz-sub">Ti spørsmål på tvers av historie, naturvitenskap, litteratur, geografi og kultur. Medium til vanskelig.</div>
+        <div class="quiz-rating">
+          <span class="quiz-stars">4.6 ★</span>
+          <span class="quiz-plays">1 248 spilt</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="quiz-card" href="quiz-2-v2.html">
+      <div class="quiz-image" data-spot="teal"><img src="IMG/kategori-mix.jpg" alt=""></div>
+      <div class="quiz-body">
+        <div class="quiz-num">№ 02 · Blandet</div>
+        <div class="quiz-title">Tilbake for <em>mer</em>?</div>
+        <div class="quiz-sub">Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.</div>
+        <div class="quiz-rating">
+          <span class="quiz-stars">4.4 ★</span>
+          <span class="quiz-plays">892 spilt</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="quiz-card" href="oslo-quiz-v2.html">
+      <div class="quiz-image" data-spot="moss"><img src="IMG/kategori-geografi.jpg" alt=""></div>
+      <div class="quiz-body">
+        <div class="quiz-num">№ 03 · Oslo</div>
+        <div class="quiz-title">Hvor godt kjenner du <em>Oslo</em>?</div>
+        <div class="quiz-sub">Fra Håkon V til Snøhetta, fra Akerselva til Bjørvika.</div>
+        <div class="quiz-rating">
+          <span class="quiz-stars">4.7 ★</span>
+          <span class="quiz-plays">1 067 spilt</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="quiz-card featured" href="oslo-quiz-puber-v2.html">
+      <div class="quiz-image" data-spot="moss"><img src="IMG/kategori-geografi.jpg" alt=""></div>
+      <div class="quiz-body">
+        <div class="quiz-num">№ 04 · Oslo</div>
+        <div class="quiz-title">Tigerbyens <em>baksider</em></div>
+        <div class="quiz-sub">Puber, gater og folklore som ikke står i turistbrosjyrene.</div>
+        <div class="quiz-rating">
+          <span class="quiz-stars">4.8 ★</span>
+          <span class="quiz-plays">743 spilt</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="quiz-card featured" href="klinikk-quiz-v2.html">
+      <div class="quiz-image" data-spot="cobalt"><img src="IMG/kategori-naturvitenskap.jpg" alt=""></div>
+      <div class="quiz-body">
+        <div class="quiz-num">№ 05 · Klinikk</div>
+        <div class="quiz-title">Hud, hender, <em>helbredelse</em></div>
+        <div class="quiz-sub">Hudpleie, fysioterapi, fotpleie og litt energiarbeid. Fagspråk.</div>
+        <div class="quiz-rating">
+          <span class="quiz-stars">4.5 ★</span>
+          <span class="quiz-plays">318 spilt</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="quiz-card" href="yungblud-quiz-v2.html">
+      <div class="quiz-image" data-spot="saffron"><img src="IMG/kategori-musikk.jpg" alt=""></div>
+      <div class="quiz-body">
+        <div class="quiz-num">№ 06 · Musikk</div>
+        <div class="quiz-title">Hvor godt kjenner du <em>YUNGBLUD</em>?</div>
+        <div class="quiz-sub">Dominic Harrison fra Doncaster — tre UK #1-album på rad.</div>
+        <div class="quiz-rating">
+          <span class="quiz-stars">4.9 ★</span>
+          <span class="quiz-plays">542 spilt</span>
+        </div>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- KATEGORI-SNARVEIER -->
+  <section class="theme-shortcuts">
+    <div class="section-label">
+      <span>Bla etter tema</span>
+      <span class="section-meta">Filtrer arkivet direkte</span>
+    </div>
+    <div class="theme-grid">
+      <a class="theme-chip" data-spot-name="teal"       href="arkiv.html?category=mix"><span class="theme-chip-dot"></span>Blandet</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="arkiv.html?category=historie"><span class="theme-chip-dot"></span>Norsk historie</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="arkiv.html?category=verdenshistorie"><span class="theme-chip-dot"></span>Verdenshistorie</a>
+      <a class="theme-chip" data-spot-name="cobalt"     href="arkiv.html?category=vitenskap"><span class="theme-chip-dot"></span>Naturvitenskap</a>
+      <a class="theme-chip" data-spot-name="moss"       href="arkiv.html?category=geografi"><span class="theme-chip-dot"></span>Geografi</a>
+      <a class="theme-chip" data-spot-name="plum"       href="arkiv.html?category=litteratur"><span class="theme-chip-dot"></span>Litteratur</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="arkiv.html?category=kunst"><span class="theme-chip-dot"></span>Kunst</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="arkiv.html?category=film"><span class="theme-chip-dot"></span>Film og TV</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="arkiv.html?category=musikk"><span class="theme-chip-dot"></span>Musikk</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="arkiv.html?category=sport"><span class="theme-chip-dot"></span>Sport</a>
+      <a class="theme-chip" data-spot-name="plum"       href="arkiv.html?category=filosofi"><span class="theme-chip-dot"></span>Filosofi</a>
+      <a class="theme-chip" data-spot-name="cobalt"     href="arkiv.html?category=teknologi"><span class="theme-chip-dot"></span>Teknologi</a>
+    </div>
+  </section>
+
+  <!-- SE HELE ARKIVET -->
+  <div class="archive-cta">
+    <a class="btn btn-ghost" href="arkiv.html">Se hele arkivet <span class="btn-arrow">→</span></a>
+  </div>
+
+  <!-- OM — SLIK FUNGERER DET -->
+  <section class="about-section">
+    <h2>Slik lager vi <em>spørsmålene</em></h2>
+    <div>
+      <p>Hvert spørsmål skrives av en språkmodell instruert til å produsere kontrollerbare påstander — ikke synsing, ikke vagheter. Vi gir den tolv tematiske spor, et tonenivå (presisjonsfagspråk eller hverdagsnorsk), og krever fire svaralternativer hvor distraktorene skal være like plausible som det riktige.</p>
+      <details class="about-more">
+        <summary>Les mer</summary>
+        <p>Hver runde går gjennom en automatisert validering før den publiseres: duplikater fjernes, modellen må vise at ett og bare ett svar er riktig, og spørsmål uten verifiserbar kilde forkastes. Du kan rapportere feil på spørsmål/svar om du mener det er teit eller feil. Vi retter.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="section-label">
+      <span>Ofte stilte <em>spørsmål</em></span>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary><span class="faq-q">Hvor kommer <em>spørsmålene</em> fra?</span></summary>
+        <div class="faq-answer">
+          <p>De skrives av en språkmodell (Anthropic Claude) som er instruert med tematisk rammeverk og en streng valideringsregel: ett riktig svar, tre plausible distraktorer, kort forklaring med kildebar logikk. Vi leser feil-rapportene fra brukerne og forbedrer instruksene fortløpende.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="faq-q">Koster det <em>noe</em>?</span></summary>
+        <div class="faq-answer">
+          <p>Dagens quiz og arkivet er gratis. En liten månedlig abonnement gir deg ubegrenset egne quizer på hva du måtte ønske, ukeskonkurransen, og lagring av streak. Detaljer kommer på lanseringsdagen.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="faq-q">Når kommer <em>ny quiz</em>?</span></summary>
+        <div class="faq-answer">
+          <p>Hver morgen kl 07:00 norsk tid. Mandag historie, tirsdag vitenskap, onsdag geografi — og slik videre. Søndag er blandet og litt vanskeligere.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="faq-q">Kan jeg lage mine <em>egne</em>?</span></summary>
+        <div class="faq-answer">
+          <p>Ja — det er hele poenget. Velg blant tolv kuraterte tema, eller skriv ditt eget (japansk matkultur, motorsykkelens historie, norske vinregioner). Du bestemmer både tema, vanskelighet og antall spørsmål. Quizen blir generert i øyeblikket og kan deles med venner.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="faq-q">Hva med <em>personvern</em>?</span></summary>
+        <div class="faq-answer">
+          <p>Vi lagrer bare det vi trenger for å vise deg streaken din og forbedre spørsmålene — ingen tredjeparts-tracking, ingen reklame. Dataen din ligger i EU (Frankfurt). Du kan slette kontoen din når som helst, og da slettes alt.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <div><span class="brand">CustomQuiz</span> · customquiz.no</div>
+    <div>© 2026 · Daglige quizer på norsk</div>
+  </footer>
+
+</div>
+
+<script>
+  // Tilfeldig kategori-bilde som hero ved hver innlasting
+  (function () {
+    var kategorier = [
+      'film', 'filosofi', 'geografi', 'kunst', 'litteratur', 'mix',
+      'musikk', 'naturvitenskap', 'norsk-historie', 'sport',
+      'teknologi', 'verdenshistorie'
+    ];
+    var valgt = kategorier[Math.floor(Math.random() * kategorier.length)];
+    var el = document.getElementById('hero-img');
+    if (el) el.src = 'IMG/kategori-' + valgt + '.jpg';
+  })();
+
+  // Generator-animasjon: logo males inn, så tre tema som stadig veksles ut
+  (function () {
+    var temaer = [
+      { navn: 'Norsk historie',  spot: 'terracotta' },
+      { navn: 'Verdenshistorie', spot: 'terracotta' },
+      { navn: 'Naturvitenskap',  spot: 'cobalt' },
+      { navn: 'Geografi',        spot: 'moss' },
+      { navn: 'Litteratur',      spot: 'plum' },
+      { navn: 'Kunst',           spot: 'saffron' },
+      { navn: 'Film og TV',      spot: 'terracotta' },
+      { navn: 'Musikk',          spot: 'saffron' },
+      { navn: 'Sport',           spot: 'saffron' },
+      { navn: 'Filosofi',        spot: 'plum' },
+      { navn: 'Teknologi',       spot: 'cobalt' },
+      { navn: 'Blandet',         spot: 'teal' }
+    ];
+    var SLOTS = 3;
+    var wrap = document.getElementById('gen-anim');
+    var combo = document.getElementById('gen-combo');
+    if (!wrap || !combo) return;
+
+    var reduced = window.matchMedia &&
+                  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function pickUnique(n, exclude) {
+      exclude = exclude || [];
+      var idxs = [];
+      while (idxs.length < n) {
+        var k = Math.floor(Math.random() * temaer.length);
+        if (idxs.indexOf(k) === -1 && exclude.indexOf(k) === -1) idxs.push(k);
+      }
+      return idxs;
+    }
+    function setChip(el, t) {
+      el.setAttribute('data-spot-name', t.spot);
+      el.innerHTML = '<span class="gen-chip-dot"></span>' + t.navn;
+    }
+
+    // Bygg fast struktur: chip + plus + chip + plus + chip
+    var current = pickUnique(SLOTS);
+    var chipEls = [], plusEls = [];
+    for (var i = 0; i < SLOTS; i++) {
+      var chip = document.createElement('span');
+      chip.className = 'gen-chip';
+      setChip(chip, temaer[current[i]]);
+      combo.appendChild(chip);
+      chipEls.push(chip);
+      if (i < SLOTS - 1) {
+        var plus = document.createElement('span');
+        plus.className = 'gen-plus';
+        plus.textContent = '+';
+        combo.appendChild(plus);
+        plusEls.push(plus);
+      }
+    }
+
+    if (reduced) {
+      chipEls.forEach(function (c) { c.classList.add('show'); });
+      plusEls.forEach(function (p) { p.classList.add('show'); });
+      wrap.classList.add('play');
+      return;
+    }
+
+    // Bytt ett tema om gangen — fade ut, sett nytt (ulikt de tre synlige), fade inn
+    function swap(s) {
+      var el = chipEls[s];
+      el.classList.remove('show');
+      setTimeout(function () {
+        var ny = pickUnique(1, current)[0];
+        current[s] = ny;
+        setChip(el, temaer[ny]);
+        void el.offsetWidth; // tving reflow så transition trigges
+        el.classList.add('show');
+      }, 430);
+    }
+
+    function startCycle() {
+      var slot = 0;
+      setInterval(function () {
+        swap(slot % SLOTS);
+        slot++;
+      }, 2100);
+    }
+
+    var started = false;
+    function startIntro() {
+      if (started) return;
+      started = true;
+      wrap.classList.add('play'); // logo-pensel starter
+
+      // chips + plus fader inn etter at logoen er nesten malt
+      var seq = [];
+      for (var j = 0; j < SLOTS; j++) {
+        seq.push(chipEls[j]);
+        if (plusEls[j]) seq.push(plusEls[j]);
+      }
+      seq.forEach(function (el, k) {
+        setTimeout(function () { el.classList.add('show'); }, 1150 + k * 300);
+      });
+
+      // start den evige vekslingen etter at intro er ferdig
+      setTimeout(startCycle, 1150 + seq.length * 300 + 1000);
+    }
+
+    // Start når seksjonen scrolles inn (én gang)
+    if (!('IntersectionObserver' in window)) { startIntro(); return; }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { startIntro(); obs.disconnect(); }
+      });
+    }, { threshold: 0.35 });
+    obs.observe(wrap);
+  })();
+
+  // Blokk-for-blokk innfading av siden når menyens intro nesten er ferdig
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('pre-reveal')) return;
+    if (window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var blocks = document.querySelectorAll('.container > *:not(.masthead)');
+    var start = 900, step = 130;
+    Array.prototype.forEach.call(blocks, function (el, i) {
+      setTimeout(function () { el.classList.add('is-in'); }, start + i * step);
+    });
+  })();
+</script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
