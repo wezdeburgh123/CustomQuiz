@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CustomQuiz — e-post-flows (skisser)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F0E6; --bg-soft:#FBF7EE; --bg-deep:#ECE3CE;
+    --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
+    --rule:#E2D8C2; --rule-strong:#C9BD9F;
+    --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
+    --spot-teal:#0A6E5A; --spot-moss:#5C7A3C; --spot-cobalt:#2C4A8F;
+    --spot-terracotta:#B05238; --spot-plum:#6B3050; --spot-saffron:#C68A2E;
+    --font-display:'Fraunces',Georgia,serif;
+    --font-sans:'Manrope',-apple-system,sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg-deep); color:var(--ink);
+    font-family:var(--font-sans); -webkit-font-smoothing:antialiased;
+  }
+  /* ---- Gallery chrome ---- */
+  .page-head{
+    max-width:1180px; margin:0 auto; padding:56px 32px 8px;
+  }
+  .page-eyebrow{
+    font-family:var(--font-mono); font-size:11px; font-weight:500;
+    letter-spacing:0.2em; text-transform:uppercase; color:var(--accent);
+    margin:0 0 14px;
+  }
+  .page-title{
+    font-family:var(--font-display); font-weight:380; font-size:clamp(30px,4vw,46px);
+    line-height:1.06; letter-spacing:-0.01em; margin:0 0 16px; color:var(--ink);
+  }
+  .page-title em{font-style:italic; color:var(--accent);}
+  .page-lede{
+    font-size:16px; line-height:1.6; color:var(--ink-soft);
+    max-width:640px; margin:0 0 8px;
+  }
+  .page-lede code{
+    font-family:var(--font-mono); font-size:13px; background:var(--bg-soft);
+    border:0.5px solid var(--rule); padding:1px 6px; border-radius:4px;
+  }
+  .toc{
+    max-width:1180px; margin:24px auto 0; padding:0 32px;
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .toc a{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.04em;
+    text-decoration:none; color:var(--ink-mute);
+    border:0.5px solid var(--rule-strong); border-radius:999px;
+    padding:6px 13px; background:var(--bg-soft); transition:.18s;
+  }
+  .toc a:hover{color:var(--accent); border-color:var(--accent);}
+  .group-rule{
+    max-width:1180px; margin:64px auto 0; padding:0 32px 4px;
+    display:flex; align-items:baseline; gap:16px;
+    border-bottom:1px solid var(--rule-strong);
+  }
+  .group-rule h2{
+    font-family:var(--font-mono); font-size:12px; font-weight:700;
+    letter-spacing:0.16em; text-transform:uppercase; color:var(--accent);
+    margin:0 0 12px;
+  }
+  .group-rule span{
+    font-family:var(--font-sans); font-size:13px; color:var(--ink-mute); margin-bottom:12px;
+  }
+  /* ---- Email card ---- */
+  .grid{
+    max-width:1180px; margin:0 auto; padding:32px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr));
+    gap:32px; align-items:start;
+  }
+  .card{scroll-margin-top:24px;}
+  .card-label{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:12px; margin:0 0 10px;
+  }
+  .card-num{
+    font-family:var(--font-mono); font-size:11px; font-weight:500;
+    letter-spacing:0.12em; color:var(--ink-mute);
+  }
+  .card-name{
+    font-family:var(--font-sans); font-size:14px; font-weight:600; color:var(--ink);
+  }
+  .card-trigger{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:0.04em;
+    color:var(--accent); text-align:right; line-height:1.4;
+  }
+  /* inbox header strip */
+  .inbox{
+    border:0.5px solid var(--rule-strong); border-radius:10px; overflow:hidden;
+    background:#fff; box-shadow:0 1px 0 rgba(31,26,20,.04), 0 18px 40px -28px rgba(31,26,20,.4);
+  }
+  .inbox-meta{
+    background:var(--bg-soft); border-bottom:0.5px solid var(--rule);
+    padding:13px 18px; font-size:12px; line-height:1.5;
+  }
+  .inbox-from{font-weight:600; color:var(--ink);}
+  .inbox-addr{color:var(--ink-mute);}
+  .inbox-subject{
+    display:block; font-family:var(--font-sans); font-weight:600;
+    font-size:13.5px; color:var(--ink); margin-top:4px;
+  }
+  .inbox-pre{display:block; color:var(--ink-mute); font-size:12px; margin-top:2px;}
+  /* ---- Email body (600px column) ---- */
+  .email{background:var(--bg); padding:0;}
+  .email-inner{max-width:600px; margin:0 auto; background:var(--bg);}
+  .em-head{
+    padding:22px 36px 18px; border-bottom:0.5px solid var(--rule);
+    display:flex; align-items:center; gap:11px;
+  }
+  .em-mark{
+    width:30px; height:30px; border-radius:7px; flex:0 0 auto;
+    background:var(--accent); color:var(--bg-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:600; font-size:17px;
+  }
+  .em-word{
+    font-family:var(--font-display); font-weight:500; font-size:18px;
+    letter-spacing:-0.01em; color:var(--ink);
+  }
+  .em-tag{
+    margin-left:auto; font-family:var(--font-mono); font-size:9.5px;
+    letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-mute);
+  }
+  .em-body{padding:32px 36px 30px;}
+  .em-eyebrow{
+    font-family:var(--font-mono); font-size:10.5px; font-weight:500;
+    letter-spacing:0.2em; text-transform:uppercase; color:var(--accent);
+    margin:0 0 14px;
+  }
+  .em-h1{
+    font-family:var(--font-display); font-weight:380; font-size:27px;
+    line-height:1.12; letter-spacing:-0.01em; color:var(--ink); margin:0 0 16px;
+  }
+  .em-h1 em{font-style:italic; color:var(--accent);}
+  .em-p{font-size:15px; line-height:1.62; color:var(--ink-soft); margin:0 0 16px;}
+  .em-p strong{color:var(--ink); font-weight:600;}
+  .em-btn{
+    display:inline-block; background:var(--accent); color:var(--bg-soft)!important;
+    text-decoration:none; font-family:var(--font-sans); font-weight:600; font-size:14px;
+    padding:13px 26px; border-radius:999px; margin:6px 0 4px;
+  }
+  .em-btn-arrow{font-family:var(--font-display); font-size:16px;}
+  .em-meta-small{font-size:12px; line-height:1.55; color:var(--ink-mute); margin:0;}
+  .em-foot{
+    padding:20px 36px 30px; border-top:0.5px solid var(--rule);
+    font-size:11px; line-height:1.6; color:var(--ink-mute);
+  }
+  .em-foot a{color:var(--ink-mute);}
+  .em-foot .brand{color:var(--accent); font-weight:500;}
+  /* reusable bits */
+  .preview-q{
+    background:var(--bg-soft); border:0.5px solid var(--rule);
+    border-left:3px solid var(--spot,var(--accent)); border-radius:10px;
+    padding:18px 20px; margin:4px 0 22px;
+  }
+  .preview-q .q-eye{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--ink-mute); margin:0 0 8px;
+  }
+  .preview-q .q-text{
+    font-family:var(--font-display); font-size:17px; line-height:1.3;
+    color:var(--ink); margin:0 0 14px;
+  }
+  .opt{
+    display:block; font-size:13px; color:var(--ink-soft);
+    border:0.5px solid var(--rule-strong); border-radius:999px;
+    padding:8px 16px; margin:0 0 7px; background:#fff;
+  }
+  .score{
+    display:flex; align-items:baseline; gap:10px; margin:4px 0 18px;
+  }
+  .score-big{
+    font-family:var(--font-display); font-size:46px; font-weight:400;
+    color:var(--accent); line-height:1;
+  }
+  .score-of{font-family:var(--font-mono); font-size:13px; color:var(--ink-mute);}
+  .tiles{font-family:var(--font-mono); font-size:19px; letter-spacing:3px; margin:0 0 18px;}
+  .receipt{
+    width:100%; border-collapse:collapse; margin:4px 0 20px;
+    font-size:13.5px; color:var(--ink-soft);
+  }
+  .receipt td{padding:9px 0; border-bottom:0.5px solid var(--rule);}
+  .receipt td:last-child{text-align:right; color:var(--ink); font-weight:600;}
+  .receipt tr:last-child td{border-bottom:none; padding-top:14px; font-size:15px;}
+  .lb{width:100%; border-collapse:collapse; margin:4px 0 20px; font-size:13.5px;}
+  .lb td{padding:9px 2px; border-bottom:0.5px solid var(--rule); color:var(--ink-soft);}
+  .lb .rank{font-family:var(--font-mono); color:var(--ink-mute); width:30px;}
+  .lb .pts{text-align:right; font-weight:600; color:var(--ink); font-family:var(--font-mono);}
+  .lb .you td{color:var(--accent); font-weight:600;}
+  .lb .you .rank, .lb .you .pts{color:var(--accent);}
+  .alert{
+    background:#FBEEE9; border:0.5px solid #E4C3B6; border-left:3px solid var(--spot-terracotta);
+    border-radius:10px; padding:15px 18px; margin:4px 0 20px;
+    font-size:13.5px; line-height:1.55; color:#6b3a28;
+  }
+  .pill-row{display:flex; gap:7px; flex-wrap:wrap; margin:2px 0 20px;}
+  .pillc{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:0.08em;
+    color:var(--accent); border:0.5px solid var(--accent-soft);
+    background:var(--accent-soft); border-radius:999px; padding:5px 11px;
+  }
+  .check{margin:0 0 20px; padding:0; list-style:none;}
+  .check li{
+    font-size:13.5px; line-height:1.5; color:var(--ink-soft);
+    padding:7px 0 7px 26px; position:relative; border-bottom:0.5px solid var(--rule);
+  }
+  .check li::before{
+    content:"✓"; position:absolute; left:0; top:7px;
+    color:var(--accent); font-weight:700;
+  }
+  .magic-code{
+    font-family:var(--font-mono); font-size:13px; color:var(--ink-mute);
+    word-break:break-all; background:var(--bg-soft); border:0.5px solid var(--rule);
+    border-radius:8px; padding:11px 14px; margin:2px 0 4px;
+  }
+  @media(max-width:760px){
+    .page-head,.toc,.group-rule,.grid{padding-left:18px; padding-right:18px;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <p class="page-eyebrow">CustomQuiz · Skisser · 31. mai 2026</p>
+  <h1 class="page-title">E-post-flows — <em>alle naturlige states</em></h1>
+  <p class="page-lede">Komplett sett e-postmaler i CustomQuiz-identiteten (krem <code>#F5F0E6</code> + dyp teal <code>#0A6E5A</code>, Fraunces / Manrope / JetBrains Mono). Bygget e-post-trygt med 600px kolonne. Avsender, emnefelt og preheader vises over hver mal slik de ser ut i innboksen. Tre grupper: konto, daglig vane, betaling.</p>
+</div>
+
+<nav class="toc">
+  <a href="#e01">01 Magic link</a>
+  <a href="#e02">02 Bekreft e-post</a>
+  <a href="#e03">03 Velkommen</a>
+  <a href="#e04">04 Daglig quiz</a>
+  <a href="#e05">05 Lørdagsquiz</a>
+  <a href="#e06">06 Streak</a>
+  <a href="#e07">07 Vennutfordring</a>
+  <a href="#e08">08 Ukeskonkurranse</a>
+  <a href="#e09">09 Reaktivering</a>
+  <a href="#e10">10 Pause</a>
+  <a href="#e11">11 Oppgrader</a>
+  <a href="#e12">12 Kvittering</a>
+  <a href="#e13">13 Betaling feilet</a>
+  <a href="#e14">14 Sagt opp</a>
+</nav>
+
+<!-- ============ GRUPPE A ============ -->
+<div class="group-rule"><h2>A · Konto &amp; velkomst</h2><span>Transaksjonelle — utløses av brukerhandling, sendes umiddelbart</span></div>
+<div class="grid">
+
+  <!-- 01 Magic link -->
+  <div class="card" id="e01">
+    <div class="card-label"><span class="card-num">№ 01</span><span class="card-name">Magic link — logg inn</span><span class="card-trigger">trigger: «logg inn»<br>T+0</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Din innloggingslenke til CustomQuiz</span>
+        <span class="inbox-pre">Gyldig i 60 minutter — åpne på samme enhet …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Innlogging</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Sikker innlogging</p>
+          <h1 class="em-h1">Trykk for å <em>logge inn</em></h1>
+          <p class="em-p">Du ba om en innloggingslenke. Den fungerer i 60 minutter og kun én gang — ingen passord å huske.</p>
+          <a class="em-btn" href="#">Logg inn på CustomQuiz <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:18px;">Knappen virker ikke? Lim inn denne lenken:</p>
+          <div class="magic-code">https://customquiz.no/min-side#access_token=eyJhbGciOi…</div>
+          <p class="em-meta-small">Ba du ikke om dette? Bare ignorer e-posten — ingen får tilgang uten lenken.</p>
+        </div>
+        <div class="em-foot">Sendt fordi noen skrev inn denne adressen på <span class="brand">customquiz.no</span>.<br>CustomQuiz · Oslo · <a href="#">Personvern</a></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 02 Bekreft e-post -->
+  <div class="card" id="e02">
+    <div class="card-label"><span class="card-num">№ 02</span><span class="card-name">Bekreft e-post (double opt-in)</span><span class="card-trigger">trigger: gate-modal<br>T+0</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Bekreft e-posten din — ett trykk</span>
+        <span class="inbox-pre">Så er du klar for dagens quiz …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Bekreftelse</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Nesten der</p>
+          <h1 class="em-h1">Bekreft, så er du <em>inne</em></h1>
+          <p class="em-p">Vi sender bare e-post du har bedt om. Trykk under for å bekrefte adressen — så har du dagens quiz i innboksen hver morgen.</p>
+          <a class="em-btn" href="#">Bekreft e-posten min <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:18px;">Du kan melde deg av når som helst med én lenke nederst i hver e-post.</p>
+        </div>
+        <div class="em-foot">Du registrerte deg på <span class="brand">customquiz.no</span>. Ikke deg? <a href="#">Avregistrer</a>.<br>CustomQuiz · Oslo · <a href="#">Personvern</a></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 03 Velkommen -->
+  <div class="card" id="e03">
+    <div class="card-label"><span class="card-num">№ 03</span><span class="card-name">Velkommen</span><span class="card-trigger">trigger: bekreftet<br>T+0</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Du er inne. Her er dagens quiz.</span>
+        <span class="inbox-pre">10 spørsmål, fem minutter, null pugg …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Velkommen</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Velkommen om bord</p>
+          <h1 class="em-h1">Du er <em>inne</em></h1>
+          <p class="em-p">Hver morgen får du én quiz: ti spørsmål som belønner det å tenke, ikke å pugge. Her er din aller første.</p>
+          <a class="em-btn" href="#">Ta dagens quiz <span class="em-btn-arrow">→</span></a>
+          <p class="em-p" style="margin-top:24px;"><strong>Slik funker det:</strong></p>
+          <ul class="check">
+            <li>Ny fellesquiz hver dag — samme for alle</li>
+            <li>Bygg streak ved å spille flere dager på rad</li>
+            <li>Logget inn? Lag dine egne tema-quizer når du vil</li>
+          </ul>
+        </div>
+        <div class="em-foot">Du får denne fordi du nettopp ble med på <span class="brand">CustomQuiz</span>.<br><a href="#">Avregistrer</a> · <a href="#">Personvern</a></div>
+      </div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ GRUPPE B ============ -->
+<div class="group-rule"><h2>B · Daglig vane &amp; retention</h2><span>Drypp, streaks, vekst — kjernen i CRM-planen</span></div>
+<div class="grid">
+
+  <!-- 04 Daglig quiz -->
+  <div class="card" id="e04">
+    <div class="card-label"><span class="card-num">№ 04</span><span class="card-name">Daglig quiz (hverdag)</span><span class="card-trigger">kl 07:00 man–fre</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">№ 47 · Oslo — hvor lå Klingenberg kino?</span>
+        <span class="inbox-pre">Dagens ti. Hold streaken på 5 dager i live …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Dagens · № 47</span></div>
+        <div class="em-body" data-spot="terracotta">
+          <p class="em-eyebrow">Tirsdag · Geografi &amp; Oslo</p>
+          <h1 class="em-h1">Dagens <em>ti</em></h1>
+          <p class="em-p">Én smakebit før du starter:</p>
+          <div class="preview-q" style="--spot:var(--spot-terracotta);">
+            <p class="q-eye">Spørsmål 1 av 10</p>
+            <p class="q-text">Hvilken bydel i Oslo har navn etter et gammelt ladested ved fjorden?</p>
+            <span class="opt">A · Grünerløkka</span>
+            <span class="opt">B · Vaterland</span>
+            <span class="opt">C · Bjørvika</span>
+          </div>
+          <a class="em-btn" href="#">Ta hele quizen <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:16px;">🔥 Du er på <strong>5 dager på rad</strong>. Spill i dag for å holde den i gang.</p>
+        </div>
+        <div class="em-foot">Daglig quiz · send kl 07:00. <a href="#">Endre tidspunkt</a> · <a href="#">Avregistrer</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 05 Lørdagsquiz -->
+  <div class="card" id="e05">
+    <div class="card-label"><span class="card-num">№ 05</span><span class="card-name">Lørdagsquiz (helg)</span><span class="card-trigger">kl 09:00 lørdag</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Lørdagsquizen — 15 spørsmål, ta deg god tid</span>
+        <span class="inbox-pre">Litt lengre i dag. Kaffe anbefales …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Helg · stor</span></div>
+        <div class="em-body" data-spot="plum">
+          <p class="em-eyebrow">Lørdag · Mix</p>
+          <h1 class="em-h1">Den <em>store</em> lørdagsquizen</h1>
+          <p class="em-p">Femten spørsmål på tvers av alle kategorier — litt mer å bryne seg på enn på en hverdag. Ingen klokke som maser.</p>
+          <div class="pill-row">
+            <span class="pillc">Historie</span><span class="pillc">Vitenskap</span><span class="pillc">Kunst</span><span class="pillc">Geografi</span><span class="pillc">Film</span>
+          </div>
+          <a class="em-btn" href="#">Start lørdagsquizen <span class="em-btn-arrow">→</span></a>
+        </div>
+        <div class="em-foot">Sendes lørdager kl 09:00. <a href="#">Endre tidspunkt</a> · <a href="#">Avregistrer</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 06 Streak -->
+  <div class="card" id="e06">
+    <div class="card-label"><span class="card-num">№ 06</span><span class="card-name">Streak-påminnelse</span><span class="card-trigger">dag 2 uten spill,<br>streak ≥ 3</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Du har 5 dager på rad — rekk dagens?</span>
+        <span class="inbox-pre">To minutter holder. Streaken venter …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Streak</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">🔥 Streak i fare</p>
+          <h1 class="em-h1">Fem dager <em>på rad</em></h1>
+          <p class="em-p">Det er en fin rekke. Du rekker dagens quiz hvis du tar den før midnatt — to minutter, så er den i boks.</p>
+          <a class="em-btn" href="#">Redd streaken <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:18px;">Vi maser maks én gang i uka. Lover.</p>
+        </div>
+        <div class="em-foot">Streak-påminnelse. <a href="#">Skru av streak-varsler</a> · <a href="#">Avregistrer</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 07 Vennutfordring -->
+  <div class="card" id="e07">
+    <div class="card-label"><span class="card-num">№ 07</span><span class="card-name">Vennutfordring (mottaker)</span><span class="card-trigger">venn deler skår</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Christian fikk 8/10 på Oslo-quizen. Slå ham.</span>
+        <span class="inbox-pre">Samme ti spørsmål. Klarer du bedre?</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Utfordring</span></div>
+        <div class="em-body" data-spot="saffron">
+          <p class="em-eyebrow">En venn utfordrer deg</p>
+          <h1 class="em-h1">Slå <em>8 av 10</em></h1>
+          <p class="em-p"><strong>Christian</strong> tok dagens Oslo-quiz og fikk 8/10. Han mener du ikke klarer det. Samme ti spørsmål — bevis det motsatte.</p>
+          <div class="score" style="--spot:var(--spot-saffron);">
+            <span class="score-big" style="color:var(--spot-saffron);">8</span><span class="score-of">/ 10 — Christian</span>
+          </div>
+          <a class="em-btn" href="#">Ta utfordringen <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:16px;">Blir du med, får dere begge en ukentlig duell.</p>
+        </div>
+        <div class="em-foot">Christian inviterte deg til <span class="brand">CustomQuiz</span>. <a href="#">Nei takk</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 08 Ukeskonkurranse -->
+  <div class="card" id="e08">
+    <div class="card-label"><span class="card-num">№ 08</span><span class="card-name">Ukeskonkurranse — resultat</span><span class="card-trigger">søndag kveld</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Uke 22 er over — du havnet på 3. plass</span>
+        <span class="inbox-pre">62 poeng. Ny uke starter i morgen …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Uke 22</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Ukesoppgjør</p>
+          <h1 class="em-h1">Du ble <em>nummer tre</em></h1>
+          <p class="em-p">Sammenlagt over syv dager. Sterk uke — bare to poeng bak andreplassen.</p>
+          <table class="lb">
+            <tr><td class="rank">1</td><td>Ingrid H.</td><td class="pts">68</td></tr>
+            <tr><td class="rank">2</td><td>Marius T.</td><td class="pts">64</td></tr>
+            <tr class="you"><td class="rank">3</td><td>Deg</td><td class="pts">62</td></tr>
+            <tr><td class="rank">4</td><td>Sofie L.</td><td class="pts">59</td></tr>
+            <tr><td class="rank">5</td><td>Jonas B.</td><td class="pts">55</td></tr>
+          </table>
+          <a class="em-btn" href="#">Se hele tabellen <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:16px;">Ny uke nullstiller alt. I morgen kl 07:00.</p>
+        </div>
+        <div class="em-foot">Ukentlig resultat for innloggede. <a href="#">Avregistrer</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 09 Reaktivering -->
+  <div class="card" id="e09">
+    <div class="card-label"><span class="card-num">№ 09</span><span class="card-name">Reaktivering</span><span class="card-trigger">14 dager uten åpning</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Vi har savnet deg — en quiz du vil like</span>
+        <span class="inbox-pre">Litt musikk, siden det var din greie …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Lenge siden</span></div>
+        <div class="em-body" data-spot="saffron">
+          <p class="em-eyebrow">Det var en stund siden</p>
+          <h1 class="em-h1">Vi har <em>savnet</em> deg</h1>
+          <p class="em-p">Det er to uker siden sist. Vi plukket en quiz i favorittkategorien din for å gjøre comebacket lett.</p>
+          <div class="pill-row"><span class="pillc">Musikk — din favoritt</span></div>
+          <a class="em-btn" href="#">Tilbake til en musikkquiz <span class="em-btn-arrow">→</span></a>
+        </div>
+        <div class="em-foot">Du er fortsatt på lista. <a href="#">Avregistrer</a> · <a href="#">Personvern</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 10 Pause / siste varsel -->
+  <div class="card" id="e10">
+    <div class="card-label"><span class="card-num">№ 10</span><span class="card-name">Pause — siste varsel</span><span class="card-trigger">+30 dager uten respons</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Vi pauser de daglige e-postene dine</span>
+        <span class="inbox-pre">Ett trykk hvis du vil ha dem tilbake …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Pause</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Vi rydder i innboksen din</p>
+          <h1 class="em-h1">Vi setter dem <em>på pause</em></h1>
+          <p class="em-p">Du har ikke åpnet på en stund, så vi stopper de daglige e-postene — ingen vil ha en innboks full av uleste quizer.</p>
+          <p class="em-p">Vil du fortsette? Ett trykk, så er du i gang igjen.</p>
+          <a class="em-btn" href="#">Ja, fortsett å sende <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:18px;">Gjør du ingenting, hører du ikke fra oss igjen. Du er alltid velkommen tilbake på customquiz.no.</p>
+        </div>
+        <div class="em-foot">Siste e-post i denne omgang. <a href="#">Avregistrer helt</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ GRUPPE C ============ -->
+<div class="group-rule"><h2>C · Betaling &amp; abonnement</h2><span>49 kr/mnd · Stripe (kort/Apple Pay) + Vipps Recurring</span></div>
+<div class="grid">
+
+  <!-- 11 Oppgrader -->
+  <div class="card" id="e11">
+    <div class="card-label"><span class="card-num">№ 11</span><span class="card-name">Oppgrader til premium</span><span class="card-trigger">power-bruker / paywall</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Lås opp hele arkivet — 49 kr/mnd</span>
+        <span class="inbox-pre">90 utgaver og egne tema-quizer …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Premium</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Du spiller mye — fint!</p>
+          <h1 class="em-h1">Lås opp <em>alt</em></h1>
+          <p class="em-p">Du har tatt fem quizer denne uka. Med premium åpner du hele biblioteket og kan lage dine egne.</p>
+          <ul class="check">
+            <li>Hele arkivet — 90 utgaver, ikke bare ukens seks</li>
+            <li>Lag egne quizer på et hvilket som helst tema</li>
+            <li>Ukentlig duell mot vennene dine</li>
+          </ul>
+          <a class="em-btn" href="#">Bli abonnent — 49 kr/mnd <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:16px;">Kort, Apple Pay eller Vipps. Si opp når som helst.</p>
+        </div>
+        <div class="em-foot">Tilbud til aktive spillere. <a href="#">Avregistrer</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 12 Kvittering -->
+  <div class="card" id="e12">
+    <div class="card-label"><span class="card-num">№ 12</span><span class="card-name">Kvittering — abonnement aktivert</span><span class="card-trigger">betaling gjennomført</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Takk! Abonnementet ditt er aktivt</span>
+        <span class="inbox-pre">Kvittering for 49 kr — hele arkivet er åpent …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Kvittering</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Betaling bekreftet</p>
+          <h1 class="em-h1">Du er <em>premium</em></h1>
+          <p class="em-p">Takk for at du støtter CustomQuiz. Hele arkivet og generatoren er åpen nå.</p>
+          <table class="receipt">
+            <tr><td>Plan</td><td>CustomQuiz Premium</td></tr>
+            <tr><td>Betalingsmåte</td><td>Vipps</td></tr>
+            <tr><td>Neste trekk</td><td>30. juni 2026</td></tr>
+            <tr><td>Beløp</td><td>49,00 kr</td></tr>
+          </table>
+          <a class="em-btn" href="#">Gå til Min side <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:16px;">Fornyes automatisk hver måned. Du kan si opp når som helst på Min side.</p>
+        </div>
+        <div class="em-foot">Kvittering · oppbevar for egne notater. CustomQuiz · Oslo<br><a href="#">Administrer abonnement</a> · <span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 13 Betaling feilet -->
+  <div class="card" id="e13">
+    <div class="card-label"><span class="card-num">№ 13</span><span class="card-name">Betaling / fornyelse feilet</span><span class="card-trigger">webhook: payment_failed</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Vi fikk ikke trukket abonnementet ditt</span>
+        <span class="inbox-pre">Oppdater betalingen før tilgangen pauses …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Handling kreves</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Fornyelse mislyktes</p>
+          <h1 class="em-h1">Vi fikk ikke <em>trukket</em></h1>
+          <div class="alert">Trekket på 49 kr gikk ikke gjennom. Det skjer som regel når kortet er utløpt eller dekningen mangler.</div>
+          <p class="em-p">Oppdater betalingsmåten innen <strong>3 dager</strong>, så fortsetter alt som før. Etter det pauses premium-tilgangen til betalingen er på plass.</p>
+          <a class="em-btn" href="#">Oppdater betaling <span class="em-btn-arrow">→</span></a>
+        </div>
+        <div class="em-foot">Vi prøver automatisk på nytt i mellomtiden. <a href="#">Administrer abonnement</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 14 Sagt opp -->
+  <div class="card" id="e14">
+    <div class="card-label"><span class="card-num">№ 14</span><span class="card-name">Abonnement sagt opp</span><span class="card-trigger">bruker sier opp</span></div>
+    <div class="inbox">
+      <div class="inbox-meta">
+        <span class="inbox-from">CustomQuiz</span> <span class="inbox-addr">&lt;hei@customquiz.no&gt;</span>
+        <span class="inbox-subject">Abonnementet ditt er sagt opp</span>
+        <span class="inbox-pre">Du har premium ut perioden — til 30. juni …</span>
+      </div>
+      <div class="email"><div class="email-inner">
+        <div class="em-head"><span class="em-mark">C</span><span class="em-word">CustomQuiz</span><span class="em-tag">Oppsigelse</span></div>
+        <div class="em-body">
+          <p class="em-eyebrow">Bekreftet</p>
+          <h1 class="em-h1">Det er <em>ordnet</em></h1>
+          <p class="em-p">Du har sagt opp abonnementet. Du beholder premium ut perioden du har betalt for — fram til <strong>30. juni 2026</strong>. Ingen flere trekk.</p>
+          <p class="em-p">Den daglige gratisquizen får du fortsatt hver morgen.</p>
+          <a class="em-btn" href="#"> Angre oppsigelsen <span class="em-btn-arrow">→</span></a>
+          <p class="em-meta-small" style="margin-top:18px;">Kort tilbakemelding? Svar gjerne på denne e-posten — vi leser alt.</p>
+        </div>
+        <div class="em-foot">Takk for at du var med. Døra står åpen. <a href="#">Avregistrer helt</a><br><span class="brand">customquiz.no</span></div>
+      </div></div>
+    </div>
+  </div>
+
+</div>
+
+<div style="max-width:1180px;margin:0 auto;padding:8px 32px 64px;">
+  <p style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.04em;color:var(--ink-mute);">
+    Skisser — ikke produksjonskode. Spot-farge per kategori følger retning C. Avsenderadresse hei@customquiz.no er plassholder; sending via Brevo, mottak via Uniweb.
+  </p>
+</div>
+
+</body>
+</html>

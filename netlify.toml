@@ -9,6 +9,12 @@
 [functions]
   node_bundler = "esbuild"
 
+# Planlagt funksjon — Vipps månedlig trekk (Fase C). Kjører daglig kl. 06:00 UTC
+# og oppretter neste charge i forkant av forfall. Ingen /api-redirect: dette er
+# en scheduled function, ikke et offentlig endepunkt.
+[functions."vipps-charge"]
+  schedule = "0 6 * * *"
+
 # Pene URL-er: /api/* -> funksjoner
 [[redirects]]
   from = "/api/generate-quiz"
@@ -41,4 +47,10 @@
 [[redirects]]
   from = "/api/subscription-status"
   to = "/.netlify/functions/subscription-status"
+  status = 200
+
+# Si opp abonnement (Stripe Customer Portal / Vipps stopp-avtale)
+[[redirects]]
+  from = "/api/cancel-subscription"
+  to = "/.netlify/functions/cancel-subscription"
   status = 200

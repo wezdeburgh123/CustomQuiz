@@ -1566,6 +1566,52 @@
   // Vi sender bare tema, nivå og antall; funksjonen bygger prompten og kaller Claude.
   const GENERATE_ENDPOINT = "/api/generate-quiz";
 
+  /* --------------- GRATIS-TIER (testfase) ---------------
+   * Lar en bruker generere et begrenset antall quizer gratis før
+   * abonnementsmodalen (#paywall) dukker opp. Teller per nettleser i
+   * localStorage — enkelt og null friksjon mens vi tester live.
+   *
+   * TODO (når betaling låses inn): flytt tellingen til server-side per
+   * konto (Supabase: subscribers/usage-tabell, sjekk i generate-quiz.js),
+   * og slå på den strenge innloggings/abonnements-ruten igjen — se den
+   * bevarte ensureAccess() lenger ned. localStorage er trivielt å omgå
+   * (inkognito/ny nettleser), så det holder kun til testing.
+   */
+  const FREE_GENERATION_LIMIT = 5;
+  const FREE_GEN_KEY = "customquiz.freeGen";
+
+  function getFreeGenCount() {
+    try { return parseInt(localStorage.getItem(FREE_GEN_KEY), 10) || 0; }
+    catch (_) { return 0; }
+  }
+  function bumpFreeGenCount() {
+    const n = getFreeGenCount() + 1;
+    try { localStorage.setItem(FREE_GEN_KEY, String(n)); } catch (_) {}
+    return n;
+  }
+  function freeGenRemaining() {
+    return Math.max(0, FREE_GENERATION_LIMIT - getFreeGenCount());
+  }
+
+  // Avgjør om brukeren får generere nå. Aktive abonnenter passerer alltid;
+  // alle andre får FREE_GENERATION_LIMIT genereringer før paywall vises.
+  async function ensureCanGenerate() {
+    // Aktivt abonnement → ubegrenset (gjelder først når betaling er live).
+    try {
+      if (window.CQAuth && window.CQAuth.isConfigured && window.CQAuth.isConfigured()
+          && window.CQAuth.getEmail && window.CQAuth.getEmail()
+          && window.CQAuth.isPremium && (await window.CQAuth.isPremium())) {
+        return true;
+      }
+    } catch (_) { /* fall gjennom til gratis-grensa */ }
+
+    if (getFreeGenCount() >= FREE_GENERATION_LIMIT) {
+      showPaywall();
+      return false;
+    }
+    return true;
+  }
+
   async function callGenerator(themes, difficulty, count) {
     const headers = { "Content-Type": "application/json" };
     // Send Supabase-token så serveren kan verifisere abonnement (Fase B).
@@ -1596,6 +1642,9 @@
     return data; // { title, lede, questions: [...] }
   }
 
+  // LÅS-INN-VERSJON (ikke i bruk under testing): streng innlogging + abonnement.
+  // Bytt ensureCanGenerate() ut med ensureAccess() i generateQuiz() når
+  // gratis-tieren skal av og betaling håndheves hardt. Beholdt med vilje.
   // Klient-side tilgangssjekk. Returnerer true hvis brukeren kan fortsette.
   // Ikke konfigurert (anon-nøkkel ikke lagt inn) → ikke blokker (lokal/pre-launch).
   async function ensureAccess() {
@@ -1685,9 +1734,9 @@
   async function generateQuiz() {
     const themes = getAllThemes();
     if (themes.length === 0) { alert('Velg minst ett tema først'); return; }
-    // Egen quiz-generering krever aktivt abonnement (Fase B). Ruter til
-    // innlogging eller abonnement hvis det mangler.
-    if (!(await ensureAccess())) return;
+    // Gratis-tier under testing: la brukeren generere FREE_GENERATION_LIMIT
+    // ganger, vis så paywall. (Lås-inn: bytt til ensureAccess() — se over.)
+    if (!(await ensureCanGenerate())) return;
     const themeLabel = themes.length === 1 ? themes[0] : themes.join(' + ');
     const bannerTheme = themes[0]; // første valgte gir banner-bilde
     document.getElementById('loading-theme').textContent = `Lager quiz om "${themeLabel}"`;
@@ -1708,6 +1757,9 @@
         if (!q.category) q.category = themes[idx % themes.length];
         if (!q.explanation) q.explanation = '';
       });
+      // Vellykket LIVE-generering brukt opp én av de gratis. Demo-fallback
+      // (catch-grenen under) teller ikke, siden den ikke koster API-kall.
+      bumpFreeGenCount();
       quiz.difficulty = state.difficulty; // generert quiz arver valgt nivå
       state.quiz = quiz;
       state.currentIndex = 0;

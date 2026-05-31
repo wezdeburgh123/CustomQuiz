@@ -25,6 +25,8 @@ create table if not exists public.subscribers (
   stripe_subscription_id  text,
   -- Vipps
   vipps_agreement_id      text,
+  vipps_next_charge_on    date,        -- forfallsdato for NESTE charge som skal opprettes (null = ingen opprettet ennå)
+  vipps_last_charge_id    text,        -- siste opprettede charge (for statussjekk/feilsøk)
   -- Periode
   current_period_end      timestamptz,
   created_at        timestamptz not null default now(),

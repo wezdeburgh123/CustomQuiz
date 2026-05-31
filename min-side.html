@@ -123,11 +123,37 @@
       const st = d.status || "none";
       badge.className = "badge " + (st === "active" ? "active" : st === "pending" ? "pending" : "none");
       text.textContent = st === "active" ? "Aktiv · Premium" : st === "pending" ? "Venter på betaling" : "Ingen — gratisbruker";
-      actions.innerHTML = (st === "active")
-        ? '<span class="muted">Kilde: ' + (d.source || "—") + '. Si opp? Svar på kvitterings-e-posten så ordner vi det (selvbetjening kommer).</span>'
-        : '<a class="btn" href="arkiv.html#abonnement">Bli abonnent <span class="btn-arrow">→</span></a>';
+      if (st === "active") {
+        actions.innerHTML =
+          '<button class="btn btn-ghost" type="button" id="cancel-btn">Si opp abonnement</button>' +
+          '<span class="muted">Kilde: ' + (d.source || "—") + '</span>';
+        var cb = document.getElementById("cancel-btn");
+        if (cb) cb.addEventListener("click", cancelSub);
+      } else {
+        actions.innerHTML = '<a class="btn" href="arkiv.html#abonnement">Bli abonnent <span class="btn-arrow">→</span></a>';
+      }
     } catch (e) {
       badge.className = "badge none"; text.textContent = "Kunne ikke hente status";
+    }
+  }
+
+  async function cancelSub() {
+    var btn = document.getElementById("cancel-btn");
+    if (!confirm("Vil du si opp abonnementet? Du beholder tilgangen ut perioden du allerede har betalt for.")) return;
+    if (btn) { btn.disabled = true; btn.textContent = "Sier opp …"; }
+    try {
+      var token = await window.CQAuth.getAccessToken();
+      if (!token) throw new Error("Du er ikke innlogget.");
+      var r = await fetch("/api/cancel-subscription", { method: "POST", headers: { Authorization: "Bearer " + token } });
+      var d = await r.json();
+      if (!r.ok) throw new Error(d.error || "Noe gikk galt.");
+      if (d.kind === "redirect" && d.url) { window.location.href = d.url; return; } // Stripe Customer Portal
+      var email = window.CQAuth.getEmail();
+      if (email) renderSub(email);
+      alert(d.message || "Abonnementet er sagt opp.");
+    } catch (e) {
+      alert("Kunne ikke si opp: " + (e.message || e));
+      if (btn) { btn.disabled = false; btn.textContent = "Si opp abonnement"; }
     }
   }
 

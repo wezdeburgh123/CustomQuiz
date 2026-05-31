@@ -14,6 +14,7 @@
  */
 const Stripe = require("stripe");
 const { upsertSubscriber, logEvent } = require("./_supabase");
+const { sendTemplate, welcomeTemplateId, receiptTemplateId, formatDateNb } = require("./_brevo");
 
 exports.handler = async (event) => {
   const { STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET } = process.env;
@@ -45,6 +46,22 @@ exports.handler = async (event) => {
         stripe_subscription_id: obj.subscription,
       });
       await logEvent("stripe", evt.type, email, obj.subscription, obj);
+
+      // Fase D — velkomst + kvittering (feiler stille hvis Brevo ikke konfigurert).
+      if (email) {
+        const site = (process.env.SITE_URL || "https://customquiz.no").replace(/\/$/, "");
+        const belop = obj.amount_total ? Math.round(obj.amount_total / 100) : 49;
+        const now = new Date();
+        const neste = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate()));
+        await sendTemplate(welcomeTemplateId(), email, { quiz_url: site + "/" });
+        await sendTemplate(receiptTemplateId(), email, {
+          belop: String(belop),
+          dato: formatDateNb(now),
+          betalingsmetode: "Apple Pay / kort",
+          neste_trekk: formatDateNb(neste),
+          min_side_url: site + "/min-side.html",
+        });
+      }
     } else if (evt.type === "customer.subscription.updated" || evt.type === "customer.subscription.deleted") {
       const email = (obj.metadata?.email || "").toLowerCase();
       const map = { active: "active", trialing: "active", past_due: "past_due", canceled: "canceled", unpaid: "past_due" };

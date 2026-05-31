@@ -27,8 +27,8 @@ Et abonnement må vite *hvem* som betalte for å kunne låse opp innhold. Identi
 ## Hva som allerede er bygget (i dag)
 
 - **Betalingsmodal** i `arkiv.html`: «Se abonnementsalternativer» og «Bli abonnent» åpner nå en on-brand modal (49 kr/mnd, e-postfelt, Vipps- og Apple Pay/kort-knapp) i stedet for å navigere til quiz-app-v2. Knappene kaller `/api/create-checkout` og `/api/vipps-agreement` og viser en vennlig melding til backend er koblet på.
-- **Supabase-skjema**: `db/schema.sql` (subscribers + payment_events + RLS).
-- **Serverless-funksjoner** (`netlify/functions/`): `create-checkout`, `stripe-webhook`, `vipps-agreement`, `vipps-callback`, `subscription-status`, delt `_supabase.js`.
+- **Supabase-skjema**: `db/schema.sql` (subscribers + payment_events + RLS). Tillegg for Vipps-trekk: `db/migration-vipps-charges.sql` (felt `vipps_next_charge_on` + `vipps_last_charge_id`).
+- **Serverless-funksjoner** (`netlify/functions/`): `create-checkout`, `stripe-webhook`, `vipps-agreement`, `vipps-callback`, `subscription-status`, `vipps-charge` (planlagt/daglig trekk), `cancel-subscription` (si opp), delt `_supabase.js` + `_brevo.js` (transaksjonell e-post).
 - **Ruter** lagt i `netlify.toml`, og `package.json` med `stripe` + `@supabase/supabase-js`.
 
 Alt leser hemmeligheter fra env-variabler. Ingenting fungerer før kontoene under er satt opp og nøklene lagt inn.
@@ -42,7 +42,7 @@ Alt leser hemmeligheter fra env-variabler. Ingenting fungerer før kontoene unde
 
 ### 2. Supabase
 - Opprett prosjekt i **Frankfurt (EU)**.
-- Kjør `db/schema.sql` i SQL Editor.
+- Kjør `db/schema.sql` i SQL Editor. (Har du allerede kjørt det? Kjør i tillegg `db/migration-vipps-charges.sql` for Vipps-trekk-feltene.)
 - Slå på **Auth → Email (magic link)**.
 - Noter `Project URL`, `anon`-nøkkel (frontend) og `service_role`-nøkkel (kun server).
 
@@ -73,7 +73,13 @@ VIPPS_CLIENT_SECRET          …
 VIPPS_SUBSCRIPTION_KEY       … (Ocp-Apim-Subscription-Key)
 VIPPS_MSN                    … (Merchant Serial Number)
 VIPPS_ENV                    test   (→ prod ved lansering)
+BREVO_API_KEY                xkeysib-…   (Brevo → SMTP & API → API Keys) — for kvittering/velkomst
+BREVO_WELCOME_TEMPLATE_ID    2      (valgfri — mal-ID for velkomst i Brevo)
+BREVO_RECEIPT_TEMPLATE_ID    3      (valgfri — mal-ID for kvittering)
+BREVO_SENDER_EMAIL           hei@customquiz.no   (valgfri override; ellers brukes malens egen avsender)
 ```
+
+**Brevo:** Lag en API-nøkkel i Brevo (SMTP & API → API Keys) og legg som `BREVO_API_KEY`. Malene #2 (Velkomst) og #3 (Kvittering) er allerede lastet inn (se `e-post-maler/`). Uten `BREVO_API_KEY` hopper koden stille over e-post — alt annet fungerer.
 
 ---
 
@@ -85,9 +91,12 @@ VIPPS_ENV                    test   (→ prod ved lansering)
 
 ## Hva JEG bygger videre (kode — neste faser)
 
-**Fase C — Vipps månedlig trekk.** En planlagt funksjon (daglig) som sender `charge` minst 1 dag før forfall på alle aktive Vipps-avtaler, og oppdaterer status ved feilet trekk. (Stripe håndterer fornyelse selv — Vipps må trekkes aktivt av oss.)
+**Fase C — Vipps månedlig trekk. ✅ BYGGET (31. mai 2026).** Planlagt funksjon `netlify/functions/vipps-charge.js` (Netlify Scheduled Function, daglig kl. 06:00 UTC via `netlify.toml`). Den finner aktive Vipps-abonnenter og oppretter neste `charge` (49 kr, DIRECT_CAPTURE, `retryDays: 5`) i forkant av forfall — første trekk 3 dager etter aktivering, deretter månedlig. Sporer forfall i nye felt `vipps_next_charge_on` + `vipps_last_charge_id` (kjør `db/migration-vipps-charges.sql` i Supabase). Idempotent (Idempotency-Key = avtale + forfallsdato → ingen dobbelt-trekk selv om DB-oppdatering feiler). Feilede trekk (kort-avslag) håndteres av Vipps selv via `retryDays` + varsling i appen siden charge er `chargeType: RECURRING`; hvis charge-opprettelse feiler fordi brukeren har stoppet avtalen i appen, slår jobben opp avtalestatus og setter `canceled`/`past_due`. Løpende per-charge betalingsstatus bør på sikt komme via Vipps webhooks (Fase C.2, ikke bygget). Krever ingen nye env-variabler utover de eksisterende Vipps-nøklene.
 
-**Fase D — kvittering + e-post.** Velkomst/kvittering via Brevo (se `CRM-plan.md`), og «si opp»-lenke (Stripe Customer Portal + Vipps avslutt-avtale).
+**Fase D — kvittering + e-post + si opp. ✅ BYGGET (31. mai 2026).**
+- **E-post via Brevo**: delt `netlify/functions/_brevo.js` (transaksjonell `POST /v3/smtp/email`, malens egen avsender med mindre `BREVO_SENDER_EMAIL` settes; feiler stille hvis `BREVO_API_KEY` mangler). Velkomst (mal #2) sendes ved første aktivering — fra `stripe-webhook.js` (checkout.session.completed) og `vipps-callback.js` (avtale ACTIVE, kun ved overgang). Kvittering (mal #3) sendes ved betaling — fra `stripe-webhook.js` (kort/Apple Pay) og `vipps-charge.js` (når månedstrekk opprettes). Mal-ID-er overstyrbare via env (default 2/3).
+- **Si opp**: `netlify/functions/cancel-subscription.js` (POST, autentisert med Supabase-JWT). Stripe → åpner **Customer Portal** og returnerer `{ kind:"redirect", url }`. Vipps → `PATCH agreement {status:"STOPPED"}` + setter `canceled`, returnerer `{ kind:"done", message }`. Rute `/api/cancel-subscription` i `netlify.toml`. Knapp «Si opp abonnement» lagt på `min-side.html` (kaller endepunktet med Bearer-token; Stripe redirecter, Vipps bekrefter inline).
+- GJENSTÅR (valgfritt, senere): Min side bruker enkel `confirm()/alert()` — kan pusses til on-brand dialog. Vipps per-charge betalingsstatus via webhooks (Fase C.2).
 
 ---
 

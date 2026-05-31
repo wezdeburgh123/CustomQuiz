@@ -11339,6 +11339,681 @@
           "explanation": "Kritikere peker på at fattigdom, makt og struktur snevrer inn det reelle handlingsrommet — friheten er ikke like absolutt for alle. Eksistensialismen verken krever gudstro eller avviser vitenskap."
         }
       ]
+    },
+    {
+      "id": "mix-07",
+      "num": "91",
+      "category": "mix",
+      "categoryLabel": "Blandet",
+      "title": "Først, størst, eldst",
+      "sub": "En runde om milepæler og rekorder der ett logisk hint ofte avgjør.",
+      "lede": "En runde om milepæler og rekorder der ett logisk hint ofte avgjør.",
+      "difficulty": "medium",
+      "rating": 4.6,
+      "plays": 357,
+      "date": "2026-05-31",
+      "questions": [
+        {
+          "category": "blandet",
+          "q": "Det første mennesket i verdensrommet fløy i 1961. Den første kvinnen fulgte allerede i 1963 — over tjue år før den første amerikanske kvinnen. Hvem var hun?",
+          "options": [
+            "Mae Jemison",
+            "Sally Ride",
+            "Svetlana Savitskaja",
+            "Valentina Teresjkova"
+          ],
+          "correct": 3,
+          "explanation": "Teresjkova fløy med Vostok 6 i 1963 for Sovjetunionen. Hintet «tjue år før den første amerikanske» peker bort fra Sally Ride (1983) og Mae Jemison (1992). Savitskaja var nummer to, i 1982."
+        },
+        {
+          "category": "blandet",
+          "q": "Hvilket regnes som det eldste universitetet i Europa i sammenhengende drift, grunnlagt allerede i 1088?",
+          "options": [
+            "Universitetet i Bologna",
+            "Oxford",
+            "Universitetet i Salamanca",
+            "Sorbonne i Paris"
+          ],
+          "correct": 0,
+          "explanation": "Bologna (1088) regnes som det eldste. Oxford vokste fram rundt 1096 og Paris rundt 1150 — alle senere. Selve ordet universitet (universitas) ble først brukt om studentlaugene i Bologna."
+        },
+        {
+          "category": "blandet",
+          "q": "Verdens lengste elv og elva med størst vannføring er ikke den samme. Nilen er lengst, men hvilken elv fører desidert mest vann ut i havet?",
+          "options": [
+            "Kongo",
+            "Yangtze",
+            "Mississippi",
+            "Amazonas"
+          ],
+          "correct": 3,
+          "explanation": "Amazonas fører ut mer vann enn de neste største elvene til sammen, takket være det enorme regnskogsnedslagsfeltet. Lengde og vannføring henger ikke nødvendigvis sammen — Nilen renner gjennom ørken og taper vann underveis."
+        },
+        {
+          "category": "blandet",
+          "q": "Det første landet som ga kvinner full stemmerett på nasjonalt nivå var New Zealand i 1893. Hvilket land ble først i Europa, i 1906?",
+          "options": [
+            "Storbritannia",
+            "Norge",
+            "Finland",
+            "Sverige"
+          ],
+          "correct": 2,
+          "explanation": "Finland, da et russisk storfyrstedømme, innførte både stemmerett og valgbarhet for kvinner i 1906 etter valgreformen i kjølvannet av generalstreiken i 1905. Norge fulgte i 1913, lenge før Storbritannia (1928)."
+        },
+        {
+          "category": "blandet",
+          "q": "Hvilket grunnstoff er det desidert vanligste i universet, og utgjør hoveddelen av nesten alle stjerner?",
+          "options": [
+            "Helium",
+            "Hydrogen",
+            "Karbon",
+            "Oksygen"
+          ],
+          "correct": 1,
+          "explanation": "Hydrogen, det enkleste atomet, utgjør rundt 75 prosent av all vanlig masse. Stjerner lyser nettopp ved å smelte hydrogen til helium. Karbon og oksygen dannes først senere, inne i stjernene."
+        },
+        {
+          "category": "blandet",
+          "q": "Mount Everest er det høyeste fjellet målt fra havnivå. Men hvilket fjell er det høyeste målt fra sin egen fot på havbunnen til toppen?",
+          "options": [
+            "Denali i Alaska",
+            "Aconcagua",
+            "K2",
+            "Mauna Kea på Hawaii"
+          ],
+          "correct": 3,
+          "explanation": "Mauna Kea rager rundt 10 000 meter fra havbunnen, mer enn Everests 8 849 meter over havet — men det meste er under vann. Spørsmålet skiller mellom «høyest over havet» og «høyest fra fot til topp»."
+        },
+        {
+          "category": "blandet",
+          "q": "Hvilket av disse dyrene har det største hjertet av alle dyr som noensinne har levd?",
+          "options": [
+            "Afrikansk elefant",
+            "Spermhval",
+            "Sjiraff",
+            "Blåhval"
+          ],
+          "correct": 3,
+          "explanation": "Blåhvalen er det største dyret som har eksistert, og hjertet alene veier flere hundre kilo. Størst kropp gir størst hjerte — selv de største landdyrene kommer ikke i nærheten."
+        },
+        {
+          "category": "blandet",
+          "q": "Hvilken bok regnes som den mest trykte i historien, langt foran enhver enkeltforfatters verk?",
+          "options": [
+            "Don Quijote",
+            "Koranen",
+            "Maos lille røde",
+            "Bibelen"
+          ],
+          "correct": 3,
+          "explanation": "Bibelen er trykt i milliarder eksemplarer over flere hundre år og på over to tusen språk. Don Quijote kalles ofte den mest solgte enkeltromanen — men det er en annen kategori enn den samlede bibeltrykkingen."
+        },
+        {
+          "category": "blandet",
+          "q": "Storbritannia var blant de første til å avskaffe slaveriet i sitt imperium ved lov. Omtrent når skjedde det?",
+          "options": [
+            "1910-tallet",
+            "1750-tallet",
+            "1830-tallet",
+            "1880-tallet"
+          ],
+          "correct": 2,
+          "explanation": "Slavehandelen ble forbudt i 1807, og selve slaveriet i imperiet i 1833. USA avskaffet slaveriet først i 1865 etter borgerkrigen — altså flere tiår senere, som de øvrige alternativene ville plassere det."
+        },
+        {
+          "category": "blandet",
+          "q": "Hvilken planet i solsystemet har den korteste dagen, altså raskest rotasjon om egen akse?",
+          "options": [
+            "Mars",
+            "Jupiter",
+            "Jorden",
+            "Merkur"
+          ],
+          "correct": 1,
+          "explanation": "Jupiter roterer rundt på under ti timer til tross for sin enorme størrelse. Gasskjempene roterer raskt; Merkur, nærmest sola, har derimot en svært lang dag på grunn av tidevannskrefter."
+        }
+      ]
+    },
+    {
+      "id": "mix-08",
+      "num": "92",
+      "category": "mix",
+      "categoryLabel": "Blandet",
+      "title": "Tall og størrelsesorden",
+      "sub": "Du trenger sjelden det eksakte tallet — bare sansen for hva som er rimelig.",
+      "lede": "Du trenger sjelden det eksakte tallet — bare sansen for hva som er rimelig.",
+      "difficulty": "medium",
+      "rating": 4.6,
+      "plays": 214,
+      "date": "2026-05-31",
+      "questions": [
+        {
+          "category": "blandet",
+          "q": "Lyset bruker knapt åtte minutter fra sola til jorda. Omtrent hvor lang tid bruker lyset fra jorda til månen?",
+          "options": [
+            "Drøyt ett sekund",
+            "En brøkdel av et millisekund",
+            "En halv time",
+            "Et lite minutt"
+          ],
+          "correct": 0,
+          "explanation": "Månen er rundt 384 000 km unna, og lys går nær 300 000 km i sekundet — altså litt over ett sekund. At sola bruker åtte minutter på en mye lengre avstand gir et nyttig forholdstall å resonnere fra."
+        },
+        {
+          "category": "blandet",
+          "q": "Omtrent hvor stor andel av DNA-et deler vi mennesker med en sjimpanse?",
+          "options": [
+            "Rundt 50 prosent",
+            "Rundt 98–99 prosent",
+            "Rundt 25 prosent",
+            "Rundt 75 prosent"
+          ],
+          "correct": 1,
+          "explanation": "Mennesker og sjimpanser deler omtrent 98–99 prosent av DNA-et — de små forskjellene gir store utslag. 50 prosent ville antydet et søsken-nært slektskap, noe som er biologisk urimelig mellom to arter."
+        },
+        {
+          "category": "blandet",
+          "q": "Jorden er rundt 4,5 milliarder år gammel. Hvis hele jordas historie ble presset inn i ett kalenderår, omtrent når ville det moderne mennesket dukke opp?",
+          "options": [
+            "I oktober",
+            "Rundt 1. desember",
+            "De siste minuttene før midnatt 31. desember",
+            "Midt i juli"
+          ],
+          "correct": 2,
+          "explanation": "Homo sapiens har eksistert i et par hundre tusen år — en forsvinnende liten brøkdel av 4,5 milliarder. På et komprimert år tilsvarer det de siste minuttene. Dette «kosmiske kalenderåret» illustrerer hvor ung menneskeheten er."
+        },
+        {
+          "category": "blandet",
+          "q": "Et A4-ark er omtrent 0,1 mm tykt. Hvis du kunne brette det 42 ganger, og hver bretting dobler tykkelsen, omtrent hvor høyt ville bunken nå?",
+          "options": [
+            "Omtrent til månen",
+            "Til toppen av Mount Everest",
+            "Hundre meter",
+            "En kilometer"
+          ],
+          "correct": 0,
+          "explanation": "Hver bretting dobler tykkelsen, så 2 opphøyd i 42 ganget med 0,1 mm blir flere hundre tusen kilometer — omtrent avstanden til månen. Eksponentiell vekst virker urimelig, og det er nettopp poenget."
+        },
+        {
+          "category": "blandet",
+          "q": "Verdens befolkning passerte 8 milliarder rundt 2022. Omtrent hvor mange var vi ved år 1800?",
+          "options": [
+            "Rundt 4 milliarder",
+            "Rundt 3 milliarder",
+            "Rundt 100 millioner",
+            "Rundt 1 milliard"
+          ],
+          "correct": 3,
+          "explanation": "Vi nådde den første milliarden omtrent år 1800. At veksten til åtte milliarder skjedde på vel to hundre år viser hvor eksplosiv den moderne befolkningsveksten har vært — fire milliarder ble vi først rundt 1974."
+        },
+        {
+          "category": "blandet",
+          "q": "Et menneskehjerte slår omtrent 70 ganger i minuttet. Omtrent hvor mange slag blir det i løpet av et liv på rundt 80 år?",
+          "options": [
+            "Rundt 100 millioner",
+            "Rundt 300 millioner",
+            "Rundt 3 milliarder",
+            "Rundt 30 milliarder"
+          ],
+          "correct": 2,
+          "explanation": "70 slag i minuttet blir rundt 100 000 i døgnet, ganget med 365 dager og 80 år — i underkant av tre milliarder. Slik kan du nå svaret uten å huske det, bare ved å gange opp stegvis."
+        },
+        {
+          "category": "blandet",
+          "q": "Atmosfæren består hovedsakelig av to gasser. Oksygen utgjør rundt 21 prosent — hvilken gass utgjør det aller meste av resten?",
+          "options": [
+            "Karbondioksid",
+            "Nitrogen",
+            "Argon",
+            "Hydrogen"
+          ],
+          "correct": 1,
+          "explanation": "Nitrogen utgjør rundt 78 prosent av lufta. Karbondioksid, som vi snakker mye om i klimasammenheng, er bare en brøkdel av en prosent — viktig, men ikke stort i mengde."
+        },
+        {
+          "category": "blandet",
+          "q": "Nærmeste stjerne utenom sola, Proxima Centauri, ligger omtrent hvor langt unna?",
+          "options": [
+            "Drøyt 4 lysår",
+            "Rundt 40 lysår",
+            "Rundt 400 lysår",
+            "Mindre enn ett lysår"
+          ],
+          "correct": 0,
+          "explanation": "Proxima Centauri ligger rundt 4,2 lysår unna — selv den nærmeste nabostjernen er altså uhyre fjern. Det illustrerer hvor tomt rommet mellom stjernene er sammenlignet med avstandene i vårt eget solsystem."
+        },
+        {
+          "category": "blandet",
+          "q": "Havet dekker omtrent hvor stor andel av jordas overflate?",
+          "options": [
+            "Rundt 30 prosent",
+            "Rundt 70 prosent",
+            "Rundt 50 prosent",
+            "Rundt 85 prosent"
+          ],
+          "correct": 1,
+          "explanation": "Vann dekker rundt 71 prosent av kloden, derav «den blå planeten». At land utgjør under en tredjedel forklarer hvorfor jorda fra rommet ser overveiende blå ut."
+        },
+        {
+          "category": "blandet",
+          "q": "Et rutefly flyr i rundt 10–12 kilometers høyde. Omtrent hvor høyt settes vanligvis grensen mot verdensrommet?",
+          "options": [
+            "Rundt 1 000 kilometer",
+            "Rundt 100 kilometer",
+            "Rundt 50 kilometer",
+            "Rundt 30 kilometer"
+          ],
+          "correct": 1,
+          "explanation": "Kármán-linjen, grensen mot rommet, settes ofte til 100 km. Et rutefly flyr altså bare en tiendedel så høyt — luften er tynn allerede der oppe, men atmosfæren rekker mye lenger."
+        }
+      ]
+    },
+    {
+      "id": "mix-09",
+      "num": "93",
+      "category": "mix",
+      "categoryLabel": "Blandet",
+      "title": "Det uventede sambandet",
+      "sub": "Spørsmål der svaret ligger i en kobling du må oppdage selv.",
+      "lede": "Spørsmål der svaret ligger i en kobling du må oppdage selv.",
+      "difficulty": "vanskelig",
+      "rating": 4.7,
+      "plays": 135,
+      "date": "2026-05-31",
+      "questions": [
+        {
+          "category": "blandet",
+          "q": "Ordene «salær», «salat» og «soldat» knyttes alle til ett latinsk ord. Hvilken vare ligger bak dem?",
+          "options": [
+            "Vin",
+            "Korn",
+            "Gull",
+            "Salt"
+          ],
+          "correct": 3,
+          "explanation": "Latin «sal» (salt) ligger bak alle tre: romerske soldater fikk «salarium» (saltpenger), grønnsaker ble saltet til salat, og lønn heter fortsatt salær. Felles ledetråd er stavelsen «sal»."
+        },
+        {
+          "category": "blandet",
+          "q": "Grunnstoffet helium ble oppdaget i sollys før det ble funnet på jorda. Hvilken metode gjorde det mulig å «se» et ukjent stoff i sola?",
+          "options": [
+            "Prøver hentet av en sonde",
+            "Spektralanalyse av lyset",
+            "Måling av solas tyngdekraft",
+            "Et teleskop med ekstra forstørrelse"
+          ],
+          "correct": 1,
+          "explanation": "Hvert grunnstoff sender ut lys i karakteristiske farger. I 1868 så astronomer en ukjent gul linje i solspekteret — derav navnet helium, etter gresk «helios» (sol). Ingen sonde kunne hente prøver fra sola."
+        },
+        {
+          "category": "blandet",
+          "q": "Byen Istanbul har hett tre navn gjennom historien. Hvilken rekkefølge er riktig?",
+          "options": [
+            "Byzantion — Istanbul — Konstantinopel",
+            "Konstantinopel — Byzantion — Istanbul",
+            "Byzantion — Konstantinopel — Istanbul",
+            "Istanbul — Byzantion — Konstantinopel"
+          ],
+          "correct": 2,
+          "explanation": "Den greske byen Byzantion ble omdøpt til Konstantinopel av keiser Konstantin på 300-tallet, og fikk navnet Istanbul etter ottomansk overtakelse i 1453. Navnerekkefølgen følger maktskiftene."
+        },
+        {
+          "category": "blandet",
+          "q": "Tallet null kom sent til Europa via arabiske matematikere, som igjen hadde lært det fra et annet land. Hvor stammer vårt posisjonssystem med null opprinnelig fra?",
+          "options": [
+            "Hellas",
+            "India",
+            "Romerriket",
+            "Egypt"
+          ],
+          "correct": 1,
+          "explanation": "Det moderne tallsystemet med null som plassholder utviklet seg i India og kom til Europa via arabisk matematikk — derav navnet «arabertall». Grekerne hadde avansert geometri, men ikke et fullverdig null."
+        },
+        {
+          "category": "blandet",
+          "q": "Hvorfor er havvann salt, mens elvene som renner ut i havet stort sett er ferske?",
+          "options": [
+            "Saltet kommer fra fisk og tang",
+            "Havbunnen er laget av salt",
+            "Elvene fører hele tiden små mengder salt ut i havet, der det hoper seg opp når vann fordamper",
+            "Regnet over havet inneholder salt"
+          ],
+          "correct": 2,
+          "explanation": "Elver løser ut bittelite salt fra berggrunnen. Vannet fordamper fra havet og faller som ferskt regn, men saltet blir igjen og samles opp gjennom millioner av år. Koblingen er fordamping pluss tilførsel over tid."
+        },
+        {
+          "category": "blandet",
+          "q": "Navnene på ukedagene henger sammen med guder og himmellegemer. Torsdag er «Tors dag» — hvilken planet knyttet romerne til samme ukedag?",
+          "options": [
+            "Mars",
+            "Venus",
+            "Jupiter",
+            "Saturn"
+          ],
+          "correct": 2,
+          "explanation": "Torsdag er Tors dag, og romerne knyttet ukedagen til Jupiter (fransk «jeudi»). Tor og Jupiter var begge tordenguder — koblingen mellom germansk og romersk mytologi forklarer navnet."
+        },
+        {
+          "category": "blandet",
+          "q": "Hvorfor blir epler brune i snittflaten etter at de er skåret opp?",
+          "options": [
+            "Sukkeret krystalliserer seg",
+            "Bakterier fra kniven sprer seg",
+            "Stoffer i frukten reagerer med oksygen i lufta",
+            "Vannet fordamper og misfarger kjøttet"
+          ],
+          "correct": 2,
+          "explanation": "Når celler brytes opp, møter enzymer og fenoler luftens oksygen og danner brune forbindelser — samme grunn til at sitronsaft, som hindrer reaksjonen, holder eplet lyst. Det er kjemi, ikke bakterier."
+        },
+        {
+          "category": "blandet",
+          "q": "Ordet «robot» kom inn i språket fra et teaterstykke på 1920-tallet. Fra hvilket språk stammer ordet, der det betyr noe i retning av «tvangsarbeid»?",
+          "options": [
+            "Tysk",
+            "Latin",
+            "Russisk",
+            "Tsjekkisk"
+          ],
+          "correct": 3,
+          "explanation": "Ordet ble laget for Karel Čapeks tsjekkiske skuespill R.U.R. (1920), av «robota» som betyr slit eller pliktarbeid. At det dukket opp i en fiksjon før teknologien fantes, gjør opphavet lett å bomme på."
+        },
+        {
+          "category": "blandet",
+          "q": "Ved en solformørkelse må sol, jord og måne stå på linje. Hva er det som faktisk skjer?",
+          "options": [
+            "Månen står mellom sola og jorda",
+            "Sola står mellom jorda og månen",
+            "Jorda står mellom sola og månen",
+            "Månen er på sitt fjerneste fra jorda"
+          ],
+          "correct": 0,
+          "explanation": "Ved solformørkelse skyver månen seg foran sola sett fra jorda. Ved måneformørkelse er det omvendt — jorda kaster skygge på månen. Du kan resonnere ut fra hva som blir formørket: er det sola, må noe ligge foran den."
+        },
+        {
+          "category": "blandet",
+          "q": "Noen land, som Storbritannia og Japan, kjører på venstre side av veien. Hvilken historisk forklaring knyttes ofte til venstrekjøring?",
+          "options": [
+            "Solen sto lavt og blendet mot høyre",
+            "Det var billigere å bygge veier slik",
+            "Hester foretrekker å gå til venstre",
+            "Høyrehendte ryttere ville ha sverdarmen mot møtende"
+          ],
+          "correct": 3,
+          "explanation": "En vanlig forklaring er at høyrehendte holdt seg til venstre slik at sverdhånden vendte mot dem de møtte. Senere presset hestekjerrer og bilkjøring mange land over til høyre — men øystater beholdt ofte den gamle skikken."
+        }
+      ]
+    },
+    {
+      "id": "litteratur-07",
+      "num": "94",
+      "category": "litteratur",
+      "categoryLabel": "Litteratur",
+      "title": "Nobelprisen i litteratur",
+      "sub": "Om prisen, vinnerne og kontroversene — med plass til logisk slutning.",
+      "lede": "Om prisen, vinnerne og kontroversene — med plass til logisk slutning.",
+      "difficulty": "medium",
+      "rating": 4.8,
+      "plays": 106,
+      "date": "2026-05-31",
+      "questions": [
+        {
+          "category": "litteratur",
+          "q": "Nobelprisen i litteratur deles ut av en institusjon i ett bestemt land. Hvilket?",
+          "options": [
+            "Sveits",
+            "Norge",
+            "Danmark",
+            "Sverige"
+          ],
+          "correct": 3,
+          "explanation": "Svenska Akademien i Stockholm står for litteraturprisen, slik Alfred Nobel bestemte. Bare fredsprisen deles ut i Norge — en nyttig huskeregel når man skal plassere de ulike prisene."
+        },
+        {
+          "category": "litteratur",
+          "q": "Den første norske vinneren av litteraturprisen, i 1903, var også en sentral skikkelse i tiden før unionsoppløsningen. Hvem?",
+          "options": [
+            "Bjørnstjerne Bjørnson",
+            "Henrik Ibsen",
+            "Knut Hamsun",
+            "Sigrid Undset"
+          ],
+          "correct": 0,
+          "explanation": "Bjørnson fikk prisen i 1903, midt i den nasjonale brytningstiden før 1905. Ibsen ble aldri tildelt prisen til tross for sin status, mens Hamsun (1920) og Undset (1928) kom senere."
+        },
+        {
+          "category": "litteratur",
+          "q": "Hvilken norsk forfatter fikk prisen i mellomkrigstiden, blant annet for middelalderromanene om Kristin Lavransdatter?",
+          "options": [
+            "Cora Sandel",
+            "Camilla Collett",
+            "Amalie Skram",
+            "Sigrid Undset"
+          ],
+          "correct": 3,
+          "explanation": "Undset fikk prisen i 1928, særlig for de historiske romanene fra middelalderens Norge. De andre er kjente norske forfattere, men ingen av dem mottok Nobelprisen."
+        },
+        {
+          "category": "litteratur",
+          "q": "En filosof og forfatter avslo Nobelprisen i 1964 fordi han prinsipielt ikke ville la seg «institusjonalisere». Hvem?",
+          "options": [
+            "Albert Camus",
+            "Boris Pasternak",
+            "Jean-Paul Sartre",
+            "Samuel Beckett"
+          ],
+          "correct": 2,
+          "explanation": "Sartre takket nei i 1964 og mente en forfatter ikke burde la seg gjøre til en institusjon. Pasternak ble derimot presset av sovjetiske myndigheter til å avslå i 1958 — en annen type sak."
+        },
+        {
+          "category": "litteratur",
+          "q": "I 2016 gikk prisen til en artist «for å ha skapt nytt poetisk uttrykk innenfor den store amerikanske sangtradisjonen». Hvem var den uventede vinneren?",
+          "options": [
+            "Bob Dylan",
+            "Bruce Springsteen",
+            "Leonard Cohen",
+            "Patti Smith"
+          ],
+          "correct": 0,
+          "explanation": "Bob Dylan fikk prisen i 2016, noe som utløste debatt om sangtekster kan regnes som litteratur. De andre er også ordsterke artister, men det var Dylan som ble tildelt prisen."
+        },
+        {
+          "category": "litteratur",
+          "q": "Forfatteren av «Hundre års ensomhet», et hovedverk i magisk realisme, fikk prisen i 1982. Hvem?",
+          "options": [
+            "Pablo Neruda",
+            "Jorge Luis Borges",
+            "Mario Vargas Llosa",
+            "Gabriel García Márquez"
+          ],
+          "correct": 3,
+          "explanation": "García Márquez fra Colombia fikk prisen i 1982. Borges, ofte nevnt som en uforklarlig forbigått kandidat, vant aldri; Vargas Llosa fikk sin først i 2010."
+        },
+        {
+          "category": "litteratur",
+          "q": "Alfred Nobel skrev i testamentet at prisen skulle gå til verk «i en bestemt retning». Hvilket ord brukte han, som siden har vært tolket på mange vis?",
+          "options": [
+            "Idealistisk",
+            "Nasjonal",
+            "Realistisk",
+            "Klassisk"
+          ],
+          "correct": 0,
+          "explanation": "Nobel skrev at prisen skulle gå til det fremste verket «i en idealistisk retning». Den vage formuleringen har gitt akademiet stort tolkningsrom — og er en del av forklaringen på mange omstridte valg."
+        },
+        {
+          "category": "litteratur",
+          "q": "Prisen i litteratur ble ikke delt ut i 2018. Hva var hovedårsaken?",
+          "options": [
+            "Pengemangel i Nobelstiftelsen",
+            "Krig i Europa",
+            "Uenighet om hvem som var kvalifisert",
+            "En overgrepsskandale knyttet til Svenska Akademien"
+          ],
+          "correct": 3,
+          "explanation": "En overgreps- og lekkasjeskandale lammet akademiet i 2018, og prisen ble utsatt. Året etter ble to priser delt ut samtidig — for 2018 og 2019."
+        },
+        {
+          "category": "litteratur",
+          "q": "Hvis en forfatter dør etter at navnet er kunngjort, men før seremonien, hva sier reglene?",
+          "options": [
+            "Prisen kan deles ut posthumt i et slikt tilfelle",
+            "Prisen trekkes alltid tilbake",
+            "Prisen overføres til neste år",
+            "Prisen gis til en slektning"
+          ],
+          "correct": 0,
+          "explanation": "Posthum tildeling er normalt forbudt, men dersom vinneren dør etter kunngjøringen kan prisen likevel deles ut — slik det skjedde da Erik Axel Karlfeldt døde i 1931. Resonner ut fra at navnet allerede var offentliggjort."
+        },
+        {
+          "category": "litteratur",
+          "q": "Hvilken sjanger har historisk vært klart underrepresentert blant prisvinnerne?",
+          "options": [
+            "Romaner",
+            "Lyrikk",
+            "Drama",
+            "Ren krim og spenning"
+          ],
+          "correct": 3,
+          "explanation": "Romaner, lyrikk og drama er alle godt representert, mens rendyrket krim sjelden har nådd opp. Akademiet har lent mot det «idealistiske», noe som gjør sjangerlitteratur til et lite sannsynlig svar."
+        }
+      ]
+    },
+    {
+      "id": "teknologi-07",
+      "num": "95",
+      "category": "teknologi",
+      "categoryLabel": "Teknologi",
+      "title": "Kunstig intelligens fra Turing til i dag",
+      "sub": "Fra de teoretiske grunnideene til dagens språkmodeller.",
+      "lede": "Fra de teoretiske grunnideene til dagens språkmodeller.",
+      "difficulty": "medium",
+      "rating": 4.8,
+      "plays": 228,
+      "date": "2026-05-31",
+      "questions": [
+        {
+          "category": "teknologi",
+          "q": "En britisk matematiker foreslo i 1950 en test for om en maskin kan «tenke»: kan den narre en menneskelig samtalepartner til å tro den er et menneske? Hvem?",
+          "options": [
+            "Charles Babbage",
+            "Alan Turing",
+            "John von Neumann",
+            "Claude Shannon"
+          ],
+          "correct": 1,
+          "explanation": "Turing-testen ble beskrevet i Turings artikkel fra 1950. Babbage levde hundre år tidligere, mens Shannon og von Neumann jobbet med informasjonsteori og datamaskinarkitektur — ikke akkurat denne testen."
+        },
+        {
+          "category": "teknologi",
+          "q": "Selve uttrykket «artificial intelligence» ble myntet på en berømt arbeidskonferanse i 1956. Ved hvilken institusjon fant den sted?",
+          "options": [
+            "Harvard",
+            "Dartmouth College",
+            "MIT",
+            "Stanford"
+          ],
+          "correct": 1,
+          "explanation": "Dartmouth-konferansen i 1956 regnes som fagfeltets fødsel, og det var her begrepet ble etablert. MIT og Stanford ble snart store AI-miljøer, men startskuddet gikk på Dartmouth."
+        },
+        {
+          "category": "teknologi",
+          "q": "I 1997 slo en IBM-datamaskin den regjerende verdensmesteren i sjakk. Hva het maskinen?",
+          "options": [
+            "Watson",
+            "Deep Blue",
+            "ENIAC",
+            "AlphaGo"
+          ],
+          "correct": 1,
+          "explanation": "Deep Blue slo Garri Kasparov i 1997. Watson kom senere og vant i quizprogrammet Jeopardy, mens AlphaGo slo en go-mester i 2016 — ENIAC var en tidlig datamaskin uten spillferdigheter."
+        },
+        {
+          "category": "teknologi",
+          "q": "Moderne språkmodeller bygger på en nettverksarkitektur fra en artikkel i 2017 med tittelen «Attention Is All You Need». Hva kalles arkitekturen?",
+          "options": [
+            "Transformer",
+            "Beslutningstre",
+            "Perceptron",
+            "Konvolusjonsnett"
+          ],
+          "correct": 0,
+          "explanation": "Transformer-arkitekturen introduserte attention-mekanismen som lar modellen vekte sammenhenger i teksten. Konvolusjonsnett dominerer bildeanalyse, og perceptronet er et mye eldre, enklere konsept."
+        },
+        {
+          "category": "teknologi",
+          "q": "Bokstaven «G» i forkortelsen GPT står for «Generative». Hva betyr de to andre, P og T?",
+          "options": [
+            "Parallel og Training",
+            "Probabilistic og Tensor",
+            "Predictive og Text",
+            "Pre-trained og Transformer"
+          ],
+          "correct": 3,
+          "explanation": "GPT står for Generative Pre-trained Transformer: modellen er forhåndstrent på enorme tekstmengder og bygger på transformer-arkitekturen. Du kan resonnere deg fram fra at den både genererer tekst og bruker transformer."
+        },
+        {
+          "category": "teknologi",
+          "q": "Når en AI-modell lærer ved å bli belønnet eller straffet for handlingene sine over mange forsøk, kalles det?",
+          "options": [
+            "Forsterkende læring",
+            "Uveiledet læring",
+            "Veiledet læring",
+            "Overføringslæring"
+          ],
+          "correct": 0,
+          "explanation": "Forsterkende læring (reinforcement learning) bygger på prøving, feiling og belønning — slik AlphaGo lærte å spille. Veiledet læring trenger derimot ferdige fasitsvar, og passer ikke beskrivelsen «belønnet for handlinger»."
+        },
+        {
+          "category": "teknologi",
+          "q": "Et beryktet problem med språkmodeller er at de av og til finner på svar som høres troverdige ut, men er feil. Hva kalles fenomenet ofte?",
+          "options": [
+            "Hallusinasjon",
+            "Komprimering",
+            "Overtilpasning",
+            "Gradientsvinn"
+          ],
+          "correct": 0,
+          "explanation": "«Hallusinasjon» beskriver at modellen genererer plausibelt klingende, men usann informasjon. Overtilpasning (overfitting) er et beslektet, men annet problem — der modellen lærer treningsdataene for godt og generaliserer dårlig."
+        },
+        {
+          "category": "teknologi",
+          "q": "Bildegjenkjenningens gjennombrudd kom rundt 2012, da dype nevrale nett vant en stor konkurranse. Hva muliggjorde framskrittet teknisk sett mest?",
+          "options": [
+            "Større skjermer",
+            "Raskere internett",
+            "Billigere lagringsplass alene",
+            "Kraftige grafikkort (GPU-er) til parallelle beregninger"
+          ],
+          "correct": 3,
+          "explanation": "GPU-er, opprinnelig laget for spillgrafikk, viste seg perfekte for de massive parallelle beregningene nevrale nett krever. Mer data og bedre algoritmer hjalp også, men regnekraften fra GPU-er var den avgjørende muliggjøreren."
+        },
+        {
+          "category": "teknologi",
+          "q": "Hva er den grunnleggende oppgaven en stor språkmodell trenes på, som overraskende nok gir den bred språkevne?",
+          "options": [
+            "Å rette stavefeil",
+            "Å forutsi neste ord i en tekst",
+            "Å oversette mellom to faste språk",
+            "Å telle ord i en setning"
+          ],
+          "correct": 1,
+          "explanation": "Modellen lærer rett og slett å gjette neste ord, om og om igjen, på enorme tekstmengder. At en så enkel oppgave gir grammatikk, fakta og resonnement på kjøpet, er noe av det mest forbløffende ved teknologien."
+        },
+        {
+          "category": "teknologi",
+          "q": "Hvordan forholder maskinlæring og kunstig intelligens seg til hverandre?",
+          "options": [
+            "Maskinlæring er et underfelt av kunstig intelligens",
+            "De er to helt atskilte felt",
+            "Kunstig intelligens er et underfelt av maskinlæring",
+            "De betyr nøyaktig det samme"
+          ],
+          "correct": 0,
+          "explanation": "Kunstig intelligens er det brede paraplyfeltet; maskinlæring er én tilnærming innenfor det, og dyp læring igjen en del av maskinlæring. Tenk konsentriske sirkler — det utelukker at de er identiske eller helt atskilte."
+        }
+      ]
     }
   ]
 }

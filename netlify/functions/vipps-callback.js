@@ -13,6 +13,7 @@
  * aktive avtaler. Denne callbacken aktiverer bare selve abonnementet.
  */
 const { upsertSubscriber, logEvent, supa } = require("./_supabase");
+const { sendTemplate, welcomeTemplateId } = require("./_brevo");
 
 function baseUrl() {
   return (process.env.VIPPS_ENV === "prod")
@@ -52,17 +53,24 @@ exports.handler = async (event) => {
     if (!res.ok) throw new Error("agreement GET " + res.status);
     const agr = await res.json();
 
-    // Finn e-posten vi lagret ved opprettelse.
-    let email = null;
+    // Finn e-posten vi lagret ved opprettelse (+ forrige status, så velkomst kun sendes én gang).
+    let email = null, prevStatus = null;
     try {
-      const { data } = await supa().from("subscribers").select("email").eq("vipps_agreement_id", agreementId).maybeSingle();
+      const { data } = await supa().from("subscribers").select("email, status").eq("vipps_agreement_id", agreementId).maybeSingle();
       email = data?.email || null;
+      prevStatus = data?.status || null;
     } catch (_) { /* DB kan mangle i tidlig fase */ }
 
     const active = agr.status === "ACTIVE";
     if (email) {
       await upsertSubscriber({ email, status: active ? "active" : "canceled", source: "vipps", vipps_agreement_id: agreementId });
       await logEvent("vipps", "agreement.status." + agr.status, email, agreementId, agr);
+
+      // Fase D — velkomst ved første aktivering (kvittering sendes når første trekk opprettes i vipps-charge.js).
+      if (active && prevStatus !== "active") {
+        const base = (process.env.SITE_URL || `https://${event.headers.host}`).replace(/\/$/, "");
+        await sendTemplate(welcomeTemplateId(), email, { quiz_url: base + "/" });
+      }
     }
 
     return redirect(active ? "/?betaling=ok&kilde=vipps" : "/arkiv.html?betaling=avbrutt");
