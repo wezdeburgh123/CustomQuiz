@@ -38,7 +38,7 @@ function buildPrompt(themes, difficulty, count, opts = {}) {
   // Med websøk: be modellen verifisere FØR den dikter. Vakten gjelder fortsatt,
   // men først ETTER søk — finner den ingen pålitelige kilder, avviser den.
   const searchBlock = withSearch
-    ? `Du har et websøk-verktøy. Bruk det AKTIVT til å finne og verifisere fakta før du lager spørsmål — særlig for smale eller mindre kjente tema. Foretrekk pålitelige kilder (Wikipedia, Store norske leksikon, offisielle nettsider, anerkjente medier). Bygg spørsmål KUN på fakta du har bekreftet via søk eller sikker kunnskap.
+    ? `Du har et websøk-verktøy. Gjør NOEN FÅ målrettede søk (helst 1-3 totalt) for å bekrefte de viktigste fakta — ikke søk på hvert enkelt spørsmål. For tema du allerede kjenner godt, trenger du kanskje ikke søke i det hele tatt. Foretrekk pålitelige kilder (Wikipedia, Store norske leksikon, offisielle nettsider, anerkjente medier). Bygg spørsmål KUN på fakta du har bekreftet via søk eller sikker kunnskap.
 
 `
     : "";
@@ -210,8 +210,11 @@ function sanitizeInput(body) {
 async function generateQuiz(apiKey, { themes, difficulty, count, gateOn = true, withSearch = false }) {
   const prompt = buildPrompt(themes, difficulty, count, { gateOn, withSearch });
   const models = [process.env.QUIZ_MODEL, ...DEFAULT_MODELS].filter(Boolean);
+  // Søk er den store kostnadsdriveren (hvert søk mater store resultater inn i
+  // konteksten). Begrens til få søk. Justerbart via env MAX_SEARCHES uten ny deploy.
+  const maxSearches = Math.max(1, Math.min(parseInt(process.env.MAX_SEARCHES, 10) || 3, 6));
   const callOpts = withSearch
-    ? { temperature: 0.3, webSearch: true, maxTokens: 6000, maxSearches: 6 }
+    ? { temperature: 0.3, webSearch: true, maxTokens: 4500, maxSearches }
     : { temperature: 0.4, maxTokens: 4000 };
 
   let lastErr = null;
