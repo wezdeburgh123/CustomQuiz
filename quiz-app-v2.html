@@ -1636,6 +1636,14 @@
       err.code = 'SUBSCRIPTION';
       throw err;
     }
+    // Kunnskapsvakt (Fase A): temaet er for smalt/ukjent til en god quiz.
+    // Egen kode så vi viser melding i stedet for å demo-falle-tilbake.
+    if (response.status === 422 || (data && data.code === 'insufficient_knowledge')) {
+      const err = new Error(data.error || 'Vi mangler sikker kunnskap om dette temaet.');
+      err.code = 'INSUFFICIENT';
+      err.reason = data.reason || '';
+      throw err;
+    }
     if (!response.ok || data.error) {
       throw new Error(data.error || `HTTP ${response.status}`);
     }
@@ -1781,6 +1789,23 @@
           window.location.href = 'arkiv.html#abonnement';
         }
         showScreen('home');
+        return;
+      }
+      // Kunnskapsvakt avviste temaet — vis vennlig melding, IKKE demo-quiz.
+      // (Demo-fallback om et annet tema ville vært forvirrende her.)
+      if (err && err.code === 'INSUFFICIENT') {
+        QuizLoader.stop();
+        const titleEl = document.querySelector('#error .error-title');
+        const msgEl = document.getElementById('error-msg');
+        if (titleEl) titleEl.textContent = 'Litt for smalt tema';
+        if (msgEl) {
+          msgEl.textContent = err.message
+            + (err.reason ? ' (' + err.reason + ')' : '')
+            + ' Prøv gjerne et bredere eller mer kjent tema.';
+        }
+        const dbg = document.getElementById('error-debug');
+        if (dbg) { dbg.style.display = 'none'; dbg.textContent = ''; }
+        showScreen('error');
         return;
       }
       console.warn('[Quiz] Live-generering feilet, faller tilbake til demo-bibliotek:', err);
@@ -2068,6 +2093,8 @@
       console.warn('[Quiz] Klarte ikke laste bibliotek-quiz:', err);
       // En quiz var bedt om i URL-en, men kunne ikke lastes — vis feilskjerm
       // i stedet for å lande stille på generatoren.
+      const titleEl = document.querySelector('#error .error-title');
+      if (titleEl) titleEl.textContent = 'Noe gikk galt';
       const msg = document.getElementById('error-msg');
       if (msg) msg.textContent = 'Fant ikke denne quizen (' + id + '). Den er kanskje ikke publisert ennå.';
       showScreen('error');

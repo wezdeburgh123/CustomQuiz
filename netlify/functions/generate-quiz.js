@@ -55,6 +55,7 @@ Returner nøyaktig dette JSON-objektet (uten omkringliggende tekst):
 {"title":"kort tittel","lede":"én setning beskrivelse","questions":[{"category":"underkategori","q":"spørsmål?","options":["A","B","C","D"],"correct":0,"explanation":"kontekst"}]}
 
 Krav:
+- KRITISK: alle spørsmål, svar og forklaringer må være FAKTISK KORREKTE. Finn aldri opp fakta, navn, årstall eller hendelser. Er du usikker på et faktum, velg en annen vinkling du er trygg på i stedet.
 - "correct" er heltallsindeks 0-3 som peker til riktig alternativ
 - Riktig svar varierer mellom posisjon 0, 1, 2, 3 (ikke alltid samme)
 - Distraktorer skal være plausible
@@ -105,7 +106,15 @@ function validateQuiz(quiz, count) {
   return quiz;
 }
 
-async function callAnthropic(apiKey, model, prompt) {
+async function callAnthropic(apiKey, model, prompt, opts = {}) {
+  const payload = {
+    model,
+    max_tokens: opts.maxTokens || 4000,
+    messages: [{ role: "user", content: prompt }],
+  };
+  // Lav temperatur gir mer faktanær, mindre "kreativ" output. Viktig for quiz.
+  if (typeof opts.temperature === "number") payload.temperature = opts.temperature;
+
   const response = await fetch(ANTHROPIC_URL, {
     method: "POST",
     headers: {
@@ -113,11 +122,7 @@ async function callAnthropic(apiKey, model, prompt) {
       "x-api-key": apiKey,
       "anthropic-version": ANTHROPIC_VERSION,
     },
-    body: JSON.stringify({
-      model,
-      max_tokens: 4000,
-      messages: [{ role: "user", content: prompt }],
-    }),
+    body: JSON.stringify(payload),
   });
 
   const bodyText = await response.text();
@@ -132,6 +137,36 @@ async function callAnthropic(apiKey, model, prompt) {
   if (typeof data.completion === "string") return data.completion;
   if (typeof data.text === "string") return data.text;
   throw new Error("Ukjent svarstruktur fra Anthropic");
+}
+
+/**
+ * KUNNSKAPSVAKT (Fase A).
+ * Spør modellen — FØR vi genererer — om den faktisk har pålitelig kunnskap
+ * om tema(ene). Smale/ukjente tema (f.eks. ukjente lokale artister) får
+ * modellen til å dikte opp plausibel, men feil fakta. Da vil vi heller
+ * avvise enn å servere tøv.
+ *
+ * Returnerer { confident: boolean, reason: string }.
+ * Kaster ved API-/parse-feil — kalleren velger da å "feile åpent" (slippe
+ * gjennom), så en vakt-hikke ikke blokkerer legitime quizer.
+ */
+async function assessKnowledge(apiKey, model, themes) {
+  const themeList = themes.map((t) => `"${t}"`).join(", ");
+  const prompt = `Du er en streng faktasjekk-vakt for en quiz-app. Vurder om du har PÅLITELIG, FAKTISK kunnskap til å lage en quiz med KORREKTE svar om følgende tema: ${themeList}.
+
+Vær konservativ. Sett "confident": false hvis temaet er så smalt, ukjent eller nytt at du måtte gjette eller finne på fakta — for eksempel ukjente lokale artister, svært spesifikke personer eller produkter, eller hendelser etter kunnskapsgrensa di. Sett "confident": true bare for tema der du har solid, etterprøvbar kunnskap (kjente personer, steder, historie, vitenskap, kultur, kjente verk).
+
+Hvis flere tema er oppgitt og du mangler sikker kunnskap om MINST ETT, sett false og nevn hvilket.
+
+Svar KUN med dette JSON-objektet — ingen markdown, ingen tekst rundt:
+{"confident": true, "reason": "kort norsk begrunnelse på én setning"}`;
+
+  const raw = await callAnthropic(apiKey, model, prompt, { maxTokens: 300, temperature: 0 });
+  const parsed = extractJSON(raw);
+  if (typeof parsed.confident !== "boolean") {
+    throw new Error('Vakt-svar mangler boolsk "confident"');
+  }
+  return { confident: parsed.confident, reason: String(parsed.reason || "") };
 }
 
 /**
@@ -217,14 +252,39 @@ exports.handler = async (event) => {
   const prompt = buildPrompt(themes, difficulty, count);
   const models = [process.env.QUIZ_MODEL, ...DEFAULT_MODELS].filter(Boolean);
 
+  // Fase A — kunnskapsvakt. Avvis tema modellen ikke kan nok om, FØR vi genererer.
+  // Slås av med KNOWLEDGE_GATE=false. Feiler ÅPENT (slipper gjennom) ved vakt-feil,
+  // så en hikke ikke blokkerer ekte tema.
+  if (process.env.KNOWLEDGE_GATE !== "false") {
+    try {
+      const gate = await assessKnowledge(apiKey, models[0], themes);
+      console.log("[gate]", JSON.stringify({ themes, ...gate }));
+      if (!gate.confident) {
+        return {
+          statusCode: 422,
+          headers: CORS_HEADERS,
+          body: JSON.stringify({
+            error: "Vi har ikke nok sikker kunnskap om dette temaet til å lage en kvalitetsquiz. Prøv et bredere eller mer kjent tema.",
+            code: "insufficient_knowledge",
+            reason: gate.reason,
+          }),
+        };
+      }
+    } catch (gateErr) {
+      console.warn("[gate] hoppet over (feil):", gateErr.message);
+    }
+  }
+
   let lastErr = null;
   for (const model of models) {
     try {
-      // Inntil 2 forsøk per modell — øker temperatur implisitt ved å be om nytt forsøk.
+      // Inntil 2 forsøk per modell.
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          const raw = await callAnthropic(apiKey, model, prompt);
+          const raw = await callAnthropic(apiKey, model, prompt, { temperature: 0.4 });
           const quiz = validateQuiz(extractJSON(raw), count);
+          // Logg hvilken modell som faktisk svarte — gjør stille fallback synlig.
+          console.log("[generate] OK via modell:", model);
           return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(quiz) };
         } catch (inner) {
           lastErr = inner;
