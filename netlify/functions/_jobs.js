@@ -45,4 +45,4 @@ async function getJob(id) {
   return data ? data.data : null;
 }
 
-module.exports = { setJob, getJob };
+module.exports = { setJob, getJob, anonClient: db };

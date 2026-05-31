@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<title>Dagens quiz — CustomQuiz</title>
+<meta name="description" content="Dagens quiz fra CustomQuiz — én ny fellesquiz hver dag. Spill, del resultatet, og konkurrer på ukens ledertavle.">
+<link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
+<link rel="apple-touch-icon" href="IMG/signature.jpg">
+<meta property="og:title" content="Dagens quiz — CustomQuiz">
+<meta property="og:description" content="Én ny fellesquiz hver dag. Spill, del resultatet, konkurrer på ukens ledertavle.">
+<meta property="og:image" content="IMG/og.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://customquiz.no/dagens.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="supabase-config.js"></script>
+<style>
+  :root {
+    --bg:#F5F0E6; --bg-soft:#FBF7EE; --bg-deep:#ECE3CE;
+    --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
+    --rule:#E2D8C2; --rule-strong:#C9BD9F;
+    --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
+    --success:#2D7A4C; --success-soft:#DDE9D7; --danger:#A82E1F; --danger-soft:#F3D9D2;
+    --r-pill:999px; --r-card:16px; --r-md:8px;
+    --font-display:'Fraunces',Georgia,serif;
+    --font-sans:'Manrope',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-sans); line-height:1.55;
+         -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); }
+  .wrap { max-width:640px; margin:0 auto; padding:20px 20px 80px; }
+
+  /* Masthead */
+  .masthead { display:flex; align-items:center; justify-content:space-between; gap:12px;
+              padding:14px 0; border-bottom:.5px solid var(--rule-strong); }
+  .masthead-meta { display:flex; align-items:center; gap:14px; }
+  .wordmark { font-family:var(--font-display); font-weight:600; font-size:20px; color:var(--ink); text-decoration:none; letter-spacing:.01em; }
+  .nav-link { font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); text-decoration:none; }
+
+  .eyebrow { font-family:var(--font-mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
+  h1 { font-family:var(--font-display); font-weight:500; font-size:34px; line-height:1.1; margin:6px 0 6px; }
+  .lede { color:var(--ink-soft); font-size:16px; margin:0 0 22px; }
+  .muted { color:var(--ink-mute); }
+  .card { background:var(--bg-soft); border:.5px solid var(--rule-strong); border-radius:var(--r-card); padding:24px; }
+
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 26px;
+         border-radius:var(--r-pill); border:1px solid var(--accent); background:var(--accent); color:var(--bg-soft);
+         font-family:var(--font-sans); font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; }
+  .btn:hover { background:var(--accent-deep); border-color:var(--accent-deep); }
+  .btn-secondary { background:transparent; color:var(--accent); }
+  .btn-secondary:hover { background:var(--accent-soft); color:var(--accent-deep); }
+  .btn[disabled] { opacity:.5; cursor:default; }
+
+  .hidden { display:none !important; }
+
+  /* Progress */
+  .progress-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;
+                  font-family:var(--font-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); }
+  .qcat { color:var(--accent); }
+
+  /* Question */
+  .qtext { font-family:var(--font-display); font-weight:500; font-size:24px; line-height:1.25; margin:4px 0 20px; }
+  .options { display:flex; flex-direction:column; gap:10px; }
+  .opt { text-align:left; padding:15px 18px; border:1px solid var(--rule-strong); border-radius:var(--r-md);
+         background:var(--bg); color:var(--ink); font-family:var(--font-sans); font-size:16px; cursor:pointer; transition:border-color .12s, background .12s; }
+  .opt:hover:not([disabled]) { border-color:var(--accent); }
+  .opt[disabled] { cursor:default; }
+  .opt.correct { background:var(--success-soft); border-color:var(--success); color:#1d4d31; }
+  .opt.wrong { background:var(--danger-soft); border-color:var(--danger); color:#7a221a; }
+  .explanation { margin:16px 0 0; padding:14px 16px; background:var(--bg-deep); border-radius:var(--r-md);
+                 font-size:14px; color:var(--ink-soft); }
+  .explanation strong { color:var(--ink); }
+
+  /* Result */
+  .score-big { font-family:var(--font-display); font-size:56px; font-weight:500; color:var(--accent); line-height:1; }
+  .squares { font-size:24px; letter-spacing:3px; margin:14px 0; word-break:break-word; }
+  .streak { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:13px;
+            letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); background:var(--bg-deep);
+            padding:8px 14px; border-radius:var(--r-pill); margin:4px 0 0; }
+
+  /* Leaderboard */
+  .lb { width:100%; border-collapse:collapse; margin-top:10px; }
+  .lb th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+           color:var(--ink-mute); padding:6px 8px; border-bottom:.5px solid var(--rule-strong); }
+  .lb td { padding:9px 8px; border-bottom:.5px solid var(--rule); font-size:15px; }
+  .lb tr.me td { background:var(--accent-soft); }
+  .lb .rank { font-family:var(--font-mono); color:var(--ink-mute); width:34px; }
+  .lb .sc { text-align:right; font-family:var(--font-mono); font-weight:500; }
+
+  .field { width:100%; padding:13px 15px; border:1px solid var(--rule-strong); border-radius:var(--r-md);
+           background:var(--bg); font-family:var(--font-sans); font-size:15px; color:var(--ink); }
+  .field:focus { outline:none; border-color:var(--accent); }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .nudge { margin-top:18px; padding:16px; background:var(--accent-soft); border-radius:var(--r-md); font-size:14px; color:var(--accent-deep); }
+  .toast { font-size:13px; color:var(--success); min-height:18px; margin-top:8px; }
+  .spinner { font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); }
+  hr.sep { border:0; border-top:.5px solid var(--rule); margin:24px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <a class="wordmark" href="index.html">CustomQuiz</a>
+    <nav class="masthead-meta">
+      <a class="nav-link" href="index.html">Hjem</a>
+      <a class="nav-link" href="arkiv.html">Arkiv</a>
+    </nav>
+  </div>
+
+  <!-- LOADING -->
+  <section id="s-loading" style="padding-top:60px;">
+    <div class="eyebrow">Dagens quiz</div>
+    <p class="spinner" style="margin-top:14px;">Henter dagens quiz …</p>
+  </section>
+
+  <!-- START -->
+  <section id="s-start" class="hidden" style="padding-top:40px;">
+    <div class="eyebrow" id="start-date">Dagens quiz</div>
+    <h1 id="start-title">Dagens quiz</h1>
+    <p class="lede" id="start-lede"></p>
+    <button class="btn" id="btn-start">Spill dagens quiz</button>
+    <p class="muted" style="font-size:13px; margin-top:16px;">Én quiz om dagen — samme for alle. Logg inn for å bygge streak og havne på ukens ledertavle.</p>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="s-quiz" class="hidden" style="padding-top:24px;">
+    <div class="progress-row">
+      <span id="q-progress">1 / 10</span>
+      <span class="qcat" id="q-cat"></span>
+    </div>
+    <div class="qtext" id="q-text"></div>
+    <div class="options" id="q-options"></div>
+    <div class="explanation hidden" id="q-explanation"></div>
+    <div style="margin-top:20px;">
+      <button class="btn hidden" id="btn-next">Neste</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="s-result" class="hidden" style="padding-top:40px;">
+    <div class="eyebrow" id="res-date">Dagens quiz</div>
+    <div class="row" style="align-items:flex-end; gap:14px; margin-top:8px;">
+      <span class="score-big" id="res-score">0</span>
+      <span class="muted" style="font-size:18px; padding-bottom:8px;">av <span id="res-total">10</span> riktige</span>
+    </div>
+    <div class="squares" id="res-squares"></div>
+    <div id="res-streak-wrap"></div>
+    <div class="row" style="margin-top:18px;">
+      <button class="btn" id="btn-copy">Kopier resultat</button>
+      <a class="btn btn-secondary" href="index.html">Lag din egen quiz</a>
+    </div>
+    <div class="toast" id="copy-toast"></div>
+
+    <!-- Visningsnavn-prompt (innlogget, mangler navn) -->
+    <div id="name-prompt" class="card hidden" style="margin-top:24px;">
+      <div class="eyebrow">Ledertavla</div>
+      <p style="margin:8px 0 12px;">Velg et visningsnavn så andre ser deg på ukens ledertavle.</p>
+      <div class="row">
+        <input class="field" id="name-input" maxlength="24" placeholder="F.eks. Wez" style="flex:1; min-width:160px;">
+        <button class="btn" id="btn-save-name">Lagre</button>
+      </div>
+    </div>
+
+    <!-- Login-nudge (anonym) -->
+    <div id="login-nudge" class="nudge hidden">
+      Logg inn for å lagre streaken din og konkurrere på ukens ledertavle.
+      <div style="margin-top:10px;"><button class="btn" id="btn-login-nudge">Logg inn</button></div>
+    </div>
+
+    <hr class="sep">
+    <div class="eyebrow">Ukens ledertavle</div>
+    <div id="lb-wrap"><p class="spinner" id="lb-loading hidden">Laster …</p></div>
+  </section>
+
+  <!-- ALREADY PLAYED -->
+  <section id="s-done" class="hidden" style="padding-top:40px;">
+    <div class="eyebrow" id="done-date">Dagens quiz</div>
+    <h1>Du har spilt i dag</h1>
+    <p class="lede">Kom tilbake i morgen for en ny quiz. Her er ukens ledertavle så langt.</p>
+    <div id="done-streak-wrap"></div>
+    <hr class="sep">
+    <div class="eyebrow">Ukens ledertavle</div>
+    <div id="done-lb-wrap"><p class="spinner">Laster …</p></div>
+    <div style="margin-top:22px;"><a class="btn btn-secondary" href="index.html">Lag din egen quiz</a></div>
+  </section>
+</div>
+
+<script src="auth.js"></script>
+<script>
+(function () {
+  "use strict";
+  var DAILY_ENDPOINT = "/api/daily-quiz";
+
+  var state = { quiz:null, date:null, theme:null, idx:0, answers:[], score:0, locked:false };
+
+  function $(id){ return document.getElementById(id); }
+  function show(id){
+    ["s-loading","s-start","s-quiz","s-result","s-done"].forEach(function(s){ $(s).classList.add("hidden"); });
+    $(id).classList.remove("hidden");
+  }
+
+  // Vent på at auth.js har laget Supabase-klienten (lastes async).
+  function waitForClient(ms){
+    var deadline = Date.now() + (ms||4000);
+    return new Promise(function(resolve){
+      (function poll(){
+        var c = window.CQAuth && window.CQAuth.getClient ? window.CQAuth.getClient() : null;
+        if (c) return resolve(c);
+        if (Date.now() > deadline) return resolve(null);
+        setTimeout(poll, 150);
+      })();
+    });
+  }
+
+  function fmtDate(iso){
+    try {
+      var d = new Date(iso + "T12:00:00");
+      return d.toLocaleDateString("nb-NO", { weekday:"long", day:"numeric", month:"long" });
+    } catch(e){ return iso; }
+  }
+
+  // ── Last dagens quiz ──────────────────────────────────────────
+  async function load(){
+    var res, data;
+    try {
+      res = await fetch(DAILY_ENDPOINT);
+      data = await res.json();
+    } catch(e){ data = null; }
+    if (!data || !data.quiz || !data.quiz.questions){
+      $("s-loading").innerHTML = '<div class="eyebrow">Dagens quiz</div><p class="lede" style="margin-top:14px;">Dagens quiz er ikke klar ennå. Prøv igjen om litt.</p>';
+      return;
+    }
+    state.quiz = data.quiz;
+    state.date = data.quiz_date;
+    state.theme = data.theme;
+
+    var dateLabel = (data.isToday ? "Dagens quiz" : "Siste quiz") + " · " + fmtDate(data.quiz_date);
+    $("start-date").textContent = dateLabel;
+    $("res-date").textContent = dateLabel;
+    $("done-date").textContent = dateLabel;
+    $("start-title").textContent = data.quiz.title || "Dagens quiz";
+    $("start-lede").textContent = data.quiz.lede || "";
+
+    // Allerede spilt i dag?
+    if (await alreadyPlayed(state.date)){
+      show("s-done");
+      renderStreakInto("done-streak-wrap");
+      renderLeaderboard("done-lb-wrap");
+      return;
+    }
+    show("s-start");
+  }
+
+  // Sjekk om brukeren har spilt dagens quiz (DB hvis innlogget, ellers localStorage).
+  async function alreadyPlayed(date){
+    var key = "customquiz.daily." + date;
+    if (localStorage.getItem(key)) return true;
+    var sb = await waitForClient();
+    var email = window.CQAuth && window.CQAuth.getEmail && window.CQAuth.getEmail();
+    if (sb && email){
+      try {
+        var u = await sb.auth.getUser();
+        var uid = u && u.data && u.data.user && u.data.user.id;
+        if (uid){
+          var r = await sb.from("quiz_attempt").select("quiz_date").eq("user_id", uid).eq("quiz_date", date).maybeSingle();
+          if (r && r.data) return true;
+        }
+      } catch(e){}
+    }
+    return false;
+  }
+
+  // ── Spill ─────────────────────────────────────────────────────
+  function startQuiz(){ state.idx=0; state.answers=[]; state.score=0; show("s-quiz"); renderQuestion(); }
+
+  function renderQuestion(){
+    var q = state.quiz.questions[state.idx];
+    state.locked = false;
+    $("q-progress").textContent = (state.idx+1) + " / " + state.quiz.questions.length;
+    $("q-cat").textContent = q.category || "";
+    $("q-text").textContent = q.q;
+    $("q-explanation").classList.add("hidden");
+    $("btn-next").classList.add("hidden");
+    var box = $("q-options"); box.innerHTML = "";
+    q.options.forEach(function(opt, i){
+      var b = document.createElement("button");
+      b.className = "opt"; b.textContent = opt;
+      b.addEventListener("click", function(){ choose(i); });
+      box.appendChild(b);
+    });
+  }
+
+  function choose(i){
+    if (state.locked) return;
+    state.locked = true;
+    var q = state.quiz.questions[state.idx];
+    var correct = q.correct;
+    var btns = $("q-options").children;
+    for (var k=0;k<btns.length;k++){
+      btns[k].setAttribute("disabled","");
+      if (k === correct) btns[k].classList.add("correct");
+      else if (k === i) btns[k].classList.add("wrong");
+    }
+    state.answers.push(i === correct);
+    if (i === correct) state.score++;
+    if (q.explanation){
+      $("q-explanation").innerHTML = "<strong>" + (i===correct ? "Riktig. " : "Feil. ") + "</strong>" + q.explanation;
+      $("q-explanation").classList.remove("hidden");
+    }
+    var last = state.idx === state.quiz.questions.length - 1;
+    $("btn-next").textContent = last ? "Se resultat" : "Neste";
+    $("btn-next").classList.remove("hidden");
+  }
+
+  function next(){
+    if (state.idx < state.quiz.questions.length - 1){ state.idx++; renderQuestion(); }
+    else finish();
+  }
+
+  // ── Resultat ──────────────────────────────────────────────────
+  function squares(){
+    return state.answers.map(function(ok){ return ok ? "🟩" : "⬜"; }).join("");
+  }
+  function shareText(){
+    return "CustomQuiz — Dagens quiz " + state.date + "\n" +
+           state.score + "/" + state.quiz.questions.length + "\n" + squares() + "\ncustomquiz.no";
+  }
+
+  async function finish(){
+    show("s-result");
+    $("res-score").textContent = state.score;
+    $("res-total").textContent = state.quiz.questions.length;
+    $("res-squares").textContent = squares();
+    try { localStorage.setItem("customquiz.daily." + state.date, String(state.score)); } catch(e){}
+
+    var email = window.CQAuth && window.CQAuth.getEmail && window.CQAuth.getEmail();
+    if (email){
+      $("login-nudge").classList.add("hidden");
+      await recordAttempt();
+      await maybePromptName();
+      renderStreakInto("res-streak-wrap");
+    } else {
+      $("login-nudge").classList.remove("hidden");
+    }
+    renderLeaderboard("lb-wrap");
+  }
+
+  async function recordAttempt(){
+    var sb = await waitForClient();
+    if (!sb) return;
+    try {
+      // unik (user_id, quiz_date) → ignorer feil hvis allerede registrert
+      await sb.from("quiz_attempt").insert({ quiz_date: state.date, score: state.score, total: state.quiz.questions.length });
+    } catch(e){ /* allerede spilt e.l. */ }
+  }
+
+  async function maybePromptName(){
+    var sb = await waitForClient(); if (!sb) return;
+    try {
+      var u = await sb.auth.getUser();
+      var uid = u && u.data && u.data.user && u.data.user.id;
+      if (!uid) return;
+      var r = await sb.from("profiles").select("display_name").eq("id", uid).maybeSingle();
+      var name = r && r.data && r.data.display_name;
+      if (!name || !name.trim()){
+        $("name-prompt").classList.remove("hidden");
+        $("btn-save-name").onclick = async function(){
+          var v = ($("name-input").value || "").trim().slice(0,24);
+          if (!v) return;
+          try {
+            await sb.from("profiles").upsert({ id: uid, display_name: v, updated_at: new Date().toISOString() });
+            $("name-prompt").classList.add("hidden");
+            renderLeaderboard("lb-wrap");
+          } catch(e){}
+        };
+      }
+    } catch(e){}
+  }
+
+  // Streak: antall sammenhengende dager t.o.m. i dag i quiz_attempt.
+  async function renderStreakInto(wrapId){
+    var sb = await waitForClient(); if (!sb) return;
+    try {
+      var u = await sb.auth.getUser();
+      var uid = u && u.data && u.data.user && u.data.user.id; if (!uid) return;
+      var r = await sb.from("quiz_attempt").select("quiz_date").eq("user_id", uid).order("quiz_date", { ascending:false }).limit(400);
+      var dates = (r.data || []).map(function(x){ return x.quiz_date; });
+      var streak = computeStreak(dates);
+      if (streak > 0){
+        $(wrapId).innerHTML = '<div class="streak">🔥 ' + streak + ' dag' + (streak>1?'er':'') + ' på rad</div>';
+      }
+    } catch(e){}
+  }
+
+  function computeStreak(dates){
+    var set = {}; dates.forEach(function(d){ set[d]=true; });
+    // start fra i dag (Oslo) — bruk state.date som "i dag" siden det er dagens quiz
+    var cur = state.date || dates[0];
+    if (!cur) return 0;
+    var streak = 0;
+    var d = new Date(cur + "T12:00:00");
+    while (set[isoOf(d)]){ streak++; d.setDate(d.getDate() - 1); }
+    return streak;
+  }
+  function isoOf(d){
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  }
+
+  async function renderLeaderboard(wrapId){
+    var wrap = $(wrapId);
+    var sb = await waitForClient();
+    if (!sb){ wrap.innerHTML = '<p class="muted" style="font-size:14px;">Ledertavla er utilgjengelig akkurat nå.</p>'; return; }
+    var myId = null;
+    try { var u = await sb.auth.getUser(); myId = u && u.data && u.data.user && u.data.user.id; } catch(e){}
+    try {
+      var r = await sb.from("weekly_leaderboard").select("user_id,display_name,week_score,days_played").limit(20);
+      var rows = r.data || [];
+      if (!rows.length){ wrap.innerHTML = '<p class="muted" style="font-size:14px;">Ingen har spilt denne uka ennå — bli den første!</p>'; return; }
+      var html = '<table class="lb"><thead><tr><th class="rank">#</th><th>Spiller</th><th class="sc">Poeng</th></tr></thead><tbody>';
+      rows.forEach(function(row, i){
+        var me = myId && row.user_id === myId;
+        html += '<tr class="' + (me?'me':'') + '"><td class="rank">' + (i+1) + '</td><td>' +
+                escapeHtml(row.display_name || "Anonym") + (me?' <span class="muted">(deg)</span>':'') +
+                '</td><td class="sc">' + row.week_score + '</td></tr>';
+      });
+      html += '</tbody></table>';
+      wrap.innerHTML = html;
+    } catch(e){
+      wrap.innerHTML = '<p class="muted" style="font-size:14px;">Kunne ikke laste ledertavla.</p>';
+    }
+  }
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  // ── Hendelser ─────────────────────────────────────────────────
+  $("btn-start").addEventListener("click", startQuiz);
+  $("btn-next").addEventListener("click", next);
+  $("btn-copy").addEventListener("click", async function(){
+    try { await navigator.clipboard.writeText(shareText()); $("copy-toast").textContent = "Kopiert! Lim inn hvor du vil dele."; }
+    catch(e){ $("copy-toast").textContent = "Kunne ikke kopiere automatisk."; }
+  });
+  var ln = $("btn-login-nudge"); if (ln) ln.addEventListener("click", function(){ if (window.CQAuth) window.CQAuth.signIn(); });
+
+  load();
+})();
+</script>
+</body>
+</html>

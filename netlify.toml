@@ -15,6 +15,11 @@
 [functions."vipps-charge"]
   schedule = "0 6 * * *"
 
+# Daglig fellesquiz — genereres hver kveld kl. 20:00 UTC (~21-22 Oslo), lager
+# morgendagens quiz (og seeder i dag ved første kjøring). Auto-publiseres.
+[functions."daily-quiz-generate"]
+  schedule = "0 20 * * *"
+
 # Pene URL-er: /api/* -> funksjoner
 [[redirects]]
   from = "/api/generate-quiz"
@@ -26,6 +31,18 @@
 [[redirects]]
   from = "/api/quiz-status"
   to = "/.netlify/functions/quiz-status"
+  status = 200
+
+# Daglig fellesquiz: hent dagens quiz (offentlig). Generatoren kan også
+# trigges manuelt på /api/daily-quiz-generate (for seeding/test).
+[[redirects]]
+  from = "/api/daily-quiz"
+  to = "/.netlify/functions/daily-quiz"
+  status = 200
+
+[[redirects]]
+  from = "/api/daily-quiz-generate"
+  to = "/.netlify/functions/daily-quiz-generate"
   status = 200
 
 # Betaling — Stripe (kort + Apple Pay)

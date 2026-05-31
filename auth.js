@@ -168,6 +168,9 @@
   window.CQAuth = {
     getUser: function () { return currentUser; },
     getEmail: function () { return currentUser ? currentUser.email : null; },
+    // Den innloggede Supabase-klienten — brukes til DB-spørringer (quiz_attempt,
+    // profiles, ledertavle) som RLS-sikres på brukerens egen sesjon.
+    getClient: function () { return client; },
     // Supabase access_token (JWT) — sendes som Bearer til serverless for verifisering.
     getAccessToken: async function () {
       if (!client) return null;
