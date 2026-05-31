@@ -33,7 +33,18 @@ const DIFFICULTY_DESC = {
   vanskelig: "Utfordrende og spesifikt. Sikter mot 30-50% treffrate selv hos interesserte.",
 };
 
-function buildPrompt(themes, difficulty, count) {
+function buildPrompt(themes, difficulty, count, gateOn = true) {
+  // Innebygd kunnskapsvakt: modellen kan returnere et avslags-objekt i STEDET
+  // for quizen hvis den ikke kan nok om temaet. Ett kall i stedet for to —
+  // unngår tidsavbrudd på Netlify (10 s) som to kall på rad ga.
+  const gateBlock = gateOn
+    ? `FØRST: vurder om du har PÅLITELIG, FAKTISK kunnskap til å lage en quiz med KORREKTE svar om temaet. Vær konservativ. Hvis du måtte gjette eller finne på fakta — for eksempel ukjente lokale artister, svært spesifikke personer/produkter, eller hendelser etter kunnskapsgrensa di — IKKE lag quiz. Returner i stedet KUN dette objektet:
+{"insufficient_knowledge": true, "reason": "kort norsk begrunnelse på én setning"}
+Er flere tema oppgitt og du mangler sikker kunnskap om MINST ETT, gjør det samme. Ellers, lag quizen som beskrevet under.
+
+`
+    : "";
+
   const multiThemeInstruction =
     themes.length > 1
       ? `\nQuizen skal blande disse ${themes.length} temaene. Fordel spørsmålene så jevnt som mulig mellom dem. Sett "category" på hvert spørsmål til hvilket tema det tilhører. Rekkefølgen kan være variert — ikke alle av samme tema på rad.`
@@ -46,7 +57,7 @@ function buildPrompt(themes, difficulty, count) {
 
   return `Du er en quiz-generator. Du svarer KUN med rent JSON-objekt — ingen markdown-koder, ingen forklaring før eller etter, ingen hilsen.
 
-Oppgave: Lag en quiz på norsk om ${themeBlock}.${multiThemeInstruction}
+${gateBlock}Oppgave: Lag en quiz på norsk om ${themeBlock}.${multiThemeInstruction}
 
 Nivå: ${difficulty}. ${DIFFICULTY_DESC[difficulty] || DIFFICULTY_DESC.medium}
 Antall spørsmål: ${count}
@@ -140,36 +151,6 @@ async function callAnthropic(apiKey, model, prompt, opts = {}) {
 }
 
 /**
- * KUNNSKAPSVAKT (Fase A).
- * Spør modellen — FØR vi genererer — om den faktisk har pålitelig kunnskap
- * om tema(ene). Smale/ukjente tema (f.eks. ukjente lokale artister) får
- * modellen til å dikte opp plausibel, men feil fakta. Da vil vi heller
- * avvise enn å servere tøv.
- *
- * Returnerer { confident: boolean, reason: string }.
- * Kaster ved API-/parse-feil — kalleren velger da å "feile åpent" (slippe
- * gjennom), så en vakt-hikke ikke blokkerer legitime quizer.
- */
-async function assessKnowledge(apiKey, model, themes) {
-  const themeList = themes.map((t) => `"${t}"`).join(", ");
-  const prompt = `Du er en streng faktasjekk-vakt for en quiz-app. Vurder om du har PÅLITELIG, FAKTISK kunnskap til å lage en quiz med KORREKTE svar om følgende tema: ${themeList}.
-
-Vær konservativ. Sett "confident": false hvis temaet er så smalt, ukjent eller nytt at du måtte gjette eller finne på fakta — for eksempel ukjente lokale artister, svært spesifikke personer eller produkter, eller hendelser etter kunnskapsgrensa di. Sett "confident": true bare for tema der du har solid, etterprøvbar kunnskap (kjente personer, steder, historie, vitenskap, kultur, kjente verk).
-
-Hvis flere tema er oppgitt og du mangler sikker kunnskap om MINST ETT, sett false og nevn hvilket.
-
-Svar KUN med dette JSON-objektet — ingen markdown, ingen tekst rundt:
-{"confident": true, "reason": "kort norsk begrunnelse på én setning"}`;
-
-  const raw = await callAnthropic(apiKey, model, prompt, { maxTokens: 300, temperature: 0 });
-  const parsed = extractJSON(raw);
-  if (typeof parsed.confident !== "boolean") {
-    throw new Error('Vakt-svar mangler boolsk "confident"');
-  }
-  return { confident: parsed.confident, reason: String(parsed.reason || "") };
-}
-
-/**
  * Fase B — server-side håndheving av abonnement.
  * Returnerer null hvis OK å fortsette, ellers et HTTP-svar som avviser.
  *
@@ -249,31 +230,11 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: "Mangler 'themes'." }) };
   }
 
-  const prompt = buildPrompt(themes, difficulty, count);
+  // Fase A — kunnskapsvakt er nå INNEBYGD i prompten (ett kall, ikke to).
+  // Slås av med KNOWLEDGE_GATE=false.
+  const gateOn = process.env.KNOWLEDGE_GATE !== "false";
+  const prompt = buildPrompt(themes, difficulty, count, gateOn);
   const models = [process.env.QUIZ_MODEL, ...DEFAULT_MODELS].filter(Boolean);
-
-  // Fase A — kunnskapsvakt. Avvis tema modellen ikke kan nok om, FØR vi genererer.
-  // Slås av med KNOWLEDGE_GATE=false. Feiler ÅPENT (slipper gjennom) ved vakt-feil,
-  // så en hikke ikke blokkerer ekte tema.
-  if (process.env.KNOWLEDGE_GATE !== "false") {
-    try {
-      const gate = await assessKnowledge(apiKey, models[0], themes);
-      console.log("[gate]", JSON.stringify({ themes, ...gate }));
-      if (!gate.confident) {
-        return {
-          statusCode: 422,
-          headers: CORS_HEADERS,
-          body: JSON.stringify({
-            error: "Vi har ikke nok sikker kunnskap om dette temaet til å lage en kvalitetsquiz. Prøv et bredere eller mer kjent tema.",
-            code: "insufficient_knowledge",
-            reason: gate.reason,
-          }),
-        };
-      }
-    } catch (gateErr) {
-      console.warn("[gate] hoppet over (feil):", gateErr.message);
-    }
-  }
 
   let lastErr = null;
   for (const model of models) {
@@ -282,7 +243,22 @@ exports.handler = async (event) => {
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
           const raw = await callAnthropic(apiKey, model, prompt, { temperature: 0.4 });
-          const quiz = validateQuiz(extractJSON(raw), count);
+          const parsed = extractJSON(raw);
+          // Vakten slo til: modellen mangler sikker kunnskap om temaet.
+          // Dette er et gyldig svar — returner 422 med en gang (ikke prøv på nytt).
+          if (parsed && parsed.insufficient_knowledge === true) {
+            console.log("[gate] avvist:", JSON.stringify({ themes, reason: parsed.reason || "" }));
+            return {
+              statusCode: 422,
+              headers: CORS_HEADERS,
+              body: JSON.stringify({
+                error: "Vi har ikke nok sikker kunnskap om dette temaet til å lage en kvalitetsquiz.",
+                code: "insufficient_knowledge",
+                reason: String(parsed.reason || ""),
+              }),
+            };
+          }
+          const quiz = validateQuiz(parsed, count);
           // Logg hvilken modell som faktisk svarte — gjør stille fallback synlig.
           console.log("[generate] OK via modell:", model);
           return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(quiz) };
