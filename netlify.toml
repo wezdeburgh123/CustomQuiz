@@ -21,6 +21,13 @@
   to = "/.netlify/functions/generate-quiz"
   status = 200
 
+# Async quiz-generering (websøk): poll-endepunkt. Selve bakgrunnsfunksjonen
+# kalles direkte på /.netlify/functions/quiz-generate-background (returnerer 202).
+[[redirects]]
+  from = "/api/quiz-status"
+  to = "/.netlify/functions/quiz-status"
+  status = 200
+
 # Betaling — Stripe (kort + Apple Pay)
 [[redirects]]
   from = "/api/create-checkout"

@@ -1564,7 +1564,11 @@
   /* --------------- LIVE GENERATION (via Netlify-funksjon) --------------- */
   // API-nøkkelen ligger trygt på serveren — aldri her i nettleseren.
   // Vi sender bare tema, nivå og antall; funksjonen bygger prompten og kaller Claude.
-  const GENERATE_ENDPOINT = "/api/generate-quiz";
+  const GENERATE_ENDPOINT = "/api/generate-quiz";                       // synkron fallback (uten websøk)
+  const BACKGROUND_ENDPOINT = "/.netlify/functions/quiz-generate-background"; // async hovedvei (med websøk)
+  const STATUS_ENDPOINT = "/api/quiz-status";                           // poll-endepunkt
+  const POLL_INTERVAL_MS = 2500;   // hvor ofte vi spør "ferdig?"
+  const POLL_MAX_MS = 90000;       // gi websøk-generering god tid (90 s) før vi gir opp
 
   /* --------------- GRATIS-TIER (testfase) ---------------
    * Lar en bruker generere et begrenset antall quizer gratis før
@@ -1612,42 +1616,103 @@
     return true;
   }
 
-  async function callGenerator(themes, difficulty, count) {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  // Lager en jobId (UUID med fallback for eldre nettlesere).
+  function makeJobId() {
+    try { if (crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (_) {}
+    return 'job-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
+  async function authHeaders() {
     const headers = { "Content-Type": "application/json" };
-    // Send Supabase-token så serveren kan verifisere abonnement (Fase B).
     try {
       if (window.CQAuth && window.CQAuth.getAccessToken) {
         const t = await window.CQAuth.getAccessToken();
         if (t) headers["Authorization"] = "Bearer " + t;
       }
     } catch (_) {}
-    const response = await fetch(GENERATE_ENDPOINT, {
+    return headers;
+  }
+
+  // Gjør om en jobbstatus til riktig retur/feil. Kaster ved INSUFFICIENT/SUBSCRIPTION.
+  function resolveJob(job) {
+    if (job.status === 'done' && job.quiz) return job.quiz;
+    if (job.status === 'insufficient') {
+      const err = new Error('Vi har ikke nok sikker kunnskap om dette temaet til å lage en kvalitetsquiz.');
+      err.code = 'INSUFFICIENT';
+      err.reason = job.reason || '';
+      throw err;
+    }
+    if (job.status === 'error') {
+      if (job.code === 'SUBSCRIPTION') {
+        const err = new Error(job.error || 'Abonnement kreves'); err.code = 'SUBSCRIPTION'; throw err;
+      }
+      throw new Error(job.error || 'Generering feilet.');
+    }
+    return null; // running/pending → fortsett polling
+  }
+
+  // HOVEDVEI: async jobb med websøk. Starter bakgrunnsjobb, poller til ferdig.
+  async function callGenerator(themes, difficulty, count) {
+    const headers = await authHeaders();
+    const jobId = makeJobId();
+
+    // 1) Start bakgrunnsjobben (returnerer 202 nesten umiddelbart).
+    const startRes = await fetch(BACKGROUND_ENDPOINT, {
       method: "POST",
       headers,
-      body: JSON.stringify({ themes, difficulty, count })
+      body: JSON.stringify({ jobId, themes, difficulty, count })
+    });
+    // 202 = akseptert (background). Alt annet enn 2xx betyr at async ikke er
+    // tilgjengelig → fall tilbake til det synkrone endepunktet (uten websøk).
+    if (!startRes.ok && startRes.status !== 202) {
+      console.warn('[Quiz] Async-start feilet (HTTP ' + startRes.status + '), faller til synkron generering.');
+      return await callGeneratorSync(themes, difficulty, count, headers);
+    }
+
+    // 2) Poll status til jobben er ferdig (eller vi gir opp).
+    const deadline = Date.now() + POLL_MAX_MS;
+    let polledSomething = false;
+    while (Date.now() < deadline) {
+      await sleep(POLL_INTERVAL_MS);
+      let job;
+      try {
+        const r = await fetch(STATUS_ENDPOINT + "?jobId=" + encodeURIComponent(jobId), { method: "GET" });
+        job = await r.json();
+      } catch (_) { continue; } // nettverkshikke — prøv igjen ved neste intervall
+      if (job && job.status && job.status !== 'pending') polledSomething = true;
+      const out = resolveJob(job || {});
+      if (out) return out; // ferdig quiz
+    }
+    // Tidsavbrudd. Hvis vi aldri fikk kontakt med jobben i det hele tatt,
+    // er async trolig ikke satt opp → prøv synkron vei før vi gir opp.
+    if (!polledSomething) {
+      console.warn('[Quiz] Fikk aldri jobbstatus — prøver synkron generering.');
+      return await callGeneratorSync(themes, difficulty, count, headers);
+    }
+    throw new Error('Tidsavbrudd: generatoren brukte for lang tid.');
+  }
+
+  // FALLBACK: synkront endepunkt (uten websøk). Brukes hvis async ikke svarer.
+  async function callGeneratorSync(themes, difficulty, count, headers) {
+    headers = headers || await authHeaders();
+    const response = await fetch(GENERATE_ENDPOINT, {
+      method: "POST", headers, body: JSON.stringify({ themes, difficulty, count })
     });
     const bodyText = await response.text();
     let data;
     try { data = JSON.parse(bodyText); }
     catch (e) { throw new Error('Ugyldig svar fra serveren: ' + bodyText.slice(0, 160)); }
-    // Abonnement/innlogging kreves — egen feilkode så vi ikke demo-faller-tilbake.
     if (response.status === 401 || response.status === 402 || response.status === 403) {
-      const err = new Error(data.error || 'Abonnement kreves');
-      err.code = 'SUBSCRIPTION';
-      throw err;
+      const err = new Error(data.error || 'Abonnement kreves'); err.code = 'SUBSCRIPTION'; throw err;
     }
-    // Kunnskapsvakt (Fase A): temaet er for smalt/ukjent til en god quiz.
-    // Egen kode så vi viser melding i stedet for å demo-falle-tilbake.
     if (response.status === 422 || (data && data.code === 'insufficient_knowledge')) {
       const err = new Error(data.error || 'Vi mangler sikker kunnskap om dette temaet.');
-      err.code = 'INSUFFICIENT';
-      err.reason = data.reason || '';
-      throw err;
+      err.code = 'INSUFFICIENT'; err.reason = data.reason || ''; throw err;
     }
-    if (!response.ok || data.error) {
-      throw new Error(data.error || `HTTP ${response.status}`);
-    }
-    return data; // { title, lede, questions: [...] }
+    if (!response.ok || data.error) throw new Error(data.error || `HTTP ${response.status}`);
+    return data;
   }
 
   // LÅS-INN-VERSJON (ikke i bruk under testing): streng innlogging + abonnement.

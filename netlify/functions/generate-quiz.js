@@ -1,281 +1,59 @@
 /**
- * CustomQuiz — serverless quiz-generator
- * ---------------------------------------
- * Kjører på Netlify Functions. Holder Anthropic-nøkkelen på serveren
- * (env-variabel ANTHROPIC_API_KEY), bygger prompten selv og returnerer
- * et ferdig validert quiz-objekt. Nøkkelen eksponeres ALDRI i frontend.
+ * CustomQuiz — synkront quiz-endepunkt (UTEN websøk).
+ * ---------------------------------------------------
+ * Rask vei: genererer fra modellens egen kunnskap, returnerer ferdig quiz i
+ * samme svar. Brukes som FALLBACK av frontend hvis async-jobben (med websøk)
+ * ikke er tilgjengelig. Den websøk-baserte hovedveien ligger i
+ * quiz-generate-background.js + quiz-status.js.
  *
- * Forventer POST med JSON-body: { themes: string[], difficulty: "lett"|"medium"|"vanskelig", count: number }
- * Svarer med: { title, lede, questions: [{ category, q, options[4], correct, explanation }] }
- *
- * Env:
- *   ANTHROPIC_API_KEY  (påkrevd)  — din API-nøkkel
- *   QUIZ_MODEL         (valgfri)  — overstyr modellnavn, f.eks. "claude-sonnet-4-6"
+ * Felles logikk i _quizcore.js. Nøkkelen (ANTHROPIC_API_KEY) er kun server-side.
  */
-
-const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
-const ANTHROPIC_VERSION = "2023-06-01";
-
-// Primær + reserve. QUIZ_MODEL (hvis satt) prøves alltid først.
-// Flere navn for robusthet: hvis ett ikke finnes på kontoen, prøves neste.
-const DEFAULT_MODELS = ["claude-sonnet-4-5", "claude-sonnet-4-6", "claude-3-5-sonnet-latest"];
-
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Content-Type": "application/json; charset=utf-8",
-};
-
-const DIFFICULTY_DESC = {
-  lett: "Kjente fakta og grunnleggende kunnskap. Sikter mot 70-85% treffrate.",
-  medium: "Krever ettertanke. Plausible distraktorer. Sikter mot 50-70% treffrate.",
-  vanskelig: "Utfordrende og spesifikt. Sikter mot 30-50% treffrate selv hos interesserte.",
-};
-
-function buildPrompt(themes, difficulty, count, gateOn = true) {
-  // Innebygd kunnskapsvakt: modellen kan returnere et avslags-objekt i STEDET
-  // for quizen hvis den ikke kan nok om temaet. Ett kall i stedet for to —
-  // unngår tidsavbrudd på Netlify (10 s) som to kall på rad ga.
-  const gateBlock = gateOn
-    ? `FØRST: vurder om du har PÅLITELIG, FAKTISK kunnskap til å lage en quiz med KORREKTE svar om temaet. Vær konservativ. Hvis du måtte gjette eller finne på fakta — for eksempel ukjente lokale artister, svært spesifikke personer/produkter, eller hendelser etter kunnskapsgrensa di — IKKE lag quiz. Returner i stedet KUN dette objektet:
-{"insufficient_knowledge": true, "reason": "kort norsk begrunnelse på én setning"}
-Er flere tema oppgitt og du mangler sikker kunnskap om MINST ETT, gjør det samme. Ellers, lag quizen som beskrevet under.
-
-`
-    : "";
-
-  const multiThemeInstruction =
-    themes.length > 1
-      ? `\nQuizen skal blande disse ${themes.length} temaene. Fordel spørsmålene så jevnt som mulig mellom dem. Sett "category" på hvert spørsmål til hvilket tema det tilhører. Rekkefølgen kan være variert — ikke alle av samme tema på rad.`
-      : "";
-
-  const themeBlock =
-    themes.length === 1
-      ? `temaet "${themes[0]}"`
-      : `disse temaene blandet: ${themes.map((t) => `"${t}"`).join(", ")}`;
-
-  return `Du er en quiz-generator. Du svarer KUN med rent JSON-objekt — ingen markdown-koder, ingen forklaring før eller etter, ingen hilsen.
-
-${gateBlock}Oppgave: Lag en quiz på norsk om ${themeBlock}.${multiThemeInstruction}
-
-Nivå: ${difficulty}. ${DIFFICULTY_DESC[difficulty] || DIFFICULTY_DESC.medium}
-Antall spørsmål: ${count}
-
-Returner nøyaktig dette JSON-objektet (uten omkringliggende tekst):
-{"title":"kort tittel","lede":"én setning beskrivelse","questions":[{"category":"underkategori","q":"spørsmål?","options":["A","B","C","D"],"correct":0,"explanation":"kontekst"}]}
-
-Krav:
-- KRITISK: alle spørsmål, svar og forklaringer må være FAKTISK KORREKTE. Finn aldri opp fakta, navn, årstall eller hendelser. Er du usikker på et faktum, velg en annen vinkling du er trygg på i stedet.
-- "correct" er heltallsindeks 0-3 som peker til riktig alternativ
-- Riktig svar varierer mellom posisjon 0, 1, 2, 3 (ikke alltid samme)
-- Distraktorer skal være plausible
-- Naturlig norsk språk (bokmål)
-- Bruk tankestrek (—) der det passer
-- Eksakt ${count} spørsmål
-- IKKE skriv noe annet enn JSON-objektet`;
-}
-
-// Robust JSON-uttrekk: tåler ev. markdown-fence eller tekst rundt objektet.
-function extractJSON(rawText) {
-  let text = String(rawText || "").trim();
-  text = text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
-  const firstBrace = text.indexOf("{");
-  if (firstBrace === -1) throw new Error("Fant ingen JSON-struktur i svaret");
-  let depth = 0,
-    lastBrace = -1,
-    inString = false,
-    escape = false;
-  for (let i = firstBrace; i < text.length; i++) {
-    const ch = text[i];
-    if (escape) { escape = false; continue; }
-    if (ch === "\\") { escape = true; continue; }
-    if (ch === '"') { inString = !inString; continue; }
-    if (inString) continue;
-    if (ch === "{") depth++;
-    else if (ch === "}") { depth--; if (depth === 0) { lastBrace = i; break; } }
-  }
-  if (lastBrace === -1) throw new Error("Ufullstendig JSON-struktur");
-  return JSON.parse(text.slice(firstBrace, lastBrace + 1));
-}
-
-function validateQuiz(quiz, count) {
-  if (!quiz || typeof quiz !== "object") throw new Error("Svaret er ikke et objekt");
-  if (!Array.isArray(quiz.questions) || quiz.questions.length === 0)
-    throw new Error('JSON mangler "questions"-array');
-  quiz.questions.forEach((q, idx) => {
-    if (!q.q) throw new Error(`Spørsmål ${idx + 1}: mangler tekst`);
-    if (!Array.isArray(q.options) || q.options.length !== 4)
-      throw new Error(`Spørsmål ${idx + 1}: må ha nøyaktig 4 alternativer`);
-    if (typeof q.correct !== "number" || q.correct < 0 || q.correct > 3)
-      throw new Error(`Spørsmål ${idx + 1}: ugyldig "correct"-indeks`);
-    if (!q.category) q.category = "Blandet";
-    if (!q.explanation) q.explanation = "";
-  });
-  if (!quiz.title) quiz.title = "Quiz";
-  if (!quiz.lede) quiz.lede = "";
-  return quiz;
-}
-
-async function callAnthropic(apiKey, model, prompt, opts = {}) {
-  const payload = {
-    model,
-    max_tokens: opts.maxTokens || 4000,
-    messages: [{ role: "user", content: prompt }],
-  };
-  // Lav temperatur gir mer faktanær, mindre "kreativ" output. Viktig for quiz.
-  if (typeof opts.temperature === "number") payload.temperature = opts.temperature;
-
-  const response = await fetch(ANTHROPIC_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": ANTHROPIC_VERSION,
-    },
-    body: JSON.stringify(payload),
-  });
-
-  const bodyText = await response.text();
-  if (!response.ok) {
-    const err = new Error(`HTTP ${response.status}: ${bodyText.slice(0, 300)}`);
-    err.status = response.status;
-    throw err;
-  }
-  const data = JSON.parse(bodyText);
-  if (data.error) throw new Error("API-feil: " + (data.error.message || JSON.stringify(data.error)));
-  if (Array.isArray(data.content)) return data.content.map((b) => b.text || "").join("");
-  if (typeof data.completion === "string") return data.completion;
-  if (typeof data.text === "string") return data.text;
-  throw new Error("Ukjent svarstruktur fra Anthropic");
-}
-
-/**
- * Fase B — server-side håndheving av abonnement.
- * Returnerer null hvis OK å fortsette, ellers et HTTP-svar som avviser.
- *
- * Slås av med REQUIRE_SUBSCRIPTION=false (nyttig før betaling er live).
- * Krever SUPABASE_URL + SUPABASE_ANON_KEY (verifiserer JWT) +
- * SUPABASE_SERVICE_ROLE_KEY (slår opp abonnementsstatus). Mangler noen av
- * disse, er porten AV (åpen) — så siden funker før Supabase er satt opp.
- *
- * Feiler LUKKET: hvis vi ikke klarer å verifisere, avvises kallet (beskytter
- * mot at gratisbrukere brenner API-penger).
- */
-async function requireSubscription(event) {
-  const { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY } = process.env;
-  const gateOn = process.env.REQUIRE_SUBSCRIPTION !== "false"
-    && SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_SERVICE_ROLE_KEY;
-  if (!gateOn) return null;
-
-  const deny = (code, msg) => ({ statusCode: code, headers: CORS_HEADERS, body: JSON.stringify({ error: msg }) });
-
-  const authz = event.headers.authorization || event.headers.Authorization || "";
-  const token = authz.replace(/^Bearer\s+/i, "").trim();
-  if (!token) return deny(401, "Logg inn for å generere egne quizer.");
-
-  try {
-    const { createClient } = require("@supabase/supabase-js");
-    const anon = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false } });
-    const { data: u, error } = await anon.auth.getUser(token);
-    if (error || !u || !u.user || !u.user.email) return deny(401, "Økten er ugyldig. Logg inn på nytt.");
-    const email = u.user.email.toLowerCase();
-
-    const svc = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
-    const { data: sub, error: e2 } = await svc
-      .from("subscribers").select("status").eq("email", email).maybeSingle();
-    if (e2) throw new Error(e2.message);
-    if (!sub || sub.status !== "active") return deny(402, "Aktivt abonnement kreves for å generere egne quizer.");
-    return null; // OK
-  } catch (err) {
-    // Feil lukket — heller avvise enn å la generering skje uverifisert.
-    return deny(503, "Kunne ikke verifisere abonnement akkurat nå. Prøv igjen om litt.");
-  }
-}
+const core = require("./_quizcore");
+const { CORS_HEADERS } = core;
 
 exports.handler = async (event) => {
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers: CORS_HEADERS, body: "" };
-  }
-  if (event.httpMethod !== "POST") {
+  if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: CORS_HEADERS, body: "" };
+  if (event.httpMethod !== "POST")
     return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: "Bruk POST." }) };
-  }
 
-  // Fase B: krev aktivt abonnement (hopper over hvis ikke konfigurert).
-  const denied = await requireSubscription(event);
-  if (denied) return denied;
+  // Abonnement (hopper over hvis ikke konfigurert).
+  const authH = event.headers.authorization || event.headers.Authorization || "";
+  const sub = await core.checkSubscription(authH);
+  if (!sub.ok)
+    return { statusCode: sub.status, headers: CORS_HEADERS, body: JSON.stringify({ error: sub.message, code: sub.code }) };
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
+  if (!apiKey)
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: "Serveren mangler ANTHROPIC_API_KEY." }) };
+
+  let input;
+  try {
+    input = core.sanitizeInput(JSON.parse(event.body || "{}"));
+  } catch (e) {
+    const msg = e.code === "NO_THEMES" ? "Mangler 'themes'." : "Ugyldig JSON-body.";
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: msg }) };
+  }
+
+  const gateOn = process.env.KNOWLEDGE_GATE !== "false";
+  try {
+    const res = await core.generateQuiz(apiKey, { ...input, gateOn, withSearch: false });
+    if (!res.ok && res.insufficient) {
+      return {
+        statusCode: 422,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({
+          error: "Vi har ikke nok sikker kunnskap om dette temaet til å lage en kvalitetsquiz.",
+          code: "insufficient_knowledge",
+          reason: res.reason,
+        }),
+      };
+    }
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(res.quiz) };
+  } catch (err) {
     return {
-      statusCode: 500,
+      statusCode: 502,
       headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "Serveren mangler ANTHROPIC_API_KEY. Legg den til i Netlify → Site settings → Environment variables." }),
+      body: JSON.stringify({ error: "Klarte ikke generere quiz.", detail: err.message }),
     };
   }
-
-  // Parse + saniter input (begrenser bruk til quiz-generering, ikke fri prompt).
-  let themes, difficulty, count;
-  try {
-    const body = JSON.parse(event.body || "{}");
-    themes = Array.isArray(body.themes)
-      ? body.themes.map((t) => String(t).slice(0, 120).trim()).filter(Boolean).slice(0, 5)
-      : [];
-    difficulty = ["lett", "medium", "vanskelig"].includes(body.difficulty) ? body.difficulty : "medium";
-    count = Math.min(Math.max(parseInt(body.count, 10) || 10, 3), 15);
-  } catch (e) {
-    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: "Ugyldig JSON-body." }) };
-  }
-  if (themes.length === 0) {
-    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: "Mangler 'themes'." }) };
-  }
-
-  // Fase A — kunnskapsvakt er nå INNEBYGD i prompten (ett kall, ikke to).
-  // Slås av med KNOWLEDGE_GATE=false.
-  const gateOn = process.env.KNOWLEDGE_GATE !== "false";
-  const prompt = buildPrompt(themes, difficulty, count, gateOn);
-  const models = [process.env.QUIZ_MODEL, ...DEFAULT_MODELS].filter(Boolean);
-
-  let lastErr = null;
-  for (const model of models) {
-    try {
-      // Inntil 2 forsøk per modell.
-      for (let attempt = 0; attempt < 2; attempt++) {
-        try {
-          const raw = await callAnthropic(apiKey, model, prompt, { temperature: 0.4 });
-          const parsed = extractJSON(raw);
-          // Vakten slo til: modellen mangler sikker kunnskap om temaet.
-          // Dette er et gyldig svar — returner 422 med en gang (ikke prøv på nytt).
-          if (parsed && parsed.insufficient_knowledge === true) {
-            console.log("[gate] avvist:", JSON.stringify({ themes, reason: parsed.reason || "" }));
-            return {
-              statusCode: 422,
-              headers: CORS_HEADERS,
-              body: JSON.stringify({
-                error: "Vi har ikke nok sikker kunnskap om dette temaet til å lage en kvalitetsquiz.",
-                code: "insufficient_knowledge",
-                reason: String(parsed.reason || ""),
-              }),
-            };
-          }
-          const quiz = validateQuiz(parsed, count);
-          // Logg hvilken modell som faktisk svarte — gjør stille fallback synlig.
-          console.log("[generate] OK via modell:", model);
-          return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(quiz) };
-        } catch (inner) {
-          lastErr = inner;
-          // Ved auth/kvote-feil: ikke fortsett å hamre — bryt ut til neste modell/feilmelding.
-          if (inner.status === 401 || inner.status === 403 || inner.status === 429) throw inner;
-        }
-      }
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-
-  return {
-    statusCode: 502,
-    headers: CORS_HEADERS,
-    body: JSON.stringify({ error: "Klarte ikke generere quiz.", detail: lastErr ? lastErr.message : "ukjent feil" }),
-  };
 };
