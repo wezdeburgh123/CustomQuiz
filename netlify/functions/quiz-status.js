@@ -12,9 +12,7 @@
  *   200 { status: "pending" }                       — ikke skrevet ennå (helt fersk)
  */
 const { CORS_HEADERS } = require("./_quizcore");
-const { getStore } = require("@netlify/blobs");
-
-const STORE = "quiz-jobs";
+const jobs = require("./_jobs");
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: CORS_HEADERS, body: "" };
@@ -24,16 +22,14 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ status: "error", error: "Mangler jobId." }) };
 
   try {
-    const store = getStore(STORE);
-    const job = await store.get(jobId, { type: "json" });
+    const job = await jobs.getJob(jobId);
     if (!job) {
       // Enten helt fersk (ikke skrevet ennå) eller utløpt — be poller prøve igjen.
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: "pending" }) };
     }
     return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(job) };
   } catch (e) {
-    console.error("[status] Blobs-feil:", e.name, e.message);
-    // MIDLERTIDIG: eksponer den ekte feilen for diagnose (fjernes etterpå).
-    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: "error", error: "Kunne ikke lese jobbstatus.", _debug: (e.name || "") + ": " + (e.message || "") }) };
+    console.error("[status] jobb-lager-feil:", e.name, e.message);
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: "error", error: "Kunne ikke lese jobbstatus." }) };
   }
 };

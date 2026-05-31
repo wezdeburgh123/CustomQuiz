@@ -15,17 +15,14 @@
  *   { status: "running" | "done" | "insufficient" | "error", quiz?, reason?, error?, code?, ts }
  */
 const core = require("./_quizcore");
-const { getStore } = require("@netlify/blobs");
-
-const STORE = "quiz-jobs";
+const jobs = require("./_jobs");
 
 async function writeJob(jobId, obj) {
   try {
-    const store = getStore(STORE);
-    await store.setJSON(jobId, { ...obj, ts: Date.now() });
+    await jobs.setJob(jobId, obj);
   } catch (e) {
-    // Logg, men ikke kast — uten Blobs kan vi uansett ikke rapportere.
-    console.error("[bg] kunne ikke skrive jobb til Blobs:", e.message);
+    // Logg, men ikke kast — uten lager kan vi uansett ikke rapportere.
+    console.error("[bg] kunne ikke skrive jobb:", e.message);
   }
 }
 
