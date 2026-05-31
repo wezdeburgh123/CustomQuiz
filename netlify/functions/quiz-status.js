@@ -32,7 +32,8 @@ exports.handler = async (event) => {
     }
     return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(job) };
   } catch (e) {
-    console.error("[status] Blobs-feil:", e.message);
-    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: "error", error: "Kunne ikke lese jobbstatus." }) };
+    console.error("[status] Blobs-feil:", e.name, e.message);
+    // MIDLERTIDIG: eksponer den ekte feilen for diagnose (fjernes etterpå).
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: "error", error: "Kunne ikke lese jobbstatus.", _debug: (e.name || "") + ": " + (e.message || "") }) };
   }
 };
