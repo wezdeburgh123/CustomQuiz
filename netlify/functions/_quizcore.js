@@ -13,7 +13,10 @@ const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VERSION = "2023-06-01";
 
 // Primær + reserve. QUIZ_MODEL (hvis satt) prøves alltid først.
-const DEFAULT_MODELS = ["claude-sonnet-4-5", "claude-sonnet-4-6", "claude-3-5-sonnet-latest"];
+// VIKTIG: bruk FULLE daterte modellnavn — alias-navn (f.eks. "claude-sonnet-4-5"
+// eller "...-latest") gir 404 på denne kontoen. claude-sonnet-4-5-20250929 er
+// bekreftet å virke (inkl. websøk) i Anthropic-loggen 31. mai 2026.
+const DEFAULT_MODELS = ["claude-sonnet-4-5-20250929", "claude-sonnet-4-6", "claude-haiku-4-5-20251001"];
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
