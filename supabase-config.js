@@ -11,5 +11,5 @@
  */
 window.CQ_SUPABASE = {
   url: "https://agygcltvhkvokgpmwmxf.supabase.co",
-  anonKey: "PASTE_ANON_PUBLIC_KEY_HER" // lang "eyJ…"-streng — Settings → API → anon public
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFneWdjbHR2aGt2b2tncG13bXhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMjM0MzMsImV4cCI6MjA5NTY5OTQzM30.JcSqoSMeGrxLchR1MihVxMIMvSQ8PNrOPzbJKAexgZE" // anon public (frontend-trygg, beskyttet av RLS)
 };
