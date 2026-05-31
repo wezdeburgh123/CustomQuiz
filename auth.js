@@ -25,7 +25,7 @@
     if (document.getElementById("cq-auth-style")) return;
     var css = `
       .cq-auth-chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono,monospace);font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
-      .cq-auth-link{background:none;border:none;cursor:pointer;color:var(--accent,#0A6E5A);font-family:var(--font-mono,monospace);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:0;}
+      .cq-auth-link{background:none;border:none;cursor:pointer;color:var(--accent,#0A6E5A);font-family:var(--font-mono,monospace);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:0;}
       .cq-auth-link:hover{color:var(--accent-deep,#074538);}
       .cq-auth-modal{display:none;position:fixed;inset:0;background:rgba(31,26,20,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:200;padding:20px;overflow-y:auto;align-items:flex-start;justify-content:center;padding-top:60px;}
       .cq-auth-modal.active{display:flex;}
@@ -117,7 +117,7 @@
     var el = document.getElementById("cq-auth-control");
     if (!el) return;
     if (currentUser) {
-      el.innerHTML = '<a class="masthead-link" href="min-side.html">Min side</a>';
+      el.innerHTML = '<a class="cq-auth-link" href="min-side.html">Min side</a>';
     } else if (configured) {
       el.innerHTML = '<button class="cq-auth-link" id="cq-auth-open">Logg inn</button>';
       var b = document.getElementById("cq-auth-open");
