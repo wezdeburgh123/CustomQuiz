@@ -243,19 +243,27 @@ async function generateQuiz(apiKey, { themes, difficulty, count, gateOn = true, 
 }
 
 /**
- * Server-side håndheving av abonnement. Returnerer { ok:true } eller
- * { ok:false, code, status, message }. Slås av med REQUIRE_SUBSCRIPTION=false
- * eller når Supabase-env mangler (åpen før betaling er live).
- * Feiler LUKKET ved verifiseringsfeil.
+ * Server-side tilgangskontroll. Returnerer { ok:true } eller
+ * { ok:false, code, status, message }. Tre nivåer, styrt av env:
+ *
+ *   1. ÅPEN (standard): ingen Supabase-env / ingen flagg → alle slipper gjennom.
+ *   2. INNLOGGINGS-SPERRE: REQUIRE_LOGIN=true + SUPABASE_URL + SUPABASE_ANON_KEY
+ *      → krever gyldig innlogging (Supabase-JWT), men IKKE abonnement.
+ *      Stopper anonymt misbruk uten at betaling er på plass.
+ *   3. ABONNEMENT: REQUIRE_SUBSCRIPTION≠false + alle tre Supabase-env (inkl.
+ *      SERVICE_ROLE) → krever aktivt abonnement.
+ *
+ * Feiler LUKKET ved verifiseringsfeil (heller avvise enn å la uautorisert skje).
  */
 async function checkSubscription(authHeader) {
   const { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY } = process.env;
-  const gateOn = process.env.REQUIRE_SUBSCRIPTION !== "false"
+  const requireSub = process.env.REQUIRE_SUBSCRIPTION !== "false"
     && SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_SERVICE_ROLE_KEY;
-  if (!gateOn) return { ok: true };
+  const requireLogin = process.env.REQUIRE_LOGIN === "true" && SUPABASE_URL && SUPABASE_ANON_KEY;
+  if (!requireSub && !requireLogin) return { ok: true };
 
   const token = String(authHeader || "").replace(/^Bearer\s+/i, "").trim();
-  if (!token) return { ok: false, status: 401, code: "SUBSCRIPTION", message: "Logg inn for å generere egne quizer." };
+  if (!token) return { ok: false, status: 401, code: "SUBSCRIPTION", message: "Logg inn for å generere quizer." };
 
   try {
     const { createClient } = require("@supabase/supabase-js");
@@ -263,8 +271,12 @@ async function checkSubscription(authHeader) {
     const { data: u, error } = await anon.auth.getUser(token);
     if (error || !u || !u.user || !u.user.email)
       return { ok: false, status: 401, code: "SUBSCRIPTION", message: "Økten er ugyldig. Logg inn på nytt." };
-    const email = u.user.email.toLowerCase();
 
+    // Innloggings-sperre: gyldig innlogging er nok (ingen abonnementssjekk).
+    if (!requireSub) return { ok: true };
+
+    // Abonnement-modus: krev aktiv abonnent (krever SERVICE_ROLE).
+    const email = u.user.email.toLowerCase();
     const svc = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
     const { data: sub, error: e2 } = await svc
       .from("subscribers").select("status").eq("email", email).maybeSingle();
@@ -273,7 +285,7 @@ async function checkSubscription(authHeader) {
       return { ok: false, status: 402, code: "SUBSCRIPTION", message: "Aktivt abonnement kreves for å generere egne quizer." };
     return { ok: true };
   } catch (err) {
-    return { ok: false, status: 503, code: "VERIFY_FAILED", message: "Kunne ikke verifisere abonnement akkurat nå. Prøv igjen om litt." };
+    return { ok: false, status: 503, code: "VERIFY_FAILED", message: "Kunne ikke verifisere tilgang akkurat nå. Prøv igjen om litt." };
   }
 }
 

@@ -1570,6 +1570,11 @@
   const POLL_INTERVAL_MS = 2500;   // hvor ofte vi spør "ferdig?"
   const POLL_MAX_MS = 90000;       // gi websøk-generering god tid (90 s) før vi gir opp
 
+  // Innloggings-sperre: krev innlogging for å generere (kostnadsbeskyttelse før
+  // betaling er live). Må samsvare med server-env REQUIRE_LOGIN=true. Sett til
+  // false her + fjern env-en for å åpne generatoren igjen.
+  const REQUIRE_LOGIN = true;
+
   /* --------------- GRATIS-TIER (testfase) ---------------
    * Lar en bruker generere et begrenset antall quizer gratis før
    * abonnementsmodalen (#paywall) dukker opp. Teller per nettleser i
@@ -1613,6 +1618,18 @@
       showPaywall();
       return false;
     }
+    return true;
+  }
+
+  // Innloggings-sperre. Returnerer true hvis brukeren kan fortsette.
+  // Ikke innlogget → åpne login-modal og stopp. Hvis auth ikke er konfigurert
+  // (anon-nøkkel mangler), ikke blokker — da er generatoren ment å være åpen.
+  async function ensureLoggedIn() {
+    if (!REQUIRE_LOGIN) return true;
+    if (!window.CQAuth || !window.CQAuth.isConfigured || !window.CQAuth.isConfigured()) return true;
+    let token = null;
+    try { token = await window.CQAuth.getAccessToken(); } catch (_) {}
+    if (!token) { try { window.CQAuth.signIn(); } catch (_) {} return false; }
     return true;
   }
 
@@ -1807,6 +1824,8 @@
   async function generateQuiz() {
     const themes = getAllThemes();
     if (themes.length === 0) { alert('Velg minst ett tema først'); return; }
+    // Innloggings-sperre: må være innlogget for å generere (kostnadsbeskyttelse).
+    if (!(await ensureLoggedIn())) return;
     // Gratis-tier under testing: la brukeren generere FREE_GENERATION_LIMIT
     // ganger, vis så paywall. (Lås-inn: bytt til ensureAccess() — se over.)
     if (!(await ensureCanGenerate())) return;
