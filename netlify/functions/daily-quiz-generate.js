@@ -31,9 +31,13 @@ async function ensureDay(apiKey, dateStr) {
   const theme = THEME_BY_WEEKDAY[daily.weekdayOf(dateStr)] || FALLBACK_THEME;
   let res;
   try {
-    res = await core.generateQuiz(apiKey, { themes: [theme], difficulty: "medium", count: 10, gateOn: true, withSearch: true });
-    // Daglig quiz MÅ finnes — brede tema avvises normalt ikke, men hvis vakten
-    // likevel sier nei, fall tilbake til et trygt, bredt tema uten vakt.
+    // UTEN websøk: daglig-temaene er brede (historie, vitenskap, geografi …) der
+    // modellens egen kunnskap er solid. Det holder oss innenfor tidsgrensa (også
+    // ved manuell trigging), kutter kostnad, og unngår nisje-hallusinering siden
+    // temaene aldri er smale. Websøk er forbeholdt brukernes egne nisjetema.
+    res = await core.generateQuiz(apiKey, { themes: [theme], difficulty: "medium", count: 10, gateOn: true, withSearch: false });
+    // Daglig quiz MÅ finnes — hvis vakten mot formodning sier nei, fall tilbake
+    // til et trygt, bredt tema uten vakt.
     if (!res.ok) throw new Error("vakt avviste daglig tema: " + (res.reason || ""));
   } catch (e1) {
     console.warn("[daily] " + dateStr + " (" + theme + ") feilet, prøver fallback:", e1.message);
