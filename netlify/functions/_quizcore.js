@@ -34,6 +34,9 @@ const DIFFICULTY_DESC = {
 function buildPrompt(themes, difficulty, count, opts = {}) {
   const gateOn = opts.gateOn !== false;
   const withSearch = opts.withSearch === true;
+  // Gulv for "lag heller færre enn å avvise". For smale tema er en kortere,
+  // faktabasert quiz bedre enn et flatt nei — avvis kun hvis ikke engang dette går.
+  const minQ = Math.min(count, 5);
 
   // Med websøk: be modellen verifisere FØR den dikter. Vakten gjelder fortsatt,
   // men først ETTER søk — finner den ingen pålitelige kilder, avviser den.
@@ -44,9 +47,9 @@ function buildPrompt(themes, difficulty, count, opts = {}) {
     : "";
 
   const gateBlock = gateOn
-    ? `${withSearch ? "ETTER at du har søkt: h" : "FØRST: vurder om du har pålitelig, faktisk kunnskap om temaet. H"}vis du ${withSearch ? "fortsatt ikke finner pålitelige kilder og måtte" : "måtte"} gjette eller finne på fakta — for eksempel en ukjent person/artist som knapt finnes i kilder, eller hendelser etter kunnskapsgrensa di — IKKE lag quiz. Returner i stedet KUN dette objektet:
+    ? `Om antall: lag så mange FAKTABASERTE spørsmål du trygt kan, opptil ${count}. Klarer du ikke ${count} fra ${withSearch ? "pålitelige kilder eller " : ""}sikker kunnskap, lag heller FÆRRE — men aldri færre enn ${minQ}, og aldri dikt opp fakta for å fylle opp antallet. En kortere, korrekt quiz er bedre enn en lang med oppspinn.
+Bare hvis du ikke engang klarer ${minQ} solide, faktabaserte spørsmål (temaet er for smalt/ukjent — f.eks. en person/artist som knapt finnes i kilder, eller noe etter kunnskapsgrensa di): returner KUN dette objektet, ingenting annet:
 {"insufficient_knowledge": true, "reason": "kort norsk begrunnelse på én setning"}
-Er flere tema oppgitt og du mangler sikker dekning for MINST ETT, gjør det samme. Ellers, lag quizen som beskrevet under.
 
 `
     : "";
@@ -66,7 +69,7 @@ Er flere tema oppgitt og du mangler sikker dekning for MINST ETT, gjør det samm
 ${searchBlock}${gateBlock}Oppgave: Lag en quiz på norsk om ${themeBlock}.${multiThemeInstruction}
 
 Nivå: ${difficulty}. ${DIFFICULTY_DESC[difficulty] || DIFFICULTY_DESC.medium}
-Antall spørsmål: ${count}
+Antall spørsmål: sikt mot ${count} (men minst ${minQ} — heller færre enn oppdiktede)
 
 Avslutt svaret med nøyaktig dette JSON-objektet:
 {"title":"kort tittel","lede":"én setning beskrivelse","questions":[{"category":"underkategori","q":"spørsmål?","options":["A","B","C","D"],"correct":0,"explanation":"kontekst"}]}
@@ -78,7 +81,7 @@ Krav:
 - Distraktorer skal være plausible
 - Naturlig norsk språk (bokmål)
 - Bruk tankestrek (—) der det passer
-- Eksakt ${count} spørsmål
+- Opptil ${count} spørsmål, men aldri færre enn ${minQ}; heller færre korrekte enn oppdiktede
 - JSON-objektet skal være det siste i svaret, uten tekst etter`;
 }
 
