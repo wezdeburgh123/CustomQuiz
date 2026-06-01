@@ -61,14 +61,14 @@
         <div class="eyebrow">Innlogging</div>
         <div id="cq-auth-step-email">
           <h3>Få en kode på e-post</h3>
-          <p>Skriv inn e-posten din, så sender vi en 6-sifret innloggingskode. Ingen passord.</p>
+          <p>Skriv inn e-posten din, så sender vi en engangskode. Ingen passord.</p>
           <input class="cq-auth-input" id="cq-auth-email" type="email" inputmode="email" autocomplete="email" placeholder="Din e-post" aria-label="E-post">
           <button class="cq-auth-btn" id="cq-auth-send" type="button">Send kode</button>
         </div>
         <div id="cq-auth-step-code" style="display:none;">
           <h3>Skriv inn koden</h3>
-          <p>Vi sendte en 6-sifret kode til <strong id="cq-auth-emaillabel"></strong>. Skriv den inn her.</p>
-          <input class="cq-auth-input" id="cq-auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-sifret kode" aria-label="Innloggingskode" style="text-align:center;letter-spacing:.4em;font-family:var(--font-mono,monospace);font-size:20px;">
+          <p>Vi sendte en engangskode til <strong id="cq-auth-emaillabel"></strong>. Skriv den inn her.</p>
+          <input class="cq-auth-input" id="cq-auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Engangskode" aria-label="Innloggingskode" style="text-align:center;letter-spacing:.3em;font-family:var(--font-mono,monospace);font-size:20px;">
           <button class="cq-auth-btn" id="cq-auth-verify" type="button">Logg inn</button>
           <button class="cq-auth-close" id="cq-auth-resend" type="button">Send ny kode</button>
         </div>
@@ -133,9 +133,9 @@
 
   async function verifyCode() {
     var msg = document.getElementById("cq-auth-msg");
-    var code = (document.getElementById("cq-auth-code").value || "").replace(/\s+/g, "");
+    var code = (document.getElementById("cq-auth-code").value || "").replace(/\D/g, "");
     msg.classList.remove("error");
-    if (!/^\d{6}$/.test(code)) { msg.classList.add("error"); msg.textContent = "Skriv inn den 6-sifrede koden."; return; }
+    if (!/^\d{6,10}$/.test(code)) { msg.classList.add("error"); msg.textContent = "Skriv inn engangskoden fra e-posten."; return; }
     if (!client || !pendingEmail) { msg.classList.add("error"); msg.textContent = "Be om en ny kode."; return; }
     msg.textContent = "Logger inn …";
     try {
