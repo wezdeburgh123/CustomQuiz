@@ -59,24 +59,44 @@
     wrap.innerHTML = `
       <div class="cq-auth-card">
         <div class="eyebrow">Innlogging</div>
-        <h3>Få en lenke på e-post</h3>
-        <p>Skriv inn e-posten din, så sender vi en innloggingslenke. Ingen passord.</p>
-        <input class="cq-auth-input" id="cq-auth-email" type="email" inputmode="email" autocomplete="email" placeholder="Din e-post" aria-label="E-post">
-        <button class="cq-auth-btn" id="cq-auth-send" type="button">Send innloggingslenke</button>
+        <div id="cq-auth-step-email">
+          <h3>Få en kode på e-post</h3>
+          <p>Skriv inn e-posten din, så sender vi en 6-sifret innloggingskode. Ingen passord.</p>
+          <input class="cq-auth-input" id="cq-auth-email" type="email" inputmode="email" autocomplete="email" placeholder="Din e-post" aria-label="E-post">
+          <button class="cq-auth-btn" id="cq-auth-send" type="button">Send kode</button>
+        </div>
+        <div id="cq-auth-step-code" style="display:none;">
+          <h3>Skriv inn koden</h3>
+          <p>Vi sendte en 6-sifret kode til <strong id="cq-auth-emaillabel"></strong>. Skriv den inn her.</p>
+          <input class="cq-auth-input" id="cq-auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-sifret kode" aria-label="Innloggingskode" style="text-align:center;letter-spacing:.4em;font-family:var(--font-mono,monospace);font-size:20px;">
+          <button class="cq-auth-btn" id="cq-auth-verify" type="button">Logg inn</button>
+          <button class="cq-auth-close" id="cq-auth-resend" type="button">Send ny kode</button>
+        </div>
         <div class="cq-auth-msg" id="cq-auth-msg"></div>
         <button class="cq-auth-close" id="cq-auth-close" type="button">Lukk</button>
       </div>`;
     document.body.appendChild(wrap);
     wrap.addEventListener("click", function (e) { if (e.target.id === "cq-auth-modal") closeLogin(); });
     document.getElementById("cq-auth-close").addEventListener("click", closeLogin);
-    document.getElementById("cq-auth-send").addEventListener("click", sendLink);
-    document.getElementById("cq-auth-email").addEventListener("keydown", function (e) { if (e.key === "Enter") sendLink(); });
+    document.getElementById("cq-auth-send").addEventListener("click", sendCode);
+    document.getElementById("cq-auth-email").addEventListener("keydown", function (e) { if (e.key === "Enter") sendCode(); });
+    document.getElementById("cq-auth-verify").addEventListener("click", verifyCode);
+    document.getElementById("cq-auth-code").addEventListener("keydown", function (e) { if (e.key === "Enter") verifyCode(); });
+    document.getElementById("cq-auth-resend").addEventListener("click", function () { showStep("email"); });
+  }
+
+  function showStep(step) {
+    var e = document.getElementById("cq-auth-step-email");
+    var c = document.getElementById("cq-auth-step-code");
+    if (e) e.style.display = step === "code" ? "none" : "";
+    if (c) c.style.display = step === "code" ? "" : "none";
   }
 
   function openLogin() {
     injectModal();
     var msg = document.getElementById("cq-auth-msg");
     msg.textContent = ""; msg.classList.remove("error");
+    showStep("email");
     if (currentUser && currentUser.email) document.getElementById("cq-auth-email").value = currentUser.email;
     document.getElementById("cq-auth-modal").classList.add("active");
     setTimeout(function () { var f = document.getElementById("cq-auth-email"); if (f) f.focus(); }, 60);
@@ -86,7 +106,9 @@
     if (m) m.classList.remove("active");
   }
 
-  async function sendLink() {
+  var pendingEmail = "";
+
+  async function sendCode() {
     var msg = document.getElementById("cq-auth-msg");
     var email = (document.getElementById("cq-auth-email").value || "").trim().toLowerCase();
     msg.classList.remove("error");
@@ -94,12 +116,36 @@
     if (!client) { msg.classList.add("error"); msg.textContent = "Innlogging er ikke konfigurert ennå."; return; }
     msg.textContent = "Sender …";
     try {
-      var redirect = location.origin + "/min-side.html";
-      var res = await client.auth.signInWithOtp({ email: email, options: { emailRedirectTo: redirect } });
+      // Ingen emailRedirectTo — vi bruker 6-sifret kode, ikke lenke (lenker
+      // blir «brukt opp» av e-postskannere som kjører JS, f.eks. Microsoft 365).
+      var res = await client.auth.signInWithOtp({ email: email, options: { shouldCreateUser: true } });
       if (res.error) throw res.error;
-      msg.textContent = "Sjekk innboksen — lenken er på vei til " + email + ".";
+      pendingEmail = email;
+      var label = document.getElementById("cq-auth-emaillabel");
+      if (label) label.textContent = email;
+      showStep("code");
+      msg.textContent = "";
+      setTimeout(function () { var f = document.getElementById("cq-auth-code"); if (f) f.focus(); }, 60);
     } catch (err) {
-      msg.classList.add("error"); msg.textContent = "Klarte ikke sende lenke: " + (err.message || err);
+      msg.classList.add("error"); msg.textContent = "Klarte ikke sende kode: " + (err.message || err);
+    }
+  }
+
+  async function verifyCode() {
+    var msg = document.getElementById("cq-auth-msg");
+    var code = (document.getElementById("cq-auth-code").value || "").replace(/\s+/g, "");
+    msg.classList.remove("error");
+    if (!/^\d{6}$/.test(code)) { msg.classList.add("error"); msg.textContent = "Skriv inn den 6-sifrede koden."; return; }
+    if (!client || !pendingEmail) { msg.classList.add("error"); msg.textContent = "Be om en ny kode."; return; }
+    msg.textContent = "Logger inn …";
+    try {
+      var res = await client.auth.verifyOtp({ email: pendingEmail, token: code, type: "email" });
+      if (res.error) throw res.error;
+      // Sesjonen er nå satt; onAuthStateChange oppdaterer header/sider.
+      msg.textContent = "Logget inn!";
+      closeLogin();
+    } catch (err) {
+      msg.classList.add("error"); msg.textContent = "Feil eller utløpt kode. Prøv igjen, eller be om en ny.";
     }
   }
 
