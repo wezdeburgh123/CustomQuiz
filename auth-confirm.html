@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Logger inn … — CustomQuiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F5F0E6; --bg-soft:#FBF7EE; --ink:#1F1A14; --ink-soft:#4B4338;
+      --ink-mute:#7A6F5A; --accent:#0A6E5A; --accent-deep:#074538;
+      --rule:#E2D8C2; --rule-strong:#C9BD9F; --err:#B05238;
+      --font-display:'Fraunces',Georgia,serif; --font-sans:'Manrope',Arial,sans-serif;
+      --font-mono:'JetBrains Mono',ui-monospace,monospace;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
+      font-family:var(--font-sans);display:flex;align-items:center;justify-content:center;padding:24px;}
+    .card{background:var(--bg-soft);border:1px solid var(--rule);border-radius:16px;
+      max-width:460px;width:100%;padding:40px 40px 36px;text-align:center;}
+    .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;
+      text-transform:uppercase;color:var(--accent);margin:0 0 16px;}
+    h1{font-family:var(--font-display);font-size:30px;font-weight:500;line-height:1.15;margin:0 0 14px;color:var(--ink);}
+    p{font-size:16px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px;}
+    .spinner{width:34px;height:34px;border:3px solid var(--rule-strong);border-top-color:var(--accent);
+      border-radius:50%;margin:4px auto 22px;animation:spin .8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .btn{display:inline-block;padding:14px 30px;background:var(--accent);color:var(--bg-soft);
+      text-decoration:none;border-radius:999px;font-size:14px;font-weight:600;letter-spacing:.03em;}
+    .btn:hover{background:var(--accent-deep);}
+    .hidden{display:none;}
+    .err h1{color:var(--err);}
+    .foot{margin-top:28px;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--ink-mute);}
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <p class="eyebrow">CustomQuiz · Innlogging</p>
+    <div class="spinner" id="spinner"></div>
+    <h1 id="title">Logger deg inn …</h1>
+    <p id="msg">Et øyeblikk — vi bekrefter lenken din.</p>
+    <a class="btn hidden" id="action" href="/min-side.html">Til Min side</a>
+    <div class="foot">customquiz.no</div>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (function () {
+      var CFG = window.CQ_SUPABASE || {};
+      var card = document.getElementById("card");
+      var spinner = document.getElementById("spinner");
+      var title = document.getElementById("title");
+      var msg = document.getElementById("msg");
+      var action = document.getElementById("action");
+
+      function fail(text) {
+        card.classList.add("err");
+        spinner.classList.add("hidden");
+        title.textContent = "Lenken virket ikke";
+        msg.textContent = text || "Innloggingslenken er ugyldig eller utløpt. Be om en ny.";
+        action.textContent = "Be om ny lenke";
+        action.setAttribute("href", "/min-side.html");
+        action.classList.remove("hidden");
+      }
+
+      function succeed() {
+        // Sesjonen er nå lagret (persistSession). Send brukeren videre.
+        title.textContent = "Du er logget inn";
+        msg.textContent = "Sender deg videre …";
+        location.replace("/min-side.html");
+      }
+
+      // Les parametre fra både query (?...) og hash (#...) for robusthet.
+      function params() {
+        var out = {};
+        var q = new URLSearchParams(location.search);
+        q.forEach(function (v, k) { out[k] = v; });
+        if (location.hash && location.hash.length > 1) {
+          var h = new URLSearchParams(location.hash.slice(1));
+          h.forEach(function (v, k) { if (!(k in out)) out[k] = v; });
+        }
+        return out;
+      }
+
+      async function run() {
+        if (!window.supabase || !window.supabase.createClient || !CFG.url || !CFG.anonKey) {
+          return fail("Innlogging er ikke konfigurert. Prøv igjen senere.");
+        }
+        var p = params();
+
+        // Hvis lenken allerede inneholder en feil fra Supabase.
+        if (p.error || p.error_code) {
+          return fail(decodeURIComponent((p.error_description || "Lenken er ugyldig eller utløpt.").replace(/\+/g, " ")));
+        }
+
+        var client = window.supabase.createClient(CFG.url, CFG.anonKey, {
+          auth: { detectSessionInUrl: false, persistSession: true, autoRefreshToken: true }
+        });
+
+        // Eldre stil: token + redirect i hash (#access_token=…) — la supabase håndtere.
+        if (p.access_token || (location.hash && location.hash.indexOf("access_token") > -1)) {
+          try {
+            var s = await client.auth.getSession();
+            if (s && s.data && s.data.session) return succeed();
+          } catch (_) {}
+        }
+
+        var tokenHash = p.token_hash || p.tokenHash;
+        if (!tokenHash) {
+          return fail("Mangler innloggingstoken i lenken. Be om en ny lenke.");
+        }
+
+        // Prøv oppgitt type først, så fall tilbake på de andre e-posttypene.
+        var requested = (p.type || "email").toLowerCase();
+        var types = [requested];
+        ["email", "magiclink", "signup"].forEach(function (t) { if (types.indexOf(t) === -1) types.push(t); });
+
+        for (var i = 0; i < types.length; i++) {
+          try {
+            var res = await client.auth.verifyOtp({ token_hash: tokenHash, type: types[i] });
+            if (res && !res.error && res.data && (res.data.session || res.data.user)) {
+              return succeed();
+            }
+          } catch (_) { /* prøv neste type */ }
+        }
+        fail("Innloggingslenken er ugyldig eller utløpt. Be om en ny.");
+      }
+
+      run();
+    })();
+  </script>
+</body>
+</html>
