@@ -1063,6 +1063,27 @@
     </div>
   </section>
 
+  <!-- UKENS LEDERTAVLE -->
+  <style>
+    .lb-section { max-width: 720px; margin: 0 auto; padding: 48px 24px 8px; }
+    .lb-section .lb-intro { color: var(--ink-mute); font-size: 14px; margin: 8px 0 0; }
+    .home-lb { width: 100%; border-collapse: collapse; margin-top: 18px; }
+    .home-lb th { text-align: left; font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em;
+                  text-transform: uppercase; color: var(--ink-mute); padding: 8px 10px; border-bottom: .5px solid var(--rule-strong); }
+    .home-lb td { padding: 11px 10px; border-bottom: .5px solid var(--rule); font-size: 15px; }
+    .home-lb .rank { font-family: var(--font-mono); color: var(--ink-mute); width: 40px; }
+    .home-lb .sc { text-align: right; font-family: var(--font-mono); font-weight: 500; }
+    .home-lb tr.me td { background: var(--accent-soft); }
+    .lb-empty { color: var(--ink-mute); font-size: 14px; margin-top: 14px; }
+    .lb-foot { margin-top: 16px; }
+  </style>
+  <section class="lb-section">
+    <div class="section-label"><span>Ukens <em>ledertavle</em></span></div>
+    <p class="lb-intro">Sammenlagt poeng på dagens quiz denne uka. Logg inn og spill for å bli med — nullstilles hver mandag.</p>
+    <div id="home-lb"><p class="lb-empty">Laster …</p></div>
+    <div class="lb-foot"><a class="btn btn-ghost" href="dagens.html">Spill dagens quiz <span class="btn-arrow">→</span></a></div>
+  </section>
+
   <footer>
     <div><span class="brand">CustomQuiz</span> · customquiz.no</div>
     <div>© 2026 · Daglige quizer på norsk</div>
@@ -1212,5 +1233,44 @@
 </script>
 <script src="supabase-config.js"></script>
 <script src="auth.js"></script>
+<script>
+/* Ukens ledertavle på forsiden — leser det offentlige weekly_leaderboard-viewet. */
+(function () {
+  function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  async function getClient(){
+    var deadline = Date.now() + 6000, c = null;
+    while (Date.now() < deadline) {
+      c = (window.CQAuth && window.CQAuth.getClient) ? window.CQAuth.getClient() : null;
+      if (c) return c;
+      await wait(200);
+    }
+    return null;
+  }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  (async function(){
+    var wrap = document.getElementById('home-lb'); if (!wrap) return;
+    var sb = await getClient();
+    if (!sb) { wrap.innerHTML = '<p class="lb-empty">Ledertavla er utilgjengelig akkurat nå.</p>'; return; }
+    var myId = null;
+    try { var u = await sb.auth.getUser(); myId = u && u.data && u.data.user && u.data.user.id; } catch(e){}
+    try {
+      var r = await sb.from('weekly_leaderboard').select('user_id,display_name,week_score,days_played').limit(10);
+      var rows = r.data || [];
+      if (!rows.length) { wrap.innerHTML = '<p class="lb-empty">Ingen har spilt denne uka ennå — spill dagens quiz og bli den første!</p>'; return; }
+      var h = '<table class="home-lb"><thead><tr><th class="rank">#</th><th>Spiller</th><th class="sc">Poeng</th></tr></thead><tbody>';
+      rows.forEach(function(row, i){
+        var me = myId && row.user_id === myId;
+        h += '<tr class="' + (me?'me':'') + '"><td class="rank">' + (i+1) + '</td><td>' +
+             esc(row.display_name || 'Anonym') + (me?' <span style="color:var(--ink-mute)">(deg)</span>':'') +
+             '</td><td class="sc">' + row.week_score + '</td></tr>';
+      });
+      h += '</tbody></table>';
+      wrap.innerHTML = h;
+    } catch(e) {
+      wrap.innerHTML = '<p class="lb-empty">Kunne ikke laste ledertavla.</p>';
+    }
+  })();
+})();
+</script>
 </body>
 </html>
