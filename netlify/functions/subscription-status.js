@@ -30,7 +30,7 @@ exports.handler = async (event) => {
   try {
     const { data, error } = await supa()
       .from("subscribers")
-      .select("status, source, plan, current_period_end")
+      .select("status, source, plan, current_period_end, cancel_at_period_end")
       .eq("email", email)
       .maybeSingle();
     if (error) throw new Error(error.message);
@@ -38,6 +38,8 @@ exports.handler = async (event) => {
     const active = !!data && (data.status === "active");
     return { statusCode: 200, headers: JSON_HEADERS, body: JSON.stringify({
       active, status: data?.status || "none", source: data?.source || null, plan: data?.plan || null,
+      current_period_end: data?.current_period_end || null,
+      cancel_at_period_end: !!data?.cancel_at_period_end,
     }) };
   } catch (err) {
     return { statusCode: 500, headers: JSON_HEADERS, body: JSON.stringify({ error: err.message }) };

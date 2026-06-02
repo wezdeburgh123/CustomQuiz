@@ -89,6 +89,7 @@
       <div class="status-row">
         <span class="badge none" id="sub-badge"><span class="dot"></span><span id="sub-text">Sjekker …</span></span>
       </div>
+      <div class="muted" id="sub-detail" style="margin-top:10px;"></div>
       <div class="actions" id="sub-actions"></div>
     </div>
     <div class="actions">
@@ -115,8 +116,16 @@
     ["view-guest","view-user","view-unconfigured"].forEach(v => $(v).classList.toggle("hidden", v !== view));
   }
 
+  function formatDateNb(iso) {
+    if (!iso) return null;
+    const d = new Date(iso);
+    if (isNaN(d)) return null;
+    return d.toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" });
+  }
+
   async function renderSub(email) {
-    const badge = $("sub-badge"), text = $("sub-text"), actions = $("sub-actions");
+    const badge = $("sub-badge"), text = $("sub-text"), actions = $("sub-actions"), detail = $("sub-detail");
+    detail.textContent = "";
     try {
       const r = await fetch("/api/subscription-status?email=" + encodeURIComponent(email));
       const d = await r.json();
@@ -124,6 +133,10 @@
       badge.className = "badge " + (st === "active" ? "active" : st === "pending" ? "pending" : "none");
       text.textContent = st === "active" ? "Aktiv · Premium" : st === "pending" ? "Venter på betaling" : "Ingen — gratisbruker";
       if (st === "active") {
+        const dato = formatDateNb(d.current_period_end);
+        if (dato) detail.textContent = d.cancel_at_period_end
+          ? "Sies opp — tilgang ut perioden, til " + dato + "."
+          : "Fornyes automatisk " + dato + ".";
         actions.innerHTML =
           '<button class="btn btn-ghost" type="button" id="cancel-btn">Si opp abonnement</button>' +
           '<span class="muted">Kilde: ' + (d.source || "—") + '</span>';
