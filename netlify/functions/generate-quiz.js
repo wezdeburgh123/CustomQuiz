@@ -9,6 +9,7 @@
  * Felles logikk i _quizcore.js. Nøkkelen (ANTHROPIC_API_KEY) er kun server-side.
  */
 const core = require("./_quizcore");
+const library = require("./_library");
 const { CORS_HEADERS } = core;
 
 exports.handler = async (event) => {
@@ -34,6 +35,19 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: msg }) };
   }
 
+  // CHECK-DB-FIRST: finnes temaet allerede i arkivet, server det momentant
+  // (gratis — ingen API-bruk). Bom → generér under.
+  try {
+    const cached = await library.findByThemes(input.themes, input.difficulty);
+    if (cached && Array.isArray(cached.questions) && cached.questions.length) {
+      return {
+        statusCode: 200,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ title: cached.title, lede: cached.lede, questions: cached.questions, cached: true }),
+      };
+    }
+  } catch (_) { /* cache-bom skal aldri blokkere generering */ }
+
   const gateOn = process.env.KNOWLEDGE_GATE !== "false";
   try {
     const res = await core.generateQuiz(apiKey, { ...input, gateOn, withSearch: false });
@@ -48,6 +62,11 @@ exports.handler = async (event) => {
         }),
       };
     }
+    // Nytt tema → lagre i arkivet så neste forespørsel treffer cachen.
+    library.saveQuiz({
+      themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
+      category: "mix", model: res.model, grounded: false, source: "user",
+    }).catch(() => {});
     return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(res.quiz) };
   } catch (err) {
     return {

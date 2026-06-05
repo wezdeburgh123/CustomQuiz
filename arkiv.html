@@ -974,6 +974,31 @@
     } catch (err) {
       console.warn('[Arkiv] Klarte ikke laste quizzes-data.json:', err);
     }
+    // Slå sammen det voksende Supabase-arkivet (quiz_library) — fylles av det
+    // nattlige genererings-skiftet. Spilles via generatoren med ?lib=<slug>.
+    try {
+      const res = await fetch('/api/library-list?limit=2000', { cache: 'no-store' });
+      if (res.ok) {
+        const { quizzes } = await res.json();
+        (quizzes || []).forEach(q => {
+          QUIZZES.push({
+            num: '',
+            title: q.title || 'Quiz',
+            category: q.category || 'mix',
+            categoryLabel: q.category_label || '',
+            img: q.hero_img || CATEGORY_TO_IMG[q.category] || 'kategori-mix',
+            sub: q.lede || '',
+            rating: typeof q.rating === 'number' ? q.rating : 4.5,
+            plays: typeof q.plays === 'number' ? q.plays : 0,
+            date: (q.created_at || '').slice(0, 10) || '2026-06-01',
+            url: 'quiz-app-v2.html?lib=' + encodeURIComponent(q.slug),
+            locked: true
+          });
+        });
+      }
+    } catch (err) {
+      console.warn('[Arkiv] Klarte ikke laste quiz_library:', err);
+    }
     render();
   })();
 

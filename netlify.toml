@@ -8,6 +8,15 @@
 # Funksjonene kjører på Node 18+ (global fetch tilgjengelig, ingen avhengigheter).
 [functions]
   node_bundler = "esbuild"
+  # quiz-arkivet (skrevet av det nattlige skiftet) må følge med i deployen så
+  # library-sync kan lese det server-side.
+  included_files = ["quiz-library/library.ndjson"]
+
+# Arkiv-synk — leser quiz-library/library.ndjson og upserter til Supabase
+# quiz_library. Kjører daglig kl. 04:30 UTC så det som er committet alltid er
+# i DB-en. Kan også trigges manuelt: GET /api/library-sync.
+[functions."library-sync"]
+  schedule = "30 4 * * *"
 
 # Planlagt funksjon — Vipps månedlig trekk (Fase C). Kjører daglig kl. 06:00 UTC
 # og oppretter neste charge i forkant av forfall. Ingen /api-redirect: dette er
@@ -24,6 +33,22 @@
 [[redirects]]
   from = "/api/generate-quiz"
   to = "/.netlify/functions/generate-quiz"
+  status = 200
+
+# Quiz-arkiv (Supabase quiz_library)
+[[redirects]]
+  from = "/api/library-get"
+  to = "/.netlify/functions/library-get"
+  status = 200
+
+[[redirects]]
+  from = "/api/library-list"
+  to = "/.netlify/functions/library-list"
+  status = 200
+
+[[redirects]]
+  from = "/api/library-sync"
+  to = "/.netlify/functions/library-sync"
   status = 200
 
 # Async quiz-generering (websøk): poll-endepunkt. Selve bakgrunnsfunksjonen

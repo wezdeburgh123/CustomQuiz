@@ -16,6 +16,7 @@
  */
 const core = require("./_quizcore");
 const jobs = require("./_jobs");
+const library = require("./_library");
 
 async function writeJob(jobId, obj) {
   try {
@@ -61,6 +62,15 @@ exports.handler = async (event) => {
       return { statusCode: 202, body: "" };
     }
 
+    // CHECK-DB-FIRST: finnes temaet i arkivet, server det momentant (gratis).
+    try {
+      const cached = await library.findByThemes(input.themes, input.difficulty);
+      if (cached && Array.isArray(cached.questions) && cached.questions.length) {
+        await writeJob(jobId, { status: "done", quiz: { title: cached.title, lede: cached.lede, questions: cached.questions }, cached: true });
+        return { statusCode: 202, body: "" };
+      }
+    } catch (_) { /* cache-bom skal aldri blokkere generering */ }
+
     const gateOn = process.env.KNOWLEDGE_GATE !== "false";
     // Websøk PÅ som standard (Christians valg: «alltid søk»). WEB_SEARCH=false slår av.
     const withSearch = process.env.WEB_SEARCH !== "false";
@@ -84,6 +94,11 @@ exports.handler = async (event) => {
         await writeJob(jobId, { status: "insufficient", reason: res.reason });
       } else {
         await writeJob(jobId, { status: "done", quiz: res.quiz });
+        // Nytt tema → lagre i arkivet (grunnet via websøk når withSearch var på).
+        library.saveQuiz({
+          themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
+          category: "mix", model: res.model, grounded: withSearch, source: "user",
+        }).catch(() => {});
       }
     } catch (genErr) {
       console.error("[bg] generering feilet:", genErr.message);

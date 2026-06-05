@@ -2137,8 +2137,51 @@
     musikk: 'saffron', sport: 'saffron', filosofi: 'plum', teknologi: 'cobalt'
   };
 
+  // Spill en arkivert quiz fra Supabase quiz_library via ?lib=<slug>.
+  function playLibraryRow(q) {
+    state.quiz = { title: q.title, lede: q.lede || '', questions: q.questions, difficulty: q.difficulty || '' };
+    if (q.difficulty) state.difficulty = q.difficulty;
+    state.currentIndex = 0; state.selectedOption = null; state.userAnswers = [];
+    const banner = document.getElementById('quiz-banner');
+    const img = document.getElementById('quiz-banner-img');
+    if (banner && img) {
+      img.src = 'IMG/' + (q.hero_img || LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
+      img.alt = q.title || 'Quiz';
+      banner.setAttribute('data-spot', LIB_CAT_SPOT[q.category] || 'teal');
+      banner.classList.add('active');
+    }
+    setBannerText(q.category_label || '', q.title || '');
+    setBannerDifficulty(q.difficulty);
+    const demo = document.getElementById('demo-notice');
+    if (demo) demo.classList.remove('active');
+    renderQuestion();
+    showScreen('quiz');
+  }
+
+  async function loadLibraryQuizBySlug(slug) {
+    try {
+      const res = await fetch('/api/library-get?slug=' + encodeURIComponent(slug), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const q = await res.json();
+      if (!q || !Array.isArray(q.questions) || q.questions.length === 0) throw new Error('tom quiz');
+      playLibraryRow(q);
+      return true;
+    } catch (err) {
+      console.warn('[Quiz] Klarte ikke laste arkiv-quiz:', err);
+      const titleEl = document.querySelector('#error .error-title');
+      if (titleEl) titleEl.textContent = 'Noe gikk galt';
+      const msg = document.getElementById('error-msg');
+      if (msg) msg.textContent = 'Fant ikke denne quizen i arkivet.';
+      showScreen('error');
+      return true;
+    }
+  }
+
   async function loadLibraryQuizFromUrl() {
-    const id = new URLSearchParams(window.location.search).get('quiz');
+    const params = new URLSearchParams(window.location.search);
+    const libSlug = params.get('lib');
+    if (libSlug) return loadLibraryQuizBySlug(libSlug);
+    const id = params.get('quiz');
     if (!id) return false;
     try {
       let data = window.__QUIZ_DATA__;
