@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<title>VM-quiz 2026 — CustomQuiz</title>
+<meta name="description" content="Fotball-VM-quizen på CustomQuiz. Ta quizene én gang hver, samle poeng gjennom hele mesterskapet, og konkurrer mot venner og alle andre.">
+
+<link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
+<link rel="apple-touch-icon" href="IMG/signature.jpg">
+
+<meta property="og:title" content="VM-quiz 2026 — CustomQuiz">
+<meta property="og:description" content="Ta quizene, samle poeng gjennom hele VM, og konkurrer mot venner og alle andre.">
+<meta property="og:image" content="IMG/vm-share.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://customquiz.no/vm.html">
+<meta property="og:locale" content="nb_NO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VM-quiz 2026 — CustomQuiz">
+<meta name="twitter:image" content="IMG/vm-share.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F5F0E6; --bg-soft:#FBF7EE; --bg-deep:#ECE3CE;
+    --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
+    --rule:#E2D8C2; --rule-strong:#C9BD9F;
+    --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
+    /* VM event-spot: saffron (sport-familien) */
+    --event:#C68A2E; --event-deep:#3a2607; --event-soft:#EAD7B0;
+    --r-pill:999px; --r-card:16px; --r-md:8px;
+    --font-display:'Fraunces',Georgia,serif;
+    --font-sans:'Manrope','Inter',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body {
+    background:var(--bg); color:var(--ink); font-family:var(--font-sans);
+    font-size:17px; line-height:1.55; min-height:100vh;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background-image:radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0);
+    background-size:4px 4px; pointer-events:none; z-index:1;
+  }
+  .container { max-width:920px; margin:0 auto; padding:32px 24px 96px; position:relative; z-index:2; }
+
+  /* Masthead */
+  .masthead {
+    border-top:1px solid var(--rule-strong); border-bottom:1px solid var(--rule-strong);
+    padding:20px 0; margin-bottom:48px; display:flex; justify-content:space-between;
+    align-items:center; gap:16px;
+  }
+  .masthead-logo { display:inline-flex; align-items:center; gap:4px; text-decoration:none; transition:opacity 200ms ease; }
+  .masthead-logo:hover { opacity:.82; }
+  .masthead-mark { height:48px; width:48px; object-fit:contain; display:block; }
+  .masthead-wordmark { font-family:var(--font-display); font-style:italic; font-weight:500; font-size:20px; line-height:1; letter-spacing:-.01em; color:var(--ink); font-variation-settings:"opsz" 40; }
+  .masthead-meta { display:flex; align-items:center; gap:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mute); }
+  .masthead-link { color:var(--ink); text-decoration:none; transition:color 200ms ease; border-bottom:1px solid transparent; padding-bottom:1px; }
+  .masthead-link:hover { color:var(--accent); border-bottom-color:var(--accent); }
+  .masthead-link.is-active { color:var(--event); border-bottom-color:var(--event); }
+  .masthead-sep { color:var(--rule-strong); }
+
+  /* Hero */
+  .hero { display:grid; grid-template-columns:0.85fr 1.15fr; gap:40px; align-items:center; margin-bottom:40px; }
+  .hero-stamp { display:flex; align-items:center; justify-content:center; }
+  .hero-stamp svg { width:100%; max-width:240px; height:auto; }
+  /* Maske som toner bildets hjørner til gjennomsiktig, så den nær-kremfargede
+     bakgrunnen i JPG-en smelter sømløst inn i sidens krem (intet synlig kvadrat). */
+  .hero-stamp img { width:100%; max-width:260px; height:auto; display:block;
+    -webkit-mask-image:radial-gradient(circle, #000 97%, rgba(0,0,0,0) 100%);
+            mask-image:radial-gradient(circle, #000 97%, rgba(0,0,0,0) 100%); }
+  .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--event); margin-bottom:18px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .eyebrow .count { color:var(--accent); }
+  h1 { font-family:var(--font-display); font-weight:500; font-size:clamp(40px,5.5vw,68px); line-height:.96; letter-spacing:-.025em; margin-bottom:20px; color:var(--ink); font-variation-settings:"opsz" 144; }
+  h1 em { font-style:italic; color:var(--event); }
+  .lede { font-family:var(--font-display); font-size:20px; line-height:1.45; font-weight:400; margin-bottom:28px; color:var(--ink-soft); max-width:480px; }
+  .btn { display:inline-flex; align-items:center; gap:12px; padding:15px 26px; background:var(--accent); color:var(--bg-soft); border:1px solid var(--accent); border-radius:var(--r-pill); font-family:var(--font-sans); font-size:14px; font-weight:500; letter-spacing:.04em; cursor:pointer; text-decoration:none; transition:background 200ms ease,border-color 200ms ease; }
+  .btn:hover { background:var(--accent-deep); border-color:var(--accent-deep); }
+  .btn-arrow { font-family:var(--font-display); font-size:17px; line-height:1; }
+  .btn-ghost { background:transparent; color:var(--ink); border:1px solid var(--ink); }
+  .btn-ghost:hover { background:var(--ink); color:var(--bg); border-color:var(--ink); }
+
+  /* Liga / global strip */
+  .standing { display:grid; grid-template-columns:1.5fr 1fr; gap:12px; margin-bottom:64px; }
+  .standing-card { background:var(--bg-soft); border:.5px solid var(--rule); border-radius:var(--r-card); padding:16px 20px; display:flex; align-items:center; gap:14px; }
+  .standing-card .mono-label { font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute); }
+  .standing-card .big { font-size:16px; font-weight:600; margin-top:2px; }
+  .standing-card .big em { font-style:normal; color:var(--accent); }
+  .code-chip { margin-left:auto; text-align:center; }
+  .code-chip .code { font-family:var(--font-mono); font-size:15px; color:var(--accent); letter-spacing:.05em; }
+  .pill-tag { font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:4px 10px; border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent-deep); }
+
+  /* Section label */
+  .section-label { font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--event); margin-bottom:24px; padding-bottom:14px; border-bottom:1px solid var(--rule-strong); display:flex; justify-content:space-between; align-items:baseline; }
+  .section-label em { font-style:italic; }
+  .section-meta { color:var(--ink-mute); font-weight:400; }
+
+  /* Quiz grid */
+  .quiz-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin-bottom:40px; }
+  .quiz-card { display:flex; flex-direction:column; background:var(--bg-soft); border:.5px solid var(--rule); border-radius:var(--r-card); text-decoration:none; transition:border-color 200ms ease,transform 200ms ease; position:relative; overflow:hidden; }
+  .quiz-card.open:hover { border-color:var(--event); transform:translateY(-2px); }
+  .quiz-card.done { opacity:.72; }
+  .quiz-card.locked { opacity:.62; }
+  .quiz-image { aspect-ratio:5/3; background:var(--bg); overflow:hidden; border-bottom:.5px solid var(--rule); position:relative; }
+  .quiz-image svg, .quiz-image img { width:100%; height:100%; display:block; }
+  .quiz-image img { object-fit:cover; transition:transform 220ms ease; }
+  .quiz-card.open:hover .quiz-image img { transform:scale(1.025); }
+  .quiz-badge { position:absolute; top:12px; right:12px; font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:5px 11px; border-radius:var(--r-pill); }
+  .quiz-badge.ny { background:var(--event); color:var(--event-deep); }
+  .quiz-badge.tatt { background:var(--bg-deep); color:var(--ink-mute); }
+  .quiz-badge.laast { background:var(--bg-deep); color:var(--ink-mute); }
+  .quiz-body { padding:18px 20px 20px; display:flex; flex-direction:column; gap:6px; flex:1; }
+  .quiz-num { font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute); }
+  .quiz-title { font-family:var(--font-display); font-size:22px; font-weight:500; line-height:1.18; color:var(--ink); font-variation-settings:"opsz" 36; }
+  .quiz-title em { font-style:italic; color:var(--event); }
+  .quiz-sub { font-family:var(--font-sans); font-size:13px; color:var(--ink-soft); line-height:1.45; }
+  .quiz-foot { margin-top:auto; padding-top:14px; }
+  .quiz-result { font-family:var(--font-mono); font-size:12px; color:var(--accent); font-weight:500; }
+  .quiz-locked-note { font-family:var(--font-sans); font-size:12.5px; color:var(--ink-mute); }
+  .quiz-cta { display:block; text-align:center; background:var(--accent); color:var(--bg-soft); border-radius:var(--r-pill); padding:9px; font-family:var(--font-sans); font-weight:600; font-size:13px; text-decoration:none; transition:background 180ms ease; }
+  .quiz-cta:hover { background:var(--accent-deep); }
+
+  /* Leaderboard */
+  .lb-wrap { background:var(--bg-soft); border:.5px solid var(--rule); border-radius:var(--r-card); padding:24px 26px; margin-bottom:32px; }
+  .lb-head { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+  .lb-head svg { flex-shrink:0; }
+  .lb-tabs { display:flex; gap:8px; margin-left:auto; }
+  .lb-tab { font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:6px 12px; border-radius:var(--r-pill); border:.5px solid var(--rule-strong); background:transparent; color:var(--ink-mute); cursor:pointer; transition:all 160ms ease; }
+  .lb-tab.active { background:var(--event); border-color:var(--event); color:var(--event-deep); }
+  table.lb { width:100%; border-collapse:collapse; }
+  table.lb th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); padding:8px 10px; border-bottom:.5px solid var(--rule-strong); }
+  table.lb td { padding:11px 10px; border-bottom:.5px solid var(--rule); font-size:15px; }
+  table.lb .rank { font-family:var(--font-mono); color:var(--ink-mute); width:40px; }
+  table.lb .sc { text-align:right; font-family:var(--font-mono); font-weight:500; }
+  table.lb tr.me td { background:var(--accent-soft); }
+
+  /* Invite */
+  .invite { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+  .invite input { flex:1; min-width:160px; padding:11px 16px; border:.5px solid var(--rule-strong); border-radius:var(--r-pill); font-family:var(--font-mono); font-size:13px; letter-spacing:.05em; background:var(--bg); color:var(--ink); }
+  .invite input:focus { outline:none; border-color:var(--accent); }
+
+  /* How it works */
+  .three-up { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin:48px 0 64px; padding:32px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+  .three-up-num { font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; color:var(--event); margin-bottom:14px; }
+  .three-up-item h3 { font-family:var(--font-display); font-size:21px; font-weight:500; color:var(--ink); margin-bottom:10px; font-variation-settings:"opsz" 36; }
+  .three-up-item h3 em { font-style:italic; color:var(--event); }
+  .three-up-item p { font-size:15px; color:var(--ink-soft); line-height:1.55; }
+
+  footer { border-top:1px solid var(--rule-strong); padding:32px 0 0; display:flex; justify-content:space-between; align-items:center; gap:16px; font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mute); }
+  footer .brand { color:var(--accent); font-weight:500; }
+  footer a { color:var(--ink-mute); text-decoration:none; transition:color 180ms ease; }
+  footer a:hover { color:var(--accent); }
+
+  @media (max-width:720px) {
+    .hero { grid-template-columns:1fr; gap:24px; }
+    .hero-stamp { order:-1; } .hero-stamp svg, .hero-stamp img { max-width:190px; }
+    .standing { grid-template-columns:1fr; }
+    .three-up { grid-template-columns:1fr; gap:28px; }
+    .lb-head { flex-wrap:wrap; } .lb-tabs { margin-left:0; }
+    footer { flex-direction:column; align-items:flex-start; gap:12px; }
+  }
+  @media (max-width:560px) { .masthead { flex-wrap:wrap; gap:12px; } .masthead-meta { font-size:10px; gap:8px; } }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="masthead">
+    <a class="masthead-logo" href="index.html" aria-label="CustomQuiz hjem">
+      <img class="masthead-mark" src="IMG/logo-variant.jpg" alt="">
+      <span class="masthead-wordmark">CustomQuiz</span>
+    </a>
+    <nav class="masthead-meta">
+      <a href="arkiv.html" class="masthead-link">Arkivet</a>
+      <span class="masthead-sep">·</span>
+      <a href="vm.html" class="masthead-link is-active">VM 2026</a>
+      <span class="masthead-sep">·</span>
+      <a href="min-side.html" class="masthead-link">Min side</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-stamp">
+      <img src="IMG/vm-stempel.jpg" alt="Fotball-VM 2026-stempel">
+    </div>
+    <div class="hero-text">
+      <div class="eyebrow"><span>Fotball-VM 2026</span> <span class="count" id="kickoff">· avspark 11. juni</span></div>
+      <h1>VM-<em>konkurransen</em></h1>
+      <p class="lede">Ta quizene én gang hver, samle poeng gjennom hele mesterskapet, og kjemp om topplassen — i din egen liga og mot alle andre.</p>
+      <a class="btn" href="#quizer">Se quizene <span class="btn-arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- STANDING STRIP -->
+  <section class="standing">
+    <div class="standing-card">
+      <svg width="58" height="42" viewBox="0 0 58 42" aria-hidden="true">
+        <path d="M5 9 q26 11 48 2" fill="none" stroke="#1F1A14" stroke-width="1.8"/>
+        <path d="M9 10 l5 12 5-13z" fill="#C68A2E" opacity="0.9" stroke="#1F1A14" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M24 12 l5 13 5-14z" fill="none" stroke="#1F1A14" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M39 11 l5 13 5-14z" fill="none" stroke="#1F1A14" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="mono-label">Din liga · Kontoret ⚽</div>
+        <div class="big">Du ligger <em>3.</em> av 11</div>
+      </div>
+      <div class="code-chip">
+        <div class="mono-label">Kode</div>
+        <div class="code">VM-K9X4</div>
+      </div>
+    </div>
+    <div class="standing-card">
+      <div>
+        <div class="mono-label">Global rangering</div>
+        <div class="big">#842 <span style="color:var(--ink-mute);font-weight:400">/ 6 210</span></div>
+      </div>
+      <span class="pill-tag" style="margin-left:auto">Alle</span>
+    </div>
+  </section>
+
+  <!-- QUIZER -->
+  <div class="section-label" id="quizer">
+    <span>Quizene</span>
+    <span class="section-meta" id="quiz-progress">2 av 7 fullført</span>
+  </div>
+  <section class="quiz-grid" id="quiz-grid"><!-- bygges av JS fra QUIZER --></section>
+
+  <!-- LEADERBOARD -->
+  <div class="section-label">
+    <span>Leder<em>tavle</em></span>
+    <span class="section-meta">Sammenlagt gjennom hele VM</span>
+  </div>
+  <section class="lb-wrap">
+    <div class="lb-head">
+      <svg width="78" height="60" viewBox="0 0 78 60" aria-hidden="true">
+        <path d="M32 9 q7-5 14 0 M35 7 q4-3 8 0" fill="none" stroke="#C68A2E" stroke-width="2.6" stroke-linecap="round"/>
+        <rect x="28" y="22" width="22" height="34" rx="2" fill="#C68A2E" opacity="0.85" stroke="#1F1A14" stroke-width="2"/>
+        <rect x="6" y="34" width="22" height="22" rx="2" fill="none" stroke="#1F1A14" stroke-width="2"/>
+        <rect x="50" y="40" width="22" height="16" rx="2" fill="none" stroke="#1F1A14" stroke-width="2"/>
+        <text x="39" y="44" text-anchor="middle" style="font-family:'JetBrains Mono';font-size:13px;fill:#3a2607">1</text>
+        <text x="17" y="50" text-anchor="middle" style="font-family:'JetBrains Mono';font-size:11px;fill:#1F1A14">2</text>
+        <text x="61" y="52" text-anchor="middle" style="font-family:'JetBrains Mono';font-size:11px;fill:#1F1A14">3</text>
+      </svg>
+      <div>
+        <div class="mono-label" style="font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute)">Stilling</div>
+        <div style="font-family:var(--font-display);font-size:20px;font-weight:500" id="lb-scope-title">Din liga · Kontoret ⚽</div>
+      </div>
+      <div class="lb-tabs">
+        <button class="lb-tab active" data-scope="liga">Min liga</button>
+        <button class="lb-tab" data-scope="global">Alle</button>
+      </div>
+    </div>
+    <table class="lb">
+      <thead><tr><th class="rank">#</th><th>Spiller</th><th class="sc">Poeng</th></tr></thead>
+      <tbody id="lb-body"></tbody>
+    </table>
+  </section>
+
+  <!-- INVITE -->
+  <section class="lb-wrap">
+    <div style="font-family:var(--font-display);font-size:20px;font-weight:500;margin-bottom:6px">Inviter <span style="font-style:italic;color:var(--event)">gjengen</span></div>
+    <p style="font-size:14px;color:var(--ink-soft);line-height:1.5;max-width:460px">Lag en privat liga, del koden, og se hvem som faktisk kan fotball. Eller bli med i en eksisterende liga med en kode du har fått.</p>
+    <div class="invite">
+      <button class="btn" onclick="alert('Backend for ligaer kommer — se neste steg.')">Opprett liga <span class="btn-arrow">→</span></button>
+      <input type="text" placeholder="Skriv ligakode, f.eks. VM-K9X4" aria-label="Ligakode">
+      <button class="btn btn-ghost" onclick="alert('Backend for ligaer kommer — se neste steg.')">Bli med</button>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="three-up">
+    <div class="three-up-item">
+      <div class="three-up-num">01</div>
+      <h3>Ta <em>quizene</em></h3>
+      <p>Hver quiz tas kun én gang. Pre-VM-temaene er åpne nå; sluttspill-rundene låses opp etter hvert som lagene går videre.</p>
+    </div>
+    <div class="three-up-item">
+      <div class="three-up-num">02</div>
+      <h3>Samle <em>poeng</em></h3>
+      <p>Riktige svar gir poeng som legges sammen gjennom hele mesterskapet. Jo flere quizer, jo høyere kan du klatre.</p>
+    </div>
+    <div class="three-up-item">
+      <div class="three-up-num">03</div>
+      <h3>Vinn <em>ligaen</em></h3>
+      <p>Følg stillingen i din egen vennegruppe og på den globale tavla. Kåringen står når finalen er spilt.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div><span class="brand">CustomQuiz</span> · customquiz.no/vm</div>
+    <div>© 2026 · Fotball-VM-quiz</div>
+  </footer>
+
+</div>
+
+<script>
+/* ---------------------------------------------------------------------------
+   VM-quizmodul — frontend-skall.
+   Data under er PLASSHOLDER til backend (events / event_quizzes /
+   leagues / event_leaderboard) er bygget. Neste steg: bytt QUIZER og
+   LEADERBOARD med kall mot Supabase via window.CQAuth.getClient().
+   Illustrasjoner: ekte AI-bilder i IMG/vm-<slug>.jpg.
+--------------------------------------------------------------------------- */
+
+/* Quiz-poolen for VM 2026. status: open | done | locked.
+   Bildet hentes som IMG/vm-<slug>.jpg. */
+var QUIZER = [
+  { n:'01', fase:'Pre-VM',          tittel:'VM-<em>historie</em>',          sub:'Fra 1930 til i dag — turneringer, troféer og talen.', status:'done',  result:'8 / 10 riktige', slug:'historie' },
+  { n:'02', fase:'Pre-VM',          tittel:'Legender & <em>rekorder</em>',  sub:'Målkonger, kapteiner og bragder som står seg.',       status:'done',  result:'6 / 10 riktige', slug:'legender' },
+  { n:'03', fase:'Pre-VM',          tittel:'Nasjonene & <em>troppene</em>', sub:'De 48 lagene, drakter, stjerner og uttak.',           status:'open',  slug:'nasjoner' },
+  { n:'04', fase:'Pre-VM',          tittel:'Vertsbyer & <em>stadioner</em>',sub:'USA, Canada og Mexico — arenaene og byene.',          status:'open',  slug:'vertsbyer' },
+  { n:'05', fase:'Pre-VM',          tittel:'<em>Kvalifiseringen</em>',      sub:'Hvem kom seg dit — og hvem røk ut på veien.',         status:'open',  slug:'kvalik' },
+  { n:'06', fase:'Live · Runde 1',  tittel:'Gruppespill, <em>dag 1–3</em>', sub:'Spørsmål om de første kampene — oppdatert.',          status:'locked', laast:'Åpner ved avspark 11. juni', slug:'gruppespill-1' },
+  { n:'07', fase:'Live · Sluttspill',tittel:'<em>16-delsfinaler</em>',      sub:'Hvem gikk videre fra gruppene?',                      status:'locked', laast:'Åpner når gruppespillet er ferdig', slug:'16-del' }
+];
+
+(function buildGrid(){
+  var grid = document.getElementById('quiz-grid');
+  if (!grid) return;
+  var html = '';
+  QUIZER.forEach(function(q){
+    var cls = q.status === 'open' ? 'open' : (q.status === 'done' ? 'done' : 'locked');
+    var badge = q.status === 'open'
+      ? '<span class="quiz-badge ny">Ny</span>'
+      : q.status === 'done'
+        ? '<span class="quiz-badge tatt">✓ Tatt</span>'
+        : '<span class="quiz-badge laast">Låst</span>';
+    var foot = q.status === 'open'
+      ? '<span class="quiz-cta">Ta quiz</span>'
+      : q.status === 'done'
+        ? '<div class="quiz-result">' + q.result + '</div>'
+        : '<div class="quiz-locked-note">' + (q.laast || 'Kommer snart') + '</div>';
+    var tag = q.status === 'open' ? 'a' : 'div';
+    var href = q.status === 'open' ? ' href="quiz-app-v2.html?event=vm-2026&quiz=' + q.slug + '"' : '';
+    html += '<' + tag + ' class="quiz-card ' + cls + '"' + href + '>' +
+      '<div class="quiz-image"><img src="IMG/vm-' + q.slug + '.jpg" alt="" loading="lazy">' + badge + '</div>' +
+      '<div class="quiz-body">' +
+        '<div class="quiz-num">№ ' + q.n + ' · ' + q.fase + '</div>' +
+        '<div class="quiz-title">' + q.tittel + '</div>' +
+        '<div class="quiz-sub">' + q.sub + '</div>' +
+        '<div class="quiz-foot">' + foot + '</div>' +
+      '</div>' +
+    '</' + tag + '>';
+  });
+  grid.innerHTML = html;
+  var done = QUIZER.filter(function(q){ return q.status==='done'; }).length;
+  var prog = document.getElementById('quiz-progress');
+  if (prog) prog.textContent = done + ' av ' + QUIZER.length + ' fullført';
+})();
+
+/* Ledertavle — plassholderdata for liga + global. Byttes med Supabase-kall. */
+var LB = {
+  liga:   { title:'Din liga · Kontoret ⚽', rows:[
+    { navn:'Marius T.', sc:142 }, { navn:'Silje H.', sc:128 },
+    { navn:'Deg', sc:121, me:true }, { navn:'Anders K.', sc:115 },
+    { navn:'Pernille R.', sc:103 }, { navn:'Jonas V.', sc:98 } ] },
+  global: { title:'Alle som er med', rows:[
+    { navn:'fotballfantet', sc:271 }, { navn:'tippekongen', sc:264 },
+    { navn:'VM-Vibeke', sc:259 }, { navn:'…', sc:null, spacer:true },
+    { navn:'Deg', sc:121, rank:842, me:true } ] }
+};
+
+(function leaderboard(){
+  var body = document.getElementById('lb-body');
+  var title = document.getElementById('lb-scope-title');
+  var tabs = document.querySelectorAll('.lb-tab');
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function render(scope){
+    var data = LB[scope]; if (!data) return;
+    if (title) title.textContent = data.title;
+    var h = '';
+    data.rows.forEach(function(r, i){
+      if (r.spacer){ h += '<tr><td class="rank">⋮</td><td style="color:var(--ink-mute)">'+esc(r.navn)+'</td><td class="sc"></td></tr>'; return; }
+      var rank = r.rank || (i+1);
+      h += '<tr class="' + (r.me?'me':'') + '"><td class="rank">' + rank + '</td><td>' +
+           esc(r.navn) + (r.me?' <span style="color:var(--ink-mute)">(deg)</span>':'') +
+           '</td><td class="sc">' + (r.sc==null?'':r.sc) + '</td></tr>';
+    });
+    body.innerHTML = h;
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      render(t.getAttribute('data-scope'));
+    });
+  });
+  render('liga');
+})();
+
+/* Nedtelling til avspark (11. juni 2026, 18:00 norsk tid lokal placeholder) */
+(function kickoff(){
+  var el = document.getElementById('kickoff');
+  if (!el) return;
+  var start = new Date('2026-06-11T18:00:00+02:00').getTime();
+  var diff = start - Date.now();
+  if (diff <= 0) { el.textContent = '· VM er i gang'; return; }
+  var d = Math.ceil(diff / 86400000);
+  el.textContent = '· ' + d + (d===1 ? ' dag til avspark' : ' dager til avspark');
+})();
+</script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
