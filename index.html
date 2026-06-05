@@ -288,6 +288,64 @@
   }
   .hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+  /* VM-lenke i menyen */
+  .masthead-link-vm { color: var(--spot-saffron); }
+  .masthead-link-vm:hover { color: var(--spot-saffron); border-bottom-color: var(--spot-saffron); }
+
+  /* VM-banner (event-promo, saffron) */
+  .vm-banner {
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    align-items: stretch;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule-strong);
+    border-radius: var(--r-card);
+    overflow: hidden;
+    text-decoration: none;
+    margin-bottom: 80px;
+    position: relative;
+    transition: border-color 200ms ease, transform 200ms ease;
+  }
+  .vm-banner::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; background: var(--spot-saffron); z-index: 3;
+  }
+  .vm-banner:hover { border-color: var(--spot-saffron); transform: translateY(-2px); }
+  .vm-banner:hover .vm-banner-img img { transform: scale(1.03); }
+  .vm-banner-img { overflow: hidden; background: var(--bg-deep); min-height: 230px; }
+  .vm-banner-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 320ms ease; }
+  .vm-banner-text { padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; }
+  .vm-banner-eyebrow {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--spot-saffron); margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .vm-banner-text h2 {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 38px); line-height: 1.05; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 12px; font-variation-settings: "opsz" 96;
+  }
+  .vm-banner-text h2 em { font-style: italic; color: var(--spot-saffron); }
+  .vm-banner-text p {
+    font-family: var(--font-display); font-size: 17px; color: var(--ink-soft);
+    line-height: 1.5; margin-bottom: 22px; max-width: 460px;
+  }
+  .vm-banner-text p .vm-count { color: var(--ink-mute); }
+  .vm-banner-cta {
+    display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
+    padding: 13px 24px; background: var(--spot-saffron); color: #3A2607;
+    border-radius: var(--r-pill); font-family: var(--font-sans); font-size: 14px;
+    font-weight: 600; letter-spacing: 0.03em; transition: filter 180ms ease;
+  }
+  .vm-banner:hover .vm-banner-cta { filter: brightness(0.94); }
+  .vm-banner-cta .btn-arrow { font-family: var(--font-display); font-size: 17px; line-height: 1; }
+  @media (max-width: 720px) {
+    .vm-banner { grid-template-columns: 1fr; }
+    .vm-banner-img { order: -1; min-height: 0; aspect-ratio: 16/9; }
+    .vm-banner-text { padding: 28px 24px; }
+  }
+
   /* CTA */
   .btn {
     display: inline-flex;
@@ -830,6 +888,8 @@
     <nav class="masthead-meta">
       <a href="arkiv.html" class="masthead-link">Arkivet</a>
       <span class="masthead-sep">·</span>
+      <a href="vm.html" class="masthead-link masthead-link-vm">VM 2026</a>
+      <span class="masthead-sep">·</span>
       <span>Daglig quiz · Norsk</span>
     </nav>
   </header>
@@ -846,6 +906,17 @@
       <img id="hero-img" src="IMG/hero.jpg" alt="Kategori-illustrasjon fra Allmennkunnskap">
     </div>
   </section>
+
+  <!-- VM-BANNER -->
+  <a class="vm-banner" href="vm.html" aria-label="Bli med i VM-quizen 2026">
+    <div class="vm-banner-img"><img id="vm-banner-img" src="IMG/vm-nasjoner.jpg" alt=""></div>
+    <div class="vm-banner-text">
+      <div class="vm-banner-eyebrow">Nytt · Fotball-VM 2026</div>
+      <h2>Bli med i <em>VM-konkurransen</em></h2>
+      <p>Ta quizene én gang hver, samle poeng gjennom hele mesterskapet, og kjemp om topplassen — i din egen liga og mot alle andre. <span class="vm-count" id="vm-banner-count">Avspark 11. juni.</span></p>
+      <span class="vm-banner-cta">Til VM-quizen <span class="btn-arrow">→</span></span>
+    </div>
+  </a>
 
   <!-- THREE-UP -->
   <section class="three-up">
@@ -1102,6 +1173,29 @@
     var valgt = kategorier[Math.floor(Math.random() * kategorier.length)];
     var el = document.getElementById('hero-img');
     if (el) el.src = 'IMG/kategori-' + valgt + '.jpg';
+  })();
+
+  // Tilfeldig VM-bilde i banneren ved hver innlasting + nedtelling til avspark
+  (function () {
+    var vmBilder = [
+      'vm-nasjoner', 'vm-vertsbyer', 'vm-kvalik', 'vm-historie',
+      'vm-legender', 'vm-gruppespill-1', 'vm-16-del', 'vm-hero'
+    ];
+    var pick = vmBilder[Math.floor(Math.random() * vmBilder.length)];
+    var img = document.getElementById('vm-banner-img');
+    if (img) img.src = 'IMG/' + pick + '.jpg';
+
+    var c = document.getElementById('vm-banner-count');
+    if (c) {
+      var start = new Date('2026-06-11T18:00:00+02:00').getTime();
+      var diff = start - Date.now();
+      if (diff > 0) {
+        var d = Math.ceil(diff / 86400000);
+        c.textContent = d === 1 ? 'Avspark i morgen.' : d + ' dager til avspark.';
+      } else {
+        c.textContent = 'VM er i gang.';
+      }
+    }
   })();
 
   // Generator-animasjon: logo males inn, så tre tema som stadig veksles ut
