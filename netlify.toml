@@ -29,6 +29,11 @@
 [functions."daily-quiz-generate"]
   schedule = "0 20 * * *"
 
+# Daglig quiz-e-post (mal #4) til påmeldte — kl. 06:00 UTC (~07-08 Oslo).
+# AVSKRUDD med mindre DAILY_EMAIL_ENABLED=true (sikkerhet mot utilsiktet blast).
+[functions."daily-email"]
+  schedule = "0 6 * * *"
+
 # Pene URL-er: /api/* -> funksjoner
 [[redirects]]
   from = "/api/generate-quiz"
@@ -118,4 +123,10 @@
 [[redirects]]
   from = "/api/league-leave"
   to = "/.netlify/functions/league-leave"
+  status = 200
+
+# Daglig quiz-e-post — manuell test (krever DAILY_EMAIL_ENABLED=true)
+[[redirects]]
+  from = "/api/daily-email"
+  to = "/.netlify/functions/daily-email"
   status = 200
