@@ -1,0 +1,5 @@
+-- IKKE I BRUK. Forlat/slett liga håndteres av serverless-funksjonen
+-- netlify/functions/league-leave.js (service_role), fordi utmelding også må
+-- stoppe e-post (sette marketing_opt_in=false + fjerne fra Brevo-lista) —
+-- som krever server-side. Ingen RLS-delete-policy er nødvendig.
+-- (Denne fila kan ignoreres / slettes i Supabase-repoet.)

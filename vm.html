@@ -168,6 +168,10 @@
   .liga-pill.active { background:var(--event); border-color:var(--event); color:var(--event-deep); }
   .liga-pill .lp-code { font-family:var(--font-mono); font-size:10px; letter-spacing:.05em; color:var(--ink-mute); }
   .liga-pill.active .lp-code { color:var(--event-deep); opacity:.75; }
+  /* Forlat/slett liga */
+  .liga-leave { background:none; border:none; cursor:pointer; font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); padding:0; transition:color .15s ease; }
+  .liga-leave:hover { color:#B05238; }
+  #liga-actions .la-msg { font-size:12px; color:var(--ink-mute); margin-left:12px; }
 
   /* How it works */
   .three-up { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin:48px 0 64px; padding:32px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
@@ -278,6 +282,7 @@
       <thead><tr><th class="rank">#</th><th>Spiller</th><th class="sc">Poeng</th></tr></thead>
       <tbody id="lb-body"></tbody>
     </table>
+    <div id="liga-actions" style="display:none;margin-top:16px"></div>
   </section>
 
   <!-- INVITE -->
@@ -381,10 +386,51 @@
     if(prog) prog.textContent=done+' av '+rows.length+' fullført';
   }
 
+  function renderLigaActions(){
+    var box=document.getElementById('liga-actions'); if(!box) return;
+    if(data.scope!=='liga' || !data.league){ box.style.display='none'; box.innerHTML=''; return; }
+    var owner = data.league.owner_id && data.league.owner_id===myId();
+    var verb = owner ? 'Slett ligaen' : 'Forlat ligaen';
+    box.style.display='block';
+    box.innerHTML='<button type="button" class="liga-leave" id="liga-leave-btn">'+verb+'</button>'+
+      '<div id="liga-leave-panel" style="display:none;margin-top:12px;padding:16px 18px;background:var(--bg);border:.5px solid var(--rule-strong);border-radius:var(--r-card)">'+
+        '<div style="font-family:var(--font-sans);font-size:14px;color:var(--ink);line-height:1.5;margin-bottom:12px">'+(owner?'Slette ligaen for alle medlemmer?':'Forlate denne ligaen?')+'</div>'+
+        '<label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-soft);line-height:1.45;cursor:pointer;margin-bottom:16px">'+
+          '<input type="checkbox" id="liga-leave-optout" style="margin-top:3px">'+
+          '<span>Meld meg også av e-postlista — da får jeg heller ingen e-post om dagens quiz og nye quizer. (La stå tom for å fortsatt få disse.)</span>'+
+        '</label>'+
+        '<div class="ls-row"><button type="button" class="btn" id="liga-leave-confirm" style="background:#B05238;border-color:#B05238">'+verb+'</button> <button type="button" class="btn btn-ghost" id="liga-leave-cancel">Avbryt</button></div>'+
+        '<div class="la-msg" id="liga-leave-msg" style="margin-left:0;margin-top:10px"></div>'+
+      '</div>';
+    var openBtn=document.getElementById('liga-leave-btn');
+    var panel=document.getElementById('liga-leave-panel');
+    var cancel=document.getElementById('liga-leave-cancel');
+    var confirmBtn=document.getElementById('liga-leave-confirm');
+    var msg=document.getElementById('liga-leave-msg');
+    if(openBtn) openBtn.addEventListener('click', function(){ panel.style.display = (panel.style.display==='none'?'block':'none'); });
+    if(cancel) cancel.addEventListener('click', function(){ panel.style.display='none'; });
+    if(confirmBtn) confirmBtn.addEventListener('click', async function(){
+      var optOut = !!(document.getElementById('liga-leave-optout')||{}).checked;
+      confirmBtn.disabled=true; msg.textContent='…';
+      try{
+        var token=null; try{ token=await window.CQAuth.getAccessToken(); }catch(e){}
+        var res=await fetch('/api/league-leave',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({league_id:data.league.id, mode: owner?'delete':'leave', optOut:optOut})});
+        var d=await res.json().catch(function(){return {};});
+        if(!res.ok) throw new Error(d.error||('HTTP '+res.status));
+        try{ localStorage.removeItem('cq_vm_league'); }catch(e){}
+        data.scope='global';
+        await refresh();
+        var note=document.getElementById('liga-msg');
+        if(note) note.textContent = (owner?'Ligaen er slettet.':'Du har forlatt ligaen.') + (d.optedOut?' Du er også meldt av e-postlista.':'');
+      }catch(e){ msg.textContent = e.message||'Kunne ikke fullføre.'; confirmBtn.disabled=false; }
+    });
+  }
+
   function renderLeaderboard(){
     var body=document.getElementById('lb-body'), title=document.getElementById('lb-scope-title');
     if(!body) return;
     renderLeaguePicker();
+    renderLigaActions();
     var rows = data.scope==='liga' ? data.liga : data.global;
     if(title) title.textContent = data.scope==='liga' ? ('Din liga · '+(data.league?data.league.name:'—')) : 'Alle som er med';
     if(data.scope==='liga' && !data.league){
@@ -430,7 +476,7 @@
       var m=await sb.from('league_members').select('league_id');
       var ids=(m.data||[]).map(function(x){ return x.league_id; });
       if(!ids.length) return;
-      var l=await sb.from('leagues').select('id,name,code').in('id',ids);
+      var l=await sb.from('leagues').select('id,name,code,owner_id').in('id',ids);
       data.leagues=l.data||[];
       var saved=null; try{ saved=localStorage.getItem('cq_vm_league'); }catch(e){}
       data.league = data.leagues.filter(function(x){ return x.id===saved; })[0] || data.leagues[0] || null;
@@ -537,6 +583,7 @@
     var createBtn=document.getElementById('liga-create-btn');
     var joinBtn=document.getElementById('liga-join-btn');
     var joinInput=document.getElementById('liga-join-input');
+    var createPendingName=null;
 
     function showCreated(name, code){
       if(!result) return;
@@ -570,6 +617,13 @@
       if(!loggedIn()){ try{window.CQAuth.signIn();}catch(e){} return; }
       var name=((nameInput&&nameInput.value)||'').trim();
       if(!name){ say('Gi ligaen et navn først.',true); if(nameInput) nameInput.focus(); return; }
+      var dupName=(data.leagues||[]).some(function(l){ return (l.name||'').trim().toLowerCase()===name.toLowerCase(); });
+      if(dupName && createPendingName!==name.toLowerCase()){
+        createPendingName=name.toLowerCase();
+        say('Du er allerede med i en liga som heter «'+name+'». Klikk «Opprett liga» igjen for å lage en til.',true);
+        return;
+      }
+      createPendingName=null;
       createBtn.disabled=true; say('Oppretter …');
       try{
         var d=await post('league-create',{event_id:EVENT_ID,name:name});

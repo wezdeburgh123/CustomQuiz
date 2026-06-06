@@ -91,4 +91,22 @@ function vmListIds() {
   return id ? [id] : [];
 }
 
-module.exports = { sendTemplate, welcomeTemplateId, receiptTemplateId, formatDateNb, upsertContact, vmListIds };
+// Fjerner en kontakt fra én eller flere lister (ved utmelding av siste liga).
+async function removeFromList(email, listIds) {
+  const key = process.env.BREVO_API_KEY;
+  if (!key || !email || !listIds || !listIds.length) return false;
+  let ok = true;
+  for (var i = 0; i < listIds.length; i++) {
+    try {
+      const res = await fetch("https://api.brevo.com/v3/contacts/lists/" + listIds[i] + "/contacts/remove", {
+        method: "POST",
+        headers: { "api-key": key, "Content-Type": "application/json", accept: "application/json" },
+        body: JSON.stringify({ emails: [email] }),
+      });
+      if (!res.ok && res.status !== 204) ok = false;
+    } catch (_) { ok = false; }
+  }
+  return ok;
+}
+
+module.exports = { sendTemplate, welcomeTemplateId, receiptTemplateId, formatDateNb, upsertContact, vmListIds, removeFromList };

@@ -114,3 +114,8 @@
   from = "/api/league-join"
   to = "/.netlify/functions/league-join"
   status = 200
+
+[[redirects]]
+  from = "/api/league-leave"
+  to = "/.netlify/functions/league-leave"
+  status = 200
