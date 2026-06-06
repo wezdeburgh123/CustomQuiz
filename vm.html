@@ -158,6 +158,14 @@
   #liga-invite:empty { display:none; }
   #liga-invite { margin-bottom:48px; }
   #liga-invite .liga-success { margin-top:0; }
+  /* Liga-velger som piller (erstatter native select) */
+  #lb-league-picker { flex-wrap:wrap; gap:8px; align-items:center; }
+  #lb-league-picker .lp-label { font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-right:2px; }
+  .liga-pill { font-family:var(--font-sans); font-size:13px; font-weight:500; padding:8px 14px; border-radius:var(--r-pill); border:.5px solid var(--rule-strong); background:transparent; color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:border-color .16s ease, background .16s ease, color .16s ease; }
+  .liga-pill:hover { border-color:var(--event); }
+  .liga-pill.active { background:var(--event); border-color:var(--event); color:var(--event-deep); }
+  .liga-pill .lp-code { font-family:var(--font-mono); font-size:10px; letter-spacing:.05em; color:var(--ink-mute); }
+  .liga-pill.active .lp-code { color:var(--event-deep); opacity:.75; }
 
   /* How it works */
   .three-up { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin:48px 0 64px; padding:32px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
@@ -438,19 +446,22 @@
   function renderLeaguePicker(){
     var box=document.getElementById('lb-league-picker'); if(!box) return;
     if(data.scope!=='liga' || !data.leagues || data.leagues.length<2){ box.style.display='none'; box.innerHTML=''; return; }
-    var opts=data.leagues.map(function(l){ return '<option value="'+esc(l.id)+'"'+(data.league&&l.id===data.league.id?' selected':'')+'>'+esc(l.name)+'</option>'; }).join('');
-    box.innerHTML='<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-right:8px">Velg liga</span>'+
-      '<select id="lb-league-select" style="font-family:var(--font-sans);font-size:14px;padding:7px 12px;border:.5px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--bg);color:var(--ink);cursor:pointer">'+opts+'</select>';
-    box.style.display='';
-    var sel=document.getElementById('lb-league-select');
-    if(sel) sel.addEventListener('change', async function(){
-      var chosen=data.leagues.filter(function(x){ return x.id===sel.value; })[0];
-      if(!chosen) return;
-      data.league=chosen;
-      try{ localStorage.setItem('cq_vm_league', chosen.id); }catch(e){}
-      await loadLigaStandings(sbRef);
-      renderLeaderboard();
-      await loadStanding(sbRef);
+    var pills=data.leagues.map(function(l){
+      var act=(data.league&&l.id===data.league.id)?' active':'';
+      return '<button type="button" class="liga-pill'+act+'" data-id="'+esc(l.id)+'">'+esc(l.name)+'<span class="lp-code">'+esc(l.code)+'</span></button>';
+    }).join('');
+    box.innerHTML='<span class="lp-label">Velg liga</span>'+pills;
+    box.style.display='flex';
+    [].forEach.call(box.querySelectorAll('.liga-pill'), function(btn){
+      btn.addEventListener('click', async function(){
+        var chosen=data.leagues.filter(function(x){ return x.id===btn.getAttribute('data-id'); })[0];
+        if(!chosen) return;
+        data.league=chosen;
+        try{ localStorage.setItem('cq_vm_league', chosen.id); }catch(e){}
+        await loadLigaStandings(sbRef);
+        renderLeaderboard();
+        await loadStanding(sbRef);
+      });
     });
   }
 
