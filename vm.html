@@ -196,7 +196,7 @@
       <span class="masthead-sep">·</span>
       <a href="vm.html" class="masthead-link is-active">VM 2026</a>
       <span class="masthead-sep">·</span>
-      <a href="min-side.html" class="masthead-link">Min side</a>
+      <a href="dagens.html" class="masthead-link">Daglig quiz</a>
     </nav>
   </header>
 
@@ -275,6 +275,7 @@
         <button class="lb-tab" data-scope="global">Alle</button>
       </div>
     </div>
+    <div id="lb-league-picker" style="display:none;margin:0 0 14px"></div>
     <table class="lb">
       <thead><tr><th class="rank">#</th><th>Spiller</th><th class="sc">Poeng</th></tr></thead>
       <tbody id="lb-body"></tbody>
@@ -348,7 +349,7 @@
   function inviteUrl(code){ return location.origin+'/vm.html?liga='+encodeURIComponent(code); }
   function cleanLigaParam(){ try{ var u=new URL(location.href); u.searchParams.delete('liga'); history.replaceState({},'',u.pathname+u.search+u.hash); }catch(e){} }
 
-  var data = { quizzes:[], attempts:{}, league:null, global:[], liga:[], scope:'global' };
+  var data = { quizzes:[], attempts:{}, leagues:[], league:null, global:[], liga:[], scope:'global' };
 
   function renderGrid(){
     var grid=document.getElementById('quiz-grid'); if(!grid) return;
@@ -385,6 +386,7 @@
   function renderLeaderboard(){
     var body=document.getElementById('lb-body'), title=document.getElementById('lb-scope-title');
     if(!body) return;
+    renderLeaguePicker();
     var rows = data.scope==='liga' ? data.liga : data.global;
     if(title) title.textContent = data.scope==='liga' ? ('Din liga · '+(data.league?data.league.name:'—')) : 'Alle som er med';
     if(data.scope==='liga' && !data.league){
@@ -423,18 +425,45 @@
     }catch(e){ data.global=[]; }
   }
 
-  async function loadLeague(sb){
-    data.league=null; data.liga=[];
+  async function loadLeagues(sb){
+    data.leagues=[]; data.league=null; data.liga=[];
     if(!loggedIn()) return;
     try{
-      var m=await sb.from('league_members').select('league_id').limit(1);
-      var lid=m.data&&m.data[0]&&m.data[0].league_id;
-      if(!lid) return;
-      var l=await sb.from('leagues').select('id,name,code').eq('id',lid).maybeSingle();
-      if(l.data) data.league=l.data;
-      var s=await sb.from('league_standings').select('user_id,display_name,total_score').eq('league_id',lid).order('total_score',{ascending:false});
+      var m=await sb.from('league_members').select('league_id');
+      var ids=(m.data||[]).map(function(x){ return x.league_id; });
+      if(!ids.length) return;
+      var l=await sb.from('leagues').select('id,name,code').in('id',ids);
+      data.leagues=l.data||[];
+      var saved=null; try{ saved=localStorage.getItem('cq_vm_league'); }catch(e){}
+      data.league = data.leagues.filter(function(x){ return x.id===saved; })[0] || data.leagues[0] || null;
+      await loadLigaStandings(sb);
+    }catch(e){}
+  }
+  async function loadLigaStandings(sb){
+    data.liga=[];
+    if(!data.league) return;
+    try{
+      var s=await sb.from('league_standings').select('user_id,display_name,total_score').eq('league_id',data.league.id).order('total_score',{ascending:false});
       data.liga=s.data||[];
     }catch(e){}
+  }
+  function renderLeaguePicker(){
+    var box=document.getElementById('lb-league-picker'); if(!box) return;
+    if(data.scope!=='liga' || !data.leagues || data.leagues.length<2){ box.style.display='none'; box.innerHTML=''; return; }
+    var opts=data.leagues.map(function(l){ return '<option value="'+esc(l.id)+'"'+(data.league&&l.id===data.league.id?' selected':'')+'>'+esc(l.name)+'</option>'; }).join('');
+    box.innerHTML='<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-right:8px">Velg liga</span>'+
+      '<select id="lb-league-select" style="font-family:var(--font-sans);font-size:14px;padding:7px 12px;border:.5px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--bg);color:var(--ink);cursor:pointer">'+opts+'</select>';
+    box.style.display='';
+    var sel=document.getElementById('lb-league-select');
+    if(sel) sel.addEventListener('change', async function(){
+      var chosen=data.leagues.filter(function(x){ return x.id===sel.value; })[0];
+      if(!chosen) return;
+      data.league=chosen;
+      try{ localStorage.setItem('cq_vm_league', chosen.id); }catch(e){}
+      await loadLigaStandings(sbRef);
+      renderLeaderboard();
+      await loadStanding(sbRef);
+    });
   }
 
   async function loadStanding(sb){
@@ -615,7 +644,7 @@
     if(!sb){ renderGrid(); return; }
     await loadPool(sb);
     await loadGlobal(sb);
-    await loadLeague(sb);
+    await loadLeagues(sb);
     setDefaultScope();
     renderLeaderboard();
     await loadStanding(sb);
