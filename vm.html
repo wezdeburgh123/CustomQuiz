@@ -153,6 +153,11 @@
   .ls-copy { display:inline-flex; align-items:center; gap:8px; padding:11px 20px; background:var(--event); color:var(--event-deep); border:none; border-radius:var(--r-pill); font-family:var(--font-sans); font-size:13px; font-weight:600; cursor:pointer; transition:filter 160ms ease; }
   .ls-copy:hover { filter:brightness(0.95); }
   .liga-success .ls-hint { font-size:13px; color:var(--ink-soft); margin-top:12px; line-height:1.5; }
+  a.liga-code-big { text-decoration:none; }
+  a.liga-code-big:hover { filter:brightness(0.96); }
+  #liga-invite:empty { display:none; }
+  #liga-invite { margin-bottom:48px; }
+  #liga-invite .liga-success { margin-top:0; }
 
   /* How it works */
   .three-up { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin:48px 0 64px; padding:32px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
@@ -234,6 +239,9 @@
       <span class="pill-tag" style="margin-left:auto">Alle</span>
     </div>
   </section>
+
+  <!-- INVITASJON via lenke (?liga=KODE) -->
+  <div id="liga-invite" aria-live="polite"></div>
 
   <!-- QUIZER -->
   <div class="section-label" id="quizer">
@@ -336,6 +344,8 @@
   }
   function loggedIn(){ return !!(window.CQAuth&&window.CQAuth.getEmail&&window.CQAuth.getEmail()); }
   function myId(){ var u=window.CQAuth&&window.CQAuth.getUser&&window.CQAuth.getUser(); return (u&&u.id)||null; }
+  function inviteUrl(code){ return location.origin+'/vm.html?liga='+encodeURIComponent(code); }
+  function cleanLigaParam(){ try{ var u=new URL(location.href); u.searchParams.delete('liga'); history.replaceState({},'',u.pathname+u.search+u.hash); }catch(e){} }
 
   var data = { quizzes:[], attempts:{}, league:null, global:[], liga:[], scope:'global' };
 
@@ -503,13 +513,13 @@
         '<div class="liga-success">'+
           '<div class="ls-label">Ligaen er opprettet</div>'+
           '<div class="ls-name">'+esc(name)+'</div>'+
-          '<div class="liga-code-big" id="ls-code">'+esc(code)+'</div>'+
-          '<div class="ls-row"><button class="ls-copy" id="ls-copy" type="button">Kopier invitasjon</button></div>'+
-          '<p class="ls-hint">Del koden <strong>'+esc(code)+'</strong> med vennene dine — de skriver den inn under «Bli med», så havner dere på samme ledertavle.</p>'+
+          '<a class="liga-code-big" id="ls-code" href="'+inviteUrl(code)+'">'+esc(code)+'</a>'+
+          '<div class="ls-row"><button class="ls-copy" id="ls-copy" type="button">Kopier invitasjonslenke</button></div>'+
+          '<p class="ls-hint">Send lenken til vennene dine — ett klikk, så blir de spurt om å bli med i ligaen. Eller del koden <strong>'+esc(code)+'</strong> for manuell innskriving.</p>'+
         '</div>';
       var btn=document.getElementById('ls-copy');
       if(btn) btn.addEventListener('click', function(){
-        var txt='Bli med i VM-quizen min på CustomQuiz! Liga-kode: '+code+' → https://customquiz.no/vm.html';
+        var txt='Bli med i VM-quizen min på CustomQuiz! '+inviteUrl(code);
         function done(){ btn.textContent='Kopiert ✓'; setTimeout(function(){ btn.textContent='Kopier invitasjon'; },1800); }
         if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,done); }
         else { try{ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done(); }catch(e){} }
@@ -556,6 +566,48 @@
     if(joinInput) joinInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); joinBtn&&joinBtn.click(); } });
   }
 
+  /* Invitasjon via lenke: ?liga=KODE → tydelig «bli med»-kort som må godkjennes. */
+  async function handleInviteFromUrl(sb){
+    var box=document.getElementById('liga-invite'); if(!box) return;
+    var code=((new URLSearchParams(location.search).get('liga'))||'').trim().toUpperCase();
+    if(!code){ box.innerHTML=''; return; }
+    function card(label,name,hint,buttonsHtml){
+      box.innerHTML='<div class="liga-success"><div class="ls-label">'+esc(label)+'</div>'+
+        (name?'<div class="ls-name">'+esc(name)+'</div>':'')+
+        (hint?'<p class="ls-hint">'+hint+'</p>':'')+
+        (buttonsHtml?('<div class="ls-row">'+buttonsHtml+'</div>'):'')+'</div>';
+      try{ box.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){}
+    }
+    if(!loggedIn()){
+      card('Du er invitert', 'VM-liga · '+code, 'Logg inn for å bli med i ligaen.', '<button class="btn" id="inv-login" type="button">Logg inn og bli med <span class="btn-arrow">→</span></button>');
+      var lb=document.getElementById('inv-login'); if(lb) lb.addEventListener('click', function(){ try{window.CQAuth.signIn();}catch(e){} });
+      return;
+    }
+    var name=code;
+    if(sb){
+      try{ var l=await sb.from('leagues').select('name').eq('code',code).maybeSingle();
+        if(l.data) name=l.data.name;
+        else { card('Ugyldig kode','','Fant ingen liga med koden '+esc(code)+'.',''); return; }
+      }catch(e){}
+    }
+    card('Du er invitert til', name, 'Vil du bli med i denne ligaen og konkurrere mot de andre?',
+      '<button class="btn" id="inv-join" type="button">Bli med <span class="btn-arrow">→</span></button> <button class="btn btn-ghost" id="inv-skip" type="button">Ikke nå</button>');
+    var sk=document.getElementById('inv-skip'); if(sk) sk.addEventListener('click', function(){ box.innerHTML=''; cleanLigaParam(); });
+    var jb=document.getElementById('inv-join');
+    if(jb) jb.addEventListener('click', async function(){
+      jb.disabled=true; jb.textContent='Blir med …';
+      try{
+        var token=null; try{ token=await window.CQAuth.getAccessToken(); }catch(e){}
+        var res=await fetch('/api/league-join',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({code:code})});
+        var d=await res.json().catch(function(){return {};});
+        if(!res.ok) throw new Error(d.error||('HTTP '+res.status));
+        card(d.already?'Du er allerede med':'Du er med!', d.name||name, 'Ta quizene under for å klatre på ligaens ledertavle.','');
+        cleanLigaParam();
+        await refresh();
+      }catch(e){ card('Kunne ikke bli med','', esc(e.message||'Prøv igjen.'),''); }
+    });
+  }
+
   var sbRef=null;
   async function refresh(){
     var sb=sbRef||(sbRef=await getClient());
@@ -579,8 +631,8 @@
 
   wireTabs();
   wireInvite();
-  refresh();
-  document.addEventListener('cq-auth', function(){ refresh(); });
+  (async function(){ await refresh(); handleInviteFromUrl(sbRef); })();
+  document.addEventListener('cq-auth', function(){ refresh().then(function(){ handleInviteFromUrl(sbRef); }); });
 })();
 </script>
 <script src="supabase-config.js"></script>
