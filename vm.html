@@ -94,6 +94,8 @@
   .standing-card .big em { font-style:normal; color:var(--accent); }
   .code-chip { margin-left:auto; text-align:center; }
   .code-chip .code { font-family:var(--font-mono); font-size:15px; color:var(--accent); letter-spacing:.05em; }
+  button.code-chip { background:none; border:.5px solid transparent; cursor:pointer; font:inherit; padding:6px 12px; border-radius:var(--r-md); transition:background .15s ease, border-color .15s ease; }
+  button.code-chip:hover { background:var(--bg-deep); border-color:var(--rule); }
   .pill-tag { font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; padding:4px 10px; border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent-deep); }
 
   /* Section label */
@@ -222,10 +224,10 @@
         <div class="mono-label" id="liga-label">Din liga</div>
         <div class="big" id="liga-standing">Logg inn for å konkurrere</div>
       </div>
-      <div class="code-chip" id="liga-code-chip" style="display:none">
-        <div class="mono-label">Kode</div>
+      <button class="code-chip" id="liga-code-chip" type="button" title="Kopier invitasjonslenke" style="display:none">
+        <div class="mono-label" id="liga-code-label">Kode · kopier lenke</div>
         <div class="code" id="liga-code">—</div>
-      </div>
+      </button>
     </div>
     <div class="standing-card">
       <div>
@@ -593,6 +595,17 @@
       finally { joinBtn.disabled=false; }
     });
     if(joinInput) joinInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); joinBtn&&joinBtn.click(); } });
+
+    // Kode-chippen i status-feltet: ett klikk kopierer invitasjonslenken.
+    var chip=document.getElementById('liga-code-chip');
+    if(chip) chip.addEventListener('click', function(){
+      if(!data.league) return;
+      var url=inviteUrl(data.league.code);
+      var label=document.getElementById('liga-code-label');
+      function done(){ if(label){ label.textContent='Kopiert ✓'; setTimeout(function(){ label.textContent='Kode · kopier lenke'; },1600); } }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done,done); }
+      else { try{ var ta=document.createElement('textarea'); ta.value=url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done(); }catch(e){} }
+    });
   }
 
   /* Invitasjon via lenke: ?liga=KODE → tydelig «bli med»-kort som må godkjennes. */
