@@ -199,6 +199,57 @@ ALWAYS_INCLUDE = {
         "Premier League — historie og rekorder",
         "Norske spillere i engelsk fotball",
         "Norske supporterklubber for engelsk fotball",
+        # Norske klubber — egne emner i nattgenereringen.
+        "Rosenborg BK — historie og legender",
+        "SK Brann — historie og legender",
+        "Bodø/Glimt — historie og legender",
+        "Vålerenga Fotball — historie og legender",
+        "Molde FK — historie og legender",
+        "Lillestrøm SK — historie og legender",
+        "Viking FK — historie og legender",
+        "Eliteserien — historie og rekorder",
+    ],
+}
+
+# ── Dypdykk på de mest populære klubbene i Norge (SBF): Liverpool, Man. United,
+# Arsenal. 10 distinkte vinkler per klubb, ÉTT nivå hver = 10 quizer/100 spørsmål
+# per klubb. Disse får topp-prioritet i køen (genereres først). Niváene er
+# blandet bevisst per klubb (lett/medium/vanskelig) for variasjon.
+CLUB_DEEP_DIVE = {
+    "sport": [
+        # Liverpool FC
+        ("Liverpool FC — Anfield-legender", "lett"),
+        ("Liverpool FC — kjente målscorere og kapteiner", "lett"),
+        ("Liverpool FC — Premier League-tittelen 2019/20 og Klopp-æraen", "lett"),
+        ("Liverpool FC — storhetstiden på 1970- og 80-tallet", "medium"),
+        ("Liverpool FC — Istanbul 2005 og Champions League-triumfene", "medium"),
+        ("Liverpool FC — Merseyside-derbyet mot Everton", "medium"),
+        ("Liverpool FC — berømte overganger og signeringer", "medium"),
+        ("Liverpool FC — managerne fra Shankly til Klopp", "vanskelig"),
+        ("Liverpool FC — europacup-netter og finaler", "vanskelig"),
+        ("Liverpool FC — klubbrekorder og statistikk", "vanskelig"),
+        # Manchester United
+        ("Manchester United — Old Trafford-legender", "lett"),
+        ("Manchester United — Premier League-titlene", "lett"),
+        ("Manchester United — managerne etter Ferguson", "lett"),
+        ("Manchester United — Sir Alex Ferguson-æraen", "medium"),
+        ("Manchester United — the Treble 1999", "medium"),
+        ("Manchester United — Class of '92", "medium"),
+        ("Manchester United — berømte overganger", "medium"),
+        ("Manchester United — Busby Babes og München-ulykken 1958", "vanskelig"),
+        ("Manchester United — Champions League-triumfene 1968, 1999 og 2008", "vanskelig"),
+        ("Manchester United — klubbrekorder og statistikk", "vanskelig"),
+        # Arsenal FC
+        ("Arsenal FC — klubblegender", "lett"),
+        ("Arsenal FC — Highbury og Emirates", "lett"),
+        ("Arsenal FC — berømte målscorere", "lett"),
+        ("Arsenal FC — the Invincibles 2003/04", "medium"),
+        ("Arsenal FC — Arsène Wenger-æraen", "medium"),
+        ("Arsenal FC — Nord-London-derbyet mot Tottenham", "medium"),
+        ("Arsenal FC — europacup og Champions League", "medium"),
+        ("Arsenal FC — FA-cup-rekorden", "vanskelig"),
+        ("Arsenal FC — managerne gjennom historien", "vanskelig"),
+        ("Arsenal FC — klubbrekorder og statistikk", "vanskelig"),
     ],
 }
 
@@ -245,6 +296,23 @@ def build():
                     "count": 10,
                     "priority": diff_priority[diff],
                 })
+    # Dypdykk-vinkler på topp-klubbene: topp-prioritet (genereres først).
+    for cat, angles in CLUB_DEEP_DIVE.items():
+        label = CATEGORIES[cat]
+        for theme, diff in angles:
+            slug = make_slug([theme], diff)
+            if slug in seen:
+                continue
+            seen.add(slug)
+            rows.append({
+                "slug": slug,
+                "themes": [theme],
+                "category": cat,
+                "category_label": label,
+                "difficulty": diff,
+                "count": 10,
+                "priority": 1,  # foran alt annet i køen
+            })
     return rows
 
 def main():

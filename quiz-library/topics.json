@@ -1,7 +1,337 @@
 {
  "generated": true,
- "total": 144,
+ "total": 198,
  "topics": [
+  {
+   "slug": "arsenal-fc-ars-ne-wenger-aeraen__medium",
+   "themes": [
+    "Arsenal FC — Arsène Wenger-æraen"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-beromte-malscorere__lett",
+   "themes": [
+    "Arsenal FC — berømte målscorere"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-europacup-og-champions-league__medium",
+   "themes": [
+    "Arsenal FC — europacup og Champions League"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-fa-cup-rekorden__vanskelig",
+   "themes": [
+    "Arsenal FC — FA-cup-rekorden"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-highbury-og-emirates__lett",
+   "themes": [
+    "Arsenal FC — Highbury og Emirates"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-klubblegender__lett",
+   "themes": [
+    "Arsenal FC — klubblegender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-klubbrekorder-og-statistikk__vanskelig",
+   "themes": [
+    "Arsenal FC — klubbrekorder og statistikk"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-managerne-gjennom-historien__vanskelig",
+   "themes": [
+    "Arsenal FC — managerne gjennom historien"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-nord-london-derbyet-mot-tottenham__medium",
+   "themes": [
+    "Arsenal FC — Nord-London-derbyet mot Tottenham"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "arsenal-fc-the-invincibles-2003-04__medium",
+   "themes": [
+    "Arsenal FC — the Invincibles 2003/04"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-anfield-legender__lett",
+   "themes": [
+    "Liverpool FC — Anfield-legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-beromte-overganger-og-signeringer__medium",
+   "themes": [
+    "Liverpool FC — berømte overganger og signeringer"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-europacup-netter-og-finaler__vanskelig",
+   "themes": [
+    "Liverpool FC — europacup-netter og finaler"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-istanbul-2005-og-champions-league-triumfene__medium",
+   "themes": [
+    "Liverpool FC — Istanbul 2005 og Champions League-triumfene"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-kjente-malscorere-og-kapteiner__lett",
+   "themes": [
+    "Liverpool FC — kjente målscorere og kapteiner"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-klubbrekorder-og-statistikk__vanskelig",
+   "themes": [
+    "Liverpool FC — klubbrekorder og statistikk"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-managerne-fra-shankly-til-klopp__vanskelig",
+   "themes": [
+    "Liverpool FC — managerne fra Shankly til Klopp"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-merseyside-derbyet-mot-everton__medium",
+   "themes": [
+    "Liverpool FC — Merseyside-derbyet mot Everton"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-premier-league-tittelen-2019-20-og-klopp-aeraen__lett",
+   "themes": [
+    "Liverpool FC — Premier League-tittelen 2019/20 og Klopp-æraen"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "liverpool-fc-storhetstiden-pa-1970-og-80-tallet__medium",
+   "themes": [
+    "Liverpool FC — storhetstiden på 1970- og 80-tallet"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-beromte-overganger__medium",
+   "themes": [
+    "Manchester United — berømte overganger"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-busby-babes-og-m-nchen-ulykken-1958__vanskelig",
+   "themes": [
+    "Manchester United — Busby Babes og München-ulykken 1958"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-champions-league-triumfene-1968-1999-og-2008__vanskelig",
+   "themes": [
+    "Manchester United — Champions League-triumfene 1968, 1999 og 2008"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-class-of-92__medium",
+   "themes": [
+    "Manchester United — Class of '92"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-klubbrekorder-og-statistikk__vanskelig",
+   "themes": [
+    "Manchester United — klubbrekorder og statistikk"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-managerne-etter-ferguson__lett",
+   "themes": [
+    "Manchester United — managerne etter Ferguson"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-old-trafford-legender__lett",
+   "themes": [
+    "Manchester United — Old Trafford-legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-premier-league-titlene__lett",
+   "themes": [
+    "Manchester United — Premier League-titlene"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-sir-alex-ferguson-aeraen__medium",
+   "themes": [
+    "Manchester United — Sir Alex Ferguson-æraen"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
+  {
+   "slug": "manchester-united-the-treble-1999__medium",
+   "themes": [
+    "Manchester United — the Treble 1999"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1
+  },
   {
    "slug": "hollywoods-gullalder__lett",
    "themes": [
@@ -278,9 +608,31 @@
    "priority": 10
   },
   {
+   "slug": "bodo-glimt-historie-og-legender__lett",
+   "themes": [
+    "Bodø/Glimt — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
    "slug": "chelsea-fc__lett",
    "themes": [
     "Chelsea FC"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
+   "slug": "eliteserien-historie-og-rekorder__lett",
+   "themes": [
+    "Eliteserien — historie og rekorder"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -322,6 +674,17 @@
    "priority": 10
   },
   {
+   "slug": "lillestrom-sk-historie-og-legender__lett",
+   "themes": [
+    "Lillestrøm SK — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
    "slug": "liverpool-fc-historie-og-legender__lett",
    "themes": [
     "Liverpool FC — historie og legender"
@@ -347,6 +710,17 @@
    "slug": "manchester-united-historie-og-legender__lett",
    "themes": [
     "Manchester United — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
+   "slug": "molde-fk-historie-og-legender__lett",
+   "themes": [
+    "Molde FK — historie og legender"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -399,6 +773,28 @@
    "priority": 10
   },
   {
+   "slug": "rosenborg-bk-historie-og-legender__lett",
+   "themes": [
+    "Rosenborg BK — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
+   "slug": "sk-brann-historie-og-legender__lett",
+   "themes": [
+    "SK Brann — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
    "slug": "sommer-ol__lett",
    "themes": [
     "Sommer-OL"
@@ -413,6 +809,28 @@
    "slug": "tottenham-hotspur__lett",
    "themes": [
     "Tottenham Hotspur"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
+   "slug": "valerenga-fotball-historie-og-legender__lett",
+   "themes": [
+    "Vålerenga Fotball — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 10
+  },
+  {
+   "slug": "viking-fk-historie-og-legender__lett",
+   "themes": [
+    "Viking FK — historie og legender"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -806,9 +1224,31 @@
    "priority": 20
   },
   {
+   "slug": "bodo-glimt-historie-og-legender__medium",
+   "themes": [
+    "Bodø/Glimt — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
    "slug": "chelsea-fc__medium",
    "themes": [
     "Chelsea FC"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
+   "slug": "eliteserien-historie-og-rekorder__medium",
+   "themes": [
+    "Eliteserien — historie og rekorder"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -850,6 +1290,17 @@
    "priority": 20
   },
   {
+   "slug": "lillestrom-sk-historie-og-legender__medium",
+   "themes": [
+    "Lillestrøm SK — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
    "slug": "liverpool-fc-historie-og-legender__medium",
    "themes": [
     "Liverpool FC — historie og legender"
@@ -875,6 +1326,17 @@
    "slug": "manchester-united-historie-og-legender__medium",
    "themes": [
     "Manchester United — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
+   "slug": "molde-fk-historie-og-legender__medium",
+   "themes": [
+    "Molde FK — historie og legender"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -927,6 +1389,28 @@
    "priority": 20
   },
   {
+   "slug": "rosenborg-bk-historie-og-legender__medium",
+   "themes": [
+    "Rosenborg BK — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
+   "slug": "sk-brann-historie-og-legender__medium",
+   "themes": [
+    "SK Brann — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
    "slug": "sommer-ol__medium",
    "themes": [
     "Sommer-OL"
@@ -941,6 +1425,28 @@
    "slug": "tottenham-hotspur__medium",
    "themes": [
     "Tottenham Hotspur"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
+   "slug": "valerenga-fotball-historie-og-legender__medium",
+   "themes": [
+    "Vålerenga Fotball — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 20
+  },
+  {
+   "slug": "viking-fk-historie-og-legender__medium",
+   "themes": [
+    "Viking FK — historie og legender"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -1334,9 +1840,31 @@
    "priority": 30
   },
   {
+   "slug": "bodo-glimt-historie-og-legender__vanskelig",
+   "themes": [
+    "Bodø/Glimt — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
    "slug": "chelsea-fc__vanskelig",
    "themes": [
     "Chelsea FC"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
+   "slug": "eliteserien-historie-og-rekorder__vanskelig",
+   "themes": [
+    "Eliteserien — historie og rekorder"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -1378,6 +1906,17 @@
    "priority": 30
   },
   {
+   "slug": "lillestrom-sk-historie-og-legender__vanskelig",
+   "themes": [
+    "Lillestrøm SK — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
    "slug": "liverpool-fc-historie-og-legender__vanskelig",
    "themes": [
     "Liverpool FC — historie og legender"
@@ -1403,6 +1942,17 @@
    "slug": "manchester-united-historie-og-legender__vanskelig",
    "themes": [
     "Manchester United — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
+   "slug": "molde-fk-historie-og-legender__vanskelig",
+   "themes": [
+    "Molde FK — historie og legender"
    ],
    "category": "sport",
    "category_label": "Sport",
@@ -1455,6 +2005,28 @@
    "priority": 30
   },
   {
+   "slug": "rosenborg-bk-historie-og-legender__vanskelig",
+   "themes": [
+    "Rosenborg BK — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
+   "slug": "sk-brann-historie-og-legender__vanskelig",
+   "themes": [
+    "SK Brann — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
    "slug": "sommer-ol__vanskelig",
    "themes": [
     "Sommer-OL"
@@ -1469,6 +2041,28 @@
    "slug": "tottenham-hotspur__vanskelig",
    "themes": [
     "Tottenham Hotspur"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
+   "slug": "valerenga-fotball-historie-og-legender__vanskelig",
+   "themes": [
+    "Vålerenga Fotball — historie og legender"
+   ],
+   "category": "sport",
+   "category_label": "Sport",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 30
+  },
+  {
+   "slug": "viking-fk-historie-og-legender__vanskelig",
+   "themes": [
+    "Viking FK — historie og legender"
    ],
    "category": "sport",
    "category_label": "Sport",

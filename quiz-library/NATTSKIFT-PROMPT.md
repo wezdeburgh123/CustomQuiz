@@ -25,10 +25,14 @@ Gjør nøyaktig dette:
    - Les `quiz-library/STATUS.json` hvis den finnes: `{ nights_run, total_generated }`.
      Mangler den, start på `{ nights_run: 0, total_generated: 0 }`.
 
-2. **Bestem nattens batch (jevn opptrapping).**
-   - `batch = min(40, 8 + nights_run * 4)` (natt 1 = 8, natt 2 = 12, … tak på 40).
-   - Velg de første `batch` emnene fra `topics.json` som IKKE finnes i ndjson
-     (køen er allerede sortert: lette først, jevnt fordelt på kategori).
+2. **Bestem nattens batch (rask opptrapping).**
+   - `batch = min(60, 20 + nights_run * 10)` (natt 1 = 20, natt 2 = 30, … tak på 60).
+     Skrudd opp fordi køen vokste (klubb-dypdykk). Skriv heller færre enn dårlige
+     hvis kontoens grenser eller kvalitet tilsier det — kvalitet slår volum.
+   - Velg de første `batch` emnene fra `topics.json` som IKKE finnes i ndjson.
+     Køen er sortert på `priority` først: klubb-dypdykkene (Liverpool, Man. United,
+     Arsenal — priority 1) ligger fremst og skal genereres FØRST, deretter resten
+     (lette først, jevnt fordelt på kategori).
    - Er det færre igjen enn `batch`, ta resten. Er køen tom, skriv en kort melding
      og avslutt.
 

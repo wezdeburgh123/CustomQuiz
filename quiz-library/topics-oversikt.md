@@ -1,6 +1,6 @@
 # Emne-taksonomi — oversikt
 
-**Totalt 144 emner** (12 kategorier × underemner × 3 nivå).
+**Totalt 198 emner** (12 kategorier × underemner × 3 nivå).
 
 | Kategori | Antall emner |
 |---|---|
@@ -12,7 +12,7 @@
 | Kunst (`kunst`) | 9 |
 | Film (`film`) | 9 |
 | Musikk (`musikk`) | 9 |
-| Sport (`sport`) | 45 |
+| Sport (`sport`) | 99 |
 | Filosofi (`filosofi`) | 9 |
 | Teknologi (`teknologi`) | 9 |
 | Blandet allmennkunnskap (`mix`) | 9 |
