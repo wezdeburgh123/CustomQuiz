@@ -2211,9 +2211,18 @@
   }
 
   async function loadEventQuiz(eventId, slug) {
+    try { showScreen('loading'); } catch (_) {}
     const sb = await waitForAuthClient();
+    // Vent på at en evt. lagret sesjon er gjenopprettet før vi konkluderer med
+    // «ikke innlogget» — ellers poppet login-modalen opp for allerede innloggede
+    // (race ved sidelast), og quizen lastet seg bak modalen.
     let token = null;
-    try { token = (window.CQAuth && window.CQAuth.getAccessToken) ? await window.CQAuth.getAccessToken() : null; } catch (_) {}
+    if (sb) {
+      for (let i = 0; i < 12 && !token; i++) {
+        try { token = (window.CQAuth && window.CQAuth.getAccessToken) ? await window.CQAuth.getAccessToken() : null; } catch (_) {}
+        if (!token) await new Promise(function (r) { setTimeout(r, 200); });
+      }
+    }
     if (!sb || !token) {
       try { window.CQAuth && window.CQAuth.signIn && window.CQAuth.signIn(); } catch (_) {}
       showEventMessage('Logg inn', 'Logg inn for å spille VM-quizen og bli med i konkurransen. Quizen starter automatisk når du er logget inn.');

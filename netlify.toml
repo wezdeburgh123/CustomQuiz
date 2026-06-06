@@ -103,3 +103,14 @@
   from = "/api/cancel-subscription"
   to = "/.netlify/functions/cancel-subscription"
   status = 200
+
+# VM/event-ligaer — opprett og bli med (Bearer-JWT + service_role)
+[[redirects]]
+  from = "/api/league-create"
+  to = "/.netlify/functions/league-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/league-join"
+  to = "/.netlify/functions/league-join"
+  status = 200
