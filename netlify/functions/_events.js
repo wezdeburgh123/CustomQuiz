@@ -53,7 +53,7 @@ async function recordOptIn(user, source, extra) {
   // 1) Sporbart samtykke i profiles (service_role omgår RLS).
   try {
     await supa().from("profiles").upsert(
-      { id: user.id, marketing_opt_in: true, opt_in_at: new Date().toISOString(), opt_in_source: source || "vm-liga" },
+      { id: user.id, email: user.email || null, marketing_opt_in: true, opt_in_at: new Date().toISOString(), opt_in_source: source || "vm-liga" },
       { onConflict: "id" }
     );
   } catch (_) { /* stille */ }

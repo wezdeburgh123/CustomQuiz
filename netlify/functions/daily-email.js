@@ -33,32 +33,18 @@ exports.handler = async () => {
 
   const db = createClient(url, key, { auth: { persistSession: false } });
 
-  // 1) Påmeldte bruker-id-er
-  let ids;
+  // Påmeldte med e-post (e-posten lagres på profiles ved opt-in).
+  let emails = [];
   try {
-    const { data, error } = await db.from("profiles").select("id").eq("marketing_opt_in", true);
+    const { data, error } = await db.from("profiles").select("email").eq("marketing_opt_in", true).not("email", "is", null);
     if (error) throw error;
-    ids = new Set((data || []).map((r) => r.id));
+    emails = (data || []).map((r) => r.email).filter(Boolean);
   } catch (e) {
     return done("Kunne ikke hente påmeldte: " + (e.message || e));
   }
-  if (!ids.size) return done("Ingen påmeldte — ingenting å sende.");
+  if (!emails.length) return done("Ingen påmeldte med e-post — ingenting å sende.");
 
-  // 2) E-poster via admin-API (paginert), filtrert til de påmeldte
-  const emails = [];
-  try {
-    for (let page = 1; page <= 50; page++) {
-      const { data, error } = await db.auth.admin.listUsers({ page: page, perPage: 200 });
-      if (error || !data || !data.users || !data.users.length) break;
-      for (const u of data.users) if (u.email && ids.has(u.id)) emails.push(u.email);
-      if (data.users.length < 200) break;
-    }
-  } catch (e) {
-    return done("Kunne ikke hente e-poster: " + (e.message || e));
-  }
-  if (!emails.length) return done("Fant ingen e-poster for de påmeldte.");
-
-  // 3) Send mal #4 til hver mottaker
+  // Send mal #4 til hver mottaker
   const site = (process.env.SITE_URL || "https://customquiz.no").replace(/\/$/, "");
   let sent = 0;
   for (const email of emails) {

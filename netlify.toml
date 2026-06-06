@@ -29,10 +29,11 @@
 [functions."daily-quiz-generate"]
   schedule = "0 20 * * *"
 
-# Daglig quiz-e-post (mal #4) til påmeldte — kl. 06:00 UTC (~07-08 Oslo).
+# Quiz-e-post (mal #4) til påmeldte — UKENTLIG, mandag kl. 06:00 UTC (~07-08 Oslo).
+# Daglig opplevdes for mye; ukentlig nudge i stedet. Endre til "0 6 * * *" for daglig.
 # AVSKRUDD med mindre DAILY_EMAIL_ENABLED=true (sikkerhet mot utilsiktet blast).
 [functions."daily-email"]
-  schedule = "0 6 * * *"
+  schedule = "0 6 * * 1"
 
 # Pene URL-er: /api/* -> funksjoner
 [[redirects]]
@@ -125,8 +126,14 @@
   to = "/.netlify/functions/league-leave"
   status = 200
 
-# Daglig quiz-e-post — manuell test (krever DAILY_EMAIL_ENABLED=true)
+# Quiz-e-post — manuell test (krever DAILY_EMAIL_ENABLED=true)
 [[redirects]]
   from = "/api/daily-email"
   to = "/.netlify/functions/daily-email"
+  status = 200
+
+# Brevo-webhook — synker avmeldinger tilbake til profiles
+[[redirects]]
+  from = "/api/brevo-webhook"
+  to = "/.netlify/functions/brevo-webhook"
   status = 200
