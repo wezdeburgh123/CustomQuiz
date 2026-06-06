@@ -2039,7 +2039,8 @@
     });
 
     showScreen('result');
-    maybeShowEmailGate();
+    if (state.eventContext) { recordEventAttempt(correctCount, total); }
+    else { maybeShowEmailGate(); }
   }
 
   function copyShare() {
@@ -2177,8 +2178,98 @@
     }
   }
 
+  /* --------------- VM / EVENT-SPILLER (?event=<id>&quiz=<slug>) --------------- */
+  function waitForAuthClient(ms) {
+    return new Promise(function (resolve) {
+      var deadline = Date.now() + (ms || 6000);
+      (function tick() {
+        var c = (window.CQAuth && window.CQAuth.getClient) ? window.CQAuth.getClient() : null;
+        if (c) return resolve(c);
+        if (Date.now() > deadline) return resolve(null);
+        setTimeout(tick, 150);
+      })();
+    });
+  }
+
+  function showEventMessage(title, msg) {
+    const t = document.querySelector('#error .error-title');
+    if (t) t.textContent = title;
+    const m = document.getElementById('error-msg');
+    if (m) m.textContent = msg;
+    showScreen('error');
+  }
+
+  async function recordEventAttempt(score, total) {
+    try {
+      const ctx = state.eventContext;
+      if (!ctx) return;
+      const sb = (window.CQAuth && window.CQAuth.getClient) ? window.CQAuth.getClient() : null;
+      if (!sb) return;
+      // UNIQUE(user,event,quiz) hindrer dobbeltlagring; ev. feil ignoreres bevisst.
+      await sb.from('event_attempts').insert({ event_id: ctx.event_id, quiz_slug: ctx.quiz_slug, score: score, total: total });
+    } catch (_) { /* stille */ }
+  }
+
+  async function loadEventQuiz(eventId, slug) {
+    const sb = await waitForAuthClient();
+    let token = null;
+    try { token = (window.CQAuth && window.CQAuth.getAccessToken) ? await window.CQAuth.getAccessToken() : null; } catch (_) {}
+    if (!sb || !token) {
+      try { window.CQAuth && window.CQAuth.signIn && window.CQAuth.signIn(); } catch (_) {}
+      showEventMessage('Logg inn', 'Logg inn for å spille VM-quizen og bli med i konkurransen. Quizen starter automatisk når du er logget inn.');
+      document.addEventListener('cq-auth', function once(e) {
+        if (e.detail && e.detail.user) { document.removeEventListener('cq-auth', once); loadEventQuiz(eventId, slug); }
+      });
+      return true;
+    }
+    try {
+      const { data: prev } = await sb.from('event_attempts')
+        .select('score,total').eq('event_id', eventId).eq('quiz_slug', slug).maybeSingle();
+      if (prev) {
+        showEventMessage('Allerede tatt', 'Du har allerede tatt denne quizen (' + prev.score + '/' + prev.total + '). Hver VM-quiz kan kun tas én gang — gå tilbake til VM-siden for flere.');
+        return true;
+      }
+      const { data: q, error } = await sb.from('event_quizzes')
+        .select('slug,title,sub,questions,difficulty,status,unlock_at,hero_img')
+        .eq('event_id', eventId).eq('slug', slug).eq('published', true).maybeSingle();
+      if (error) throw error;
+      if (!q || !Array.isArray(q.questions) || !q.questions.length) {
+        showEventMessage('Noe gikk galt', 'Fant ikke denne VM-quizen.'); return true;
+      }
+      const locked = q.status === 'locked' || (q.unlock_at && new Date(q.unlock_at).getTime() > Date.now());
+      if (locked) {
+        showEventMessage('Låst ennå', 'Denne runden åpner senere i mesterskapet. Kom tilbake når den er klar.'); return true;
+      }
+      state.quiz = { title: q.title, lede: q.sub || '', questions: q.questions, difficulty: q.difficulty || '' };
+      if (q.difficulty) state.difficulty = q.difficulty;
+      state.currentIndex = 0; state.selectedOption = null; state.userAnswers = [];
+      state.eventContext = { event_id: eventId, quiz_slug: slug };
+      const banner = document.getElementById('quiz-banner');
+      const img = document.getElementById('quiz-banner-img');
+      if (banner && img) {
+        img.src = 'IMG/' + (q.hero_img || ('vm-' + slug)) + '.jpg';
+        img.alt = q.title || 'VM-quiz';
+        banner.removeAttribute('data-spot'); // VM-bildene har saffron innebygd
+        banner.classList.add('active');
+      }
+      setBannerText('Fotball-VM 2026', q.title || '');
+      setBannerDifficulty(q.difficulty);
+      const demo = document.getElementById('demo-notice'); if (demo) demo.classList.remove('active');
+      renderQuestion();
+      showScreen('quiz');
+      return true;
+    } catch (err) {
+      console.warn('[VM] kunne ikke laste event-quiz:', err);
+      showEventMessage('Noe gikk galt', 'Kunne ikke laste VM-quizen akkurat nå. Prøv igjen om litt.');
+      return true;
+    }
+  }
+
   async function loadLibraryQuizFromUrl() {
     const params = new URLSearchParams(window.location.search);
+    const evId = params.get('event');
+    const evQuiz = params.get('quiz');
+    if (evId && evQuiz) return loadEventQuiz(evId, evQuiz);
     const libSlug = params.get('lib');
     if (libSlug) return loadLibraryQuizBySlug(libSlug);
     const id = params.get('quiz');

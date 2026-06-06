@@ -208,19 +208,19 @@
         <path d="M24 12 l5 13 5-14z" fill="none" stroke="#1F1A14" stroke-width="1.8" stroke-linejoin="round"/>
         <path d="M39 11 l5 13 5-14z" fill="none" stroke="#1F1A14" stroke-width="1.8" stroke-linejoin="round"/>
       </svg>
-      <div>
-        <div class="mono-label">Din liga · Kontoret ⚽</div>
-        <div class="big">Du ligger <em>3.</em> av 11</div>
+      <div style="flex:1">
+        <div class="mono-label" id="liga-label">Din liga</div>
+        <div class="big" id="liga-standing">Logg inn for å konkurrere</div>
       </div>
-      <div class="code-chip">
+      <div class="code-chip" id="liga-code-chip" style="display:none">
         <div class="mono-label">Kode</div>
-        <div class="code">VM-K9X4</div>
+        <div class="code" id="liga-code">—</div>
       </div>
     </div>
     <div class="standing-card">
       <div>
         <div class="mono-label">Global rangering</div>
-        <div class="big">#842 <span style="color:var(--ink-mute);font-weight:400">/ 6 210</span></div>
+        <div class="big" id="global-standing">—</div>
       </div>
       <span class="pill-tag" style="margin-left:auto">Alle</span>
     </div>
@@ -269,10 +269,11 @@
     <div style="font-family:var(--font-display);font-size:20px;font-weight:500;margin-bottom:6px">Inviter <span style="font-style:italic;color:var(--event)">gjengen</span></div>
     <p style="font-size:14px;color:var(--ink-soft);line-height:1.5;max-width:460px">Lag en privat liga, del koden, og se hvem som faktisk kan fotball. Eller bli med i en eksisterende liga med en kode du har fått.</p>
     <div class="invite">
-      <button class="btn" onclick="alert('Backend for ligaer kommer — se neste steg.')">Opprett liga <span class="btn-arrow">→</span></button>
-      <input type="text" placeholder="Skriv ligakode, f.eks. VM-K9X4" aria-label="Ligakode">
-      <button class="btn btn-ghost" onclick="alert('Backend for ligaer kommer — se neste steg.')">Bli med</button>
+      <button class="btn" id="liga-create-btn">Opprett liga <span class="btn-arrow">→</span></button>
+      <input type="text" id="liga-join-input" placeholder="Skriv ligakode, f.eks. VM-K9X4" aria-label="Ligakode">
+      <button class="btn btn-ghost" id="liga-join-btn">Bli med</button>
     </div>
+    <div id="liga-msg" style="font-size:13px;color:var(--ink-soft);margin-top:12px;min-height:18px"></div>
   </section>
 
   <!-- HOW IT WORKS -->
@@ -303,108 +304,226 @@
 
 <script>
 /* ---------------------------------------------------------------------------
-   VM-quizmodul — frontend-skall.
-   Data under er PLASSHOLDER til backend (events / event_quizzes /
-   leagues / event_leaderboard) er bygget. Neste steg: bytt QUIZER og
-   LEADERBOARD med kall mot Supabase via window.CQAuth.getClient().
-   Illustrasjoner: ekte AI-bilder i IMG/vm-<slug>.jpg.
+   VM-quizmodul — live mot Supabase (event_quizzes, event_attempts, ledertavle-
+   views, ligaer). Offentlig lesing med anon-klienten; forsøk og ligaer krever
+   innlogging. Faller tilbake til tomme tilstander hvis noe ikke er tilgjengelig.
 --------------------------------------------------------------------------- */
-
-/* Quiz-poolen for VM 2026. status: open | done | locked.
-   Bildet hentes som IMG/vm-<slug>.jpg. */
-var QUIZER = [
-  { n:'01', fase:'Pre-VM',          tittel:'VM-<em>historie</em>',          sub:'Fra 1930 til i dag — turneringer, troféer og talen.', status:'done',  result:'8 / 10 riktige', slug:'historie' },
-  { n:'02', fase:'Pre-VM',          tittel:'Legender & <em>rekorder</em>',  sub:'Målkonger, kapteiner og bragder som står seg.',       status:'done',  result:'6 / 10 riktige', slug:'legender' },
-  { n:'03', fase:'Pre-VM',          tittel:'Nasjonene & <em>troppene</em>', sub:'De 48 lagene, drakter, stjerner og uttak.',           status:'open',  slug:'nasjoner' },
-  { n:'04', fase:'Pre-VM',          tittel:'Vertsbyer & <em>stadioner</em>',sub:'USA, Canada og Mexico — arenaene og byene.',          status:'open',  slug:'vertsbyer' },
-  { n:'05', fase:'Pre-VM',          tittel:'<em>Kvalifiseringen</em>',      sub:'Hvem kom seg dit — og hvem røk ut på veien.',         status:'open',  slug:'kvalik' },
-  { n:'06', fase:'Live · Runde 1',  tittel:'Gruppespill, <em>dag 1–3</em>', sub:'Spørsmål om de første kampene — oppdatert.',          status:'locked', laast:'Åpner ved avspark 11. juni', slug:'gruppespill-1' },
-  { n:'07', fase:'Live · Sluttspill',tittel:'<em>16-delsfinaler</em>',      sub:'Hvem gikk videre fra gruppene?',                      status:'locked', laast:'Åpner når gruppespillet er ferdig', slug:'16-del' }
-];
-
-(function buildGrid(){
-  var grid = document.getElementById('quiz-grid');
-  if (!grid) return;
-  var html = '';
-  QUIZER.forEach(function(q){
-    var cls = q.status === 'open' ? 'open' : (q.status === 'done' ? 'done' : 'locked');
-    var badge = q.status === 'open'
-      ? '<span class="quiz-badge ny">Ny</span>'
-      : q.status === 'done'
-        ? '<span class="quiz-badge tatt">✓ Tatt</span>'
-        : '<span class="quiz-badge laast">Låst</span>';
-    var foot = q.status === 'open'
-      ? '<span class="quiz-cta">Ta quiz</span>'
-      : q.status === 'done'
-        ? '<div class="quiz-result">' + q.result + '</div>'
-        : '<div class="quiz-locked-note">' + (q.laast || 'Kommer snart') + '</div>';
-    var tag = q.status === 'open' ? 'a' : 'div';
-    var href = q.status === 'open' ? ' href="quiz-app-v2.html?event=vm-2026&quiz=' + q.slug + '"' : '';
-    html += '<' + tag + ' class="quiz-card ' + cls + '"' + href + '>' +
-      '<div class="quiz-image"><img src="IMG/vm-' + q.slug + '.jpg" alt="" loading="lazy">' + badge + '</div>' +
-      '<div class="quiz-body">' +
-        '<div class="quiz-num">№ ' + q.n + ' · ' + q.fase + '</div>' +
-        '<div class="quiz-title">' + q.tittel + '</div>' +
-        '<div class="quiz-sub">' + q.sub + '</div>' +
-        '<div class="quiz-foot">' + foot + '</div>' +
-      '</div>' +
-    '</' + tag + '>';
-  });
-  grid.innerHTML = html;
-  var done = QUIZER.filter(function(q){ return q.status==='done'; }).length;
-  var prog = document.getElementById('quiz-progress');
-  if (prog) prog.textContent = done + ' av ' + QUIZER.length + ' fullført';
-})();
-
-/* Ledertavle — plassholderdata for liga + global. Byttes med Supabase-kall. */
-var LB = {
-  liga:   { title:'Din liga · Kontoret ⚽', rows:[
-    { navn:'Marius T.', sc:142 }, { navn:'Silje H.', sc:128 },
-    { navn:'Deg', sc:121, me:true }, { navn:'Anders K.', sc:115 },
-    { navn:'Pernille R.', sc:103 }, { navn:'Jonas V.', sc:98 } ] },
-  global: { title:'Alle som er med', rows:[
-    { navn:'fotballfantet', sc:271 }, { navn:'tippekongen', sc:264 },
-    { navn:'VM-Vibeke', sc:259 }, { navn:'…', sc:null, spacer:true },
-    { navn:'Deg', sc:121, rank:842, me:true } ] }
-};
-
-(function leaderboard(){
-  var body = document.getElementById('lb-body');
-  var title = document.getElementById('lb-scope-title');
-  var tabs = document.querySelectorAll('.lb-tab');
-  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-  function render(scope){
-    var data = LB[scope]; if (!data) return;
-    if (title) title.textContent = data.title;
-    var h = '';
-    data.rows.forEach(function(r, i){
-      if (r.spacer){ h += '<tr><td class="rank">⋮</td><td style="color:var(--ink-mute)">'+esc(r.navn)+'</td><td class="sc"></td></tr>'; return; }
-      var rank = r.rank || (i+1);
-      h += '<tr class="' + (r.me?'me':'') + '"><td class="rank">' + rank + '</td><td>' +
-           esc(r.navn) + (r.me?' <span style="color:var(--ink-mute)">(deg)</span>':'') +
-           '</td><td class="sc">' + (r.sc==null?'':r.sc) + '</td></tr>';
-    });
-    body.innerHTML = h;
+(function () {
+  var EVENT_ID = 'vm-2026';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+  async function getClient(){
+    var deadline=Date.now()+6000, c=null;
+    while(Date.now()<deadline){
+      c=(window.CQAuth&&window.CQAuth.getClient)?window.CQAuth.getClient():null;
+      if(c) return c;
+      await wait(150);
+    }
+    return null;
   }
-  tabs.forEach(function(t){
-    t.addEventListener('click', function(){
-      tabs.forEach(function(x){ x.classList.remove('active'); });
-      t.classList.add('active');
-      render(t.getAttribute('data-scope'));
-    });
-  });
-  render('liga');
-})();
+  function loggedIn(){ return !!(window.CQAuth&&window.CQAuth.getEmail&&window.CQAuth.getEmail()); }
+  function myId(){ var u=window.CQAuth&&window.CQAuth.getUser&&window.CQAuth.getUser(); return (u&&u.id)||null; }
 
-/* Nedtelling til avspark (11. juni 2026, 18:00 norsk tid lokal placeholder) */
-(function kickoff(){
-  var el = document.getElementById('kickoff');
-  if (!el) return;
-  var start = new Date('2026-06-11T18:00:00+02:00').getTime();
-  var diff = start - Date.now();
-  if (diff <= 0) { el.textContent = '· VM er i gang'; return; }
-  var d = Math.ceil(diff / 86400000);
-  el.textContent = '· ' + d + (d===1 ? ' dag til avspark' : ' dager til avspark');
+  var data = { quizzes:[], attempts:{}, league:null, global:[], liga:[], scope:'global' };
+
+  function renderGrid(){
+    var grid=document.getElementById('quiz-grid'); if(!grid) return;
+    var rows=data.quizzes;
+    if(!rows.length){ grid.innerHTML='<p style="color:var(--ink-mute);font-size:14px">Quizene legges ut snart.</p>'; return; }
+    var html='';
+    rows.forEach(function(q){
+      var att=data.attempts[q.slug];
+      var locked = q.status==='locked' || (q.unlock_at && new Date(q.unlock_at).getTime()>Date.now());
+      var st = att ? 'done' : (locked ? 'locked' : 'open');
+      var badge = st==='open' ? '<span class="quiz-badge ny">Ny</span>'
+        : st==='done' ? '<span class="quiz-badge tatt">✓ Tatt</span>'
+        : '<span class="quiz-badge laast">Låst</span>';
+      var foot = st==='open' ? '<span class="quiz-cta">Ta quiz</span>'
+        : st==='done' ? '<div class="quiz-result">'+att.score+' / '+att.total+' riktige</div>'
+        : '<div class="quiz-locked-note">'+(q.unlock_at?('Åpner '+new Date(q.unlock_at).toLocaleDateString('nb-NO',{day:'numeric',month:'long'})):'Åpner senere i mesterskapet')+'</div>';
+      var tag = st==='open' ? 'a' : 'div';
+      var href = st==='open' ? ' href="quiz-app-v2.html?event='+EVENT_ID+'&quiz='+encodeURIComponent(q.slug)+'"' : '';
+      html += '<'+tag+' class="quiz-card '+st+'"'+href+'>'+
+        '<div class="quiz-image"><img src="IMG/'+esc(q.hero_img||('vm-'+q.slug))+'.jpg" alt="" loading="lazy">'+badge+'</div>'+
+        '<div class="quiz-body">'+
+          '<div class="quiz-num">№ '+esc(q.num||'')+' · '+esc(q.phase||'')+'</div>'+
+          '<div class="quiz-title">'+esc(q.title)+'</div>'+
+          '<div class="quiz-sub">'+esc(q.sub||'')+'</div>'+
+          '<div class="quiz-foot">'+foot+'</div>'+
+        '</div></'+tag+'>';
+    });
+    grid.innerHTML=html;
+    var done=Object.keys(data.attempts).length;
+    var prog=document.getElementById('quiz-progress');
+    if(prog) prog.textContent=done+' av '+rows.length+' fullført';
+  }
+
+  function renderLeaderboard(){
+    var body=document.getElementById('lb-body'), title=document.getElementById('lb-scope-title');
+    if(!body) return;
+    var rows = data.scope==='liga' ? data.liga : data.global;
+    if(title) title.textContent = data.scope==='liga' ? ('Din liga · '+(data.league?data.league.name:'—')) : 'Alle som er med';
+    if(data.scope==='liga' && !data.league){
+      body.innerHTML='<tr><td colspan="3" style="color:var(--ink-mute);padding:14px 10px;font-size:14px">Du er ikke i en liga ennå — opprett eller bli med under.</td></tr>'; return;
+    }
+    if(!rows.length){
+      body.innerHTML='<tr><td colspan="3" style="color:var(--ink-mute);padding:14px 10px;font-size:14px">Ingen har spilt ennå — bli den første!</td></tr>'; return;
+    }
+    var mid=myId(), h='';
+    rows.forEach(function(r,i){
+      var me=mid&&r.user_id===mid;
+      h+='<tr class="'+(me?'me':'')+'"><td class="rank">'+(i+1)+'</td><td>'+esc(r.display_name||'Anonym')+(me?' <span style="color:var(--ink-mute)">(deg)</span>':'')+'</td><td class="sc">'+(r.total_score||0)+'</td></tr>';
+    });
+    body.innerHTML=h;
+  }
+
+  async function loadPool(sb){
+    try{
+      var r=await sb.from('event_quizzes').select('slug,num,phase,title,sub,status,unlock_at,hero_img').eq('event_id',EVENT_ID).eq('published',true).order('sort',{ascending:true});
+      data.quizzes=r.data||[];
+    }catch(e){ data.quizzes=[]; }
+    data.attempts={};
+    if(loggedIn()){
+      try{
+        var a=await sb.from('event_attempts').select('quiz_slug,score,total').eq('event_id',EVENT_ID);
+        (a.data||[]).forEach(function(x){ data.attempts[x.quiz_slug]={score:x.score,total:x.total}; });
+      }catch(e){}
+    }
+    renderGrid();
+  }
+
+  async function loadGlobal(sb){
+    try{
+      var r=await sb.from('event_user_scores').select('user_id,display_name,total_score').eq('event_id',EVENT_ID).order('total_score',{ascending:false}).limit(20);
+      data.global=r.data||[];
+    }catch(e){ data.global=[]; }
+  }
+
+  async function loadLeague(sb){
+    data.league=null; data.liga=[];
+    if(!loggedIn()) return;
+    try{
+      var m=await sb.from('league_members').select('league_id').limit(1);
+      var lid=m.data&&m.data[0]&&m.data[0].league_id;
+      if(!lid) return;
+      var l=await sb.from('leagues').select('id,name,code').eq('id',lid).maybeSingle();
+      if(l.data) data.league=l.data;
+      var s=await sb.from('league_standings').select('user_id,display_name,total_score').eq('league_id',lid).order('total_score',{ascending:false});
+      data.liga=s.data||[];
+    }catch(e){}
+  }
+
+  async function loadStanding(sb){
+    var gEl=document.getElementById('global-standing');
+    var lLabel=document.getElementById('liga-label'), lStand=document.getElementById('liga-standing');
+    var lChip=document.getElementById('liga-code-chip'), lCode=document.getElementById('liga-code');
+    if(!loggedIn()){
+      if(gEl) gEl.textContent='—';
+      if(lStand) lStand.textContent='Logg inn for å konkurrere';
+      if(lChip) lChip.style.display='none';
+      return;
+    }
+    var mid=myId();
+    try{
+      var mine=data.global.filter(function(r){return r.user_id===mid;})[0];
+      var meScore = mine ? mine.total_score : 0;
+      if(!mine){
+        var s=await sb.from('event_user_scores').select('total_score').eq('event_id',EVENT_ID).eq('user_id',mid).maybeSingle();
+        meScore = s.data ? s.data.total_score : 0;
+      }
+      var tot=await sb.from('event_user_scores').select('user_id',{count:'exact',head:true}).eq('event_id',EVENT_ID);
+      var totalN=tot.count||0;
+      if(meScore>0){
+        var hi=await sb.from('event_user_scores').select('user_id',{count:'exact',head:true}).eq('event_id',EVENT_ID).gt('total_score',meScore);
+        if(gEl) gEl.innerHTML='#'+((hi.count||0)+1)+' <span style="color:var(--ink-mute);font-weight:400">/ '+totalN+'</span>';
+      } else if(gEl) gEl.textContent='Ikke rangert ennå';
+    }catch(e){ if(gEl) gEl.textContent='—'; }
+    if(data.league){
+      if(lLabel) lLabel.textContent='Din liga · '+data.league.name;
+      var pos=-1; data.liga.forEach(function(r,i){ if(r.user_id===mid) pos=i+1; });
+      if(lStand) lStand.textContent = pos>0 ? ('Du ligger '+pos+'. av '+data.liga.length) : ('Med i ligaen ('+data.liga.length+' spillere)');
+      if(lChip&&lCode){ lCode.textContent=data.league.code; lChip.style.display=''; }
+    } else {
+      if(lLabel) lLabel.textContent='Din liga';
+      if(lStand) lStand.textContent='Du er ikke i en liga ennå';
+      if(lChip) lChip.style.display='none';
+    }
+  }
+
+  function wireTabs(){
+    var tabs=document.querySelectorAll('.lb-tab');
+    tabs.forEach(function(t){
+      t.addEventListener('click', function(){
+        tabs.forEach(function(x){x.classList.remove('active');});
+        t.classList.add('active');
+        data.scope=t.getAttribute('data-scope');
+        renderLeaderboard();
+      });
+    });
+  }
+  function setDefaultScope(){
+    data.scope = data.league ? 'liga' : 'global';
+    document.querySelectorAll('.lb-tab').forEach(function(t){
+      t.classList.toggle('active', t.getAttribute('data-scope')===data.scope);
+    });
+  }
+
+  function wireInvite(){
+    var msg=document.getElementById('liga-msg');
+    function say(t,err){ if(msg){ msg.textContent=t; msg.style.color=err?'#B05238':'var(--ink-soft)'; } }
+    async function post(path,bodyObj){
+      var token=null; try{ token=await window.CQAuth.getAccessToken(); }catch(e){}
+      var res=await fetch('/api/'+path,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(bodyObj)});
+      var d=await res.json().catch(function(){return {};});
+      if(!res.ok) throw new Error(d.error||('HTTP '+res.status));
+      return d;
+    }
+    var createBtn=document.getElementById('liga-create-btn');
+    var joinBtn=document.getElementById('liga-join-btn');
+    var joinInput=document.getElementById('liga-join-input');
+    if(createBtn) createBtn.addEventListener('click', async function(){
+      if(!loggedIn()){ try{window.CQAuth.signIn();}catch(e){} return; }
+      var name=(window.prompt('Hva skal ligaen hete?','')||'').trim();
+      if(!name) return;
+      say('Oppretter …');
+      try{ var d=await post('league-create',{event_id:EVENT_ID,name:name}); say('Liga opprettet! Del koden '+d.code+' med vennene dine.'); await refresh(); }
+      catch(e){ say(e.message||'Kunne ikke opprette liga.',true); }
+    });
+    if(joinBtn) joinBtn.addEventListener('click', async function(){
+      if(!loggedIn()){ try{window.CQAuth.signIn();}catch(e){} return; }
+      var code=((joinInput&&joinInput.value)||'').trim();
+      if(!code){ say('Skriv inn en ligakode.',true); return; }
+      say('Blir med …');
+      try{ var d=await post('league-join',{code:code}); say(d.already?('Du er allerede med i '+d.name+'.'):('Du er med i '+d.name+'!')); if(joinInput) joinInput.value=''; await refresh(); }
+      catch(e){ say(e.message||'Kunne ikke bli med.',true); }
+    });
+  }
+
+  var sbRef=null;
+  async function refresh(){
+    var sb=sbRef||(sbRef=await getClient());
+    if(!sb){ renderGrid(); return; }
+    await loadPool(sb);
+    await loadGlobal(sb);
+    await loadLeague(sb);
+    setDefaultScope();
+    renderLeaderboard();
+    await loadStanding(sb);
+  }
+
+  (function kickoff(){
+    var el=document.getElementById('kickoff'); if(!el) return;
+    var start=new Date('2026-06-11T18:00:00+02:00').getTime();
+    var diff=start-Date.now();
+    if(diff<=0){ el.textContent='· VM er i gang'; return; }
+    var d=Math.ceil(diff/86400000);
+    el.textContent='· '+d+(d===1?' dag til avspark':' dager til avspark');
+  })();
+
+  wireTabs();
+  wireInvite();
+  refresh();
+  document.addEventListener('cq-auth', function(){ refresh(); });
 })();
 </script>
 <script src="supabase-config.js"></script>
