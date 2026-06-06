@@ -144,6 +144,15 @@
   .invite { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
   .invite input { flex:1; min-width:160px; padding:11px 16px; border:.5px solid var(--rule-strong); border-radius:var(--r-pill); font-family:var(--font-mono); font-size:13px; letter-spacing:.05em; background:var(--bg); color:var(--ink); }
   .invite input:focus { outline:none; border-color:var(--accent); }
+  /* Liga opprettet — tydelig kode + kopier */
+  .liga-success { margin-top:16px; background:var(--bg); border:1px solid var(--event); border-radius:var(--r-card); padding:20px 22px; }
+  .liga-success .ls-label { font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute); }
+  .liga-success .ls-name { font-family:var(--font-display); font-size:20px; font-weight:500; color:var(--ink); margin:2px 0 12px; }
+  .liga-code-big { font-family:var(--font-mono); font-size:30px; font-weight:500; letter-spacing:.1em; color:var(--event-deep); background:var(--event-soft); border-radius:var(--r-md); padding:12px 20px; display:inline-block; user-select:all; }
+  .ls-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:14px; }
+  .ls-copy { display:inline-flex; align-items:center; gap:8px; padding:11px 20px; background:var(--event); color:var(--event-deep); border:none; border-radius:var(--r-pill); font-family:var(--font-sans); font-size:13px; font-weight:600; cursor:pointer; transition:filter 160ms ease; }
+  .ls-copy:hover { filter:brightness(0.95); }
+  .liga-success .ls-hint { font-size:13px; color:var(--ink-soft); margin-top:12px; line-height:1.5; }
 
   /* How it works */
   .three-up { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin:48px 0 64px; padding:32px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
@@ -269,10 +278,14 @@
     <div style="font-family:var(--font-display);font-size:20px;font-weight:500;margin-bottom:6px">Inviter <span style="font-style:italic;color:var(--event)">gjengen</span></div>
     <p style="font-size:14px;color:var(--ink-soft);line-height:1.5;max-width:460px">Lag en privat liga, del koden, og se hvem som faktisk kan fotball. Eller bli med i en eksisterende liga med en kode du har fått.</p>
     <div class="invite">
+      <input type="text" id="liga-name-input" placeholder="Navn på ligaen din, f.eks. «Kontoret»" aria-label="Liganavn">
       <button class="btn" id="liga-create-btn">Opprett liga <span class="btn-arrow">→</span></button>
-      <input type="text" id="liga-join-input" placeholder="Skriv ligakode, f.eks. VM-K9X4" aria-label="Ligakode">
+    </div>
+    <div class="invite" style="margin-top:10px">
+      <input type="text" id="liga-join-input" placeholder="Har du fått en kode? F.eks. VM-K9X4" aria-label="Ligakode">
       <button class="btn btn-ghost" id="liga-join-btn">Bli med</button>
     </div>
+    <div id="liga-result" aria-live="polite"></div>
     <div id="liga-msg" style="font-size:13px;color:var(--ink-soft);margin-top:12px;min-height:18px"></div>
   </section>
 
@@ -470,7 +483,8 @@
 
   function wireInvite(){
     var msg=document.getElementById('liga-msg');
-    function say(t,err){ if(msg){ msg.textContent=t; msg.style.color=err?'#B05238':'var(--ink-soft)'; } }
+    var result=document.getElementById('liga-result');
+    function say(t,err){ if(msg){ msg.textContent=t||''; msg.style.color=err?'#B05238':'var(--ink-soft)'; } }
     async function post(path,bodyObj){
       var token=null; try{ token=await window.CQAuth.getAccessToken(); }catch(e){}
       var res=await fetch('/api/'+path,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(bodyObj)});
@@ -478,25 +492,68 @@
       if(!res.ok) throw new Error(d.error||('HTTP '+res.status));
       return d;
     }
+    var nameInput=document.getElementById('liga-name-input');
     var createBtn=document.getElementById('liga-create-btn');
     var joinBtn=document.getElementById('liga-join-btn');
     var joinInput=document.getElementById('liga-join-input');
+
+    function showCreated(name, code){
+      if(!result) return;
+      result.innerHTML =
+        '<div class="liga-success">'+
+          '<div class="ls-label">Ligaen er opprettet</div>'+
+          '<div class="ls-name">'+esc(name)+'</div>'+
+          '<div class="liga-code-big" id="ls-code">'+esc(code)+'</div>'+
+          '<div class="ls-row"><button class="ls-copy" id="ls-copy" type="button">Kopier invitasjon</button></div>'+
+          '<p class="ls-hint">Del koden <strong>'+esc(code)+'</strong> med vennene dine — de skriver den inn under «Bli med», så havner dere på samme ledertavle.</p>'+
+        '</div>';
+      var btn=document.getElementById('ls-copy');
+      if(btn) btn.addEventListener('click', function(){
+        var txt='Bli med i VM-quizen min på CustomQuiz! Liga-kode: '+code+' → https://customquiz.no/vm.html';
+        function done(){ btn.textContent='Kopiert ✓'; setTimeout(function(){ btn.textContent='Kopier invitasjon'; },1800); }
+        if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,done); }
+        else { try{ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done(); }catch(e){} }
+      });
+    }
+    function showJoined(name){
+      if(!result) return;
+      result.innerHTML =
+        '<div class="liga-success">'+
+          '<div class="ls-label">Du er med</div>'+
+          '<div class="ls-name">'+esc(name)+'</div>'+
+          '<p class="ls-hint">Du konkurrerer nå i denne ligaen. Ta quizene over for å klatre på ledertavla.</p>'+
+        '</div>';
+    }
+
     if(createBtn) createBtn.addEventListener('click', async function(){
       if(!loggedIn()){ try{window.CQAuth.signIn();}catch(e){} return; }
-      var name=(window.prompt('Hva skal ligaen hete?','')||'').trim();
-      if(!name) return;
-      say('Oppretter …');
-      try{ var d=await post('league-create',{event_id:EVENT_ID,name:name}); say('Liga opprettet! Del koden '+d.code+' med vennene dine.'); await refresh(); }
-      catch(e){ say(e.message||'Kunne ikke opprette liga.',true); }
+      var name=((nameInput&&nameInput.value)||'').trim();
+      if(!name){ say('Gi ligaen et navn først.',true); if(nameInput) nameInput.focus(); return; }
+      createBtn.disabled=true; say('Oppretter …');
+      try{
+        var d=await post('league-create',{event_id:EVENT_ID,name:name});
+        say(''); if(nameInput) nameInput.value='';
+        showCreated(d.name||name, d.code);
+        await refresh();
+      } catch(e){ say(e.message||'Kunne ikke opprette liga.',true); }
+      finally { createBtn.disabled=false; }
     });
+    if(nameInput) nameInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); createBtn&&createBtn.click(); } });
+
     if(joinBtn) joinBtn.addEventListener('click', async function(){
       if(!loggedIn()){ try{window.CQAuth.signIn();}catch(e){} return; }
       var code=((joinInput&&joinInput.value)||'').trim();
-      if(!code){ say('Skriv inn en ligakode.',true); return; }
-      say('Blir med …');
-      try{ var d=await post('league-join',{code:code}); say(d.already?('Du er allerede med i '+d.name+'.'):('Du er med i '+d.name+'!')); if(joinInput) joinInput.value=''; await refresh(); }
-      catch(e){ say(e.message||'Kunne ikke bli med.',true); }
+      if(!code){ say('Skriv inn en ligakode.',true); if(joinInput) joinInput.focus(); return; }
+      joinBtn.disabled=true; say('Blir med …');
+      try{
+        var d=await post('league-join',{code:code});
+        say(''); if(joinInput) joinInput.value='';
+        showJoined(d.name);
+        await refresh();
+      } catch(e){ say(e.message||'Kunne ikke bli med.',true); }
+      finally { joinBtn.disabled=false; }
     });
+    if(joinInput) joinInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); joinBtn&&joinBtn.click(); } });
   }
 
   var sbRef=null;
