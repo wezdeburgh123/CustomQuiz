@@ -10,7 +10,7 @@
  * Env: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
  */
 const { supa } = require("./_supabase");
-const { reply, userFromToken, makeCode } = require("./_events");
+const { reply, userFromToken, makeCode, recordOptIn } = require("./_events");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return reply(405, { error: "Bruk POST." });
@@ -49,6 +49,9 @@ exports.handler = async (event) => {
   // Legg eieren inn som medlem (ignorér hvis allerede der).
   await db.from("league_members")
     .upsert({ league_id: league.id, user_id: user.id }, { onConflict: "league_id,user_id" });
+
+  // Myk opt-in: informert i UI → samtykke + Brevo-kontakt for senere e-post.
+  await recordOptIn(user, "vm-liga-opprettet", { code: league.code });
 
   return reply(200, { league_id: league.id, code: league.code, name: league.name, event_id: league.event_id });
 };

@@ -57,4 +57,38 @@ async function sendTemplate(templateId, toEmail, params) {
   }
 }
 
-module.exports = { sendTemplate, welcomeTemplateId, receiptTemplateId, formatDateNb };
+/**
+ * Oppretter/oppdaterer en kontakt i Brevo (Contacts API) og legger den ev. i
+ * en liste. Brukes for myk opt-in (VM-ligaer → e-post senere/reaktivering).
+ * Brevo håndterer avmelding/unsubscribe for lista. Kaster aldri.
+ */
+async function upsertContact(email, attributes, listIds) {
+  const key = process.env.BREVO_API_KEY;
+  if (!key || !email) return false;
+  const url = "https://api.brevo.com/v3/contacts";
+  const headers = { "api-key": key, "Content-Type": "application/json", accept: "application/json" };
+  async function send(body) {
+    const res = await fetch(url, { method: "POST", headers: headers, body: JSON.stringify(body) });
+    return res.ok || res.status === 204; // 201 opprettet, 204 oppdatert
+  }
+  try {
+    const full = { email: email, attributes: attributes || {}, updateEnabled: true };
+    if (listIds && listIds.length) full.listIds = listIds;
+    if (await send(full)) return true;
+    // Fallback: hvis egendefinerte attributter ikke finnes i Brevo ennå (400),
+    // legg kontakten i lista uten attributter — kontakten skal aldri gå tapt.
+    const minimal = { email: email, updateEnabled: true };
+    if (listIds && listIds.length) minimal.listIds = listIds;
+    return await send(minimal);
+  } catch (_) {
+    return false;
+  }
+}
+
+// Brevo-liste-ID for VM-kontakter (sett BREVO_VM_LIST_ID i Netlify-env).
+function vmListIds() {
+  const id = Number(process.env.BREVO_VM_LIST_ID || 0);
+  return id ? [id] : [];
+}
+
+module.exports = { sendTemplate, welcomeTemplateId, receiptTemplateId, formatDateNb, upsertContact, vmListIds };

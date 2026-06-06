@@ -10,7 +10,7 @@
  * Env: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
  */
 const { supa } = require("./_supabase");
-const { reply, userFromToken } = require("./_events");
+const { reply, userFromToken, recordOptIn } = require("./_events");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return reply(405, { error: "Bruk POST." });
@@ -42,6 +42,7 @@ exports.handler = async (event) => {
     .eq("user_id", user.id)
     .maybeSingle();
   if (existing) {
+    await recordOptIn(user, "vm-liga-join", { code: code });
     return reply(200, { league_id: league.id, name: league.name, event_id: league.event_id, already: true });
   }
 
@@ -51,6 +52,9 @@ exports.handler = async (event) => {
   if (insErr && !/duplicate|unique/i.test(insErr.message || "")) {
     return reply(503, { error: "Kunne ikke melde deg inn akkurat nå. Prøv igjen." });
   }
+
+  // Myk opt-in: informert i UI → samtykke + Brevo-kontakt for senere e-post.
+  await recordOptIn(user, "vm-liga-join", { code: code });
 
   return reply(200, { league_id: league.id, name: league.name, event_id: league.event_id });
 };

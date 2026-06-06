@@ -4,6 +4,8 @@
  * genererer ligakoder. Skriving skjer med service_role via _supabase.
  */
 const { createClient } = require("@supabase/supabase-js");
+const { supa } = require("./_supabase");
+const { upsertContact, vmListIds } = require("./_brevo");
 
 const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8" };
 const reply = (code, obj) => ({ statusCode: code, headers: JSON_HEADERS, body: JSON.stringify(obj) });
@@ -34,4 +36,31 @@ function makeCode(eventId) {
   return `${prefix}-${s}`;
 }
 
-module.exports = { reply, userFromToken, makeCode };
+/**
+ * Myk opt-in: registrer at brukeren (via liga-deltakelse) er informert om og
+ * åpen for e-post om VM/nye quizer, og synk kontakten til Brevo-lista «VM 2026».
+ * Service-varsler er transaksjonelle og omfattes ikke. Kaster aldri — opt-in
+ * skal aldri velte selve liga-handlingen.
+ */
+async function recordOptIn(user, source, extra) {
+  if (!user || !user.id) return;
+  // 1) Sporbart samtykke i profiles (service_role omgår RLS).
+  try {
+    await supa().from("profiles").upsert(
+      { id: user.id, marketing_opt_in: true, opt_in_at: new Date().toISOString(), opt_in_source: source || "vm-liga" },
+      { onConflict: "id" }
+    );
+  } catch (_) { /* stille */ }
+  // 2) Brevo-kontakt + liste (for senere utsending/reaktivering).
+  try {
+    if (user.email) {
+      await upsertContact(user.email, {
+        KILDE: source || "vm-liga",
+        VM_LIGA: (extra && extra.code) || "",
+        OPT_IN_DATO: new Date().toISOString().slice(0, 10),
+      }, vmListIds());
+    }
+  } catch (_) { /* stille */ }
+}
+
+module.exports = { reply, userFromToken, makeCode, recordOptIn };
