@@ -42,7 +42,7 @@ exports.handler = async (event) => {
     .eq("user_id", user.id)
     .maybeSingle();
   if (existing) {
-    await recordOptIn(user, "vm-liga-join", { code: code });
+    await recordOptIn(user, "vm-liga-join", { code: code, name: league.name });
     return reply(200, { league_id: league.id, name: league.name, event_id: league.event_id, already: true });
   }
 

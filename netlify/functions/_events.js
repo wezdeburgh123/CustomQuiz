@@ -5,7 +5,7 @@
  */
 const { createClient } = require("@supabase/supabase-js");
 const { supa } = require("./_supabase");
-const { upsertContact, vmListIds } = require("./_brevo");
+const { upsertContact, vmListIds, sendTemplate } = require("./_brevo");
 
 const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8" };
 const reply = (code, obj) => ({ statusCode: code, headers: JSON_HEADERS, body: JSON.stringify(obj) });
@@ -44,6 +44,12 @@ function makeCode(eventId) {
  */
 async function recordOptIn(user, source, extra) {
   if (!user || !user.id) return;
+  // Var brukeren allerede påmeldt? Avgjør om velkomstmail skal sendes.
+  let wasOptedIn = false;
+  try {
+    const { data: prev } = await supa().from("profiles").select("marketing_opt_in").eq("id", user.id).maybeSingle();
+    wasOptedIn = !!(prev && prev.marketing_opt_in);
+  } catch (_) {}
   // 1) Sporbart samtykke i profiles (service_role omgår RLS).
   try {
     await supa().from("profiles").upsert(
@@ -61,6 +67,16 @@ async function recordOptIn(user, source, extra) {
       }, vmListIds());
     }
   } catch (_) { /* stille */ }
+  // 3) Velkomstmail KUN ved første opt-in (ikke ved hver join). Gated på env-mal-ID.
+  if (!wasOptedIn && user.email) {
+    try {
+      const tid = Number(process.env.BREVO_VM_WELCOME_TEMPLATE_ID || 0);
+      if (tid) {
+        const site = (process.env.SITE_URL || "https://customquiz.no").replace(/\/$/, "");
+        await sendTemplate(tid, user.email, { vm_url: site + "/vm.html", liga_navn: (extra && extra.name) || "" });
+      }
+    } catch (_) { /* stille */ }
+  }
 }
 
 module.exports = { reply, userFromToken, makeCode, recordOptIn };

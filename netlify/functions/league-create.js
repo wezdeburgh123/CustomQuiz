@@ -51,7 +51,7 @@ exports.handler = async (event) => {
     .upsert({ league_id: league.id, user_id: user.id }, { onConflict: "league_id,user_id" });
 
   // Myk opt-in: informert i UI → samtykke + Brevo-kontakt for senere e-post.
-  await recordOptIn(user, "vm-liga-opprettet", { code: league.code });
+  await recordOptIn(user, "vm-liga-opprettet", { code: league.code, name: league.name });
 
   return reply(200, { league_id: league.id, code: league.code, name: league.name, event_id: league.event_id });
 };
