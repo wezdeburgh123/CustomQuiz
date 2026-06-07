@@ -4,6 +4,14 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+  # Synk arkivet ved HVER deploy: leser den nypushede quiz-library/library.ndjson
+  # og upserter til Supabase quiz_library (idempotent på slug). Netlify kjører
+  # `npm install` automatisk først (package.json finnes), så @supabase/supabase-js
+  # er tilgjengelig. `|| echo` gjør steget IKKE-BLOKKERENDE — en synk-feil skal
+  # aldri velte selve site-deployen. Den planlagte 04:30-synken står igjen som
+  # sikkerhetsnett. NB: SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY må være
+  # tilgjengelige for "Builds" (ikke bare "Functions") i Netlify-env.
+  command = "node scripts/sync-library.mjs || echo 'library-sync hoppet over (ikke-blokkerende)'"
 
 # Funksjonene kjører på Node 18+ (global fetch tilgjengelig, ingen avhengigheter).
 [functions]
