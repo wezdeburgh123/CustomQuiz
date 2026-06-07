@@ -589,6 +589,26 @@
     font-variation-settings: "opsz" 72;
     text-shadow: 0 1px 12px rgba(20,16,10,0.35);
   }
+  /* Klubb-crest som banner: kvadratisk merke med lagfarge bakt inn → vis hele
+     merket sentrert på krem, ingen spot-overlay. Tittel-overlegget bytter til
+     lys krem-gradient + mørk blekktekst (banneret er nå krem, ikke mørkt bilde). */
+  .quiz-banner.is-crest { position: relative; background: var(--bg); }
+  .quiz-banner.is-crest img {
+    object-fit: contain;
+    padding: 16px 16px 62px;
+  }
+  .quiz-banner.is-crest .quiz-banner-overlay {
+    background: linear-gradient(to top,
+      rgba(245,240,230,0.96) 6%,
+      rgba(245,240,230,0.80) 36%,
+      rgba(245,240,230,0) 100%);
+  }
+  .quiz-banner.is-crest .quiz-banner-cat { color: var(--ink-mute); }
+  .quiz-banner.is-crest .quiz-banner-title { color: var(--ink); text-shadow: none; }
+  .quiz-banner.is-crest .quiz-banner-diff {
+    color: var(--ink);
+    border-color: rgba(31,26,20,0.3);
+  }
 
   .progress-row {
     display: flex;
@@ -2277,6 +2297,44 @@
     musikk: 'saffron', sport: 'saffron', filosofi: 'plum', teknologi: 'cobalt'
   };
 
+  // Klubblag → crest (IMG/crest-*.jpg). Holdes i synk med index.html/arkiv.html.
+  // Cresten har lagets farge bakt inn → ingen spot-overlay på banneret.
+  const TEAM_TO_CREST = {
+    'Arsenal': 'crest-arsenal', 'Chelsea': 'crest-chelsea', 'Everton': 'crest-everton',
+    'Leeds United': 'crest-leeds', 'Liverpool': 'crest-liverpool',
+    'Manchester City': 'crest-man-city', 'Manchester United': 'crest-man-united',
+    'Newcastle United': 'crest-newcastle', 'Tottenham': 'crest-tottenham',
+    'Bodø/Glimt': 'crest-bodo-glimt', 'Brann': 'crest-brann', 'Lillestrøm': 'crest-lillestrom',
+    'Molde': 'crest-molde', 'Rosenborg': 'crest-rosenborg', 'Viking': 'crest-viking',
+    'Vålerenga': 'crest-valerenga'
+  };
+  // Kun faktisk opplastede crest-filer brukes; resten faller tilbake til kategoribildet.
+  const AVAILABLE_CRESTS = {
+    'crest-arsenal':1, 'crest-chelsea':1, 'crest-everton':1, 'crest-leeds':1, 'crest-liverpool':1,
+    'crest-man-city':1, 'crest-man-united':1, 'crest-newcastle':1, 'crest-tottenham':1,
+    'crest-bodo-glimt':1, 'crest-brann':1
+  };
+  function crestFor(q) {
+    if (!q || q.category !== 'fotball' || !q.team) return null;
+    const slug = TEAM_TO_CREST[String(q.team).trim()];
+    return (slug && AVAILABLE_CRESTS[slug]) ? slug : null;
+  }
+  // Sett banner-bildet: klubb-crest (uten spot-overlay) hvis tilgjengelig, ellers kategoribilde.
+  function applyBannerImage(banner, img, q) {
+    const crest = crestFor(q);
+    if (crest) {
+      img.src = 'IMG/' + crest + '.jpg';
+      banner.removeAttribute('data-spot');
+      banner.classList.add('is-crest');
+    } else {
+      img.src = 'IMG/' + (q.hero_img || LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
+      banner.classList.remove('is-crest');
+      banner.setAttribute('data-spot', LIB_CAT_SPOT[q.category] || 'teal');
+    }
+    img.alt = q.title || 'Quiz';
+    banner.classList.add('active');
+  }
+
   // Tell ett spill på en arkiv-quiz (fire-and-forget, kun én gang per slug per
   // sidelast). Datagrunnlag for forsidas populær-utvalg. Feil ignoreres stille.
   const _playedSlugs = new Set();
@@ -2302,12 +2360,7 @@
     state.currentIndex = 0; state.selectedOption = null; state.userAnswers = [];
     const banner = document.getElementById('quiz-banner');
     const img = document.getElementById('quiz-banner-img');
-    if (banner && img) {
-      img.src = 'IMG/' + (q.hero_img || LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
-      img.alt = q.title || 'Quiz';
-      banner.setAttribute('data-spot', LIB_CAT_SPOT[q.category] || 'teal');
-      banner.classList.add('active');
-    }
+    if (banner && img) applyBannerImage(banner, img, q);
     setBannerText(q.category_label || '', q.title || '');
     setBannerDifficulty(q.difficulty);
     const demo = document.getElementById('demo-notice');
@@ -2473,12 +2526,7 @@
 
       const banner = document.getElementById('quiz-banner');
       const img = document.getElementById('quiz-banner-img');
-      if (banner && img) {
-        img.src = 'IMG/' + (LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
-        img.alt = q.title || 'Quiz';
-        banner.setAttribute('data-spot', LIB_CAT_SPOT[q.category] || 'teal');
-        banner.classList.add('active');
-      }
+      if (banner && img) applyBannerImage(banner, img, q);
       setBannerText(q.categoryLabel || '', q.title || '');
       setBannerDifficulty(q.difficulty);
       const demo = document.getElementById('demo-notice');
