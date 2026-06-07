@@ -65,6 +65,8 @@
   .name-edit { display:flex; gap:10px; margin-top:4px; }
   .name-edit input { flex:1; min-width:0; padding:12px 14px; border:1px solid var(--rule-strong); border-radius:var(--r-md); font-family:var(--font-sans); font-size:15px; background:var(--bg); color:var(--ink); }
   .name-edit input:focus { outline:none; border-color:var(--accent); }
+  .name-edit select { flex:1; min-width:0; padding:12px 14px; border:1px solid var(--rule-strong); border-radius:var(--r-md); font-family:var(--font-sans); font-size:15px; background:var(--bg); color:var(--ink); }
+  .name-edit select:focus { outline:none; border-color:var(--accent); }
   @media (max-width:600px){ h1{font-size:32px;} .stat .n{font-size:24px;} }
 </style>
 </head>
@@ -127,6 +129,30 @@
         <button class="btn" type="button" id="name-save">Lagre</button>
       </div>
       <div class="muted" id="name-msg" style="margin-top:8px;">Navnet vises på ledertavlene i stedet for «Anonym».</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Fast tema for dagens quiz</div>
+      <div class="name-edit">
+        <select id="cat-input" aria-label="Fast tema for dagens quiz">
+          <option value="">Ingen — følg dagens tema</option>
+          <option value="mix">Blandet</option>
+          <option value="historie">Norsk historie</option>
+          <option value="verdenshistorie">Verdenshistorie</option>
+          <option value="vitenskap">Naturvitenskap</option>
+          <option value="geografi">Geografi</option>
+          <option value="litteratur">Litteratur</option>
+          <option value="kunst">Kunst</option>
+          <option value="film">Film og TV</option>
+          <option value="musikk">Musikk</option>
+          <option value="sport">Sport</option>
+          <option value="fotball">Fotball</option>
+          <option value="filosofi">Filosofi</option>
+          <option value="teknologi">Teknologi</option>
+        </select>
+        <button class="btn" type="button" id="cat-save">Lagre</button>
+      </div>
+      <div class="muted" id="cat-msg" style="margin-top:8px;">Forhåndsvelges når du åpner Dagens quiz. «Ingen» følger det rullerende ukedagstemaet.</div>
     </div>
 
     <div class="actions">
@@ -228,10 +254,11 @@
     try { var u = await sb.auth.getUser(); uid = u && u.data && u.data.user && u.data.user.id; } catch (e) {}
     if (!uid) return;
 
-    // Visningsnavn
+    // Visningsnavn + fast dagens-tema
     try {
-      var p = await sb.from("profiles").select("display_name").eq("id", uid).maybeSingle();
+      var p = await sb.from("profiles").select("*").eq("id", uid).maybeSingle();
       if (p.data && p.data.display_name) $("name-input").value = p.data.display_name;
+      if (p.data && p.data.daily_category) $("cat-input").value = p.data.daily_category;
     } catch (e) {}
 
     // Aktivitet: dagens-quiz (quiz_attempt) + VM (event_attempts)
@@ -306,6 +333,25 @@
     }
   }
 
+  async function saveCategory() {
+    var btn = $("cat-save"), msg = $("cat-msg");
+    var sb = window.CQAuth.getClient && window.CQAuth.getClient();
+    if (!sb) return;
+    var cat = $("cat-input").value || null; // tom = ingen preferanse
+    btn.disabled = true; var old = btn.textContent; btn.textContent = "Lagrer …";
+    try {
+      var u = await sb.auth.getUser(); var uid = u.data.user.id;
+      var r = await sb.from("profiles").upsert({ id: uid, daily_category: cat, updated_at: new Date().toISOString() });
+      if (r.error) throw r.error;
+      var label = $("cat-input").options[$("cat-input").selectedIndex].text;
+      msg.textContent = cat ? ("Lagret — «" + label + "» forhåndsvelges på Dagens quiz.") : "Lagret — du følger nå dagens rullerende tema.";
+    } catch (e) {
+      msg.textContent = "Kunne ikke lagre temaet akkurat nå.";
+    } finally {
+      btn.disabled = false; btn.textContent = old;
+    }
+  }
+
   function update(user) {
     if (!window.CQAuth.isConfigured()) { show("view-unconfigured"); return; }
     if (user) {
@@ -322,6 +368,7 @@
     $("login-btn").addEventListener("click", () => window.CQAuth.signIn());
     $("logout-btn").addEventListener("click", () => window.CQAuth.signOut());
     $("name-save").addEventListener("click", saveName);
+    $("cat-save").addEventListener("click", saveCategory);
     // Vent på at auth.js har avgjort status.
     window.CQAuth.onChange(update);
     // Førstegangs-tegning i tilfelle ingen endring trigges.

@@ -971,92 +971,82 @@
     </div>
   </section>
 
-  <!-- QUIZ ARCHIVE -->
+  <!-- QUIZ ARCHIVE — dynamisk utvalg fra basen. Statiske kort under er fallback
+       hvis /api/featured er tom/feiler; JS erstatter dem ved treff. -->
   <div class="section-label">
-    <span>Arkivet · mest spilt</span>
-    <span class="section-meta">Seks utgaver · ratings fra leserne</span>
+    <span>Et utvalg fra <em>arkivet</em></span>
+    <span class="section-meta">Allmenn, sport og fotball — og en rotasjon på tvers</span>
   </div>
-  <section class="quiz-grid">
+  <section class="quiz-grid" id="featured-grid">
 
     <a class="quiz-card featured" href="quiz-v2.html">
       <div class="quiz-image" data-spot="teal"><img src="IMG/kategori-mix.jpg" alt=""></div>
       <div class="quiz-body">
-        <div class="quiz-num">№ 01 · Blandet</div>
+        <div class="quiz-num">Blandet</div>
         <div class="quiz-title">Hva <em>vet</em> du, egentlig?</div>
         <div class="quiz-sub">Ti spørsmål på tvers av historie, naturvitenskap, litteratur, geografi og kultur. Medium til vanskelig.</div>
-        <div class="quiz-rating">
-          <span class="quiz-stars">4.6 ★</span>
-          <span class="quiz-plays">1 248 spilt</span>
-        </div>
+        <div class="quiz-rating"><span class="quiz-plays">1 248 spilt</span></div>
       </div>
     </a>
 
     <a class="quiz-card" href="quiz-2-v2.html">
       <div class="quiz-image" data-spot="teal"><img src="IMG/kategori-mix.jpg" alt=""></div>
       <div class="quiz-body">
-        <div class="quiz-num">№ 02 · Blandet</div>
+        <div class="quiz-num">Blandet</div>
         <div class="quiz-title">Tilbake for <em>mer</em>?</div>
         <div class="quiz-sub">Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.</div>
-        <div class="quiz-rating">
-          <span class="quiz-stars">4.4 ★</span>
-          <span class="quiz-plays">892 spilt</span>
-        </div>
+        <div class="quiz-rating"><span class="quiz-plays">892 spilt</span></div>
       </div>
     </a>
 
     <a class="quiz-card" href="oslo-quiz-v2.html">
       <div class="quiz-image" data-spot="moss"><img src="IMG/kategori-geografi.jpg" alt=""></div>
       <div class="quiz-body">
-        <div class="quiz-num">№ 03 · Oslo</div>
+        <div class="quiz-num">Oslo</div>
         <div class="quiz-title">Hvor godt kjenner du <em>Oslo</em>?</div>
         <div class="quiz-sub">Fra Håkon V til Snøhetta, fra Akerselva til Bjørvika.</div>
-        <div class="quiz-rating">
-          <span class="quiz-stars">4.7 ★</span>
-          <span class="quiz-plays">1 067 spilt</span>
-        </div>
+        <div class="quiz-rating"><span class="quiz-plays">1 067 spilt</span></div>
       </div>
     </a>
 
     <a class="quiz-card featured" href="oslo-quiz-puber-v2.html">
       <div class="quiz-image" data-spot="moss"><img src="IMG/kategori-geografi.jpg" alt=""></div>
       <div class="quiz-body">
-        <div class="quiz-num">№ 04 · Oslo</div>
+        <div class="quiz-num">Oslo</div>
         <div class="quiz-title">Tigerbyens <em>baksider</em></div>
         <div class="quiz-sub">Puber, gater og folklore som ikke står i turistbrosjyrene.</div>
-        <div class="quiz-rating">
-          <span class="quiz-stars">4.8 ★</span>
-          <span class="quiz-plays">743 spilt</span>
-        </div>
+        <div class="quiz-rating"><span class="quiz-plays">743 spilt</span></div>
       </div>
     </a>
 
     <a class="quiz-card featured" href="klinikk-quiz-v2.html">
       <div class="quiz-image" data-spot="cobalt"><img src="IMG/kategori-naturvitenskap.jpg" alt=""></div>
       <div class="quiz-body">
-        <div class="quiz-num">№ 05 · Klinikk</div>
+        <div class="quiz-num">Klinikk</div>
         <div class="quiz-title">Hud, hender, <em>helbredelse</em></div>
         <div class="quiz-sub">Hudpleie, fysioterapi, fotpleie og litt energiarbeid. Fagspråk.</div>
-        <div class="quiz-rating">
-          <span class="quiz-stars">4.5 ★</span>
-          <span class="quiz-plays">318 spilt</span>
-        </div>
+        <div class="quiz-rating"><span class="quiz-plays">318 spilt</span></div>
       </div>
     </a>
 
     <a class="quiz-card" href="yungblud-quiz-v2.html">
       <div class="quiz-image" data-spot="saffron"><img src="IMG/kategori-musikk.jpg" alt=""></div>
       <div class="quiz-body">
-        <div class="quiz-num">№ 06 · Musikk</div>
+        <div class="quiz-num">Musikk</div>
         <div class="quiz-title">Hvor godt kjenner du <em>YUNGBLUD</em>?</div>
         <div class="quiz-sub">Dominic Harrison fra Doncaster — tre UK #1-album på rad.</div>
-        <div class="quiz-rating">
-          <span class="quiz-stars">4.9 ★</span>
-          <span class="quiz-plays">542 spilt</span>
-        </div>
+        <div class="quiz-rating"><span class="quiz-plays">542 spilt</span></div>
       </div>
     </a>
 
   </section>
+
+  <!-- NYLIG LAGET AV FELLESSKAPET — fylles av JS (skjult til det finnes innhold) -->
+  <div class="section-label" id="community-label" hidden>
+    <span>Nylig laget av <em>fellesskapet</em></span>
+    <span class="section-meta">Temaer andre har bedt om</span>
+  </div>
+  <section class="quiz-grid" id="community-grid" hidden></section>
 
   <!-- KATEGORI-SNARVEIER -->
   <section class="theme-shortcuts">
@@ -1366,6 +1356,70 @@
       wrap.innerHTML = h;
     } catch(e) {
       wrap.innerHTML = '<p class="lb-empty">Kunne ikke laste ledertavla.</p>';
+    }
+  })();
+})();
+</script>
+<script>
+/* Forsidas dynamiske utvalg — henter /api/featured og fyller grid + fellesskaps-
+   stripe. Feiler/tomt → de statiske fallback-kortene står urørt. KUN plays,
+   aldri rating (rating er ikke bygd ennå). */
+(function () {
+  var CAT_SPOT = {
+    mix: 'teal', historie: 'moss', verdenshistorie: 'terracotta', vitenskap: 'cobalt',
+    geografi: 'moss', litteratur: 'plum', kunst: 'terracotta', film: 'plum',
+    musikk: 'saffron', sport: 'cobalt', fotball: 'cobalt', filosofi: 'plum', teknologi: 'cobalt'
+  };
+  var CAT_LABEL = {
+    mix: 'Blandet', historie: 'Norsk historie', verdenshistorie: 'Verdenshistorie',
+    vitenskap: 'Naturvitenskap', geografi: 'Geografi', litteratur: 'Litteratur',
+    kunst: 'Kunst', film: 'Film og TV', musikk: 'Musikk', sport: 'Sport',
+    fotball: 'Fotball', filosofi: 'Filosofi', teknologi: 'Teknologi'
+  };
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function playsText(n){ n = +n || 0; return n > 0 ? n.toLocaleString('nb-NO').replace(',', ' ') + ' spilt' : 'Ny'; }
+
+  function card(q, featured) {
+    var spot = CAT_SPOT[q.category] || 'teal';
+    var label = q.category_label || CAT_LABEL[q.category] || 'Quiz';
+    if (q.team) label = 'Fotball · ' + q.team;
+    var hero = q.hero_img || ('kategori-' + (q.category || 'mix'));
+    return '<a class="quiz-card' + (featured ? ' featured' : '') + '" href="quiz-app-v2.html?lib=' + encodeURIComponent(q.slug) + '">' +
+      '<div class="quiz-image" data-spot="' + spot + '"><img src="IMG/' + esc(hero) + '.jpg" alt=""></div>' +
+      '<div class="quiz-body">' +
+        '<div class="quiz-num">' + esc(label) + '</div>' +
+        '<div class="quiz-title">' + esc(q.title || 'Quiz') + '</div>' +
+        '<div class="quiz-sub">' + esc(q.lede || '') + '</div>' +
+        '<div class="quiz-rating"><span class="quiz-plays">' + playsText(q.plays) + '</span></div>' +
+      '</div></a>';
+  }
+
+  (async function () {
+    var grid = document.getElementById('featured-grid');
+    if (!grid) return;
+    var data;
+    try {
+      var res = await fetch('/api/featured', { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) return;                 // behold statiske fallback-kort
+      data = await res.json();
+    } catch (_) { return; }                // nettverksfeil → behold fallback
+    if (!data) return;
+
+    // Hovedutvalg: pinnet (første = stor/featured) + roterende.
+    var main = (data.pinned || []).concat(data.rotating || []);
+    if (main.length) {
+      grid.innerHTML = main.map(function (q, i) { return card(q, i === 0); }).join('');
+    }
+
+    // Fellesskaps-stripe: vis kun hvis det finnes noe.
+    var comm = data.community || [];
+    if (comm.length) {
+      var cg = document.getElementById('community-grid');
+      var cl = document.getElementById('community-label');
+      if (cg && cl) {
+        cg.innerHTML = comm.map(function (q) { return card(q, false); }).join('');
+        cg.hidden = false; cl.hidden = false;
+      }
     }
   })();
 })();

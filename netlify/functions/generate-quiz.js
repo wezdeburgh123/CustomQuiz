@@ -10,6 +10,7 @@
  */
 const core = require("./_quizcore");
 const library = require("./_library");
+const moderation = require("./_moderation");
 const { CORS_HEADERS } = core;
 
 exports.handler = async (event) => {
@@ -35,6 +36,17 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: msg }) };
   }
 
+  // MODERERING lag 1: deterministisk ordliste-port (gratis, før API-kall).
+  // Treff → avvis uten å generere eller lagre.
+  const screen = moderation.screenThemes(input.themes);
+  if (!screen.ok) {
+    return {
+      statusCode: 422,
+      headers: CORS_HEADERS,
+      body: JSON.stringify({ error: "Dette temaet kan vi ikke lage quiz om.", code: "blocked_topic", reason: screen.reason }),
+    };
+  }
+
   // CHECK-DB-FIRST: finnes temaet allerede i arkivet, server det momentant
   // (gratis — ingen API-bruk). Bom → generér under.
   try {
@@ -51,6 +63,13 @@ exports.handler = async (event) => {
   const gateOn = process.env.KNOWLEDGE_GATE !== "false";
   try {
     const res = await core.generateQuiz(apiKey, { ...input, gateOn, withSearch: false });
+    if (!res.ok && res.blocked) {
+      return {
+        statusCode: 422,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ error: "Dette temaet kan vi ikke lage quiz om.", code: "blocked_topic", reason: res.reason }),
+      };
+    }
     if (!res.ok && res.insufficient) {
       return {
         statusCode: 422,

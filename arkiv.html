@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F0E6">
 <title>Arkivet — CustomQuiz</title>
-<meta name="description" content="Alle quizer på CustomQuiz. Filtrer etter tema, sorter etter populæritet eller rating, finn neste favoritt.">
+<meta name="description" content="Alle quizer på CustomQuiz. Filtrer etter tema, sorter etter populæritet eller dato, finn neste favoritt.">
 <!-- Quizbibliotek som global (virker også uten webserver/file://). fetch er fallback. -->
 <script src="quizzes-data.js"></script>
 
@@ -459,6 +459,33 @@
     font-size: 19px;
   }
 
+  /* Laget av fellesskapet */
+  .community-head { margin: 44px 0 18px; }
+  .community-head .eyebrow { color: var(--accent); }
+  .community-title {
+    font-family: var(--font-display); font-size: 26px; font-weight: 600;
+    margin: 6px 0 6px; color: var(--ink);
+  }
+  .community-title em { font-style: italic; color: var(--accent); }
+  .community-sub { color: var(--ink-mute); font-size: 14.5px; max-width: 60ch; margin: 0; }
+  .community-card { position: relative; }
+  .report-btn {
+    position: absolute; top: 10px; right: 10px; z-index: 3;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .02em;
+    padding: 5px 10px; border-radius: var(--r-pill); cursor: pointer;
+    background: rgba(20,18,14,.62); color: #fff; border: 1px solid rgba(255,255,255,.28);
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    opacity: 0; transition: opacity .15s ease;
+  }
+  .community-card:hover .report-btn, .report-btn:focus-visible { opacity: 1; }
+  .report-btn[disabled] { cursor: default; opacity: 1; background: rgba(20,18,14,.42); }
+  @media (hover: none) { .report-btn { opacity: 1; } }
+  .report-done {
+    padding: 32px 20px; text-align: center; color: var(--ink-mute);
+    font-family: var(--font-display); font-style: italic; font-size: 16px;
+    border: 1px solid var(--rule); border-radius: var(--r-card); background: var(--bg-soft);
+  }
+
   /* Subscribe tease */
   .subscribe-tease {
     background: var(--bg-soft);
@@ -732,14 +759,13 @@
   <header class="page-header">
     <div class="eyebrow">Arkivet</div>
     <h1>Alle <em>utgaver</em>, ett sted.</h1>
-    <p class="page-lede">Bla i alt CustomQuiz har publisert. Filtrer etter tema, sorter etter populæritet, rating eller dato. Med gratis konto spiller du gratis-utvalget — se etter «Gratis»-merket. Abonnenter får tilgang til hele arkivet.</p>
+    <p class="page-lede">Bla i alt CustomQuiz har publisert. Filtrer etter tema, sorter etter populæritet eller dato. Med gratis konto spiller du gratis-utvalget — se etter «Gratis»-merket. Abonnenter får tilgang til hele arkivet.</p>
   </header>
 
   <div class="toolbar">
     <div class="sort-row">
       <span class="sort-label">Sorter</span>
       <button class="sort-btn active" data-sort="plays">Mest spilt</button>
-      <button class="sort-btn" data-sort="rating">Høyest rating</button>
       <button class="sort-btn" data-sort="date">Nyeste</button>
     </div>
     <div class="toolbar-meta"><strong id="result-count">0</strong> utgaver</div>
@@ -776,6 +802,15 @@
   <section class="quiz-grid" id="quiz-grid"></section>
 
   <div class="empty-state" id="empty-state" style="display:none;">Ingen utgaver matcher filteret. Prøv en annen kategori.</div>
+
+  <!-- Laget av fellesskapet — quizzer brukere har bedt om (source=user). Egen
+       seksjon, adskilt fra det kuraterte. Skjult til det finnes innhold. -->
+  <div class="community-head" id="community-head" hidden>
+    <div class="eyebrow">Fellesskapet</div>
+    <h2 class="community-title">Laget av <em>fellesskapet</em></h2>
+    <p class="community-sub">Tema andre har bedt om — automatisk sjekket før publisering. Ser du noe som ikke hører hjemme? Trykk «Rapportér», så vurderer vi det.</p>
+  </div>
+  <section class="quiz-grid" id="community-grid" hidden></section>
 
   <section class="subscribe-tease">
     <div class="eyebrow">Abonnement</div>
@@ -879,7 +914,6 @@
   // Sort functions
   const SORTS = {
     plays:  (a, b) => b.plays - a.plays,
-    rating: (a, b) => b.rating - a.rating || b.plays - a.plays,
     date:   (a, b) => new Date(b.date) - new Date(a.date)
   };
 
@@ -927,16 +961,15 @@
     // Sort
     items.sort(SORTS[currentSort]);
 
+    // Skill kuratert fra fellesskaps-generert (sistnevnte får egen seksjon).
+    const community = items.filter(q => q.source === 'user');
+    const curated   = items.filter(q => q.source !== 'user');
+
     count.textContent = items.length;
+    empty.style.display = items.length === 0 ? 'block' : 'none';
 
-    if (items.length === 0) {
-      grid.innerHTML = '';
-      empty.style.display = 'block';
-      return;
-    }
-    empty.style.display = 'none';
-
-    grid.innerHTML = items.map(q => {
+    // Ett kort — delt mellom hovedgrid og fellesskaps-seksjonen.
+    function cardFor(q) {
       const tier = tierOf(q);
       // Premium-bruker spiller alt. Ellers: free krever innlogging, premium krever abonnement.
       let locked = false, lockKind = '';
@@ -953,6 +986,7 @@
       const badge = tier === 'free'
         ? '<span class="free-badge">Gratis</span>'
         : (locked ? '<span class="lock-badge">Premium</span>' : '');
+      const numLabel = q.num ? `№ ${q.num} · ${q.categoryLabel}` : (q.categoryLabel || '');
       return `
       <a class="quiz-card ${dim ? 'locked' : ''}"
          href="${locked ? 'javascript:void(0)' : q.url}"
@@ -962,16 +996,35 @@
           ${badge}
         </div>
         <div class="quiz-body">
-          <div class="quiz-num">№ ${q.num} · ${q.categoryLabel}</div>
+          <div class="quiz-num">${numLabel}</div>
           <div class="quiz-title">${q.title}</div>
           <div class="quiz-sub">${q.sub}</div>
           <div class="quiz-rating">
-            <span class="quiz-stars">${q.rating.toFixed(1)} ★</span>
             <span class="quiz-plays">${formatPlays(q.plays)} spilt</span>
           </div>
         </div>
-      </a>
-    `;}).join('');
+      </a>`;
+    }
+
+    // Kuratert → hovedgrid.
+    grid.innerHTML = curated.map(cardFor).join('');
+
+    // Fellesskap → egen seksjon med rapport-knapp. Skjult når tom.
+    const cGrid = document.getElementById('community-grid');
+    const cHead = document.getElementById('community-head');
+    if (cGrid && cHead) {
+      if (community.length) {
+        cGrid.innerHTML = community.map(q => {
+          const rep = q.slug
+            ? `<button class="report-btn" type="button" data-slug="${String(q.slug).replace(/"/g, '&quot;')}" aria-label="Rapportér denne quizen">⚐ Rapportér</button>`
+            : '';
+          return `<div class="community-card">${cardFor(q)}${rep}</div>`;
+        }).join('');
+        cGrid.hidden = false; cHead.hidden = false;
+      } else {
+        cGrid.innerHTML = ''; cGrid.hidden = true; cHead.hidden = true;
+      }
+    }
   }
 
   // Sort buttons
@@ -983,6 +1036,32 @@
       render();
     });
   });
+
+  // Rapport-knapp (delegert; #community-grid består selv om innholdet re-rendres).
+  (function initReporting() {
+    const cGrid = document.getElementById('community-grid');
+    if (!cGrid) return;
+    cGrid.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.report-btn');
+      if (!btn || btn.disabled) return;
+      const slug = btn.dataset.slug;
+      if (!slug) return;
+      if (!confirm('Rapportere denne quizen for vurdering? Den skjules til vi har sett på den.')) return;
+      btn.disabled = true; btn.textContent = 'Sender …';
+      try {
+        const res = await fetch('/api/library-flag', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug })
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const card = btn.closest('.community-card');
+        if (card) card.innerHTML = '<div class="report-done">Takk — sendt til vurdering.</div>';
+      } catch (err) {
+        btn.disabled = false; btn.textContent = '⚐ Rapportér';
+        alert('Klarte ikke sende rapporten akkurat nå. Prøv igjen om litt.');
+      }
+    });
+  })();
 
   // Bygg lag-underfilteret fra de klubblagene som finnes blant fotball-quizene.
   // Lista er datadrevet: den fyller seg selv etter hvert som fotball-quizer
@@ -1180,7 +1259,9 @@
             date: q.date || '2026-05-28',
             url: 'quiz-app-v2.html?quiz=' + encodeURIComponent(q.id),
             free: !!q.free,      // gratis-biblioteket (free:true i quizzes-data.json)
-            locked: !q.free      // alt annet er premium-gated
+            locked: !q.free,     // alt annet er premium-gated
+            source: 'curated',   // statisk gratis-bibliotek = kuratert
+            slug: ''
           });
         });
       }
@@ -1207,7 +1288,9 @@
             date: (q.created_at || '').slice(0, 10) || '2026-06-01',
             url: 'quiz-app-v2.html?lib=' + encodeURIComponent(q.slug),
             free: !!q.free,      // gratis-flagg fra quiz_library (per-lag fotball m.m.)
-            locked: !q.free
+            locked: !q.free,
+            source: q.source || 'nightly',  // 'user' = laget av fellesskapet
+            slug: q.slug || ''
           });
         });
       }

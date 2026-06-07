@@ -85,6 +85,7 @@ async function findByThemes(themes, difficulty) {
       .select("title, lede, questions, hero_img, category")
       .eq("slug", slug)
       .eq("published", true)
+      .eq("review_status", "auto_ok")  // ikke servér flagged/removed som cache
       .maybeSingle();
     if (error || !data) return null;
     return { title: data.title, lede: data.lede, questions: data.questions, hero_img: data.hero_img, category: data.category, cached: true };
@@ -115,6 +116,7 @@ async function saveQuiz({ themes, difficulty, quiz, category, team, model, groun
     source,
     model: model || null,
     grounded: !!grounded,
+    review_status: "auto_ok",  // passerte begge moderingsporter → auto-publisert
   };
   try {
     const { error } = await client.from(TABLE).upsert(row, { onConflict: "slug", ignoreDuplicates: true });
@@ -126,8 +128,28 @@ async function saveQuiz({ themes, difficulty, quiz, category, team, model, groun
   }
 }
 
+/**
+ * Sett review_status på én quiz (slug). Brukes av library-flag.js for
+ * brukerrapport ('flagged') og admin kill-switch ('removed' | 'auto_ok').
+ * Krever service-nøkkel. Returnerer { ok, error? }.
+ */
+async function setReviewStatus(slug, status) {
+  const valid = ["auto_ok", "flagged", "removed"];
+  if (!valid.includes(status)) return { ok: false, error: "ugyldig status" };
+  if (!canWrite()) return { ok: false, error: "skriving ikke konfigurert" };
+  const client = db();
+  if (!client) return { ok: false, error: "db ikke konfigurert" };
+  try {
+    const { error } = await client.from(TABLE).update({ review_status: status }).eq("slug", slug);
+    if (error) return { ok: false, error: error.message };
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
+}
+
 module.exports = {
   TABLE, CATEGORY_TO_IMG, VALID_CATEGORIES,
   heroForCategory, normToken, makeSlug,
-  db, canWrite, findByThemes, saveQuiz,
+  db, canWrite, findByThemes, saveQuiz, setReviewStatus,
 };

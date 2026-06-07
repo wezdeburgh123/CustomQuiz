@@ -65,6 +65,24 @@
   to = "/.netlify/functions/library-sync"
   status = 200
 
+# Moderering: brukerrapport + admin kill-switch (review_status på quiz_library)
+[[redirects]]
+  from = "/api/library-flag"
+  to = "/.netlify/functions/library-flag"
+  status = 200
+
+# Plays-teller: bumper plays for en arkiv-quiz (datagrunnlag for forside-utvalg)
+[[redirects]]
+  from = "/api/library-play"
+  to = "/.netlify/functions/library-play"
+  status = 200
+
+# Forsidas dynamiske utvalg (pinnet + roterende + fellesskap)
+[[redirects]]
+  from = "/api/featured"
+  to = "/.netlify/functions/featured"
+  status = 200
+
 # Async quiz-generering (websøk): poll-endepunkt. Selve bakgrunnsfunksjonen
 # kalles direkte på /.netlify/functions/quiz-generate-background (returnerer 202).
 [[redirects]]

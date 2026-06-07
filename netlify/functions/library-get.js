@@ -23,6 +23,7 @@ exports.handler = async (event) => {
       .select("slug, title, lede, questions, difficulty, category, category_label, hero_img")
       .eq("slug", slug)
       .eq("published", true)
+      .eq("review_status", "auto_ok")  // ikke servér flagged/removed
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!data)

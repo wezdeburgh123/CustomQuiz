@@ -54,6 +54,15 @@ Bare hvis du ikke engang klarer ${minQ} solide, faktabaserte spørsmål (temaet 
 `
     : "";
 
+  // Sikkerhetsport (AI-sjekk, lag 2). Gjelder alltid — uavhengig av kunnskapsvakta.
+  // Fanger det subjektive/kontekstuelle en ordliste ikke kan: hets mot en gruppe,
+  // sjikane av navngitt privatperson, oppfordring til vold, åpenbart krenkende tema.
+  const safetyBlock = `Sikkerhet: hvis temaet er upassende for en offentlig quiz — hets eller nedsettende innhold rettet mot en folkegruppe, sjikane eller utheng av en navngitt privatperson, oppfordring til vold eller selvskade, seksualisering av mindreårige, eller åpenbart krenkende/smakløst innhold — IKKE lag quizen. Returnér i stedet KUN dette objektet, ingenting annet:
+{"blocked": true, "reason": "kort norsk begrunnelse på én setning"}
+(Vanlige tema som krig, kriminalhistorie, religion, politikk og rusmidler er helt greit å lage quiz om — blokkér kun det som er rettet mot å krenke, henge ut eller skade.)
+
+`;
+
   const multiThemeInstruction =
     themes.length > 1
       ? `\nQuizen skal blande disse ${themes.length} temaene. Fordel spørsmålene så jevnt som mulig mellom dem. Sett "category" på hvert spørsmål til hvilket tema det tilhører. Rekkefølgen kan være variert — ikke alle av samme tema på rad.`
@@ -66,7 +75,7 @@ Bare hvis du ikke engang klarer ${minQ} solide, faktabaserte spørsmål (temaet 
 
   return `Du er en quiz-generator. Det aller siste du skriver skal være ET rent JSON-objekt — ingen markdown-koder rundt det, ingen hilsen.
 
-${searchBlock}${gateBlock}Oppgave: Lag en quiz på norsk om ${themeBlock}.${multiThemeInstruction}
+${searchBlock}${safetyBlock}${gateBlock}Oppgave: Lag en quiz på norsk om ${themeBlock}.${multiThemeInstruction}
 
 Nivå: ${difficulty}. ${DIFFICULTY_DESC[difficulty] || DIFFICULTY_DESC.medium}
 Antall spørsmål: sikt mot ${count} (men minst ${minQ} — heller færre enn oppdiktede)
@@ -110,7 +119,7 @@ function extractJSON(rawText) {
           try {
             const obj = JSON.parse(candidate);
             // Vi vil ha quiz-objektet eller avslags-objektet, ikke vilkårlige {}.
-            if (obj && (Array.isArray(obj.questions) || obj.insufficient_knowledge === true)) {
+            if (obj && (Array.isArray(obj.questions) || obj.insufficient_knowledge === true || obj.blocked === true)) {
               best = obj;
             } else if (!best) {
               best = obj; // husk noe gyldig som siste utvei
@@ -207,7 +216,8 @@ function sanitizeInput(body) {
 /**
  * Kjerne-generering. Returnerer ett av:
  *   { ok: true, quiz, model }
- *   { ok: false, insufficient: true, reason }
+ *   { ok: false, insufficient: true, reason }   — kunnskapsvakta avviste
+ *   { ok: false, blocked: true, reason }         — sikkerhets-sjekken avviste
  * Kaster Error (med ev. .status) ved hard feil etter alle forsøk.
  */
 async function generateQuiz(apiKey, { themes, difficulty, count, gateOn = true, withSearch = false }) {
@@ -228,6 +238,10 @@ async function generateQuiz(apiKey, { themes, difficulty, count, gateOn = true, 
       try {
         const raw = await callAnthropic(apiKey, model, prompt, callOpts);
         const parsed = extractJSON(raw);
+        if (parsed && parsed.blocked === true) {
+          console.log("[safety] blokkert (AI-sjekk):", JSON.stringify({ themes, reason: parsed.reason || "" }));
+          return { ok: false, blocked: true, reason: String(parsed.reason || "") };
+        }
         if (parsed && parsed.insufficient_knowledge === true) {
           console.log("[gate] avvist:", JSON.stringify({ themes, reason: parsed.reason || "" }));
           return { ok: false, insufficient: true, reason: String(parsed.reason || "") };

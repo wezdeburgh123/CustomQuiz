@@ -1684,6 +1684,12 @@
       err.reason = job.reason || '';
       throw err;
     }
+    if (job.status === 'blocked') {
+      const err = new Error('Dette temaet kan vi ikke lage quiz om.');
+      err.code = 'BLOCKED';
+      err.reason = job.reason || '';
+      throw err;
+    }
     if (job.status === 'error') {
       if (job.code === 'SUBSCRIPTION') {
         const err = new Error(job.error || 'Abonnement kreves'); err.code = 'SUBSCRIPTION'; throw err;
@@ -1754,6 +1760,10 @@
     catch (e) { throw new Error('Ugyldig svar fra serveren: ' + bodyText.slice(0, 160)); }
     if (response.status === 401 || response.status === 402 || response.status === 403) {
       const err = new Error(data.error || 'Abonnement kreves'); err.code = 'SUBSCRIPTION'; throw err;
+    }
+    if (data && data.code === 'blocked_topic') {
+      const err = new Error(data.error || 'Dette temaet kan vi ikke lage quiz om.');
+      err.code = 'BLOCKED'; err.reason = data.reason || ''; throw err;
     }
     if (response.status === 422 || (data && data.code === 'insufficient_knowledge')) {
       const err = new Error(data.error || 'Vi mangler sikker kunnskap om dette temaet.');
@@ -1981,6 +1991,21 @@
           msgEl.textContent = err.message
             + (err.reason ? ' (' + err.reason + ')' : '')
             + ' Prøv gjerne et bredere eller mer kjent tema.';
+        }
+        const dbg = document.getElementById('error-debug');
+        if (dbg) { dbg.style.display = 'none'; dbg.textContent = ''; }
+        showScreen('error');
+        return;
+      }
+      // Moderering avviste temaet — vennlig, tydelig melding. IKKE demo-fallback
+      // (å servere en annen quiz ville undergravd modereringen).
+      if (err && err.code === 'BLOCKED') {
+        QuizLoader.stop();
+        const titleEl = document.querySelector('#error .error-title');
+        const msgEl = document.getElementById('error-msg');
+        if (titleEl) titleEl.textContent = 'Dette temaet kan vi ikke lage quiz om';
+        if (msgEl) {
+          msgEl.textContent = 'Velg gjerne et annet tema, så hjelper vi deg i gang.';
         }
         const dbg = document.getElementById('error-debug');
         if (dbg) { dbg.style.display = 'none'; dbg.textContent = ''; }
@@ -2252,10 +2277,27 @@
     musikk: 'saffron', sport: 'saffron', filosofi: 'plum', teknologi: 'cobalt'
   };
 
+  // Tell ett spill på en arkiv-quiz (fire-and-forget, kun én gang per slug per
+  // sidelast). Datagrunnlag for forsidas populær-utvalg. Feil ignoreres stille.
+  const _playedSlugs = new Set();
+  function bumpPlays(slug) {
+    if (!slug || _playedSlugs.has(slug)) return;
+    _playedSlugs.add(slug);
+    try {
+      fetch('/api/library-play', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug }),
+        keepalive: true,
+      }).catch(function () {});
+    } catch (_) { /* aldri blokker spillet */ }
+  }
+
   // Spill en arkivert quiz fra Supabase quiz_library via ?lib=<slug>.
   function playLibraryRow(q) {
     state.quiz = { title: q.title, lede: q.lede || '', questions: q.questions, difficulty: q.difficulty || '' };
     state.currentSlug = q.slug || state.currentSlug || null; // for videre-deling
+    bumpPlays(state.currentSlug); // tell spillet (arkiv-quiz har alltid slug)
     if (q.difficulty) state.difficulty = q.difficulty;
     state.currentIndex = 0; state.selectedOption = null; state.userAnswers = [];
     const banner = document.getElementById('quiz-banner');
