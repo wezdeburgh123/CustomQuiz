@@ -1,10 +1,9 @@
 {
   "nights_run": 2,
-  "total_generated": 120,
-  "last_run": "2026-06-07T13:17:09.457953+00:00",
-  "last_batch": 35,
-  "skipped": [
-    "norske-supporterklubber-for-engelsk-fotball__lett"
-  ],
-  "note": "Manuell fotball-bølge 7. juni 2026 (source=manual-fotball-wave): +35 quizer / 350 spm. 13 klubblag utenom Big 3 løftet fra 1 -> 3 quizer hver (medium+vanskelig) + 9 generelle fotball-emner (PL, CL, VM, Eliteserien, norske spillere). Alle websøk-grunnet, fasit jevnt fordelt, verifisert mot topics-slugs. Resten av køen (ca 87 emner, mest øvrige kategorier) tas av nattjobben."
+  "total_generated": 207,
+  "last_run": "2026-06-07T13:59:57.161018+00:00",
+  "last_batch": 87,
+  "skipped": [],
+  "note": "KØEN TØMT 7. juni 2026. Total: 207 quizer / 2070 spm, alle 13 kategorier 100% dekket (hver topics.json-slug har en quiz). Denne økta: 35 fotball (klubber+generelle) + 87 resten (historie, geografi, verdenshistorie, filosofi, kunst, musikk, litteratur, vitenskap, teknologi, film, sport, mix + Big 3, lett-emner, supporterklubber). Alle websøk-grunnet; ferske fakta verifisert (Viking seriemester 2025, Vinter-OL 2026 Milano-Cortina: Norge 41 medaljer/18 gull + Klæbo 6 gull, PSG CL 2025, Oscar 2026 'One Battle After Another', 15 fylker, Harald V/Støre). Fasit reshufflet til jevn 0/1/2/3-fordeling. Verifisert: 0 avvik mot topics-slugs, ingen dubletter. source: manual-fotball-wave + manual-archive-wave. Nattjobben har nå tom kø — vurder å utvide topics.json (build-taxonomy.py SUBTOPICS_PER_CATEGORY) for mer volum.",
+  "queue_complete": true
 }
