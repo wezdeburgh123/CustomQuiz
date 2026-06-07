@@ -14,7 +14,9 @@
  * server-side før den kaller Anthropic (se BETALING-plan.md, fase 5).
  */
 const { supa } = require("./_supabase");
-const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8" };
+// no-store: abonnementsstatus må aldri caches — ellers kan en oppsagt bruker
+// bli stående som premium (eller en ny abonnent som gratis) til cachen utløper.
+const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
 
 exports.handler = async (event) => {
   let email = "";
