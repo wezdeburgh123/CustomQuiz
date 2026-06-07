@@ -1394,7 +1394,11 @@
     'Molde': 'crest-molde', 'Rosenborg': 'crest-rosenborg', 'Viking': 'crest-viking',
     'Vålerenga': 'crest-valerenga'
   };
-  var AVAILABLE_CRESTS = { 'crest-arsenal':1, 'crest-chelsea':1, 'crest-everton':1, 'crest-leeds':1, 'crest-liverpool':1 };
+  var AVAILABLE_CRESTS = {
+    'crest-arsenal':1, 'crest-chelsea':1, 'crest-everton':1, 'crest-leeds':1, 'crest-liverpool':1,
+    'crest-man-city':1, 'crest-man-united':1, 'crest-newcastle':1, 'crest-tottenham':1,
+    'crest-bodo-glimt':1, 'crest-brann':1
+  };
   function crestFor(q) {
     if (!q || q.category !== 'fotball' || !q.team) return null;
     var slug = TEAM_TO_CREST[String(q.team).trim()];
