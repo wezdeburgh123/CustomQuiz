@@ -20,7 +20,7 @@ exports.handler = async (event) => {
   try {
     const { data, error } = await client
       .from(library.TABLE)
-      .select("slug, title, lede, questions, difficulty, category, category_label, hero_img")
+      .select("slug, title, lede, questions, difficulty, category, category_label, team, hero_img")
       .eq("slug", slug)
       .eq("published", true)
       .eq("review_status", "auto_ok")  // ikke servér flagged/removed
