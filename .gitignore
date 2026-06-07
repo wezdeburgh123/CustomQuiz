@@ -19,3 +19,7 @@ node_modules/
 
 # Nattjobbens midlertidige input
 scripts/_natt-input.json
+
+# Python-skrot
+__pycache__/
+*.pyc

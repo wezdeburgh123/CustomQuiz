@@ -56,10 +56,14 @@ Gjør nøyaktig dette:
    `quiz-library/library.ndjson` (append, ikke overskriv) med nøyaktig dette
    JSON-objektet på én linje:
    ```json
-   {"slug":"<emnets slug fra topics.json>","themes":<emnets themes-array>,"category":"<emnets category>","category_label":"<emnets category_label>","difficulty":"<emnets difficulty>","title":"<kort tittel>","lede":"<én setning>","questions":[{"category":"<underkategori>","q":"...","options":["A","B","C","D"],"correct":0,"explanation":"..."}],"grounded":true,"source":"nightly"}
+   {"slug":"<emnets slug fra topics.json>","themes":<emnets themes-array>,"category":"<emnets category>","category_label":"<emnets category_label>","team":"<emnets team hvis satt, ellers utelat feltet>","difficulty":"<emnets difficulty>","title":"<kort tittel>","lede":"<én setning>","questions":[{"category":"<underkategori>","q":"...","options":["A","B","C","D"],"correct":0,"explanation":"..."}],"grounded":true,"source":"nightly"}
    ```
-   Bruk emnets egen `slug`, `themes`, `category`, `category_label` og `difficulty`
-   uendret fra `topics.json` — da matcher cache-oppslaget på siden.
+   Bruk emnets egen `slug`, `themes`, `category`, `category_label`, `difficulty`
+   — og `team` hvis emnet har det — uendret fra `topics.json`. Da matcher
+   cache-oppslaget på siden. Fotball-emner har `category:"fotball"`; klubb-emner
+   har i tillegg et `team`-felt (klubblag) som driver lag-filteret i arkivet.
+   Generelle fotball-emner (VM, Premier League, Eliteserien o.l.) har ikke `team`
+   — utelat feltet da (ikke skriv `"team":""`).
 
 5. **Oppdater status.** Skriv `quiz-library/STATUS.json`:
    `{ "nights_run": <+1>, "total_generated": <+antall skrevet>, "last_run": "<ISO-dato>", "last_batch": <antall>, "skipped": [<sluger du hoppet over>] }`.

@@ -35,7 +35,7 @@ const CATEGORY_TO_IMG = {
   mix: "kategori-mix", historie: "kategori-norsk-historie", verdenshistorie: "kategori-verdenshistorie",
   vitenskap: "kategori-naturvitenskap", geografi: "kategori-geografi", litteratur: "kategori-litteratur",
   kunst: "kategori-kunst", film: "kategori-film", musikk: "kategori-musikk", sport: "kategori-sport",
-  filosofi: "kategori-filosofi", teknologi: "kategori-teknologi",
+  fotball: "kategori-sport", filosofi: "kategori-filosofi", teknologi: "kategori-teknologi",
 };
 const VALID = Object.keys(CATEGORY_TO_IMG);
 
@@ -44,9 +44,10 @@ function toRow(item) {
   if (!themes.length || !Array.isArray(item.questions) || item.questions.length === 0) return null;
   const difficulty = ["lett", "medium", "vanskelig"].includes(item.difficulty) ? item.difficulty : "medium";
   const category = VALID.includes(item.category) ? item.category : "mix";
+  const team = (category === "fotball" && item.team) ? String(item.team).trim() : null;
   return {
     slug: item.slug || makeSlug(themes, difficulty),
-    themes, category, category_label: item.category_label || null, difficulty,
+    themes, category, category_label: item.category_label || null, team, difficulty,
     title: item.title || "Quiz", lede: item.lede || "", questions: item.questions,
     hero_img: item.hero_img || CATEGORY_TO_IMG[category],
     source: item.source || "nightly", model: item.model || null, grounded: !!item.grounded,

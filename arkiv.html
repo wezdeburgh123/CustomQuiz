@@ -254,6 +254,51 @@
     font-weight: 500;
   }
 
+  /* Lag-underfilter (kun synlig under Fotball) — grønn moss-aksent
+     for å markere at det er et nivå under kategoriene. */
+  .team-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -16px 0 32px;
+    padding: 14px 16px;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--rule);
+    border-left: 3px solid var(--spot-moss);
+    border-radius: var(--r-md, 12px);
+  }
+  .team-row[hidden] { display: none; }
+  .team-row-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-right: 4px;
+  }
+  .team-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .team-chip {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    padding: 6px 14px;
+    background: transparent;
+    border: 0.5px solid var(--rule);
+    border-radius: var(--r-pill);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+  .team-chip:hover { border-color: var(--spot-moss); }
+  .team-chip.active {
+    background: var(--spot-moss);
+    color: var(--bg-soft);
+    border-color: var(--spot-moss);
+    font-weight: 500;
+  }
+  .team-row-empty { font-size: 13px; color: var(--ink-mute); }
+
   /* Quiz grid */
   .quiz-grid {
     display: grid;
@@ -662,8 +707,16 @@
     <button class="filter-chip" data-filter="film">Film og TV</button>
     <button class="filter-chip" data-filter="musikk">Musikk</button>
     <button class="filter-chip" data-filter="sport">Sport</button>
+    <button class="filter-chip" data-filter="fotball">Fotball</button>
     <button class="filter-chip" data-filter="filosofi">Filosofi</button>
     <button class="filter-chip" data-filter="teknologi">Teknologi</button>
+  </div>
+
+  <!-- Lag-underfilter: vises kun når Fotball er valgt. Bygges dynamisk fra
+       klubblagene som finnes blant fotball-quizene (q.team). -->
+  <div class="team-row" id="team-row" hidden>
+    <span class="team-row-label">Lag</span>
+    <div class="team-chips" id="team-chips"></div>
   </div>
 
   <section class="quiz-grid" id="quiz-grid"></section>
@@ -753,6 +806,7 @@
   // State
   let currentSort = 'plays';
   let currentFilter = 'all';
+  let currentTeam = 'all'; // aktivt klubblag-underfilter (kun under Fotball)
   let premium = false; // settes true for aktive abonnenter (via CQAuth)
 
   // Sort functions
@@ -779,7 +833,8 @@
     filosofi:        'plum',
     musikk:          'saffron',
     kunst:           'saffron',
-    sport:           'saffron'
+    sport:           'saffron',
+    fotball:         'moss'
   };
 
   function render() {
@@ -791,6 +846,11 @@
     let items = currentFilter === 'all'
       ? QUIZZES.slice()
       : QUIZZES.filter(q => q.category === currentFilter);
+
+    // Under Fotball: filtrer i tillegg på valgt klubblag.
+    if (currentFilter === 'fotball' && currentTeam !== 'all') {
+      items = items.filter(q => q.team === currentTeam);
+    }
 
     // Sort
     items.sort(SORTS[currentSort]);
@@ -837,14 +897,63 @@
     });
   });
 
+  // Bygg lag-underfilteret fra de klubblagene som finnes blant fotball-quizene.
+  // Lista er datadrevet: den fyller seg selv etter hvert som fotball-quizer
+  // med et `team`-felt (klubblag) kommer inn i arkivet.
+  function buildTeamFilter() {
+    const wrap = document.getElementById('team-chips');
+    if (!wrap) return;
+    const teams = [...new Set(
+      QUIZZES.filter(q => q.category === 'fotball' && q.team)
+             .map(q => String(q.team).trim())
+             .filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b, 'nb-NO'));
+
+    // Nullstill et lag som ikke lenger finnes.
+    if (currentTeam !== 'all' && !teams.includes(currentTeam)) currentTeam = 'all';
+
+    if (teams.length === 0) {
+      wrap.innerHTML = '<span class="team-row-empty">Ingen lag-taggede quizer ennå — kommer snart.</span>';
+      return;
+    }
+
+    const chips = ['all', ...teams].map(t => {
+      const label = t === 'all' ? 'Alle lag' : t;
+      const active = (t === currentTeam) ? ' active' : '';
+      return `<button class="team-chip${active}" data-team="${t.replace(/"/g, '&quot;')}">${label}</button>`;
+    }).join('');
+    wrap.innerHTML = chips;
+
+    wrap.querySelectorAll('.team-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        wrap.querySelectorAll('.team-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentTeam = chip.dataset.team;
+        render();
+      });
+    });
+  }
+
+  // Sett aktiv kategori (felles for chip-klikk og URL-param).
+  function setFilter(cat) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-chip').forEach(c =>
+      c.classList.toggle('active', c.dataset.filter === cat));
+    const teamRow = document.getElementById('team-row');
+    if (cat === 'fotball') {
+      currentTeam = 'all';
+      buildTeamFilter();
+      if (teamRow) teamRow.hidden = false;
+    } else {
+      currentTeam = 'all';
+      if (teamRow) teamRow.hidden = true;
+    }
+    render();
+  }
+
   // Filter chips
   document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      currentFilter = chip.dataset.filter;
-      render();
-    });
+    chip.addEventListener('click', () => setFilter(chip.dataset.filter));
   });
 
   // Lock modal
@@ -911,16 +1020,17 @@
   }
 
   // Pre-aktiver kategori-filter hvis ?category=X i URL
-  // (kommer typisk fra kategori-chipsene på forsiden)
+  // (kommer typisk fra kategori-chipsene på forsiden). Et evt. ?team=Y
+  // tas vare på og påføres etter at fotball-quizene er lastet inn.
+  let pendingTeam = null;
   (function applyInitialCategoryFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const cat = params.get('category');
     if (!cat) return;
     const targetChip = document.querySelector(`.filter-chip[data-filter="${cat}"]`);
     if (!targetChip) return;
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    targetChip.classList.add('active');
-    currentFilter = cat;
+    setFilter(cat);
+    if (cat === 'fotball') pendingTeam = params.get('team');
     // Scroll chip-en inn i view hvis den ligger utenfor (mobil/lang chip-rad)
     targetChip.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
   })();
@@ -930,7 +1040,7 @@
     mix: 'kategori-mix', historie: 'kategori-norsk-historie', verdenshistorie: 'kategori-verdenshistorie',
     vitenskap: 'kategori-naturvitenskap', geografi: 'kategori-geografi', litteratur: 'kategori-litteratur',
     kunst: 'kategori-kunst', film: 'kategori-film', musikk: 'kategori-musikk', sport: 'kategori-sport',
-    filosofi: 'kategori-filosofi', teknologi: 'kategori-teknologi'
+    fotball: 'kategori-sport', filosofi: 'kategori-filosofi', teknologi: 'kategori-teknologi'
   };
 
   // Last inn biblioteket, slå sammen med de ekte quizene, og render.
@@ -951,6 +1061,7 @@
             title: q.title || 'Quiz',
             category: q.category || 'mix',
             categoryLabel: q.categoryLabel || '',
+            team: q.team || '',
             img: CATEGORY_TO_IMG[q.category] || 'kategori-mix',
             sub: q.sub || q.lede || '',
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
@@ -976,6 +1087,7 @@
             title: q.title || 'Quiz',
             category: q.category || 'mix',
             categoryLabel: q.category_label || '',
+            team: q.team || '',
             img: q.hero_img || CATEGORY_TO_IMG[q.category] || 'kategori-mix',
             sub: q.lede || '',
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
@@ -988,6 +1100,13 @@
       }
     } catch (err) {
       console.warn('[Arkiv] Klarte ikke laste quiz_library:', err);
+    }
+    // Nå som fotball-quizene er lastet inn: bygg lag-underfilteret på nytt og
+    // påfør et evt. ?team= fra URL.
+    if (currentFilter === 'fotball') {
+      if (pendingTeam) currentTeam = pendingTeam;
+      buildTeamFilter();
+      pendingTeam = null;
     }
     render();
   })();

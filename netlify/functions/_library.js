@@ -30,6 +30,7 @@ const CATEGORY_TO_IMG = {
   film: "kategori-film",
   musikk: "kategori-musikk",
   sport: "kategori-sport",
+  fotball: "kategori-sport",
   filosofi: "kategori-filosofi",
   teknologi: "kategori-teknologi",
 };
@@ -96,7 +97,7 @@ async function findByThemes(themes, difficulty) {
  * Lagre en nygenerert quiz i arkivet (source='user' når en bruker traff et nytt
  * tema). Idempotent på slug. Stille no-op uten service-nøkkel.
  */
-async function saveQuiz({ themes, difficulty, quiz, category, model, grounded, source = "user" }) {
+async function saveQuiz({ themes, difficulty, quiz, category, team, model, grounded, source = "user" }) {
   if (!canWrite()) return false;
   const client = db();
   if (!client) return false;
@@ -105,6 +106,7 @@ async function saveQuiz({ themes, difficulty, quiz, category, model, grounded, s
     slug: makeSlug(themes, difficulty),
     themes,
     category: cat,
+    team: (cat === "fotball" && team) ? String(team).trim() : null,
     difficulty: difficulty || "medium",
     title: quiz.title || "Quiz",
     lede: quiz.lede || "",

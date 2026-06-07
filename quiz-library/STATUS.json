@@ -1,8 +1,10 @@
 {
-  "nights_run": 1,
-  "total_generated": 38,
-  "last_run": "2026-06-06T23:53:57.876001+00:00",
-  "last_batch": 12,
-  "skipped": [],
-  "last_manual_batch": 12
+  "nights_run": 2,
+  "total_generated": 85,
+  "last_run": "2026-06-07T00:36:28.309369+00:00",
+  "last_batch": 17,
+  "skipped": [
+    "norske-supporterklubber-for-engelsk-fotball__lett"
+  ],
+  "note": "30 klubb/emne-quizer ble lagt inn av en parallell 'manual-club-wave' under dette skiftet; nattskiftet genererte i stedet de gjenværende lett-emnene."
 }

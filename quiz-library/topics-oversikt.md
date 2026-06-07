@@ -1,6 +1,6 @@
 # Emne-taksonomi — oversikt
 
-**Totalt 198 emner** (12 kategorier × underemner × 3 nivå).
+**Totalt 207 emner** (13 kategorier × underemner × 3 nivå).
 
 | Kategori | Antall emner |
 |---|---|
@@ -12,7 +12,8 @@
 | Kunst (`kunst`) | 9 |
 | Film (`film`) | 9 |
 | Musikk (`musikk`) | 9 |
-| Sport (`sport`) | 99 |
+| Sport (`sport`) | 9 |
+| Fotball (`fotball`) | 99 |
 | Filosofi (`filosofi`) | 9 |
 | Teknologi (`teknologi`) | 9 |
 | Blandet allmennkunnskap (`mix`) | 9 |
@@ -44,7 +45,10 @@ Oscar-vinnere gjennom tidene, Hollywoods gullalder, Norske filmklassikere
 Klassisk musikk og komponister, Wolfgang Amadeus Mozart, Ludwig van Beethoven
 
 ### Sport
-Fotball-VM gjennom tidene, Sommer-OL, Vinter-OL
+Sommer-OL, Vinter-OL, Norsk langrenn
+
+### Fotball
+Fotball-VM gjennom tidene, Premier League, Champions League
 
 ### Filosofi
 Sokrates, Platon og idélæren, Aristoteles

@@ -30,6 +30,7 @@ CATEGORIES = {
     "film":           "Film",
     "musikk":         "Musikk",
     "sport":          "Sport",
+    "fotball":        "Fotball",
     "filosofi":       "Filosofi",
     "teknologi":      "Teknologi",
     "mix":            "Blandet allmennkunnskap",
@@ -134,15 +135,22 @@ SUBTOPICS = {
         "Pop-divaer gjennom tidene", "Reggae og Bob Marley", "Norske artister i utlandet",
     ],
     "sport": [
-        "Fotball-VM gjennom tidene", "Sommer-OL", "Vinter-OL", "Norsk langrenn",
+        "Sommer-OL", "Vinter-OL", "Norsk langrenn",
         "Skiskyting", "Friidrettens stjerner", "Tour de France og sykkelsport",
         "Tennis og Grand Slam", "Formel 1", "Sjakk og verdensmestere",
-        "Premier League", "Champions League", "Håndball i Norge", "Norsk fotballhistorie",
+        "Håndball i Norge",
         "Boksing og kampsport", "Svømming og rekorder", "Basketball og NBA",
         "Amerikansk idrett", "Hopp og kombinert", "Skøyter og hurtigløp",
         "Golf og majorturneringer", "Maratonløp", "OL-historie og kuriosa",
-        "Kvinnefotball", "Ishockey", "Roald Bråthen og norske idrettshelter",
+        "Ishockey", "Roald Bråthen og norske idrettshelter",
         "Ekstremsport", "Idrettsrekorder",
+    ],
+    # Fotball er egen kategori (klubblag-filter i arkivet). Generelle
+    # fotball-emner her; klubb-emnene kommer via ALWAYS_INCLUDE + CLUB_DEEP_DIVE
+    # og får team-tagg via team_of().
+    "fotball": [
+        "Fotball-VM gjennom tidene", "Premier League", "Champions League",
+        "Norsk fotballhistorie", "Kvinnefotball",
     ],
     "filosofi": [
         "Sokrates", "Platon og idélæren", "Aristoteles", "Stoikerne",
@@ -186,7 +194,7 @@ SUBTOPICS = {
 # Arsenal ~7 500, så Tottenham/Chelsea/City/Everton/Newcastle. Disse klubbene
 # har stor quiz-interesse, så de prioriteres inn i sport-kategorien.
 ALWAYS_INCLUDE = {
-    "sport": [
+    "fotball": [
         "Liverpool FC — historie og legender",
         "Manchester United — historie og legender",
         "Arsenal FC",
@@ -216,7 +224,7 @@ ALWAYS_INCLUDE = {
 # per klubb. Disse får topp-prioritet i køen (genereres først). Niváene er
 # blandet bevisst per klubb (lett/medium/vanskelig) for variasjon.
 CLUB_DEEP_DIVE = {
-    "sport": [
+    "fotball": [
         # Liverpool FC
         ("Liverpool FC — Anfield-legender", "lett"),
         ("Liverpool FC — kjente målscorere og kapteiner", "lett"),
@@ -253,6 +261,39 @@ CLUB_DEEP_DIVE = {
     ],
 }
 
+# ── Klubblag-tagg (team) for fotball-kategorien ──
+# Kanonisk visningsnavn per klubb = det arkivets lag-underfilter viser som chip.
+# Et emne tagges med team hvis temateksten starter med ett av prefiksene under.
+# Generelle fotball-emner (VM, Premier League, Eliteserien, Champions League,
+# Norsk fotballhistorie, Kvinnefotball, norske spillere/supportere) får IKKE
+# team — de havner under «Alle lag».
+TEAM_PREFIXES = [
+    ("Liverpool FC",       "Liverpool"),
+    ("Manchester United",  "Manchester United"),
+    ("Manchester City",    "Manchester City"),
+    ("Arsenal FC",         "Arsenal"),
+    ("Chelsea FC",         "Chelsea"),
+    ("Tottenham Hotspur",  "Tottenham"),
+    ("Leeds United",       "Leeds United"),
+    ("Everton FC",         "Everton"),
+    ("Newcastle United",   "Newcastle United"),
+    ("Rosenborg BK",       "Rosenborg"),
+    ("SK Brann",           "Brann"),
+    ("Bodø/Glimt",         "Bodø/Glimt"),
+    ("Vålerenga",          "Vålerenga"),
+    ("Molde FK",           "Molde"),
+    ("Lillestrøm SK",      "Lillestrøm"),
+    ("Viking FK",          "Viking"),
+]
+
+def team_of(theme: str):
+    """Returnerer kanonisk klubbnavn for et fotball-emne, ellers None."""
+    t = (theme or "").strip()
+    for prefix, name in TEAM_PREFIXES:
+        if t.startswith(prefix):
+            return name
+    return None
+
 # ── slug: MÅ være identisk med makeSlug() i _library.js ──
 _TRANSLIT = {"æ": "ae", "ø": "o", "å": "a"}
 
@@ -287,7 +328,7 @@ def build():
                 if slug in seen:
                     continue
                 seen.add(slug)
-                rows.append({
+                row = {
                     "slug": slug,
                     "themes": [sub],
                     "category": cat,
@@ -295,7 +336,11 @@ def build():
                     "difficulty": diff,
                     "count": 10,
                     "priority": diff_priority[diff],
-                })
+                }
+                team = team_of(sub) if cat == "fotball" else None
+                if team:
+                    row["team"] = team
+                rows.append(row)
     # Dypdykk-vinkler på topp-klubbene: topp-prioritet (genereres først).
     for cat, angles in CLUB_DEEP_DIVE.items():
         label = CATEGORIES[cat]
@@ -304,7 +349,7 @@ def build():
             if slug in seen:
                 continue
             seen.add(slug)
-            rows.append({
+            row = {
                 "slug": slug,
                 "themes": [theme],
                 "category": cat,
@@ -312,7 +357,11 @@ def build():
                 "difficulty": diff,
                 "count": 10,
                 "priority": 1,  # foran alt annet i køen
-            })
+            }
+            team = team_of(theme) if cat == "fotball" else None
+            if team:
+                row["team"] = team
+            rows.append(row)
     return rows
 
 def main():

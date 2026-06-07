@@ -5945,8 +5945,8 @@ window.__QUIZ_DATA__ = {
     {
       "id": "sport-01",
       "num": "51",
-      "category": "sport",
-      "categoryLabel": "Sport",
+      "category": "fotball",
+      "categoryLabel": "Fotball",
       "title": "Fotballens verden",
       "sub": "Lag, spillere og mesterskap.",
       "lede": "Lag, spillere og mesterskap.",

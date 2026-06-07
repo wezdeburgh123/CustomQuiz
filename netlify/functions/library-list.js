@@ -20,7 +20,7 @@ exports.handler = async (event) => {
   try {
     let q = client
       .from(library.TABLE)
-      .select("slug, title, lede, difficulty, category, category_label, hero_img, num_questions, plays, rating, created_at")
+      .select("slug, title, lede, difficulty, category, category_label, team, hero_img, num_questions, plays, rating, created_at")
       .eq("published", true)
       .order("created_at", { ascending: false })
       .limit(limit);

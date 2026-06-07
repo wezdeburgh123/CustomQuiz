@@ -55,11 +55,13 @@ function toRow(item) {
   if (!themes.length || !Array.isArray(item.questions) || item.questions.length === 0) return null;
   const difficulty = ["lett", "medium", "vanskelig"].includes(item.difficulty) ? item.difficulty : "medium";
   const category = library.VALID_CATEGORIES.includes(item.category) ? item.category : "mix";
+  const team = (category === "fotball" && item.team) ? String(item.team).trim() : null;
   return {
     slug: item.slug || library.makeSlug(themes, difficulty),
     themes,
     category,
     category_label: item.category_label || null,
+    team,
     difficulty,
     title: item.title || "Quiz",
     lede: item.lede || "",

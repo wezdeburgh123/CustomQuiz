@@ -17,7 +17,7 @@ const CATEGORY_LABEL = {
   mix: "Blandet", historie: "Norsk historie", verdenshistorie: "Verdenshistorie",
   vitenskap: "Naturvitenskap", geografi: "Geografi", litteratur: "Litteratur",
   kunst: "Kunst", film: "Film og TV", musikk: "Musikk", sport: "Sport",
-  filosofi: "Filosofi", teknologi: "Teknologi",
+  fotball: "Fotball", filosofi: "Filosofi", teknologi: "Teknologi",
 };
 // Ukedag → kategori som forhåndsvelges (matcher temarytmen i nattjobben).
 const DEFAULT_CAT_BY_WEEKDAY = {
