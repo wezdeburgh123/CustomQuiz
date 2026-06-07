@@ -1569,18 +1569,20 @@
   // false her + fjern env-en for å åpne generatoren igjen.
   const REQUIRE_LOGIN = true;
 
-  /* --------------- GRATIS-TIER (testfase) ---------------
-   * Lar en bruker generere et begrenset antall quizer gratis før
+  /* --------------- GRATIS-TIER (valgt lansering-modell, 7. juni 2026) ---------------
+   * Gratis-funnelen: en bruker får 3 gratis egne genereringer før
    * abonnementsmodalen (#paywall) dukker opp. Teller per nettleser i
-   * localStorage — enkelt og null friksjon mens vi tester live.
+   * localStorage. Server står bevisst på innloggings-sperre
+   * (REQUIRE_SUBSCRIPTION=false), så de 3 gratis faktisk slipper gjennom —
+   * paywallen håndheves mykt på klienten (ensureCanGenerate, IKKE ensureAccess).
    *
-   * TODO (når betaling låses inn): flytt tellingen til server-side per
-   * konto (Supabase: subscribers/usage-tabell, sjekk i generate-quiz.js),
-   * og slå på den strenge innloggings/abonnements-ruten igjen — se den
-   * bevarte ensureAccess() lenger ned. localStorage er trivielt å omgå
-   * (inkognito/ny nettleser), så det holder kun til testing.
+   * KJENT SVAKHET: localStorage er trivielt å omgå (inkognito/ny nettleser).
+   * Akseptert ved lavt volum (~0,15 kr per generering). Oppgradering til
+   * server-håndhevet kvote (Supabase usage-tabell + sjekk i generate-quiz.js
+   * og quiz-generate-background.js, deretter ensureAccess + REQUIRE_SUBSCRIPTION)
+   * er «modell C» — utsatt til volum rettferdiggjør det. Se GRATIS-funnel-spec.md.
    */
-  const FREE_GENERATION_LIMIT = 5;
+  const FREE_GENERATION_LIMIT = 3;
   const FREE_GEN_KEY = "customquiz.freeGen";
 
   function getFreeGenCount() {
