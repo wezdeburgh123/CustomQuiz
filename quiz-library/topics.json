@@ -1,2361 +1,2409 @@
 {
- "generated": true,
- "total": 207,
- "topics": [
-  {
-   "slug": "arsenal-fc-ars-ne-wenger-aeraen__medium",
-   "themes": [
-    "Arsenal FC — Arsène Wenger-æraen"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-beromte-malscorere__lett",
-   "themes": [
-    "Arsenal FC — berømte målscorere"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-europacup-og-champions-league__medium",
-   "themes": [
-    "Arsenal FC — europacup og Champions League"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-fa-cup-rekorden__vanskelig",
-   "themes": [
-    "Arsenal FC — FA-cup-rekorden"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-highbury-og-emirates__lett",
-   "themes": [
-    "Arsenal FC — Highbury og Emirates"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-klubblegender__lett",
-   "themes": [
-    "Arsenal FC — klubblegender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-klubbrekorder-og-statistikk__vanskelig",
-   "themes": [
-    "Arsenal FC — klubbrekorder og statistikk"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-managerne-gjennom-historien__vanskelig",
-   "themes": [
-    "Arsenal FC — managerne gjennom historien"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-nord-london-derbyet-mot-tottenham__medium",
-   "themes": [
-    "Arsenal FC — Nord-London-derbyet mot Tottenham"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "arsenal-fc-the-invincibles-2003-04__medium",
-   "themes": [
-    "Arsenal FC — the Invincibles 2003/04"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "liverpool-fc-anfield-legender__lett",
-   "themes": [
-    "Liverpool FC — Anfield-legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-beromte-overganger-og-signeringer__medium",
-   "themes": [
-    "Liverpool FC — berømte overganger og signeringer"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-europacup-netter-og-finaler__vanskelig",
-   "themes": [
-    "Liverpool FC — europacup-netter og finaler"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-istanbul-2005-og-champions-league-triumfene__medium",
-   "themes": [
-    "Liverpool FC — Istanbul 2005 og Champions League-triumfene"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-kjente-malscorere-og-kapteiner__lett",
-   "themes": [
-    "Liverpool FC — kjente målscorere og kapteiner"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-klubbrekorder-og-statistikk__vanskelig",
-   "themes": [
-    "Liverpool FC — klubbrekorder og statistikk"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-managerne-fra-shankly-til-klopp__vanskelig",
-   "themes": [
-    "Liverpool FC — managerne fra Shankly til Klopp"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-merseyside-derbyet-mot-everton__medium",
-   "themes": [
-    "Liverpool FC — Merseyside-derbyet mot Everton"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-premier-league-tittelen-2019-20-og-klopp-aeraen__lett",
-   "themes": [
-    "Liverpool FC — Premier League-tittelen 2019/20 og Klopp-æraen"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "liverpool-fc-storhetstiden-pa-1970-og-80-tallet__medium",
-   "themes": [
-    "Liverpool FC — storhetstiden på 1970- og 80-tallet"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "manchester-united-beromte-overganger__medium",
-   "themes": [
-    "Manchester United — berømte overganger"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-busby-babes-og-m-nchen-ulykken-1958__vanskelig",
-   "themes": [
-    "Manchester United — Busby Babes og München-ulykken 1958"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-champions-league-triumfene-1968-1999-og-2008__vanskelig",
-   "themes": [
-    "Manchester United — Champions League-triumfene 1968, 1999 og 2008"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-class-of-92__medium",
-   "themes": [
-    "Manchester United — Class of '92"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-klubbrekorder-og-statistikk__vanskelig",
-   "themes": [
-    "Manchester United — klubbrekorder og statistikk"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-managerne-etter-ferguson__lett",
-   "themes": [
-    "Manchester United — managerne etter Ferguson"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-old-trafford-legender__lett",
-   "themes": [
-    "Manchester United — Old Trafford-legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-premier-league-titlene__lett",
-   "themes": [
-    "Manchester United — Premier League-titlene"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-sir-alex-ferguson-aeraen__medium",
-   "themes": [
-    "Manchester United — Sir Alex Ferguson-æraen"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "manchester-united-the-treble-1999__medium",
-   "themes": [
-    "Manchester United — the Treble 1999"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 1,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "hollywoods-gullalder__lett",
-   "themes": [
-    "Hollywoods gullalder"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "norske-filmklassikere__lett",
-   "themes": [
-    "Norske filmklassikere"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "oscar-vinnere-gjennom-tidene__lett",
-   "themes": [
-    "Oscar-vinnere gjennom tidene"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "aristoteles__lett",
-   "themes": [
-    "Aristoteles"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "platon-og-id-laeren__lett",
-   "themes": [
-    "Platon og idélæren"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "sokrates__lett",
-   "themes": [
-    "Sokrates"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "arsenal-fc__lett",
-   "themes": [
-    "Arsenal FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "bodo-glimt-historie-og-legender__lett",
-   "themes": [
-    "Bodø/Glimt — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Bodø/Glimt"
-  },
-  {
-   "slug": "champions-league__lett",
-   "themes": [
-    "Champions League"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "chelsea-fc__lett",
-   "themes": [
-    "Chelsea FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Chelsea"
-  },
-  {
-   "slug": "eliteserien-historie-og-rekorder__lett",
-   "themes": [
-    "Eliteserien — historie og rekorder"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "everton-fc__lett",
-   "themes": [
-    "Everton FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Everton"
-  },
-  {
-   "slug": "fotball-vm-gjennom-tidene__lett",
-   "themes": [
-    "Fotball-VM gjennom tidene"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "leeds-united__lett",
-   "themes": [
-    "Leeds United"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Leeds United"
-  },
-  {
-   "slug": "lillestrom-sk-historie-og-legender__lett",
-   "themes": [
-    "Lillestrøm SK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Lillestrøm"
-  },
-  {
-   "slug": "liverpool-fc-historie-og-legender__lett",
-   "themes": [
-    "Liverpool FC — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "manchester-city__lett",
-   "themes": [
-    "Manchester City"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Manchester City"
-  },
-  {
-   "slug": "manchester-united-historie-og-legender__lett",
-   "themes": [
-    "Manchester United — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "molde-fk-historie-og-legender__lett",
-   "themes": [
-    "Molde FK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Molde"
-  },
-  {
-   "slug": "newcastle-united__lett",
-   "themes": [
-    "Newcastle United"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Newcastle United"
-  },
-  {
-   "slug": "norske-spillere-i-engelsk-fotball__lett",
-   "themes": [
-    "Norske spillere i engelsk fotball"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "norske-supporterklubber-for-engelsk-fotball__lett",
-   "themes": [
-    "Norske supporterklubber for engelsk fotball"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "premier-league-historie-og-rekorder__lett",
-   "themes": [
-    "Premier League — historie og rekorder"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "premier-league__lett",
-   "themes": [
-    "Premier League"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "rosenborg-bk-historie-og-legender__lett",
-   "themes": [
-    "Rosenborg BK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Rosenborg"
-  },
-  {
-   "slug": "sk-brann-historie-og-legender__lett",
-   "themes": [
-    "SK Brann — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Brann"
-  },
-  {
-   "slug": "tottenham-hotspur__lett",
-   "themes": [
-    "Tottenham Hotspur"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Tottenham"
-  },
-  {
-   "slug": "valerenga-fotball-historie-og-legender__lett",
-   "themes": [
-    "Vålerenga Fotball — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Vålerenga"
-  },
-  {
-   "slug": "viking-fk-historie-og-legender__lett",
-   "themes": [
-    "Viking FK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10,
-   "team": "Viking"
-  },
-  {
-   "slug": "europas-hovedsteder__lett",
-   "themes": [
-    "Europas hovedsteder"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "norges-fylker-og-byer__lett",
-   "themes": [
-    "Norges fylker og byer"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "verdens-hovedsteder__lett",
-   "themes": [
-    "Verdens hovedsteder"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "harald-harfagre-og-rikssamlingen__lett",
-   "themes": [
-    "Harald Hårfagre og rikssamlingen"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "slaget-pa-stiklestad__lett",
-   "themes": [
-    "Slaget på Stiklestad"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "vikingtiden__lett",
-   "themes": [
-    "Vikingtiden"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "leonardo-da-vinci__lett",
-   "themes": [
-    "Leonardo da Vinci"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "michelangelo__lett",
-   "themes": [
-    "Michelangelo"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "renessansekunst__lett",
-   "themes": [
-    "Renessansekunst"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "bjornstjerne-bjornson__lett",
-   "themes": [
-    "Bjørnstjerne Bjørnson"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "henrik-ibsen__lett",
-   "themes": [
-    "Henrik Ibsen"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "knut-hamsun__lett",
-   "themes": [
-    "Knut Hamsun"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "blandet-allmennkunnskap__lett",
-   "themes": [
-    "Blandet allmennkunnskap"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "norsk-allmennkunnskap__lett",
-   "themes": [
-    "Norsk allmennkunnskap"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "verden-rundt__lett",
-   "themes": [
-    "Verden rundt"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "klassisk-musikk-og-komponister__lett",
-   "themes": [
-    "Klassisk musikk og komponister"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "ludwig-van-beethoven__lett",
-   "themes": [
-    "Ludwig van Beethoven"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "wolfgang-amadeus-mozart__lett",
-   "themes": [
-    "Wolfgang Amadeus Mozart"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "norsk-langrenn__lett",
-   "themes": [
-    "Norsk langrenn"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "sommer-ol__lett",
-   "themes": [
-    "Sommer-OL"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "vinter-ol__lett",
-   "themes": [
-    "Vinter-OL"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "datamaskinens-utvikling__lett",
-   "themes": [
-    "Datamaskinens utvikling"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "internettets-historie__lett",
-   "themes": [
-    "Internettets historie"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "kunstig-intelligens__lett",
-   "themes": [
-    "Kunstig intelligens"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "antikkens-hellas__lett",
-   "themes": [
-    "Antikkens Hellas"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "det-gamle-egypt__lett",
-   "themes": [
-    "Det gamle Egypt"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "romerriket__lett",
-   "themes": [
-    "Romerriket"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "det-periodiske-system__lett",
-   "themes": [
-    "Det periodiske system"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "evolusjon-og-darwin__lett",
-   "themes": [
-    "Evolusjon og Darwin"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "solsystemet__lett",
-   "themes": [
-    "Solsystemet"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "lett",
-   "count": 10,
-   "priority": 10
-  },
-  {
-   "slug": "hollywoods-gullalder__medium",
-   "themes": [
-    "Hollywoods gullalder"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "norske-filmklassikere__medium",
-   "themes": [
-    "Norske filmklassikere"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "oscar-vinnere-gjennom-tidene__medium",
-   "themes": [
-    "Oscar-vinnere gjennom tidene"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "aristoteles__medium",
-   "themes": [
-    "Aristoteles"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "platon-og-id-laeren__medium",
-   "themes": [
-    "Platon og idélæren"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "sokrates__medium",
-   "themes": [
-    "Sokrates"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "arsenal-fc__medium",
-   "themes": [
-    "Arsenal FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "bodo-glimt-historie-og-legender__medium",
-   "themes": [
-    "Bodø/Glimt — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Bodø/Glimt"
-  },
-  {
-   "slug": "champions-league__medium",
-   "themes": [
-    "Champions League"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "chelsea-fc__medium",
-   "themes": [
-    "Chelsea FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Chelsea"
-  },
-  {
-   "slug": "eliteserien-historie-og-rekorder__medium",
-   "themes": [
-    "Eliteserien — historie og rekorder"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "everton-fc__medium",
-   "themes": [
-    "Everton FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Everton"
-  },
-  {
-   "slug": "fotball-vm-gjennom-tidene__medium",
-   "themes": [
-    "Fotball-VM gjennom tidene"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "leeds-united__medium",
-   "themes": [
-    "Leeds United"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Leeds United"
-  },
-  {
-   "slug": "lillestrom-sk-historie-og-legender__medium",
-   "themes": [
-    "Lillestrøm SK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Lillestrøm"
-  },
-  {
-   "slug": "liverpool-fc-historie-og-legender__medium",
-   "themes": [
-    "Liverpool FC — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "manchester-city__medium",
-   "themes": [
-    "Manchester City"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Manchester City"
-  },
-  {
-   "slug": "manchester-united-historie-og-legender__medium",
-   "themes": [
-    "Manchester United — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "molde-fk-historie-og-legender__medium",
-   "themes": [
-    "Molde FK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Molde"
-  },
-  {
-   "slug": "newcastle-united__medium",
-   "themes": [
-    "Newcastle United"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Newcastle United"
-  },
-  {
-   "slug": "norske-spillere-i-engelsk-fotball__medium",
-   "themes": [
-    "Norske spillere i engelsk fotball"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "norske-supporterklubber-for-engelsk-fotball__medium",
-   "themes": [
-    "Norske supporterklubber for engelsk fotball"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "premier-league-historie-og-rekorder__medium",
-   "themes": [
-    "Premier League — historie og rekorder"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "premier-league__medium",
-   "themes": [
-    "Premier League"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "rosenborg-bk-historie-og-legender__medium",
-   "themes": [
-    "Rosenborg BK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Rosenborg"
-  },
-  {
-   "slug": "sk-brann-historie-og-legender__medium",
-   "themes": [
-    "SK Brann — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Brann"
-  },
-  {
-   "slug": "tottenham-hotspur__medium",
-   "themes": [
-    "Tottenham Hotspur"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Tottenham"
-  },
-  {
-   "slug": "valerenga-fotball-historie-og-legender__medium",
-   "themes": [
-    "Vålerenga Fotball — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Vålerenga"
-  },
-  {
-   "slug": "viking-fk-historie-og-legender__medium",
-   "themes": [
-    "Viking FK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20,
-   "team": "Viking"
-  },
-  {
-   "slug": "europas-hovedsteder__medium",
-   "themes": [
-    "Europas hovedsteder"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "norges-fylker-og-byer__medium",
-   "themes": [
-    "Norges fylker og byer"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "verdens-hovedsteder__medium",
-   "themes": [
-    "Verdens hovedsteder"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "harald-harfagre-og-rikssamlingen__medium",
-   "themes": [
-    "Harald Hårfagre og rikssamlingen"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "slaget-pa-stiklestad__medium",
-   "themes": [
-    "Slaget på Stiklestad"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "vikingtiden__medium",
-   "themes": [
-    "Vikingtiden"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "leonardo-da-vinci__medium",
-   "themes": [
-    "Leonardo da Vinci"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "michelangelo__medium",
-   "themes": [
-    "Michelangelo"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "renessansekunst__medium",
-   "themes": [
-    "Renessansekunst"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "bjornstjerne-bjornson__medium",
-   "themes": [
-    "Bjørnstjerne Bjørnson"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "henrik-ibsen__medium",
-   "themes": [
-    "Henrik Ibsen"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "knut-hamsun__medium",
-   "themes": [
-    "Knut Hamsun"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "blandet-allmennkunnskap__medium",
-   "themes": [
-    "Blandet allmennkunnskap"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "norsk-allmennkunnskap__medium",
-   "themes": [
-    "Norsk allmennkunnskap"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "verden-rundt__medium",
-   "themes": [
-    "Verden rundt"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "klassisk-musikk-og-komponister__medium",
-   "themes": [
-    "Klassisk musikk og komponister"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "ludwig-van-beethoven__medium",
-   "themes": [
-    "Ludwig van Beethoven"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "wolfgang-amadeus-mozart__medium",
-   "themes": [
-    "Wolfgang Amadeus Mozart"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "norsk-langrenn__medium",
-   "themes": [
-    "Norsk langrenn"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "sommer-ol__medium",
-   "themes": [
-    "Sommer-OL"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "vinter-ol__medium",
-   "themes": [
-    "Vinter-OL"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "datamaskinens-utvikling__medium",
-   "themes": [
-    "Datamaskinens utvikling"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "internettets-historie__medium",
-   "themes": [
-    "Internettets historie"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "kunstig-intelligens__medium",
-   "themes": [
-    "Kunstig intelligens"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "antikkens-hellas__medium",
-   "themes": [
-    "Antikkens Hellas"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "det-gamle-egypt__medium",
-   "themes": [
-    "Det gamle Egypt"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "romerriket__medium",
-   "themes": [
-    "Romerriket"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "det-periodiske-system__medium",
-   "themes": [
-    "Det periodiske system"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "evolusjon-og-darwin__medium",
-   "themes": [
-    "Evolusjon og Darwin"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "solsystemet__medium",
-   "themes": [
-    "Solsystemet"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "medium",
-   "count": 10,
-   "priority": 20
-  },
-  {
-   "slug": "hollywoods-gullalder__vanskelig",
-   "themes": [
-    "Hollywoods gullalder"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "norske-filmklassikere__vanskelig",
-   "themes": [
-    "Norske filmklassikere"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "oscar-vinnere-gjennom-tidene__vanskelig",
-   "themes": [
-    "Oscar-vinnere gjennom tidene"
-   ],
-   "category": "film",
-   "category_label": "Film",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "aristoteles__vanskelig",
-   "themes": [
-    "Aristoteles"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "platon-og-id-laeren__vanskelig",
-   "themes": [
-    "Platon og idélæren"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "sokrates__vanskelig",
-   "themes": [
-    "Sokrates"
-   ],
-   "category": "filosofi",
-   "category_label": "Filosofi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "arsenal-fc__vanskelig",
-   "themes": [
-    "Arsenal FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Arsenal"
-  },
-  {
-   "slug": "bodo-glimt-historie-og-legender__vanskelig",
-   "themes": [
-    "Bodø/Glimt — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Bodø/Glimt"
-  },
-  {
-   "slug": "champions-league__vanskelig",
-   "themes": [
-    "Champions League"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "chelsea-fc__vanskelig",
-   "themes": [
-    "Chelsea FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Chelsea"
-  },
-  {
-   "slug": "eliteserien-historie-og-rekorder__vanskelig",
-   "themes": [
-    "Eliteserien — historie og rekorder"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "everton-fc__vanskelig",
-   "themes": [
-    "Everton FC"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Everton"
-  },
-  {
-   "slug": "fotball-vm-gjennom-tidene__vanskelig",
-   "themes": [
-    "Fotball-VM gjennom tidene"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "leeds-united__vanskelig",
-   "themes": [
-    "Leeds United"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Leeds United"
-  },
-  {
-   "slug": "lillestrom-sk-historie-og-legender__vanskelig",
-   "themes": [
-    "Lillestrøm SK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Lillestrøm"
-  },
-  {
-   "slug": "liverpool-fc-historie-og-legender__vanskelig",
-   "themes": [
-    "Liverpool FC — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Liverpool"
-  },
-  {
-   "slug": "manchester-city__vanskelig",
-   "themes": [
-    "Manchester City"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Manchester City"
-  },
-  {
-   "slug": "manchester-united-historie-og-legender__vanskelig",
-   "themes": [
-    "Manchester United — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Manchester United"
-  },
-  {
-   "slug": "molde-fk-historie-og-legender__vanskelig",
-   "themes": [
-    "Molde FK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Molde"
-  },
-  {
-   "slug": "newcastle-united__vanskelig",
-   "themes": [
-    "Newcastle United"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Newcastle United"
-  },
-  {
-   "slug": "norske-spillere-i-engelsk-fotball__vanskelig",
-   "themes": [
-    "Norske spillere i engelsk fotball"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "norske-supporterklubber-for-engelsk-fotball__vanskelig",
-   "themes": [
-    "Norske supporterklubber for engelsk fotball"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "premier-league-historie-og-rekorder__vanskelig",
-   "themes": [
-    "Premier League — historie og rekorder"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "premier-league__vanskelig",
-   "themes": [
-    "Premier League"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "rosenborg-bk-historie-og-legender__vanskelig",
-   "themes": [
-    "Rosenborg BK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Rosenborg"
-  },
-  {
-   "slug": "sk-brann-historie-og-legender__vanskelig",
-   "themes": [
-    "SK Brann — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Brann"
-  },
-  {
-   "slug": "tottenham-hotspur__vanskelig",
-   "themes": [
-    "Tottenham Hotspur"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Tottenham"
-  },
-  {
-   "slug": "valerenga-fotball-historie-og-legender__vanskelig",
-   "themes": [
-    "Vålerenga Fotball — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Vålerenga"
-  },
-  {
-   "slug": "viking-fk-historie-og-legender__vanskelig",
-   "themes": [
-    "Viking FK — historie og legender"
-   ],
-   "category": "fotball",
-   "category_label": "Fotball",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30,
-   "team": "Viking"
-  },
-  {
-   "slug": "europas-hovedsteder__vanskelig",
-   "themes": [
-    "Europas hovedsteder"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "norges-fylker-og-byer__vanskelig",
-   "themes": [
-    "Norges fylker og byer"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "verdens-hovedsteder__vanskelig",
-   "themes": [
-    "Verdens hovedsteder"
-   ],
-   "category": "geografi",
-   "category_label": "Geografi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "harald-harfagre-og-rikssamlingen__vanskelig",
-   "themes": [
-    "Harald Hårfagre og rikssamlingen"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "slaget-pa-stiklestad__vanskelig",
-   "themes": [
-    "Slaget på Stiklestad"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "vikingtiden__vanskelig",
-   "themes": [
-    "Vikingtiden"
-   ],
-   "category": "historie",
-   "category_label": "Norsk historie",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "leonardo-da-vinci__vanskelig",
-   "themes": [
-    "Leonardo da Vinci"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "michelangelo__vanskelig",
-   "themes": [
-    "Michelangelo"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "renessansekunst__vanskelig",
-   "themes": [
-    "Renessansekunst"
-   ],
-   "category": "kunst",
-   "category_label": "Kunst",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "bjornstjerne-bjornson__vanskelig",
-   "themes": [
-    "Bjørnstjerne Bjørnson"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "henrik-ibsen__vanskelig",
-   "themes": [
-    "Henrik Ibsen"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "knut-hamsun__vanskelig",
-   "themes": [
-    "Knut Hamsun"
-   ],
-   "category": "litteratur",
-   "category_label": "Litteratur",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "blandet-allmennkunnskap__vanskelig",
-   "themes": [
-    "Blandet allmennkunnskap"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "norsk-allmennkunnskap__vanskelig",
-   "themes": [
-    "Norsk allmennkunnskap"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "verden-rundt__vanskelig",
-   "themes": [
-    "Verden rundt"
-   ],
-   "category": "mix",
-   "category_label": "Blandet allmennkunnskap",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "klassisk-musikk-og-komponister__vanskelig",
-   "themes": [
-    "Klassisk musikk og komponister"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "ludwig-van-beethoven__vanskelig",
-   "themes": [
-    "Ludwig van Beethoven"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "wolfgang-amadeus-mozart__vanskelig",
-   "themes": [
-    "Wolfgang Amadeus Mozart"
-   ],
-   "category": "musikk",
-   "category_label": "Musikk",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "norsk-langrenn__vanskelig",
-   "themes": [
-    "Norsk langrenn"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "sommer-ol__vanskelig",
-   "themes": [
-    "Sommer-OL"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "vinter-ol__vanskelig",
-   "themes": [
-    "Vinter-OL"
-   ],
-   "category": "sport",
-   "category_label": "Sport",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "datamaskinens-utvikling__vanskelig",
-   "themes": [
-    "Datamaskinens utvikling"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "internettets-historie__vanskelig",
-   "themes": [
-    "Internettets historie"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "kunstig-intelligens__vanskelig",
-   "themes": [
-    "Kunstig intelligens"
-   ],
-   "category": "teknologi",
-   "category_label": "Teknologi",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "antikkens-hellas__vanskelig",
-   "themes": [
-    "Antikkens Hellas"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "det-gamle-egypt__vanskelig",
-   "themes": [
-    "Det gamle Egypt"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "romerriket__vanskelig",
-   "themes": [
-    "Romerriket"
-   ],
-   "category": "verdenshistorie",
-   "category_label": "Verdenshistorie",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "det-periodiske-system__vanskelig",
-   "themes": [
-    "Det periodiske system"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "evolusjon-og-darwin__vanskelig",
-   "themes": [
-    "Evolusjon og Darwin"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  },
-  {
-   "slug": "solsystemet__vanskelig",
-   "themes": [
-    "Solsystemet"
-   ],
-   "category": "vitenskap",
-   "category_label": "Vitenskap og natur",
-   "difficulty": "vanskelig",
-   "count": 10,
-   "priority": 30
-  }
- ]
+  "generated": true,
+  "total": 207,
+  "topics": [
+    {
+      "slug": "arsenal-fc-ars-ne-wenger-aeraen__medium",
+      "themes": [
+        "Arsenal FC — Arsène Wenger-æraen"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "arsenal-fc-beromte-malscorere__lett",
+      "themes": [
+        "Arsenal FC — berømte målscorere"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "arsenal-fc-europacup-og-champions-league__medium",
+      "themes": [
+        "Arsenal FC — europacup og Champions League"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "arsenal-fc-fa-cup-rekorden__vanskelig",
+      "themes": [
+        "Arsenal FC — FA-cup-rekorden"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal",
+      "free": true
+    },
+    {
+      "slug": "arsenal-fc-highbury-og-emirates__lett",
+      "themes": [
+        "Arsenal FC — Highbury og Emirates"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "arsenal-fc-klubblegender__lett",
+      "themes": [
+        "Arsenal FC — klubblegender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal",
+      "free": true
+    },
+    {
+      "slug": "arsenal-fc-klubbrekorder-og-statistikk__vanskelig",
+      "themes": [
+        "Arsenal FC — klubbrekorder og statistikk"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "arsenal-fc-managerne-gjennom-historien__vanskelig",
+      "themes": [
+        "Arsenal FC — managerne gjennom historien"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "arsenal-fc-nord-london-derbyet-mot-tottenham__medium",
+      "themes": [
+        "Arsenal FC — Nord-London-derbyet mot Tottenham"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "arsenal-fc-the-invincibles-2003-04__medium",
+      "themes": [
+        "Arsenal FC — the Invincibles 2003/04"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Arsenal",
+      "free": true
+    },
+    {
+      "slug": "liverpool-fc-anfield-legender__lett",
+      "themes": [
+        "Liverpool FC — Anfield-legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool",
+      "free": true
+    },
+    {
+      "slug": "liverpool-fc-beromte-overganger-og-signeringer__medium",
+      "themes": [
+        "Liverpool FC — berømte overganger og signeringer"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "liverpool-fc-europacup-netter-og-finaler__vanskelig",
+      "themes": [
+        "Liverpool FC — europacup-netter og finaler"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "liverpool-fc-istanbul-2005-og-champions-league-triumfene__medium",
+      "themes": [
+        "Liverpool FC — Istanbul 2005 og Champions League-triumfene"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool",
+      "free": true
+    },
+    {
+      "slug": "liverpool-fc-kjente-malscorere-og-kapteiner__lett",
+      "themes": [
+        "Liverpool FC — kjente målscorere og kapteiner"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "liverpool-fc-klubbrekorder-og-statistikk__vanskelig",
+      "themes": [
+        "Liverpool FC — klubbrekorder og statistikk"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "liverpool-fc-managerne-fra-shankly-til-klopp__vanskelig",
+      "themes": [
+        "Liverpool FC — managerne fra Shankly til Klopp"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool",
+      "free": true
+    },
+    {
+      "slug": "liverpool-fc-merseyside-derbyet-mot-everton__medium",
+      "themes": [
+        "Liverpool FC — Merseyside-derbyet mot Everton"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "liverpool-fc-premier-league-tittelen-2019-20-og-klopp-aeraen__lett",
+      "themes": [
+        "Liverpool FC — Premier League-tittelen 2019/20 og Klopp-æraen"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "liverpool-fc-storhetstiden-pa-1970-og-80-tallet__medium",
+      "themes": [
+        "Liverpool FC — storhetstiden på 1970- og 80-tallet"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "manchester-united-beromte-overganger__medium",
+      "themes": [
+        "Manchester United — berømte overganger"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "manchester-united-busby-babes-og-m-nchen-ulykken-1958__vanskelig",
+      "themes": [
+        "Manchester United — Busby Babes og München-ulykken 1958"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United",
+      "free": true
+    },
+    {
+      "slug": "manchester-united-champions-league-triumfene-1968-1999-og-2008__vanskelig",
+      "themes": [
+        "Manchester United — Champions League-triumfene 1968, 1999 og 2008"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "manchester-united-class-of-92__medium",
+      "themes": [
+        "Manchester United — Class of '92"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "manchester-united-klubbrekorder-og-statistikk__vanskelig",
+      "themes": [
+        "Manchester United — klubbrekorder og statistikk"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "manchester-united-managerne-etter-ferguson__lett",
+      "themes": [
+        "Manchester United — managerne etter Ferguson"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "manchester-united-old-trafford-legender__lett",
+      "themes": [
+        "Manchester United — Old Trafford-legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United",
+      "free": true
+    },
+    {
+      "slug": "manchester-united-premier-league-titlene__lett",
+      "themes": [
+        "Manchester United — Premier League-titlene"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "manchester-united-sir-alex-ferguson-aeraen__medium",
+      "themes": [
+        "Manchester United — Sir Alex Ferguson-æraen"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "manchester-united-the-treble-1999__medium",
+      "themes": [
+        "Manchester United — the Treble 1999"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 1,
+      "team": "Manchester United",
+      "free": true
+    },
+    {
+      "slug": "hollywoods-gullalder__lett",
+      "themes": [
+        "Hollywoods gullalder"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "norske-filmklassikere__lett",
+      "themes": [
+        "Norske filmklassikere"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "oscar-vinnere-gjennom-tidene__lett",
+      "themes": [
+        "Oscar-vinnere gjennom tidene"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "aristoteles__lett",
+      "themes": [
+        "Aristoteles"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "platon-og-id-laeren__lett",
+      "themes": [
+        "Platon og idélæren"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "sokrates__lett",
+      "themes": [
+        "Sokrates"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "arsenal-fc__lett",
+      "themes": [
+        "Arsenal FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "bodo-glimt-historie-og-legender__lett",
+      "themes": [
+        "Bodø/Glimt — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Bodø/Glimt",
+      "free": true
+    },
+    {
+      "slug": "champions-league__lett",
+      "themes": [
+        "Champions League"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "chelsea-fc__lett",
+      "themes": [
+        "Chelsea FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Chelsea",
+      "free": true
+    },
+    {
+      "slug": "eliteserien-historie-og-rekorder__lett",
+      "themes": [
+        "Eliteserien — historie og rekorder"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "everton-fc__lett",
+      "themes": [
+        "Everton FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Everton",
+      "free": true
+    },
+    {
+      "slug": "fotball-vm-gjennom-tidene__lett",
+      "themes": [
+        "Fotball-VM gjennom tidene"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "leeds-united__lett",
+      "themes": [
+        "Leeds United"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Leeds United",
+      "free": true
+    },
+    {
+      "slug": "lillestrom-sk-historie-og-legender__lett",
+      "themes": [
+        "Lillestrøm SK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Lillestrøm",
+      "free": true
+    },
+    {
+      "slug": "liverpool-fc-historie-og-legender__lett",
+      "themes": [
+        "Liverpool FC — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "manchester-city__lett",
+      "themes": [
+        "Manchester City"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Manchester City",
+      "free": true
+    },
+    {
+      "slug": "manchester-united-historie-og-legender__lett",
+      "themes": [
+        "Manchester United — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "molde-fk-historie-og-legender__lett",
+      "themes": [
+        "Molde FK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Molde",
+      "free": true
+    },
+    {
+      "slug": "newcastle-united__lett",
+      "themes": [
+        "Newcastle United"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Newcastle United",
+      "free": true
+    },
+    {
+      "slug": "norske-spillere-i-engelsk-fotball__lett",
+      "themes": [
+        "Norske spillere i engelsk fotball"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "norske-supporterklubber-for-engelsk-fotball__lett",
+      "themes": [
+        "Norske supporterklubber for engelsk fotball"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "premier-league-historie-og-rekorder__lett",
+      "themes": [
+        "Premier League — historie og rekorder"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "premier-league__lett",
+      "themes": [
+        "Premier League"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "rosenborg-bk-historie-og-legender__lett",
+      "themes": [
+        "Rosenborg BK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Rosenborg",
+      "free": true
+    },
+    {
+      "slug": "sk-brann-historie-og-legender__lett",
+      "themes": [
+        "SK Brann — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Brann",
+      "free": true
+    },
+    {
+      "slug": "tottenham-hotspur__lett",
+      "themes": [
+        "Tottenham Hotspur"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Tottenham",
+      "free": true
+    },
+    {
+      "slug": "valerenga-fotball-historie-og-legender__lett",
+      "themes": [
+        "Vålerenga Fotball — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Vålerenga",
+      "free": true
+    },
+    {
+      "slug": "viking-fk-historie-og-legender__lett",
+      "themes": [
+        "Viking FK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10,
+      "team": "Viking",
+      "free": true
+    },
+    {
+      "slug": "europas-hovedsteder__lett",
+      "themes": [
+        "Europas hovedsteder"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "norges-fylker-og-byer__lett",
+      "themes": [
+        "Norges fylker og byer"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "verdens-hovedsteder__lett",
+      "themes": [
+        "Verdens hovedsteder"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "harald-harfagre-og-rikssamlingen__lett",
+      "themes": [
+        "Harald Hårfagre og rikssamlingen"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "slaget-pa-stiklestad__lett",
+      "themes": [
+        "Slaget på Stiklestad"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "vikingtiden__lett",
+      "themes": [
+        "Vikingtiden"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "leonardo-da-vinci__lett",
+      "themes": [
+        "Leonardo da Vinci"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "michelangelo__lett",
+      "themes": [
+        "Michelangelo"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "renessansekunst__lett",
+      "themes": [
+        "Renessansekunst"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "bjornstjerne-bjornson__lett",
+      "themes": [
+        "Bjørnstjerne Bjørnson"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "henrik-ibsen__lett",
+      "themes": [
+        "Henrik Ibsen"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "knut-hamsun__lett",
+      "themes": [
+        "Knut Hamsun"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "blandet-allmennkunnskap__lett",
+      "themes": [
+        "Blandet allmennkunnskap"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "norsk-allmennkunnskap__lett",
+      "themes": [
+        "Norsk allmennkunnskap"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "verden-rundt__lett",
+      "themes": [
+        "Verden rundt"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "klassisk-musikk-og-komponister__lett",
+      "themes": [
+        "Klassisk musikk og komponister"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "ludwig-van-beethoven__lett",
+      "themes": [
+        "Ludwig van Beethoven"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "wolfgang-amadeus-mozart__lett",
+      "themes": [
+        "Wolfgang Amadeus Mozart"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "norsk-langrenn__lett",
+      "themes": [
+        "Norsk langrenn"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "sommer-ol__lett",
+      "themes": [
+        "Sommer-OL"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "vinter-ol__lett",
+      "themes": [
+        "Vinter-OL"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "datamaskinens-utvikling__lett",
+      "themes": [
+        "Datamaskinens utvikling"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "internettets-historie__lett",
+      "themes": [
+        "Internettets historie"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "kunstig-intelligens__lett",
+      "themes": [
+        "Kunstig intelligens"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "antikkens-hellas__lett",
+      "themes": [
+        "Antikkens Hellas"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "det-gamle-egypt__lett",
+      "themes": [
+        "Det gamle Egypt"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "romerriket__lett",
+      "themes": [
+        "Romerriket"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "det-periodiske-system__lett",
+      "themes": [
+        "Det periodiske system"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "evolusjon-og-darwin__lett",
+      "themes": [
+        "Evolusjon og Darwin"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "solsystemet__lett",
+      "themes": [
+        "Solsystemet"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 10
+    },
+    {
+      "slug": "hollywoods-gullalder__medium",
+      "themes": [
+        "Hollywoods gullalder"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "norske-filmklassikere__medium",
+      "themes": [
+        "Norske filmklassikere"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "oscar-vinnere-gjennom-tidene__medium",
+      "themes": [
+        "Oscar-vinnere gjennom tidene"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "aristoteles__medium",
+      "themes": [
+        "Aristoteles"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "platon-og-id-laeren__medium",
+      "themes": [
+        "Platon og idélæren"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "sokrates__medium",
+      "themes": [
+        "Sokrates"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "arsenal-fc__medium",
+      "themes": [
+        "Arsenal FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "bodo-glimt-historie-og-legender__medium",
+      "themes": [
+        "Bodø/Glimt — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Bodø/Glimt",
+      "free": true
+    },
+    {
+      "slug": "champions-league__medium",
+      "themes": [
+        "Champions League"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "chelsea-fc__medium",
+      "themes": [
+        "Chelsea FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Chelsea",
+      "free": true
+    },
+    {
+      "slug": "eliteserien-historie-og-rekorder__medium",
+      "themes": [
+        "Eliteserien — historie og rekorder"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "everton-fc__medium",
+      "themes": [
+        "Everton FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Everton",
+      "free": true
+    },
+    {
+      "slug": "fotball-vm-gjennom-tidene__medium",
+      "themes": [
+        "Fotball-VM gjennom tidene"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "leeds-united__medium",
+      "themes": [
+        "Leeds United"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Leeds United",
+      "free": true
+    },
+    {
+      "slug": "lillestrom-sk-historie-og-legender__medium",
+      "themes": [
+        "Lillestrøm SK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Lillestrøm",
+      "free": true
+    },
+    {
+      "slug": "liverpool-fc-historie-og-legender__medium",
+      "themes": [
+        "Liverpool FC — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "manchester-city__medium",
+      "themes": [
+        "Manchester City"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Manchester City",
+      "free": true
+    },
+    {
+      "slug": "manchester-united-historie-og-legender__medium",
+      "themes": [
+        "Manchester United — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "molde-fk-historie-og-legender__medium",
+      "themes": [
+        "Molde FK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Molde",
+      "free": true
+    },
+    {
+      "slug": "newcastle-united__medium",
+      "themes": [
+        "Newcastle United"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Newcastle United",
+      "free": true
+    },
+    {
+      "slug": "norske-spillere-i-engelsk-fotball__medium",
+      "themes": [
+        "Norske spillere i engelsk fotball"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "norske-supporterklubber-for-engelsk-fotball__medium",
+      "themes": [
+        "Norske supporterklubber for engelsk fotball"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "premier-league-historie-og-rekorder__medium",
+      "themes": [
+        "Premier League — historie og rekorder"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "premier-league__medium",
+      "themes": [
+        "Premier League"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "rosenborg-bk-historie-og-legender__medium",
+      "themes": [
+        "Rosenborg BK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Rosenborg",
+      "free": true
+    },
+    {
+      "slug": "sk-brann-historie-og-legender__medium",
+      "themes": [
+        "SK Brann — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Brann",
+      "free": true
+    },
+    {
+      "slug": "tottenham-hotspur__medium",
+      "themes": [
+        "Tottenham Hotspur"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Tottenham",
+      "free": true
+    },
+    {
+      "slug": "valerenga-fotball-historie-og-legender__medium",
+      "themes": [
+        "Vålerenga Fotball — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Vålerenga",
+      "free": true
+    },
+    {
+      "slug": "viking-fk-historie-og-legender__medium",
+      "themes": [
+        "Viking FK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20,
+      "team": "Viking",
+      "free": true
+    },
+    {
+      "slug": "europas-hovedsteder__medium",
+      "themes": [
+        "Europas hovedsteder"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "norges-fylker-og-byer__medium",
+      "themes": [
+        "Norges fylker og byer"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "verdens-hovedsteder__medium",
+      "themes": [
+        "Verdens hovedsteder"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "harald-harfagre-og-rikssamlingen__medium",
+      "themes": [
+        "Harald Hårfagre og rikssamlingen"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "slaget-pa-stiklestad__medium",
+      "themes": [
+        "Slaget på Stiklestad"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "vikingtiden__medium",
+      "themes": [
+        "Vikingtiden"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "leonardo-da-vinci__medium",
+      "themes": [
+        "Leonardo da Vinci"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "michelangelo__medium",
+      "themes": [
+        "Michelangelo"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "renessansekunst__medium",
+      "themes": [
+        "Renessansekunst"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "bjornstjerne-bjornson__medium",
+      "themes": [
+        "Bjørnstjerne Bjørnson"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "henrik-ibsen__medium",
+      "themes": [
+        "Henrik Ibsen"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "knut-hamsun__medium",
+      "themes": [
+        "Knut Hamsun"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "blandet-allmennkunnskap__medium",
+      "themes": [
+        "Blandet allmennkunnskap"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "norsk-allmennkunnskap__medium",
+      "themes": [
+        "Norsk allmennkunnskap"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "verden-rundt__medium",
+      "themes": [
+        "Verden rundt"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "klassisk-musikk-og-komponister__medium",
+      "themes": [
+        "Klassisk musikk og komponister"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "ludwig-van-beethoven__medium",
+      "themes": [
+        "Ludwig van Beethoven"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "wolfgang-amadeus-mozart__medium",
+      "themes": [
+        "Wolfgang Amadeus Mozart"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "norsk-langrenn__medium",
+      "themes": [
+        "Norsk langrenn"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "sommer-ol__medium",
+      "themes": [
+        "Sommer-OL"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "vinter-ol__medium",
+      "themes": [
+        "Vinter-OL"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "datamaskinens-utvikling__medium",
+      "themes": [
+        "Datamaskinens utvikling"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "internettets-historie__medium",
+      "themes": [
+        "Internettets historie"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "kunstig-intelligens__medium",
+      "themes": [
+        "Kunstig intelligens"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "antikkens-hellas__medium",
+      "themes": [
+        "Antikkens Hellas"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "det-gamle-egypt__medium",
+      "themes": [
+        "Det gamle Egypt"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "romerriket__medium",
+      "themes": [
+        "Romerriket"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "det-periodiske-system__medium",
+      "themes": [
+        "Det periodiske system"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "evolusjon-og-darwin__medium",
+      "themes": [
+        "Evolusjon og Darwin"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "solsystemet__medium",
+      "themes": [
+        "Solsystemet"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 20
+    },
+    {
+      "slug": "hollywoods-gullalder__vanskelig",
+      "themes": [
+        "Hollywoods gullalder"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "norske-filmklassikere__vanskelig",
+      "themes": [
+        "Norske filmklassikere"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "oscar-vinnere-gjennom-tidene__vanskelig",
+      "themes": [
+        "Oscar-vinnere gjennom tidene"
+      ],
+      "category": "film",
+      "category_label": "Film",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "aristoteles__vanskelig",
+      "themes": [
+        "Aristoteles"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "platon-og-id-laeren__vanskelig",
+      "themes": [
+        "Platon og idélæren"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "sokrates__vanskelig",
+      "themes": [
+        "Sokrates"
+      ],
+      "category": "filosofi",
+      "category_label": "Filosofi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "arsenal-fc__vanskelig",
+      "themes": [
+        "Arsenal FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Arsenal"
+    },
+    {
+      "slug": "bodo-glimt-historie-og-legender__vanskelig",
+      "themes": [
+        "Bodø/Glimt — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Bodø/Glimt",
+      "free": true
+    },
+    {
+      "slug": "champions-league__vanskelig",
+      "themes": [
+        "Champions League"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "chelsea-fc__vanskelig",
+      "themes": [
+        "Chelsea FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Chelsea",
+      "free": true
+    },
+    {
+      "slug": "eliteserien-historie-og-rekorder__vanskelig",
+      "themes": [
+        "Eliteserien — historie og rekorder"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "everton-fc__vanskelig",
+      "themes": [
+        "Everton FC"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Everton",
+      "free": true
+    },
+    {
+      "slug": "fotball-vm-gjennom-tidene__vanskelig",
+      "themes": [
+        "Fotball-VM gjennom tidene"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "leeds-united__vanskelig",
+      "themes": [
+        "Leeds United"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Leeds United",
+      "free": true
+    },
+    {
+      "slug": "lillestrom-sk-historie-og-legender__vanskelig",
+      "themes": [
+        "Lillestrøm SK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Lillestrøm",
+      "free": true
+    },
+    {
+      "slug": "liverpool-fc-historie-og-legender__vanskelig",
+      "themes": [
+        "Liverpool FC — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Liverpool"
+    },
+    {
+      "slug": "manchester-city__vanskelig",
+      "themes": [
+        "Manchester City"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Manchester City",
+      "free": true
+    },
+    {
+      "slug": "manchester-united-historie-og-legender__vanskelig",
+      "themes": [
+        "Manchester United — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Manchester United"
+    },
+    {
+      "slug": "molde-fk-historie-og-legender__vanskelig",
+      "themes": [
+        "Molde FK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Molde",
+      "free": true
+    },
+    {
+      "slug": "newcastle-united__vanskelig",
+      "themes": [
+        "Newcastle United"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Newcastle United",
+      "free": true
+    },
+    {
+      "slug": "norske-spillere-i-engelsk-fotball__vanskelig",
+      "themes": [
+        "Norske spillere i engelsk fotball"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "norske-supporterklubber-for-engelsk-fotball__vanskelig",
+      "themes": [
+        "Norske supporterklubber for engelsk fotball"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "premier-league-historie-og-rekorder__vanskelig",
+      "themes": [
+        "Premier League — historie og rekorder"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "premier-league__vanskelig",
+      "themes": [
+        "Premier League"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "rosenborg-bk-historie-og-legender__vanskelig",
+      "themes": [
+        "Rosenborg BK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Rosenborg",
+      "free": true
+    },
+    {
+      "slug": "sk-brann-historie-og-legender__vanskelig",
+      "themes": [
+        "SK Brann — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Brann",
+      "free": true
+    },
+    {
+      "slug": "tottenham-hotspur__vanskelig",
+      "themes": [
+        "Tottenham Hotspur"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Tottenham",
+      "free": true
+    },
+    {
+      "slug": "valerenga-fotball-historie-og-legender__vanskelig",
+      "themes": [
+        "Vålerenga Fotball — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Vålerenga",
+      "free": true
+    },
+    {
+      "slug": "viking-fk-historie-og-legender__vanskelig",
+      "themes": [
+        "Viking FK — historie og legender"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30,
+      "team": "Viking",
+      "free": true
+    },
+    {
+      "slug": "europas-hovedsteder__vanskelig",
+      "themes": [
+        "Europas hovedsteder"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "norges-fylker-og-byer__vanskelig",
+      "themes": [
+        "Norges fylker og byer"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "verdens-hovedsteder__vanskelig",
+      "themes": [
+        "Verdens hovedsteder"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "harald-harfagre-og-rikssamlingen__vanskelig",
+      "themes": [
+        "Harald Hårfagre og rikssamlingen"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "slaget-pa-stiklestad__vanskelig",
+      "themes": [
+        "Slaget på Stiklestad"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "vikingtiden__vanskelig",
+      "themes": [
+        "Vikingtiden"
+      ],
+      "category": "historie",
+      "category_label": "Norsk historie",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "leonardo-da-vinci__vanskelig",
+      "themes": [
+        "Leonardo da Vinci"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "michelangelo__vanskelig",
+      "themes": [
+        "Michelangelo"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "renessansekunst__vanskelig",
+      "themes": [
+        "Renessansekunst"
+      ],
+      "category": "kunst",
+      "category_label": "Kunst",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "bjornstjerne-bjornson__vanskelig",
+      "themes": [
+        "Bjørnstjerne Bjørnson"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "henrik-ibsen__vanskelig",
+      "themes": [
+        "Henrik Ibsen"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "knut-hamsun__vanskelig",
+      "themes": [
+        "Knut Hamsun"
+      ],
+      "category": "litteratur",
+      "category_label": "Litteratur",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "blandet-allmennkunnskap__vanskelig",
+      "themes": [
+        "Blandet allmennkunnskap"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "norsk-allmennkunnskap__vanskelig",
+      "themes": [
+        "Norsk allmennkunnskap"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "verden-rundt__vanskelig",
+      "themes": [
+        "Verden rundt"
+      ],
+      "category": "mix",
+      "category_label": "Blandet allmennkunnskap",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "klassisk-musikk-og-komponister__vanskelig",
+      "themes": [
+        "Klassisk musikk og komponister"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "ludwig-van-beethoven__vanskelig",
+      "themes": [
+        "Ludwig van Beethoven"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "wolfgang-amadeus-mozart__vanskelig",
+      "themes": [
+        "Wolfgang Amadeus Mozart"
+      ],
+      "category": "musikk",
+      "category_label": "Musikk",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "norsk-langrenn__vanskelig",
+      "themes": [
+        "Norsk langrenn"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "sommer-ol__vanskelig",
+      "themes": [
+        "Sommer-OL"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "vinter-ol__vanskelig",
+      "themes": [
+        "Vinter-OL"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "datamaskinens-utvikling__vanskelig",
+      "themes": [
+        "Datamaskinens utvikling"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "internettets-historie__vanskelig",
+      "themes": [
+        "Internettets historie"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "kunstig-intelligens__vanskelig",
+      "themes": [
+        "Kunstig intelligens"
+      ],
+      "category": "teknologi",
+      "category_label": "Teknologi",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "antikkens-hellas__vanskelig",
+      "themes": [
+        "Antikkens Hellas"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "det-gamle-egypt__vanskelig",
+      "themes": [
+        "Det gamle Egypt"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "romerriket__vanskelig",
+      "themes": [
+        "Romerriket"
+      ],
+      "category": "verdenshistorie",
+      "category_label": "Verdenshistorie",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "det-periodiske-system__vanskelig",
+      "themes": [
+        "Det periodiske system"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "evolusjon-og-darwin__vanskelig",
+      "themes": [
+        "Evolusjon og Darwin"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    },
+    {
+      "slug": "solsystemet__vanskelig",
+      "themes": [
+        "Solsystemet"
+      ],
+      "category": "vitenskap",
+      "category_label": "Vitenskap og natur",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 30
+    }
+  ]
 }
