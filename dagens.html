@@ -74,6 +74,8 @@
   .chip[data-spot="teal"]{--spot:var(--spot-teal);} .chip[data-spot="moss"]{--spot:var(--spot-moss);}
   .chip[data-spot="cobalt"]{--spot:var(--spot-cobalt);} .chip[data-spot="terracotta"]{--spot:var(--spot-terracotta);}
   .chip[data-spot="plum"]{--spot:var(--spot-plum);} .chip[data-spot="saffron"]{--spot:var(--spot-saffron);}
+  .chip-more { background:transparent; border-style:dashed; color:var(--ink-mute); }
+  .chip-more:hover { color:var(--accent); border-color:var(--accent); }
 
   /* Masthead */
   .masthead { display:flex; align-items:center; justify-content:space-between; gap:12px;
@@ -296,6 +298,32 @@
   }
 
   // ── Temautgaver (chips) ───────────────────────────────────────
+  // Kuratert visning: ukedagstemaet (valgt) + faste kategorier synlig som
+  // standard; resten gjemmes bak «Flere tema». Maks 6 synlige.
+  var FASTE = ["mix", "historie", "geografi", "film", "sport"];
+  var MAX_VISIBLE = 6;
+  var chipsExpanded = false;
+
+  // Kategoriene som vises uutvidet: valgt først, så de faste — uten duplikater.
+  function visibleCategories(){
+    var have = state.editions.map(function(e){ return e.category; });
+    var vis = [];
+    function add(c){ if (have.indexOf(c) >= 0 && vis.indexOf(c) < 0) vis.push(c); }
+    add(state.selected);          // ukedagstemaet / det valgte er alltid synlig
+    FASTE.forEach(add);
+    return vis.slice(0, MAX_VISIBLE);
+  }
+
+  function makeChip(ed){
+    var b = document.createElement("button");
+    b.className = "chip" + (ed.category === state.selected ? " active" : "");
+    b.setAttribute("data-spot", spotForCategory(ed.category));
+    b.setAttribute("data-cat", ed.category);
+    b.innerHTML = '<span class="dot"></span>' + escapeHtml(ed.category_label || ed.category);
+    b.addEventListener("click", function(){ selectEdition(ed.category); });
+    return b;
+  }
+
   function renderChips(){
     var box = $("edition-picker"), pl = $("picker-label");
     if (!box) return;
@@ -305,15 +333,23 @@
     if (pl) pl.classList.remove("hidden");
     box.classList.remove("hidden");
     box.innerHTML = "";
-    state.editions.forEach(function(ed){
-      var b = document.createElement("button");
-      b.className = "chip" + (ed.category === state.selected ? " active" : "");
-      b.setAttribute("data-spot", spotForCategory(ed.category));
-      b.setAttribute("data-cat", ed.category);
-      b.innerHTML = '<span class="dot"></span>' + escapeHtml(ed.category_label || ed.category);
-      b.addEventListener("click", function(){ selectEdition(ed.category); });
-      box.appendChild(b);
+
+    var cats = chipsExpanded ? state.editions.map(function(e){ return e.category; }) : visibleCategories();
+    cats.forEach(function(cat){
+      var ed = state.editions.filter(function(e){ return e.category === cat; })[0];
+      if (ed) box.appendChild(makeChip(ed));
     });
+
+    if (!chipsExpanded){
+      var hidden = state.editions.length - cats.length;
+      if (hidden > 0){
+        var more = document.createElement("button");
+        more.className = "chip chip-more"; more.type = "button";
+        more.textContent = "Flere tema (+" + hidden + ")";
+        more.addEventListener("click", function(){ chipsExpanded = true; renderChips(); });
+        box.appendChild(more);
+      }
+    }
   }
 
   function markActiveChip(){
