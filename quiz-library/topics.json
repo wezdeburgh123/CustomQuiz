@@ -471,7 +471,8 @@
       "category_label": "Fotball",
       "difficulty": "lett",
       "count": 10,
-      "priority": 10
+      "priority": 10,
+      "free": true
     },
     {
       "slug": "chelsea-fc__lett",
@@ -495,7 +496,8 @@
       "category_label": "Fotball",
       "difficulty": "lett",
       "count": 10,
-      "priority": 10
+      "priority": 10,
+      "free": true
     },
     {
       "slug": "everton-fc__lett",
@@ -519,7 +521,8 @@
       "category_label": "Fotball",
       "difficulty": "lett",
       "count": 10,
-      "priority": 10
+      "priority": 10,
+      "free": true
     },
     {
       "slug": "leeds-united__lett",
@@ -619,7 +622,8 @@
       "category_label": "Fotball",
       "difficulty": "lett",
       "count": 10,
-      "priority": 10
+      "priority": 10,
+      "free": true
     },
     {
       "slug": "norske-supporterklubber-for-engelsk-fotball__lett",
@@ -652,7 +656,8 @@
       "category_label": "Fotball",
       "difficulty": "lett",
       "count": 10,
-      "priority": 10
+      "priority": 10,
+      "free": true
     },
     {
       "slug": "rosenborg-bk-historie-og-legender__lett",
