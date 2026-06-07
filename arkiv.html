@@ -353,6 +353,56 @@
   .lock-badge::before { content: '⌧'; font-size: 11px; line-height: 1; }
   .quiz-card.locked .quiz-image img { opacity: 0.65; filter: saturate(0.7); }
   .quiz-card.locked { cursor: pointer; }
+  /* «Gratis»-merket på gratis-bibliotekets quizer (alltid synlig — det er gulroten). */
+  .free-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--accent);
+    color: var(--bg-soft);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: var(--r-pill);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .free-badge::before { content: '✦'; font-size: 10px; line-height: 1; }
+  /* «Vis kun gratis»-toggle i verktøylinja. */
+  .free-toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--r-pill);
+    padding: 7px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .free-toggle::before {
+    content: '';
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--rule-strong);
+    transition: background 160ms ease;
+  }
+  .free-toggle[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-soft);
+  }
+  .free-toggle[aria-pressed="true"]::before { background: var(--bg-soft); }
 
   .quiz-body {
     padding: 18px 20px 22px;
@@ -682,7 +732,7 @@
   <header class="page-header">
     <div class="eyebrow">Arkivet</div>
     <h1>Alle <em>utgaver</em>, ett sted.</h1>
-    <p class="page-lede">Bla i alt CustomQuiz har publisert. Filtrer etter tema, sorter etter populæritet, rating eller dato. Abonnenter får tilgang til hele arkivet — gjestene leser de seks første.</p>
+    <p class="page-lede">Bla i alt CustomQuiz har publisert. Filtrer etter tema, sorter etter populæritet, rating eller dato. Med gratis konto spiller du gratis-utvalget — se etter «Gratis»-merket. Abonnenter får tilgang til hele arkivet.</p>
   </header>
 
   <div class="toolbar">
@@ -717,6 +767,10 @@
   <div class="team-row" id="team-row" hidden>
     <span class="team-row-label">Lag</span>
     <div class="team-chips" id="team-chips"></div>
+  </div>
+
+  <div class="free-toggle-row" style="display:flex;justify-content:flex-end;margin:0 0 18px;">
+    <button class="free-toggle" id="free-toggle" type="button" aria-pressed="true">Vis kun gratis</button>
   </div>
 
   <section class="quiz-grid" id="quiz-grid"></section>
@@ -757,7 +811,7 @@
     <div class="pay-price">49 kr <span>/ mnd</span></div>
     <div class="pay-subnote">Si opp når som helst</div>
     <ul class="pay-features">
-      <li>Hele arkivet — alle quizer, ikke bare de seks første</li>
+      <li>Hele arkivet — alle quizer, ikke bare gratis-utvalget</li>
       <li>Ubegrenset egne tema-quizer på hva du vil</li>
       <li>Ukeskonkurransen og lagring av streak</li>
       <li>Ny utgave rett i innboksen hver morgen</li>
@@ -807,7 +861,20 @@
   let currentSort = 'plays';
   let currentFilter = 'all';
   let currentTeam = 'all'; // aktivt klubblag-underfilter (kun under Fotball)
-  let premium = false; // settes true for aktive abonnenter (via CQAuth)
+  let premium = false;  // aktivt abonnement (via CQAuth.isPremium)
+  let loggedIn = false; // innlogget e-post-konto (via CQAuth.getUser)
+  let onlyFree = true;  // «Vis kun gratis»-toggle — default PÅ for ikke-betalende
+  let userToggledFree = false; // har brukeren rørt toggelen selv?
+
+  // Tre tilgangsnivåer per quiz:
+  //   'open'    — fri for alle, ingen innlogging (de bespoke demo-quizene)
+  //   'free'    — gratis-biblioteket: krever innlogget e-post-konto
+  //   'premium' — krever aktivt abonnement
+  function tierOf(q) {
+    if (q.free) return 'free';
+    if (q.locked) return 'premium';
+    return 'open';
+  }
 
   // Sort functions
   const SORTS = {
@@ -852,6 +919,11 @@
       items = items.filter(q => q.team === currentTeam);
     }
 
+    // «Vis kun gratis»: vis alt som ikke krever abonnement (open + free).
+    if (onlyFree) {
+      items = items.filter(q => tierOf(q) !== 'premium');
+    }
+
     // Sort
     items.sort(SORTS[currentSort]);
 
@@ -865,14 +937,29 @@
     empty.style.display = 'none';
 
     grid.innerHTML = items.map(q => {
-      const locked = q.locked && !premium;
+      const tier = tierOf(q);
+      // Premium-bruker spiller alt. Ellers: free krever innlogging, premium krever abonnement.
+      let locked = false, lockKind = '';
+      if (!premium) {
+        if (tier === 'free') { locked = !loggedIn; lockKind = 'login'; }
+        else if (tier === 'premium') { locked = true; lockKind = 'premium'; }
+      }
+      // Kun premium-lås dempes visuelt; gratis-quizer holdes innbydende (gulroten).
+      const dim = locked && lockKind === 'premium';
+      const safeTitle = q.title.replace(/<\/?em>/g, '').replace(/'/g, "\\'");
+      const onclick = !locked ? ''
+        : (lockKind === 'login' ? `onclick="promptLogin()"` : `onclick="openLockModal('${safeTitle}')"`);
+      // «Gratis»-merket vises på alle free-quizer (også når de krever innlogging).
+      const badge = tier === 'free'
+        ? '<span class="free-badge">Gratis</span>'
+        : (locked ? '<span class="lock-badge">Premium</span>' : '');
       return `
-      <a class="quiz-card ${locked ? 'locked' : ''}"
+      <a class="quiz-card ${dim ? 'locked' : ''}"
          href="${locked ? 'javascript:void(0)' : q.url}"
-         ${locked ? `onclick="openLockModal('${q.title.replace(/<\/?em>/g, '')}')"` : ''}>
+         ${onclick}>
         <div class="quiz-image" data-spot="${CATEGORY_TO_SPOT[q.category] || 'teal'}">
           <img src="IMG/${q.img}.jpg" alt="">
-          ${locked ? '<span class="lock-badge">Premium</span>' : ''}
+          ${badge}
         </div>
         <div class="quiz-body">
           <div class="quiz-num">№ ${q.num} · ${q.categoryLabel}</div>
@@ -955,6 +1042,30 @@
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => setFilter(chip.dataset.filter));
   });
+
+  // Gratis-quiz, men ikke innlogget → åpne innloggingsmodalen (e-post/OTP).
+  function promptLogin() {
+    try { if (window.CQAuth && window.CQAuth.signIn) { window.CQAuth.signIn(); return; } } catch (_) {}
+    // Fallback hvis auth ikke er lastet: send til betalingsmodal.
+    openPayModal();
+  }
+
+  // «Vis kun gratis»-toggle.
+  function syncFreeToggle() {
+    const btn = document.getElementById('free-toggle');
+    if (btn) btn.setAttribute('aria-pressed', onlyFree ? 'true' : 'false');
+  }
+  (function initFreeToggle() {
+    const btn = document.getElementById('free-toggle');
+    if (!btn) return;
+    syncFreeToggle();
+    btn.addEventListener('click', () => {
+      onlyFree = !onlyFree;
+      userToggledFree = true;
+      syncFreeToggle();
+      render();
+    });
+  })();
 
   // Lock modal
   function openLockModal(quizTitle) {
@@ -1068,7 +1179,8 @@
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: q.date || '2026-05-28',
             url: 'quiz-app-v2.html?quiz=' + encodeURIComponent(q.id),
-            locked: true   // biblioteket er premium; de 6 kuraterte over er gratis
+            free: !!q.free,      // gratis-biblioteket (free:true i quizzes-data.json)
+            locked: !q.free      // alt annet er premium-gated
           });
         });
       }
@@ -1094,7 +1206,8 @@
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: (q.created_at || '').slice(0, 10) || '2026-06-01',
             url: 'quiz-app-v2.html?lib=' + encodeURIComponent(q.slug),
-            locked: true
+            free: !!q.free,      // gratis-flagg fra quiz_library (per-lag fotball m.m.)
+            locked: !q.free
           });
         });
       }
@@ -1120,8 +1233,11 @@
   // Lås opp biblioteket for aktive abonnenter. auth.js sender 'cq-auth' når
   // innloggingsstatus er avgjort; vi sjekker abonnement server-side og re-render.
   document.addEventListener('cq-auth', async () => {
+    loggedIn = !!(window.CQAuth && window.CQAuth.getUser());
     try { premium = !!(window.CQAuth && await window.CQAuth.isPremium()); }
     catch (_) { premium = false; }
+    // Toggle-default følger nivået, men bare til brukeren rører den selv.
+    if (!userToggledFree) { onlyFree = !premium; syncFreeToggle(); }
     const tease = document.querySelector('.subscribe-tease');
     if (tease) tease.style.display = premium ? 'none' : '';
     render();
