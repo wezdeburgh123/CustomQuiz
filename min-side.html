@@ -53,7 +53,19 @@
   footer { border-top:1px solid var(--rule-strong); padding-top:28px; margin-top:56px; font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mute); display:flex; justify-content:space-between; }
   footer .brand { color:var(--accent); font-family:var(--font-display); font-style:italic; text-transform:none; letter-spacing:0; font-size:17px; }
   .hidden { display:none !important; }
-  @media (max-width:600px){ h1{font-size:32px;} }
+  .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:8px; }
+  .stat { background:var(--bg); border:.5px solid var(--rule); border-radius:var(--r-md); padding:16px 12px; text-align:center; }
+  .stat .n { font-family:var(--font-display); font-size:30px; color:var(--accent); line-height:1; }
+  .stat .t { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); margin-top:8px; }
+  .league-list { display:flex; flex-direction:column; gap:10px; }
+  .league-item { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 15px; background:var(--bg); border:.5px solid var(--rule); border-radius:var(--r-md); text-decoration:none; color:var(--ink); }
+  .league-item:hover { border-color:var(--accent); }
+  .league-item .ln { font-family:var(--font-display); font-size:17px; }
+  .league-code { font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--ink-mute); background:var(--bg-deep); padding:3px 9px; border-radius:var(--r-pill); white-space:nowrap; }
+  .name-edit { display:flex; gap:10px; margin-top:4px; }
+  .name-edit input { flex:1; min-width:0; padding:12px 14px; border:1px solid var(--rule-strong); border-radius:var(--r-md); font-family:var(--font-sans); font-size:15px; background:var(--bg); color:var(--ink); }
+  .name-edit input:focus { outline:none; border-color:var(--accent); }
+  @media (max-width:600px){ h1{font-size:32px;} .stat .n{font-size:24px;} }
 </style>
 </head>
 <body>
@@ -84,6 +96,39 @@
       <div class="muted" id="sub-detail" style="margin-top:10px;"></div>
       <div class="actions" id="sub-actions"></div>
     </div>
+
+    <div class="card">
+      <div class="label">Din aktivitet</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="n" id="stat-total">–</div><div class="t">Quizer tatt</div></div>
+        <div class="stat"><div class="n" id="stat-streak">–</div><div class="t">Dager på rad</div></div>
+        <div class="stat"><div class="n" id="stat-vm">–</div><div class="t">VM-quizer</div></div>
+      </div>
+      <div class="muted" id="stat-detail" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="card">
+      <div class="label">VM 2026 — din plassering</div>
+      <div class="value" id="vm-rank">Sjekker …</div>
+      <div class="muted" id="vm-detail" style="margin-top:6px;"></div>
+      <div class="actions" id="vm-actions"></div>
+    </div>
+
+    <div class="card">
+      <div class="label">Dine ligaer</div>
+      <div class="league-list" id="league-list"></div>
+      <div class="muted" id="league-empty"></div>
+    </div>
+
+    <div class="card">
+      <div class="label">Visningsnavn på ledertavler</div>
+      <div class="name-edit">
+        <input id="name-input" type="text" maxlength="24" placeholder="F.eks. Wez" aria-label="Visningsnavn">
+        <button class="btn" type="button" id="name-save">Lagre</button>
+      </div>
+      <div class="muted" id="name-msg" style="margin-top:8px;">Navnet vises på ledertavlene i stedet for «Anonym».</div>
+    </div>
+
     <div class="actions">
       <button class="btn btn-ghost" type="button" id="logout-btn">Logg ut</button>
     </div>
@@ -163,12 +208,111 @@
     }
   }
 
+  var EVENT_ID = "vm-2026";
+
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function isoOf(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function computeStreak(dates){
+    var set = {}; dates.forEach(function(d){ set[d]=true; });
+    var d = new Date(), streak = 0;
+    // Streaken lever selv om dagens quiz ikke er tatt ennå: start i dag, ev. i går.
+    if (!set[isoOf(d)]) d.setDate(d.getDate()-1);
+    while (set[isoOf(d)]) { streak++; d.setDate(d.getDate()-1); }
+    return streak;
+  }
+
+  async function renderProfileExtras() {
+    var sb = window.CQAuth.getClient && window.CQAuth.getClient();
+    if (!sb) return;
+    var uid = null;
+    try { var u = await sb.auth.getUser(); uid = u && u.data && u.data.user && u.data.user.id; } catch (e) {}
+    if (!uid) return;
+
+    // Visningsnavn
+    try {
+      var p = await sb.from("profiles").select("display_name").eq("id", uid).maybeSingle();
+      if (p.data && p.data.display_name) $("name-input").value = p.data.display_name;
+    } catch (e) {}
+
+    // Aktivitet: dagens-quiz (quiz_attempt) + VM (event_attempts)
+    var dailyCount = 0, vmCount = 0, streak = 0;
+    try {
+      var da = await sb.from("quiz_attempt").select("quiz_date").eq("user_id", uid).order("quiz_date", { ascending: false }).limit(400);
+      var dates = (da.data || []).map(function (x) { return x.quiz_date; });
+      dailyCount = dates.length;
+      streak = computeStreak(dates);
+    } catch (e) {}
+    try {
+      var ea = await sb.from("event_attempts").select("quiz_slug", { count: "exact", head: true }).eq("event_id", EVENT_ID);
+      vmCount = ea.count || 0;
+    } catch (e) {}
+    $("stat-total").textContent = dailyCount + vmCount;
+    $("stat-streak").textContent = streak;
+    $("stat-vm").textContent = vmCount;
+    $("stat-detail").textContent = dailyCount + " dagens-quiz" + (dailyCount === 1 ? "" : "er") + " · " + vmCount + " VM-quiz" + (vmCount === 1 ? "" : "er");
+
+    // VM 2026 — global plassering
+    try {
+      var mine = await sb.from("event_user_scores").select("total_score").eq("event_id", EVENT_ID).eq("user_id", uid).maybeSingle();
+      var meScore = mine.data ? mine.data.total_score : 0;
+      var tot = await sb.from("event_user_scores").select("user_id", { count: "exact", head: true }).eq("event_id", EVENT_ID);
+      var totalN = tot.count || 0;
+      if (meScore > 0) {
+        var hi = await sb.from("event_user_scores").select("user_id", { count: "exact", head: true }).eq("event_id", EVENT_ID).gt("total_score", meScore);
+        $("vm-rank").innerHTML = "#" + ((hi.count || 0) + 1) + ' <span class="muted" style="font-family:var(--font-display);">av ' + totalN + "</span>";
+        $("vm-detail").textContent = meScore + " poeng totalt i VM 2026.";
+        $("vm-actions").innerHTML = '<a class="btn btn-ghost" href="vm.html">Til VM-modulen <span class="btn-arrow">→</span></a>';
+      } else {
+        $("vm-rank").textContent = "Ikke rangert ennå";
+        $("vm-detail").textContent = "Spill en VM-quiz for å komme på ledertavla.";
+        $("vm-actions").innerHTML = '<a class="btn" href="vm.html">Spill VM-quiz <span class="btn-arrow">→</span></a>';
+      }
+    } catch (e) { $("vm-rank").textContent = "—"; $("vm-detail").textContent = ""; }
+
+    // Dine ligaer
+    try {
+      var m = await sb.from("league_members").select("league_id");
+      var ids = (m.data || []).map(function (x) { return x.league_id; });
+      var list = $("league-list"), empty = $("league-empty");
+      if (ids.length) {
+        var lg = await sb.from("leagues").select("id,name,code").in("id", ids);
+        var leagues = lg.data || [];
+        list.innerHTML = leagues.map(function (l) {
+          return '<a class="league-item" href="vm.html"><span class="ln">' + esc(l.name) + '</span><span class="league-code">' + esc(l.code) + '</span></a>';
+        }).join("");
+        empty.textContent = leagues.length + " liga" + (leagues.length === 1 ? "" : "er") + " — trykk for å åpne i VM-modulen.";
+      } else {
+        list.innerHTML = "";
+        empty.innerHTML = 'Du er ikke med i noen liga ennå. <a class="masthead-link" href="vm.html">Opprett eller bli med i en →</a>';
+      }
+    } catch (e) { $("league-empty").textContent = "Kunne ikke hente ligaer."; }
+  }
+
+  async function saveName() {
+    var btn = $("name-save"), msg = $("name-msg");
+    var sb = window.CQAuth.getClient && window.CQAuth.getClient();
+    if (!sb) return;
+    var name = ($("name-input").value || "").trim();
+    btn.disabled = true; var old = btn.textContent; btn.textContent = "Lagrer …";
+    try {
+      var u = await sb.auth.getUser(); var uid = u.data.user.id;
+      var r = await sb.from("profiles").upsert({ id: uid, display_name: name, updated_at: new Date().toISOString() });
+      if (r.error) throw r.error;
+      msg.textContent = name ? ("Lagret — du vises som «" + name + "» på ledertavlene.") : "Navnet er fjernet; du vises som «Anonym».";
+    } catch (e) {
+      msg.textContent = "Kunne ikke lagre navnet akkurat nå.";
+    } finally {
+      btn.disabled = false; btn.textContent = old;
+    }
+  }
+
   function update(user) {
     if (!window.CQAuth.isConfigured()) { show("view-unconfigured"); return; }
     if (user) {
       show("view-user");
       $("user-email").textContent = user.email;
       renderSub(user.email);
+      renderProfileExtras();
     } else {
       show("view-guest");
     }
@@ -177,6 +321,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     $("login-btn").addEventListener("click", () => window.CQAuth.signIn());
     $("logout-btn").addEventListener("click", () => window.CQAuth.signOut());
+    $("name-save").addEventListener("click", saveName);
     // Vent på at auth.js har avgjort status.
     window.CQAuth.onChange(update);
     // Førstegangs-tegning i tilfelle ingen endring trigges.
