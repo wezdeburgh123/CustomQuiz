@@ -38,7 +38,7 @@ exports.handler = async (event) => {
     jobId = typeof body.jobId === "string" ? body.jobId.slice(0, 80) : null;
     if (!jobId) return { statusCode: 400, body: "Mangler jobId." };
 
-    await writeJob(jobId, { status: "running" });
+    await writeJob(jobId, { status: "running", phase: "archive" });
 
     // Abonnement (hopper over hvis ikke konfigurert).
     const authH = event.headers.authorization || event.headers.Authorization || "";
@@ -70,6 +70,10 @@ exports.handler = async (event) => {
         return { statusCode: 202, body: "" };
       }
     } catch (_) { /* cache-bom skal aldri blokkere generering */ }
+
+    // Cache-bom: temaet finnes ikke i arkivet → ekte generering starter.
+    // Signaliser fase til poll-klienten så loaderen kan skyve steget videre.
+    await writeJob(jobId, { status: "running", phase: "generating" });
 
     const gateOn = process.env.KNOWLEDGE_GATE !== "false";
     // Websøk PÅ som standard (Christians valg: «alltid søk»). WEB_SEARCH=false slår av.

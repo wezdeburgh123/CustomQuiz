@@ -477,13 +477,16 @@
     padding-bottom: 3px; transition: opacity 0.25s ease;
   }
   .loading-status .word.lit { opacity: 1; }
+  /* fullførte steg blir stående markert (kumulativ progresjon, ikke en løkke) */
+  .loading-status .word.done { opacity: 0.62; }
   .loading-status .word::after {
     content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
     background: var(--spot);
     transform: scaleX(0); transform-origin: left;
     transition: transform 0.3s cubic-bezier(.4,0,.2,1);
   }
-  .loading-status .word.lit::after { transform: scaleX(1); }
+  .loading-status .word.lit::after,
+  .loading-status .word.done::after { transform: scaleX(1); }
 
   .loading-text {
     font-family: var(--font-display);
@@ -1561,8 +1564,12 @@
   const GENERATE_ENDPOINT = "/api/generate-quiz";                       // synkron fallback (uten websøk)
   const BACKGROUND_ENDPOINT = "/.netlify/functions/quiz-generate-background"; // async hovedvei (med websøk)
   const STATUS_ENDPOINT = "/api/quiz-status";                           // poll-endepunkt
-  const POLL_INTERVAL_MS = 2500;   // hvor ofte vi spør "ferdig?"
-  const POLL_MAX_MS = 90000;       // gi websøk-generering god tid (90 s) før vi gir opp
+  // Rask oppstart: arkivtreff er klare server-side på millisekunder, så de
+  // første pollene er korte (føles momentant). Deretter faller vi til rolig
+  // intervall mens websøk-generering jobber.
+  const POLL_RAMP_MS = [600, 1500];  // de to første pollene
+  const POLL_INTERVAL_MS = 2500;     // deretter: hvor ofte vi spør "ferdig?"
+  const POLL_MAX_MS = 90000;         // gi websøk-generering god tid (90 s) før vi gir opp
 
   // Innloggings-sperre: krev innlogging for å generere (kostnadsbeskyttelse før
   // betaling er live). Må samsvare med server-env REQUIRE_LOGIN=true. Sett til
@@ -1687,16 +1694,23 @@
     // 2) Poll status til jobben er ferdig (eller vi gir opp).
     const deadline = Date.now() + POLL_MAX_MS;
     let polledSomething = false;
+    let attempt = 0;
     while (Date.now() < deadline) {
-      await sleep(POLL_INTERVAL_MS);
+      await sleep(POLL_RAMP_MS[attempt] != null ? POLL_RAMP_MS[attempt] : POLL_INTERVAL_MS);
+      attempt++;
       let job;
       try {
         const r = await fetch(STATUS_ENDPOINT + "?jobId=" + encodeURIComponent(jobId), { method: "GET" });
         job = await r.json();
       } catch (_) { continue; } // nettverkshikke — prøv igjen ved neste intervall
       if (job && job.status && job.status !== 'pending') polledSomething = true;
+      // Mat loaderen med ekte fase-signal så steget speiler backend.
+      if (job && job.phase) { try { QuizLoader.setPhase(job.phase); } catch (_) {} }
       const out = resolveJob(job || {});
-      if (out) return out; // ferdig quiz
+      if (out) { // ferdig quiz
+        try { QuizLoader.finish(job && job.cached); } catch (_) {}
+        return out;
+      }
     }
     // Tidsavbrudd. Hvis vi aldri fikk kontakt med jobben i det hele tatt,
     // er async trolig ikke satt opp → prøv synkron vei før vi gir opp.
@@ -1763,14 +1777,59 @@
     return JSON.parse(text.slice(firstBrace, lastBrace + 1));
   }
 
-  /* --------------- GENERER-LOADER (pensel + ord males inn) --------------- */
+  /* --------------- GENERER-LOADER (pensel + ærlige steg) ---------------
+   * Stegene speiler faktisk backend-progresjon (ikke en løkke):
+   *   0 Sjekker arkivet   — cache-oppslaget (job.phase "archive")
+   *   1 Lager spørsmål    — ekte generering startet (job.phase "generating")
+   *   2 Kvalitetssikrer   — websøk/grunning; utledes av tid i generering
+   *   3 Pakker sammen     — quizen er klar (finish)
+   * Penselstrøket males asymptotisk mot et tak per steg og treffer aldri
+   * enden før svaret faktisk er der. Cache-treff (finish(true)) fullfører raskt.
+   */
   const QuizLoader = (() => {
-    const STEPS = ['LESER TEMA', 'FORMULERER', 'VELGER SVAR', 'KVALITETSSIKRER', 'PUSSER'];
+    const STEPS = ['SJEKKER ARKIVET', 'LAGER SPØRSMÅL', 'KVALITETSSIKRER', 'PAKKER SAMMEN'];
+    const CEIL  = [14, 52, 88, 97];        // asymptotisk tak per steg (% av strøket)
+    const CRAWL = [1400, 3400, 5200, 900]; // hvor lenge crawl mot taket varer (ms)
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let timers = [];
-    let running = false;
 
-    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+    let timers = [], raf = null, running = false;
+    let words = [], brush = null, len = 520;
+    let pct = 0, step = -1;
+
+    const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
+    const cancelRaf = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
+
+    function setOffset(p) {
+      pct = p;
+      if (brush) brush.style.strokeDashoffset = len * (1 - p / 100);
+    }
+
+    function crawlTo(target, ms) {
+      cancelRaf();
+      if (reduce || ms <= 0) { setOffset(target); return; }
+      const from = pct, t0 = performance.now();
+      const tick = (now) => {
+        if (!running) return;
+        const k = Math.min(1, (now - t0) / ms);
+        const eased = 1 - Math.pow(1 - k, 2.2);   // desellererer mot taket
+        setOffset(from + (target - from) * eased);
+        if (k < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }
+
+    function gotoStep(i) {
+      if (!running || i <= step) return;     // bare framover
+      step = i;
+      words.forEach((w, idx) => {
+        w.classList.toggle('done', idx < i);
+        w.classList.toggle('lit', idx === i);
+      });
+      crawlTo(CEIL[i], CRAWL[i]);
+      // I genereringssteget gjør modellen websøk + grunning. Etter en stund
+      // skyver vi til «kvalitetssikrer» av oss selv — det er ærlig: det skjer nå.
+      if (i === 1) timers.push(setTimeout(() => gotoStep(2), 4500));
+    }
 
     function start(spot) {
       stop();
@@ -1780,41 +1839,48 @@
       if (block) block.style.setProperty('--spot', spot ? `var(--spot-${spot})` : 'var(--accent)');
 
       const status = document.getElementById('loading-status');
-      const brush = document.getElementById('loading-brush');
+      brush = document.getElementById('loading-brush');
       if (!status || !brush) return;
 
       status.innerHTML = STEPS.map(w => `<span class="word">${w}</span>`).join('');
-      const words = [...status.querySelectorAll('.word')];
+      words = [...status.querySelectorAll('.word')];
 
       // mål strøk-lengden så dash-animasjonen treffer presist
-      let len = 520;
-      try { len = brush.getTotalLength() || 520; } catch (e) {}
+      try { len = brush.getTotalLength() || 520; } catch (e) { len = 520; }
       brush.style.setProperty('--brush-len', len);
       brush.style.transition = 'none';
-      brush.style.strokeDashoffset = len;
+      setOffset(0);
       void brush.getBoundingClientRect();           // tving reflow så reset gjelder
       brush.style.transition = '';
 
-      const stepDur = 640;
-      const cycle = () => {
-        if (!running) return;
-        words.forEach((w, i) => {
-          timers.push(setTimeout(() => {
-            if (!running) return;
-            words.forEach(x => x.classList.remove('lit'));
-            w.classList.add('lit');
-            brush.style.strokeDashoffset = len * (1 - (i + 1) / words.length);
-          }, i * stepDur));
-        });
-        // loop kun når bevegelse er greit (reduced-motion → stå stille på fullt strøk)
-        if (!reduce) timers.push(setTimeout(cycle, words.length * stepDur + 800));
-      };
-      cycle();
+      pct = 0; step = -1;
+      gotoStep(0);
+
+      // Sikkerhetsnett: får vi aldri «generating»-signal (synkron fallback uten
+      // faser), skyv videre selv etter at arkivsjekken rimeligvis er ferdig.
+      timers.push(setTimeout(() => { if (step < 1) gotoStep(1); }, 2800));
     }
 
-    function stop() { running = false; clearTimers(); }
+    // Kalt fra poll-løkka med job.phase.
+    function setPhase(phase) {
+      if (!running) return;
+      if (phase === 'archive') gotoStep(0);
+      else if (phase === 'generating') gotoStep(1);
+    }
 
-    return { start, stop };
+    // Kalt når quizen er klar. cached=true → arkivtreff, fullfør raskt.
+    function finish(cached) {
+      if (!running) return;
+      clearTimers();
+      words.forEach(w => { w.classList.remove('lit'); w.classList.add('done'); });
+      if (words.length) words[words.length - 1].classList.add('lit');
+      step = STEPS.length - 1;
+      crawlTo(100, cached ? 320 : 480);
+    }
+
+    function stop() { running = false; clearTimers(); cancelRaf(); }
+
+    return { start, setPhase, finish, stop };
   })();
 
   async function generateQuiz() {
