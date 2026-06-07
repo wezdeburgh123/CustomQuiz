@@ -592,16 +592,18 @@
   /* Klubb-crest som banner: kvadratisk merke med lagfarge bakt inn → vis hele
      merket sentrert på krem, ingen spot-overlay. Tittel-overlegget bytter til
      lys krem-gradient + mørk blekktekst (banneret er nå krem, ikke mørkt bilde). */
-  .quiz-banner.is-crest { position: relative; background: var(--bg); }
+  /* Krem matchet til crest-filenes egen papirflate (~#F5EEDC) så det kvadratiske
+     crest-bildet smelter sømløst inn i banneret uten synlig boks-kant. */
+  .quiz-banner.is-crest { position: relative; background: #F5EEDC; }
   .quiz-banner.is-crest img {
     object-fit: contain;
     padding: 16px 16px 62px;
   }
   .quiz-banner.is-crest .quiz-banner-overlay {
     background: linear-gradient(to top,
-      rgba(245,240,230,0.96) 6%,
-      rgba(245,240,230,0.80) 36%,
-      rgba(245,240,230,0) 100%);
+      rgba(245,238,220,0.96) 6%,
+      rgba(245,238,220,0.80) 36%,
+      rgba(245,238,220,0) 100%);
   }
   .quiz-banner.is-crest .quiz-banner-cat { color: var(--ink-mute); }
   .quiz-banner.is-crest .quiz-banner-title { color: var(--ink); text-shadow: none; }
