@@ -289,6 +289,18 @@
     color: var(--ink);
     cursor: pointer;
     transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  /* Liten crest foran lagnavnet i underfilteret. */
+  .team-chip-crest {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: -4px;
+    flex: 0 0 auto;
   }
   .team-chip:hover { border-color: var(--spot-moss); }
   .team-chip.active {
@@ -332,6 +344,14 @@
     object-fit: cover;
     display: block;
     transition: transform 220ms ease;
+  }
+  /* Crest-kort: badge er kvadratisk med lagfarge bakt inn → vis hele merket
+     sentrert på krem, ingen spot-overlay, ingen multiply. */
+  .quiz-image.is-crest { background: var(--bg); }
+  .quiz-image.is-crest img {
+    object-fit: contain;
+    mix-blend-mode: normal;
+    padding: 14px;
   }
   .lock-badge {
     position: absolute;
@@ -938,6 +958,40 @@
     fotball:         'moss'
   };
 
+  // Klubblag → crest-bilde (IMG/crest-*.jpg). Crestene har lagets egen
+  // signaturfarge bakt inn (risograph-flaten), så de skal IKKE få spot-overlay.
+  // Lag uten crest ennå faller pent tilbake til kategoribildet (onerror).
+  // Fyll på etter hvert som flere crests genereres fra crest-prompt-dokumentet.
+  const TEAM_TO_CREST = {
+    'Arsenal':            'crest-arsenal',
+    'Chelsea':            'crest-chelsea',
+    'Everton':            'crest-everton',
+    'Leeds United':       'crest-leeds',
+    'Liverpool':          'crest-liverpool',
+    'Manchester City':    'crest-man-city',
+    'Manchester United':  'crest-man-united',
+    'Newcastle United':   'crest-newcastle',
+    'Tottenham':          'crest-tottenham',
+    'Bodø/Glimt':         'crest-bodo-glimt',
+    'Brann':              'crest-brann',
+    'Lillestrøm':         'crest-lillestrom',
+    'Molde':              'crest-molde',
+    'Rosenborg':          'crest-rosenborg',
+    'Viking':             'crest-viking',
+    'Vålerenga':          'crest-valerenga'
+  };
+  // Crests som faktisk finnes som fil i IMG/ akkurat nå. Bare disse brukes som
+  // kort-bilde; resten venter på at filen lastes opp (da legges de til her).
+  const AVAILABLE_CRESTS = new Set([
+    'crest-arsenal', 'crest-chelsea', 'crest-everton', 'crest-leeds', 'crest-liverpool'
+  ]);
+  // Returner crest-slug for et lag hvis crest-filen finnes, ellers null.
+  function crestFor(q) {
+    if (!q || q.category !== 'fotball' || !q.team) return null;
+    const slug = TEAM_TO_CREST[String(q.team).trim()];
+    return (slug && AVAILABLE_CRESTS.has(slug)) ? slug : null;
+  }
+
   function render() {
     const grid = document.getElementById('quiz-grid');
     const empty = document.getElementById('empty-state');
@@ -987,12 +1041,17 @@
         ? '<span class="free-badge">Gratis</span>'
         : (locked ? '<span class="lock-badge">Premium</span>' : '');
       const numLabel = q.num ? `№ ${q.num} · ${q.categoryLabel}` : (q.categoryLabel || '');
+      // Klubblag-quizer får lagets crest (egen farge bakt inn) → ingen spot-overlay.
+      const crest = crestFor(q);
+      const imgSlug = crest || q.img;
+      const spotAttr = crest ? '' : ` data-spot="${CATEGORY_TO_SPOT[q.category] || 'teal'}"`;
+      const imgClass = crest ? ' class="is-crest"' : '';
       return `
       <a class="quiz-card ${dim ? 'locked' : ''}"
          href="${locked ? 'javascript:void(0)' : q.url}"
          ${onclick}>
-        <div class="quiz-image" data-spot="${CATEGORY_TO_SPOT[q.category] || 'teal'}">
-          <img src="IMG/${q.img}.jpg" alt="">
+        <div class="quiz-image${crest ? ' is-crest' : ''}"${spotAttr}>
+          <img src="IMG/${imgSlug}.jpg" alt=""${imgClass}>
           ${badge}
         </div>
         <div class="quiz-body">
@@ -1086,7 +1145,9 @@
     const chips = ['all', ...teams].map(t => {
       const label = t === 'all' ? 'Alle lag' : t;
       const active = (t === currentTeam) ? ' active' : '';
-      return `<button class="team-chip${active}" data-team="${t.replace(/"/g, '&quot;')}">${label}</button>`;
+      const crest = (t !== 'all') ? crestFor({ category: 'fotball', team: t }) : null;
+      const icon = crest ? `<img class="team-chip-crest" src="IMG/${crest}.jpg" alt="" aria-hidden="true">` : '';
+      return `<button class="team-chip${active}" data-team="${t.replace(/"/g, '&quot;')}">${icon}${label}</button>`;
     }).join('');
     wrap.innerHTML = chips;
 
