@@ -60,8 +60,9 @@
       <div class="cq-auth-card">
         <div class="eyebrow">Innlogging</div>
         <div id="cq-auth-step-email">
-          <h3>Få en kode på e-post</h3>
-          <p>Skriv inn e-posten din, så sender vi en engangskode. Ingen passord.</p>
+          <h3>Logg inn eller lag konto</h3>
+          <p>Vi sender en engangskode på e-post — ingen passord. Fornavnet vises på ledertavlene (du kan endre det senere).</p>
+          <input class="cq-auth-input" id="cq-auth-name" type="text" autocomplete="given-name" maxlength="24" placeholder="Fornavn (valgfritt)" aria-label="Fornavn">
           <input class="cq-auth-input" id="cq-auth-email" type="email" inputmode="email" autocomplete="email" placeholder="Din e-post" aria-label="E-post">
           <button class="cq-auth-btn" id="cq-auth-send" type="button">Send kode</button>
         </div>
@@ -107,10 +108,13 @@
   }
 
   var pendingEmail = "";
+  var pendingName = "";
 
   async function sendCode() {
     var msg = document.getElementById("cq-auth-msg");
     var email = (document.getElementById("cq-auth-email").value || "").trim().toLowerCase();
+    var nameEl = document.getElementById("cq-auth-name");
+    var name = nameEl ? (nameEl.value || "").trim().slice(0, 24) : "";
     msg.classList.remove("error");
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.classList.add("error"); msg.textContent = "Skriv inn en gyldig e-post."; return; }
     if (!client) { msg.classList.add("error"); msg.textContent = "Innlogging er ikke konfigurert ennå."; return; }
@@ -118,9 +122,14 @@
     try {
       // Ingen emailRedirectTo — vi bruker 6-sifret kode, ikke lenke (lenker
       // blir «brukt opp» av e-postskannere som kjører JS, f.eks. Microsoft 365).
-      var res = await client.auth.signInWithOtp({ email: email, options: { shouldCreateUser: true } });
+      // `data.full_name` lagres i user_metadata KUN ved oppretting av ny bruker.
+      var res = await client.auth.signInWithOtp({
+        email: email,
+        options: { shouldCreateUser: true, data: name ? { full_name: name } : undefined },
+      });
       if (res.error) throw res.error;
       pendingEmail = email;
+      pendingName = name;
       var label = document.getElementById("cq-auth-emaillabel");
       if (label) label.textContent = email;
       showStep("code");
@@ -142,6 +151,10 @@
       var res = await client.auth.verifyOtp({ email: pendingEmail, token: code, type: "email" });
       if (res.error) throw res.error;
       // Sesjonen er nå satt; onAuthStateChange oppdaterer header/sider.
+      currentUser = (res.data && res.data.user) || currentUser;
+      // Eksplisitt navn fra modalen vinner; ellers fyll fra metadata/e-post.
+      if (pendingName) { await setProfileName(pendingName, true); pendingName = ""; }
+      else { await ensureProfileName(); }
       msg.textContent = "Logget inn!";
       closeLogin();
     } catch (err) {
@@ -188,6 +201,43 @@
     document.dispatchEvent(new CustomEvent("cq-auth", { detail: { user: currentUser } }));
   }
 
+  // ── Visningsnavn: sørg for at ingen havner som «Anonym» ─────
+  // Pent fornavn avledet fra e-post som siste utvei: ta første «ord» i
+  // lokaldelen (før . _ - + eller tall) og stor forbokstav. F.eks.
+  // "ola.nordmann@…" → "Ola", "christian@…" → "Christian".
+  function prettyFromEmail(email) {
+    if (!email) return "";
+    var local = String(email).split("@")[0] || "";
+    var first = (local.split(/[._+\-0-9]/)[0] || "").replace(/[^a-zA-ZæøåÆØÅ]/g, "");
+    if (first.length < 2) return ""; // unngå rare 1-tegns-navn (post@, k@ …)
+    return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+  }
+
+  // Skriv et display_name til profilen. `force=true` overskriver eksisterende
+  // (eksplisitt navn fra modalen); ellers fylles det KUN hvis det mangler.
+  async function setProfileName(name, force) {
+    if (!client || !currentUser) return;
+    var uid = currentUser.id;
+    name = (name || "").trim().slice(0, 24);
+    if (!name) return;
+    try {
+      if (!force) {
+        var r = await client.from("profiles").select("display_name").eq("id", uid).maybeSingle();
+        var existing = r && r.data && r.data.display_name;
+        if (existing && existing.trim()) return; // har allerede et navn — ikke rør
+      }
+      await client.from("profiles").upsert({ id: uid, display_name: name, updated_at: new Date().toISOString() });
+    } catch (_) { /* navnesetting skal aldri velte innlogging */ }
+  }
+
+  // Garanter at innlogget bruker har et visningsnavn (fyll-hvis-mangler).
+  async function ensureProfileName() {
+    if (!client || !currentUser) return;
+    var meta = currentUser.user_metadata || {};
+    var cand = ((meta.full_name || meta.name || "") + "").trim() || prettyFromEmail(currentUser.email);
+    if (cand) await setProfileName(cand, false);
+  }
+
   async function init() {
     injectStyle();
     mountHeaderControl();
@@ -200,9 +250,11 @@
       var got = await client.auth.getUser();
       currentUser = (got && got.data && got.data.user) || null;
       renderHeader(); emitChange();
+      if (currentUser) ensureProfileName();
       client.auth.onAuthStateChange(function (_evt, session) {
         currentUser = (session && session.user) || null;
         renderHeader(); emitChange();
+        if (currentUser) ensureProfileName();
       });
     } catch (err) {
       // Stillegående — siden fungerer fortsatt uten innlogging.
