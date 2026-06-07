@@ -24,6 +24,9 @@
     --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
     --rule:#E2D8C2; --rule-strong:#C9BD9F;
     --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
+    /* Spot-color-system for kategori-illustrasjoner (likt arkiv/index) */
+    --spot-teal:#0A6E5A; --spot-moss:#5C7A3C; --spot-cobalt:#2C4A8F;
+    --spot-terracotta:#B05238; --spot-plum:#6B3050; --spot-saffron:#C68A2E;
     --success:#2D7A4C; --success-soft:#DDE9D7; --danger:#A82E1F; --danger-soft:#F3D9D2;
     --r-pill:999px; --r-card:16px; --r-md:8px;
     --font-display:'Fraunces',Georgia,serif;
@@ -33,8 +36,44 @@
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-sans); line-height:1.55;
          -webkit-font-smoothing:antialiased; }
+  /* Diskret prikkraster i bakgrunnen — samme som arkiv/index */
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0);
+    background-size:4px 4px; }
   a { color:var(--accent); }
-  .wrap { max-width:640px; margin:0 auto; padding:20px 20px 80px; }
+  .wrap { max-width:640px; margin:0 auto; padding:20px 20px 80px; position:relative; z-index:1; }
+
+  /* Spot-color-overlay på kategori-bilder (likt arkiv/index) */
+  [data-spot] { position:relative; }
+  [data-spot]::before { content:''; position:absolute; inset:0; background:var(--spot,transparent);
+    opacity:.55; z-index:1; pointer-events:none; }
+  [data-spot] > img { position:relative; z-index:2; mix-blend-mode:multiply; }
+  [data-spot="teal"]{--spot:var(--spot-teal);} [data-spot="moss"]{--spot:var(--spot-moss);}
+  [data-spot="cobalt"]{--spot:var(--spot-cobalt);} [data-spot="terracotta"]{--spot:var(--spot-terracotta);}
+  [data-spot="plum"]{--spot:var(--spot-plum);} [data-spot="saffron"]{--spot:var(--spot-saffron);}
+
+  /* Hero-banner på start-skjermen */
+  .hero-banner { aspect-ratio:16/9; border-radius:var(--r-card); overflow:hidden;
+    border:.5px solid var(--rule-strong); background:var(--bg-deep); margin-bottom:24px; }
+  .hero-banner > img { width:100%; height:100%; object-fit:cover; display:block; }
+  /* Liten bilde-aksent på ferdig-skjermen */
+  .mini-banner { aspect-ratio:21/9; border-radius:var(--r-md); overflow:hidden;
+    border:.5px solid var(--rule-strong); background:var(--bg-deep); margin:0 0 22px; }
+  .mini-banner > img { width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* Tema-velger (chips) */
+  .picker-label { font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-mute); margin:22px 0 10px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+  .chip { display:inline-flex; align-items:center; gap:9px; padding:11px 15px; background:var(--bg-soft);
+    border:.5px solid var(--rule); border-radius:var(--r-md); font-family:var(--font-sans); font-size:14px;
+    font-weight:500; color:var(--ink); cursor:pointer; transition:border-color .16s, background .16s, box-shadow .16s; }
+  .chip .dot { width:9px; height:9px; border-radius:50%; background:var(--spot,var(--accent)); flex-shrink:0; }
+  .chip:hover { border-color:var(--spot,var(--accent)); background:var(--bg); }
+  .chip.active { border-color:var(--spot,var(--accent)); background:var(--bg); box-shadow:inset 0 0 0 1px var(--spot,var(--accent)); }
+  .chip[data-spot="teal"]{--spot:var(--spot-teal);} .chip[data-spot="moss"]{--spot:var(--spot-moss);}
+  .chip[data-spot="cobalt"]{--spot:var(--spot-cobalt);} .chip[data-spot="terracotta"]{--spot:var(--spot-terracotta);}
+  .chip[data-spot="plum"]{--spot:var(--spot-plum);} .chip[data-spot="saffron"]{--spot:var(--spot-saffron);}
 
   /* Masthead */
   .masthead { display:flex; align-items:center; justify-content:space-between; gap:12px;
@@ -114,10 +153,15 @@
   </section>
 
   <!-- START -->
-  <section id="s-start" class="hidden" style="padding-top:40px;">
+  <section id="s-start" class="hidden" style="padding-top:28px;">
+    <div class="hero-banner" id="start-hero" data-spot="teal">
+      <img id="start-img" src="IMG/kategori-mix.jpg" alt="">
+    </div>
     <div class="eyebrow" id="start-date">Dagens quiz</div>
     <h1 id="start-title">Dagens quiz</h1>
     <p class="lede" id="start-lede"></p>
+    <div class="picker-label hidden" id="picker-label">Velg tema for i dag</div>
+    <div class="chips hidden" id="edition-picker"></div>
     <button class="btn" id="btn-start">Spill dagens quiz</button>
     <p class="muted" style="font-size:13px; margin-top:16px;">Én quiz om dagen — samme for alle. Logg inn for å bygge streak og havne på ukens ledertavle.</p>
   </section>
@@ -173,7 +217,10 @@
   </section>
 
   <!-- ALREADY PLAYED -->
-  <section id="s-done" class="hidden" style="padding-top:40px;">
+  <section id="s-done" class="hidden" style="padding-top:28px;">
+    <div class="mini-banner" id="done-hero" data-spot="teal">
+      <img id="done-img" src="IMG/kategori-mix.jpg" alt="">
+    </div>
     <div class="eyebrow" id="done-date">Dagens quiz</div>
     <h1>Du har spilt i dag</h1>
     <p class="lede">Kom tilbake i morgen for en ny quiz. Her er ukens ledertavle så langt.</p>
@@ -192,7 +239,118 @@
   "use strict";
   var DAILY_ENDPOINT = "/api/daily-quiz";
 
-  var state = { quiz:null, date:null, theme:null, idx:0, answers:[], score:0, locked:false };
+  var state = { quiz:null, date:null, theme:null, idx:0, answers:[], score:0, locked:false,
+                editions:[], selected:null, quizCache:{} };
+
+  // Kategori-nøkkel → spot-farge (matcher arkiv/index sitt spot-system).
+  var CATEGORY_SPOT = {
+    mix:"teal", historie:"terracotta", verdenshistorie:"terracotta", vitenskap:"moss",
+    geografi:"cobalt", litteratur:"plum", kunst:"terracotta", film:"saffron",
+    musikk:"plum", sport:"cobalt", filosofi:"plum", teknologi:"cobalt"
+  };
+  function spotForCategory(cat){ return CATEGORY_SPOT[cat] || "teal"; }
+
+  // Tema → kategoribilde + spot-farge. Nøklene er ukedags-temaene fra
+  // daily-quiz-generate.js. Faller tilbake på nøkkelord-match, så nye/egne
+  // tema også får et passende bilde.
+  var THEME_VISUAL = {
+    "blandet allmennkunnskap":          { img:"kategori-mix",            spot:"teal" },
+    "norsk og internasjonal historie":  { img:"kategori-verdenshistorie",spot:"terracotta" },
+    "vitenskap og natur":               { img:"kategori-naturvitenskap", spot:"moss" },
+    "geografi og verden":               { img:"kategori-geografi",       spot:"cobalt" },
+    "kultur og litteratur":             { img:"kategori-litteratur",     spot:"plum" },
+    "film og musikk":                   { img:"kategori-film",           spot:"saffron" },
+    "sport":                            { img:"kategori-sport",          spot:"cobalt" }
+  };
+  var THEME_KEYWORDS = [
+    [/sport|idrett|fotball|ol\b/,          { img:"kategori-sport",            spot:"cobalt" }],
+    [/film|tv|kino|serie/,                  { img:"kategori-film",             spot:"saffron" }],
+    [/musikk|band|låt|artist/,              { img:"kategori-musikk",           spot:"plum" }],
+    [/litteratur|bok|forfatter|kultur/,     { img:"kategori-litteratur",       spot:"plum" }],
+    [/geografi|verden|land|by\b/,           { img:"kategori-geografi",         spot:"cobalt" }],
+    [/vitenskap|natur|kjemi|fysikk|biologi/,{ img:"kategori-naturvitenskap",   spot:"moss" }],
+    [/norsk.*hist|hist.*norsk/,             { img:"kategori-norsk-historie",   spot:"terracotta" }],
+    [/histori|verden.*hist|antikk|krig/,    { img:"kategori-verdenshistorie",  spot:"terracotta" }],
+    [/kunst|maler|arkitektur|design/,       { img:"kategori-kunst",            spot:"terracotta" }],
+    [/filosofi|etikk|tanke/,                { img:"kategori-filosofi",         spot:"plum" }],
+    [/teknologi|data|internett|ai\b/,       { img:"kategori-teknologi",        spot:"cobalt" }]
+  ];
+  function visualForTheme(theme){
+    var t = (theme || "").toLowerCase().trim();
+    if (THEME_VISUAL[t]) return THEME_VISUAL[t];
+    for (var i=0;i<THEME_KEYWORDS.length;i++){ if (THEME_KEYWORDS[i][0].test(t)) return THEME_KEYWORDS[i][1]; }
+    return { img:"kategori-mix", spot:"teal" }; // trygt standardvalg
+  }
+  function applyVisual(theme){
+    var v = visualForTheme(theme);
+    setHero(v.img, v.spot);
+  }
+
+  // Sett hero-bilde + spot for både start- og ferdig-skjerm.
+  function setHero(imgName, spot){
+    ["start","done"].forEach(function(p){
+      var hero = $(p+"-hero"), img = $(p+"-img");
+      if (hero) hero.setAttribute("data-spot", spot);
+      if (img) img.src = "IMG/" + imgName + ".jpg";
+    });
+  }
+
+  // ── Temautgaver (chips) ───────────────────────────────────────
+  function renderChips(){
+    var box = $("edition-picker"), pl = $("picker-label");
+    if (!box) return;
+    if (!state.editions || state.editions.length < 2){
+      box.classList.add("hidden"); if (pl) pl.classList.add("hidden"); return;
+    }
+    if (pl) pl.classList.remove("hidden");
+    box.classList.remove("hidden");
+    box.innerHTML = "";
+    state.editions.forEach(function(ed){
+      var b = document.createElement("button");
+      b.className = "chip" + (ed.category === state.selected ? " active" : "");
+      b.setAttribute("data-spot", spotForCategory(ed.category));
+      b.setAttribute("data-cat", ed.category);
+      b.innerHTML = '<span class="dot"></span>' + escapeHtml(ed.category_label || ed.category);
+      b.addEventListener("click", function(){ selectEdition(ed.category); });
+      box.appendChild(b);
+    });
+  }
+
+  function markActiveChip(){
+    var box = $("edition-picker"); if (!box) return;
+    Array.prototype.forEach.call(box.children, function(b){
+      b.classList.toggle("active", b.getAttribute("data-cat") === state.selected);
+    });
+  }
+
+  // Vis valgt utgave: hero, tittel, lede + sett state.quiz.
+  function applyEdition(cat){
+    var ed = (state.editions || []).filter(function(e){ return e.category === cat; })[0];
+    setHero((ed && ed.hero_img) || ("kategori-" + cat), spotForCategory(cat));
+    if (ed){
+      if (ed.title) $("start-title").textContent = ed.title;
+      $("start-lede").textContent = ed.lede || "";
+    }
+    state.selected = cat;
+    if (state.quizCache[cat]) state.quiz = state.quizCache[cat];
+    markActiveChip();
+  }
+
+  // Bytt tema: hent quizen for kategorien om vi ikke har den, så vis den.
+  async function selectEdition(cat){
+    if (cat === state.selected) return;
+    if (!state.quizCache[cat]){
+      var t = $("start-title"), prev = t.textContent; t.textContent = "Henter …";
+      try {
+        var res = await fetch(DAILY_ENDPOINT + "?category=" + encodeURIComponent(cat));
+        var data = await res.json();
+        if (data && data.quiz && data.quiz.questions) state.quizCache[cat] = data.quiz;
+      } catch(e){}
+      t.textContent = prev;
+    }
+    if (!state.quizCache[cat]) return; // kunne ikke hente — behold forrige valg
+    applyEdition(cat);
+  }
 
   function $(id){ return document.getElementById(id); }
   function show(id){
@@ -231,7 +389,6 @@
       $("s-loading").innerHTML = '<div class="eyebrow">Dagens quiz</div><p class="lede" style="margin-top:14px;">Dagens quiz er ikke klar ennå. Prøv igjen om litt.</p>';
       return;
     }
-    state.quiz = data.quiz;
     state.date = data.quiz_date;
     state.theme = data.theme;
 
@@ -239,8 +396,21 @@
     $("start-date").textContent = dateLabel;
     $("res-date").textContent = dateLabel;
     $("done-date").textContent = dateLabel;
-    $("start-title").textContent = data.quiz.title || "Dagens quiz";
-    $("start-lede").textContent = data.quiz.lede || "";
+
+    if (data.editions && data.editions.length){
+      // Temautgaver: bygg velger, velg dagens forhåndsvalg.
+      state.editions = data.editions;
+      state.selected = data.selected_category || data.editions[0].category;
+      state.quizCache[state.selected] = data.quiz; // den fulle quizen API-et ga oss
+      renderChips();
+      applyEdition(state.selected);                // setter hero/tittel/lede + state.quiz
+    } else {
+      // Bakoverkompat: én quiz uten utgaver.
+      state.quiz = data.quiz;
+      applyVisual(data.theme);
+      $("start-title").textContent = data.quiz.title || "Dagens quiz";
+      $("start-lede").textContent = data.quiz.lede || "";
+    }
 
     // Allerede spilt i dag?
     if (await alreadyPlayed(state.date)){
