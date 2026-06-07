@@ -611,6 +611,21 @@
   }
   .progress-fill { height: 100%; background: var(--accent); transition: width 200ms ease; }
 
+  /* Slå-min-score: banner på quiz-skjerm + sammenligning på resultat */
+  .challenge-banner {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; margin-bottom: 20px;
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    border-radius: var(--r-md);
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+    color: var(--accent-deep); line-height: 1.45;
+  }
+  .challenge-result {
+    text-align: center; margin: -8px 0 32px;
+    font-family: var(--font-display); font-style: italic; font-size: 20px;
+    color: var(--accent-deep);
+  }
+
   .category-tag {
     display: inline-block;
     font-family: var(--font-mono);
@@ -1205,6 +1220,7 @@
         <span class="quiz-banner-title" id="quiz-banner-title"></span>
       </div>
     </div>
+    <div class="challenge-banner" id="challenge-banner" style="display:none"></div>
     <div class="progress-row">
       <span id="progress-text">Spørsmål 01 / 10</span>
       <span id="progress-category">Kategori</span>
@@ -1230,6 +1246,8 @@
       <div class="score-out-of" id="score-out-of">av ti mulige</div>
       <p class="verdict" id="verdict">—</p>
     </div>
+
+    <div class="challenge-result" id="challenge-result" style="display:none"></div>
 
     <div class="share-row">
       <div class="share-grid" id="share-grid">— — — — — — — — — —</div>
@@ -1338,7 +1356,9 @@
     selectedOption: null,
     userAnswers: [],
     selectedPlan: 'monthly',
-    history: { streak: 0, total: 0, scores: [] }
+    history: { streak: 0, total: 0, scores: [] },
+    currentSlug: null,      // slug for quizen som spilles nå (for delelenke)
+    challengeScore: null    // venns skår fra ?utfordring=… (slå-min-score-hook)
   };
 
   /* --------------- TEMA-HJELPERE --------------- */
@@ -1708,6 +1728,7 @@
       if (job && job.phase) { try { QuizLoader.setPhase(job.phase); } catch (_) {} }
       const out = resolveJob(job || {});
       if (out) { // ferdig quiz
+        if (job && job.slug) state.currentSlug = job.slug; // for delelenke
         try { QuizLoader.finish(job && job.cached); } catch (_) {}
         return out;
       }
@@ -1788,13 +1809,16 @@
    */
   const QuizLoader = (() => {
     const STEPS = ['SJEKKER ARKIVET', 'LAGER SPØRSMÅL', 'KVALITETSSIKRER', 'PAKKER SAMMEN'];
-    const CEIL  = [14, 52, 88, 97];        // asymptotisk tak per steg (% av strøket)
-    const CRAWL = [1400, 3400, 5200, 900]; // hvor lenge crawl mot taket varer (ms)
+    const CEIL  = [14, 52, 94, 97];           // asymptotisk tak per steg (% av strøket)
+    // Steg 2 (kvalitetssikrer) crawler sakte over et bredt bånd, så selv lange
+    // websøk-ventetider aldri føles frosne — det er alltid mikrobevegelse.
+    const CRAWL = [1400, 3400, 38000, 900];   // hvor lenge crawl mot taket varer (ms)
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let timers = [], raf = null, running = false;
     let words = [], brush = null, len = 520;
     let pct = 0, step = -1;
+    let settled = Promise.resolve();   // løses når sluttfyllingen (→100 %) er vist
 
     const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
     const cancelRaf = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
@@ -1854,6 +1878,7 @@
       brush.style.transition = '';
 
       pct = 0; step = -1;
+      settled = Promise.resolve();
       gotoStep(0);
 
       // Sikkerhetsnett: får vi aldri «generating»-signal (synkron fallback uten
@@ -1875,17 +1900,24 @@
       words.forEach(w => { w.classList.remove('lit'); w.classList.add('done'); });
       if (words.length) words[words.length - 1].classList.add('lit');
       step = STEPS.length - 1;
-      crawlTo(100, cached ? 320 : 480);
+      const fillMs = cached ? 320 : 480;
+      crawlTo(100, fillMs);
+      // La baren faktisk vise 100 % før skjermen byttes — den tilfredsstillende
+      // snappen. generateQuiz venter på settle() før den går til quiz-skjermen.
+      settled = new Promise(res => timers.push(setTimeout(res, fillMs + 90)));
     }
 
     function stop() { running = false; clearTimers(); cancelRaf(); }
 
-    return { start, setPhase, finish, stop };
+    return { start, setPhase, finish, stop, settle: () => settled };
   })();
 
   async function generateQuiz() {
     const themes = getAllThemes();
     if (themes.length === 0) { alert('Velg minst ett tema først'); return; }
+    // Fersk generering = ingen aktiv utfordring; nullstill og skjul banner.
+    state.currentSlug = null; state.challengeScore = null;
+    { const cb = document.getElementById('challenge-banner'); if (cb) cb.style.display = 'none'; }
     // Innloggings-sperre: må være innlogget for å generere (kostnadsbeskyttelse).
     if (!(await ensureLoggedIn())) return;
     // Gratis-tier under testing: la brukeren generere FREE_GENERATION_LIMIT
@@ -1924,6 +1956,7 @@
       setBannerText('Din egen quiz', themeLabel);
       setBannerDifficulty(quiz.difficulty);
       renderQuestion();
+      try { await QuizLoader.settle(); } catch (_) {}  // la baren vise 100 % før bytte
       showScreen('quiz');
     } catch (err) {
       // Abonnement kreves — ikke gi demo-quiz, men rut til riktig sted.
@@ -2058,6 +2091,20 @@
     else verdict = "Eksepsjonelt. Full pott — quizmaster-nivå.";
     document.getElementById('verdict').textContent = verdict;
 
+    // Slå-min-score: sammenlign mot venns skår fra delelenka.
+    const chRes = document.getElementById('challenge-result');
+    if (chRes) {
+      if (state.challengeScore != null) {
+        const cs = state.challengeScore;
+        if (correctCount > cs) chRes.textContent = `Du slo din venn — ${correctCount} mot ${cs}!`;
+        else if (correctCount === cs) chRes.textContent = `Uavgjort — ${correctCount} mot ${cs}.`;
+        else chRes.textContent = `Din venn leder fortsatt: ${cs} mot dine ${correctCount}.`;
+        chRes.style.display = '';
+      } else {
+        chRes.style.display = 'none';
+      }
+    }
+
     // Wordle-stil delemønster
     const grid = state.userAnswers.map((ans, i) =>
       ans === state.quiz.questions[i].correct ? '🟩' : '⬛').join('');
@@ -2109,7 +2156,12 @@
     const grid = document.getElementById('share-grid').textContent;
     const score = document.getElementById('score-num').textContent;
     const total = state.quiz.questions.length;
-    const text = `CustomQuiz · ${score}/${total}\n${grid}\ncustomquiz.no`;
+    // Dyplenke til nøyaktig samme quiz + min skår, så vennen kan prøve å slå den.
+    let link = 'customquiz.no';
+    if (state.currentSlug) {
+      link = 'https://customquiz.no/quiz-app-v2.html?lib=' + encodeURIComponent(state.currentSlug) + '&utfordring=' + score;
+    }
+    const text = `CustomQuiz · ${score}/${total}\n${grid}\n${link}`;
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.getElementById('share-btn');
       const original = btn.innerHTML;
@@ -2203,6 +2255,7 @@
   // Spill en arkivert quiz fra Supabase quiz_library via ?lib=<slug>.
   function playLibraryRow(q) {
     state.quiz = { title: q.title, lede: q.lede || '', questions: q.questions, difficulty: q.difficulty || '' };
+    state.currentSlug = q.slug || state.currentSlug || null; // for videre-deling
     if (q.difficulty) state.difficulty = q.difficulty;
     state.currentIndex = 0; state.selectedOption = null; state.userAnswers = [];
     const banner = document.getElementById('quiz-banner');
@@ -2217,6 +2270,16 @@
     setBannerDifficulty(q.difficulty);
     const demo = document.getElementById('demo-notice');
     if (demo) demo.classList.remove('active');
+    // Utfordrings-banner: viser venns skår om man kom via en «slå min score»-lenke.
+    const chb = document.getElementById('challenge-banner');
+    if (chb) {
+      if (state.challengeScore != null) {
+        chb.textContent = `🔥 En venn fikk ${state.challengeScore}/${q.questions.length} her — slår du det?`;
+        chb.style.display = '';
+      } else {
+        chb.style.display = 'none';
+      }
+    }
     renderQuestion();
     showScreen('quiz');
   }
@@ -2342,7 +2405,11 @@
     const evQuiz = params.get('quiz');
     if (evId && evQuiz) return loadEventQuiz(evId, evQuiz);
     const libSlug = params.get('lib');
-    if (libSlug) return loadLibraryQuizBySlug(libSlug);
+    if (libSlug) {
+      const ch = parseInt(params.get('utfordring'), 10); // venns skår fra delelenke
+      if (!isNaN(ch) && ch >= 0) state.challengeScore = ch;
+      return loadLibraryQuizBySlug(libSlug);
+    }
     const id = params.get('quiz');
     if (!id) return false;
     try {

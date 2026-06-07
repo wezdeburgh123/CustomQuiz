@@ -62,11 +62,15 @@ exports.handler = async (event) => {
       return { statusCode: 202, body: "" };
     }
 
+    // Kanonisk slug for denne quizen — sendes til klienten så den kan bygge
+    // en delelenke (?lib=<slug>) til nøyaktig samme quiz.
+    const shareSlug = library.makeSlug(input.themes, input.difficulty);
+
     // CHECK-DB-FIRST: finnes temaet i arkivet, server det momentant (gratis).
     try {
       const cached = await library.findByThemes(input.themes, input.difficulty);
       if (cached && Array.isArray(cached.questions) && cached.questions.length) {
-        await writeJob(jobId, { status: "done", quiz: { title: cached.title, lede: cached.lede, questions: cached.questions }, cached: true });
+        await writeJob(jobId, { status: "done", quiz: { title: cached.title, lede: cached.lede, questions: cached.questions }, cached: true, slug: shareSlug });
         return { statusCode: 202, body: "" };
       }
     } catch (_) { /* cache-bom skal aldri blokkere generering */ }
@@ -97,7 +101,7 @@ exports.handler = async (event) => {
       if (!res.ok && res.insufficient) {
         await writeJob(jobId, { status: "insufficient", reason: res.reason });
       } else {
-        await writeJob(jobId, { status: "done", quiz: res.quiz });
+        await writeJob(jobId, { status: "done", quiz: res.quiz, slug: shareSlug });
         // Nytt tema → lagre i arkivet (grunnet via websøk når withSearch var på).
         library.saveQuiz({
           themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
