@@ -76,6 +76,10 @@
   .chip[data-spot="plum"]{--spot:var(--spot-plum);} .chip[data-spot="saffron"]{--spot:var(--spot-saffron);}
   .chip-more { background:transparent; border-style:dashed; color:var(--ink-mute); }
   .chip-more:hover { color:var(--accent); border-color:var(--accent); }
+  /* «Fast tema»-rad under chipsene (innlogget) */
+  .pref-row { font-size:13px; color:var(--ink-mute); margin:-6px 0 22px; min-height:18px; }
+  .pref-link { background:none; border:none; padding:0; font:inherit; color:var(--accent); cursor:pointer; text-decoration:underline; }
+  .pref-link:hover { color:var(--accent-deep); }
 
   /* Masthead */
   .masthead { display:flex; align-items:center; justify-content:space-between; gap:12px;
@@ -96,6 +100,20 @@
   .btn:hover { background:var(--accent-deep); border-color:var(--accent-deep); }
   .btn-secondary { background:transparent; color:var(--accent); }
   .btn-secondary:hover { background:var(--accent-soft); color:var(--accent-deep); }
+
+  /* Post-Dagens «Hva nå?» — tre veier videre, høyeste motivasjonsvindu. */
+  .next-steps { margin-top:26px; }
+  .next-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }
+  .next-card { display:flex; flex-direction:column; gap:6px; padding:18px; border-radius:var(--r-card);
+    border:.5px solid var(--rule-strong); background:var(--bg-soft); text-decoration:none; color:var(--ink);
+    transition:border-color .16s, background .16s, transform .16s; }
+  .next-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .next-card .k { font-family:var(--font-display); font-size:20px; font-weight:500; color:var(--ink); }
+  .next-card .d { font-size:13px; color:var(--ink-soft); line-height:1.4; }
+  .next-card-primary { background:var(--accent); border-color:var(--accent); }
+  .next-card-primary .k, .next-card-primary .d { color:var(--bg-soft); }
+  .next-card-primary:hover { background:var(--accent-deep); border-color:var(--accent-deep); }
+  @media (max-width:640px){ .next-grid { grid-template-columns:1fr; } }
   .btn[disabled] { opacity:.5; cursor:default; }
 
   .hidden { display:none !important; }
@@ -164,6 +182,7 @@
     <p class="lede" id="start-lede"></p>
     <div class="picker-label hidden" id="picker-label">Velg tema for i dag</div>
     <div class="chips hidden" id="edition-picker"></div>
+    <div class="pref-row hidden" id="pref-row"></div>
     <button class="btn" id="btn-start">Spill dagens quiz</button>
     <p class="muted" style="font-size:13px; margin-top:16px;">Én quiz om dagen — samme for alle. Logg inn for å bygge streak og havne på ukens ledertavle.</p>
   </section>
@@ -193,9 +212,27 @@
     <div id="res-streak-wrap"></div>
     <div class="row" style="margin-top:18px;">
       <button class="btn" id="btn-copy">Kopier resultat</button>
-      <a class="btn btn-secondary" href="index.html">Lag din egen quiz</a>
     </div>
     <div class="toast" id="copy-toast"></div>
+
+    <!-- Post-Dagens: Hva nå? -->
+    <div class="next-steps">
+      <div class="eyebrow">Hva nå?</div>
+      <div class="next-grid">
+        <a class="next-card next-card-primary" href="index.html">
+          <span class="k">Lag din egen</span>
+          <span class="d">Generér en quiz om akkurat ditt tema.</span>
+        </a>
+        <a class="next-card" href="arkiv.html">
+          <span class="k">Arkivet</span>
+          <span class="d">Bla i alt vi har publisert.</span>
+        </a>
+        <a class="next-card" href="vm.html">
+          <span class="k">VM-quiz</span>
+          <span class="d">Fotball-VM — gratis hele veien.</span>
+        </a>
+      </div>
+    </div>
 
     <!-- Visningsnavn-prompt (innlogget, mangler navn) -->
     <div id="name-prompt" class="card hidden" style="margin-top:24px;">
@@ -230,7 +267,25 @@
     <hr class="sep">
     <div class="eyebrow">Ukens ledertavle</div>
     <div id="done-lb-wrap"><p class="spinner">Laster …</p></div>
-    <div style="margin-top:22px;"><a class="btn btn-secondary" href="index.html">Lag din egen quiz</a></div>
+
+    <!-- Post-Dagens: Hva nå? -->
+    <div class="next-steps">
+      <div class="eyebrow">Hva nå?</div>
+      <div class="next-grid">
+        <a class="next-card next-card-primary" href="index.html">
+          <span class="k">Lag din egen</span>
+          <span class="d">Generér en quiz om akkurat ditt tema.</span>
+        </a>
+        <a class="next-card" href="arkiv.html">
+          <span class="k">Arkivet</span>
+          <span class="d">Bla i alt vi har publisert.</span>
+        </a>
+        <a class="next-card" href="vm.html">
+          <span class="k">VM-quiz</span>
+          <span class="d">Fotball-VM — gratis hele veien.</span>
+        </a>
+      </div>
+    </div>
   </section>
 </div>
 
@@ -242,7 +297,7 @@
   var DAILY_ENDPOINT = "/api/daily-quiz";
 
   var state = { quiz:null, date:null, theme:null, idx:0, answers:[], score:0, locked:false,
-                editions:[], selected:null, quizCache:{} };
+                editions:[], selected:null, quizCache:{}, loggedIn:false, prefCategory:null };
 
   // Kategori-nøkkel → spot-farge (matcher arkiv/index sitt spot-system).
   var CATEGORY_SPOT = {
@@ -369,7 +424,52 @@
     }
     state.selected = cat;
     if (state.quizCache[cat]) state.quiz = state.quizCache[cat];
-    markActiveChip();
+    renderChips();      // re-render så valgt kategori alltid er synlig (også fra «flere»)
+    updatePrefRow();
+  }
+
+  // ── Fast tema (innlogget) ─────────────────────────────────────
+  function updatePrefRow(){
+    var row = $("pref-row"); if (!row) return;
+    if (!state.loggedIn || !state.editions.length){ row.classList.add("hidden"); row.innerHTML = ""; return; }
+    row.classList.remove("hidden");
+    var ed = state.editions.filter(function(e){ return e.category === state.selected; })[0];
+    var label = (ed && (ed.category_label || ed.category)) || state.selected;
+    if (state.prefCategory === state.selected){
+      row.innerHTML = '★ «' + escapeHtml(label) + '» er ditt faste tema';
+    } else {
+      row.innerHTML = '<button type="button" class="pref-link" id="pref-set">Gjør «' + escapeHtml(label) + '» til mitt faste tema</button>';
+      var b = $("pref-set"); if (b) b.addEventListener("click", savePreferred);
+    }
+  }
+
+  async function savePreferred(){
+    var sb = await waitForClient(); if (!sb) return;
+    try {
+      var u = await sb.auth.getUser();
+      var uid = u && u.data && u.data.user && u.data.user.id; if (!uid) return;
+      await sb.from("profiles").upsert({ id: uid, daily_category: state.selected, updated_at: new Date().toISOString() });
+      state.prefCategory = state.selected;
+      updatePrefRow();
+    } catch(e){}
+  }
+
+  // Forhåndsvelg brukerens faste tema (om satt og tilgjengelig i dag).
+  async function applyPreferredIfAny(){
+    if (!state.editions.length) return;
+    var sb = await waitForClient(); if (!sb){ state.loggedIn = false; updatePrefRow(); return; }
+    try {
+      var u = await sb.auth.getUser();
+      var uid = u && u.data && u.data.user && u.data.user.id;
+      if (!uid){ state.loggedIn = false; updatePrefRow(); return; }
+      state.loggedIn = true;
+      var r = await sb.from("profiles").select("daily_category").eq("id", uid).maybeSingle();
+      var pref = r && r.data && r.data.daily_category;
+      state.prefCategory = pref || null;
+      var has = state.editions.some(function(e){ return e.category === pref; });
+      if (pref && has && pref !== state.selected) await selectEdition(pref); // bytter + henter quiz
+      updatePrefRow();
+    } catch(e){ updatePrefRow(); }
   }
 
   // Bytt tema: hent quizen for kategorien om vi ikke har den, så vis den.
@@ -438,8 +538,7 @@
       state.editions = data.editions;
       state.selected = data.selected_category || data.editions[0].category;
       state.quizCache[state.selected] = data.quiz; // den fulle quizen API-et ga oss
-      renderChips();
-      applyEdition(state.selected);                // setter hero/tittel/lede + state.quiz
+      applyEdition(state.selected);                // rendrer chips + setter hero/tittel/lede + state.quiz
     } else {
       // Bakoverkompat: én quiz uten utgaver.
       state.quiz = data.quiz;
@@ -455,6 +554,7 @@
       renderLeaderboard("done-lb-wrap");
       return;
     }
+    await applyPreferredIfAny();   // forhåndsvelg fast tema for innloggede
     show("s-start");
   }
 
