@@ -17,6 +17,7 @@
 const core = require("./_quizcore");
 const jobs = require("./_jobs");
 const library = require("./_library");
+const moderation = require("./_moderation");
 
 async function writeJob(jobId, obj) {
   try {
@@ -66,6 +67,13 @@ exports.handler = async (event) => {
     // en delelenke (?lib=<slug>) til nøyaktig samme quiz.
     const shareSlug = library.makeSlug(input.themes, input.difficulty);
 
+    // MODERERING lag 1: deterministisk ordliste-port (gratis, før API-kall).
+    const screen = moderation.screenThemes(input.themes);
+    if (!screen.ok) {
+      await writeJob(jobId, { status: "blocked", reason: screen.reason });
+      return { statusCode: 202, body: "" };
+    }
+
     // CHECK-DB-FIRST: finnes temaet i arkivet, server det momentant (gratis).
     try {
       const cached = await library.findByThemes(input.themes, input.difficulty);
@@ -98,15 +106,24 @@ exports.handler = async (event) => {
           throw searchErr;
         }
       }
-      if (!res.ok && res.insufficient) {
+      if (!res.ok && res.blocked) {
+        await writeJob(jobId, { status: "blocked", reason: res.reason });
+      } else if (!res.ok && res.insufficient) {
         await writeJob(jobId, { status: "insufficient", reason: res.reason });
       } else {
         await writeJob(jobId, { status: "done", quiz: res.quiz, slug: shareSlug });
         // Nytt tema → lagre i arkivet (grunnet via websøk når withSearch var på).
-        library.saveQuiz({
-          themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
-          category: "mix", model: res.model, grounded: withSearch, source: "user",
-        }).catch(() => {});
+        // MÅ await-es: i serverless fryses funksjonen når handleren returnerer,
+        // så en fire-and-forget-skriving rekker ikke fullføre → delelenka 404-er.
+        // Klienten har alt fått quizen (done skrevet over), så dette koster ikke UX.
+        try {
+          await library.saveQuiz({
+            themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
+            category: "mix", model: res.model, grounded: withSearch, source: "user",
+          });
+        } catch (saveErr) {
+          console.warn("[bg] arkiv-lagring feilet:", saveErr.message);
+        }
       }
     } catch (genErr) {
       console.error("[bg] generering feilet:", genErr.message);
