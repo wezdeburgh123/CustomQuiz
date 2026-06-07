@@ -135,7 +135,8 @@ window.__QUIZ_DATA__ = {
           "correct": 0,
           "explanation": "Stillehavet dekker rundt en tredel av jordoverflaten."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "mix-02",
@@ -1080,7 +1081,8 @@ window.__QUIZ_DATA__ = {
           "correct": 3,
           "explanation": "Tinget var folkeforsamlingen der lover ble vedtatt og tvister avgjort."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "historie-03",
@@ -1620,7 +1622,8 @@ window.__QUIZ_DATA__ = {
           "correct": 1,
           "explanation": "Kleopatra VII allierte seg med Cæsar og Marcus Antonius før Egypt ble romersk."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "verdenshistorie-02",
@@ -2700,7 +2703,8 @@ window.__QUIZ_DATA__ = {
           "correct": 2,
           "explanation": "Flaggermus er det eneste pattedyret som kan fly aktivt."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "vitenskap-05",
@@ -3105,7 +3109,8 @@ window.__QUIZ_DATA__ = {
           "correct": 2,
           "explanation": "Lisboa ligger ved Tejos munning mot Atlanterhavet."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "geografi-02",
@@ -3780,7 +3785,8 @@ window.__QUIZ_DATA__ = {
           "correct": 2,
           "explanation": "Orwells roman fra 1949 ga oss «Storebror ser deg»."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "litteratur-02",
@@ -4320,7 +4326,8 @@ window.__QUIZ_DATA__ = {
           "correct": 0,
           "explanation": "Vermeers portrett kalles ofte «Nordens Mona Lisa»."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "kunst-02",
@@ -4860,7 +4867,8 @@ window.__QUIZ_DATA__ = {
           "correct": 0,
           "explanation": "Disneys «Løvenes konge» kom i 1994."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "film-02",
@@ -5400,7 +5408,8 @@ window.__QUIZ_DATA__ = {
           "correct": 1,
           "explanation": "Cobain var frontfigur i grunge-bølgen på 1990-tallet."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "musikk-02",
@@ -6210,7 +6219,8 @@ window.__QUIZ_DATA__ = {
           "correct": 0,
           "explanation": "Skiskyting (biathlon) er svært populært i Norden."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "sport-03",
@@ -6750,7 +6760,8 @@ window.__QUIZ_DATA__ = {
           "correct": 0,
           "explanation": "«Den nikomakiske etikk» handler om dyder og lykke (eudaimonia)."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "filosofi-02",
@@ -7560,7 +7571,8 @@ window.__QUIZ_DATA__ = {
           "correct": 2,
           "explanation": "Flemings funn av antibiotika reddet utallige liv."
         }
-      ]
+      ],
+      "free": true
     },
     {
       "id": "teknologi-04",

@@ -45,9 +45,10 @@ function toRow(item) {
   const difficulty = ["lett", "medium", "vanskelig"].includes(item.difficulty) ? item.difficulty : "medium";
   const category = VALID.includes(item.category) ? item.category : "mix";
   const team = (category === "fotball" && item.team) ? String(item.team).trim() : null;
+  const free = item.free === true;
   return {
     slug: item.slug || makeSlug(themes, difficulty),
-    themes, category, category_label: item.category_label || null, team, difficulty,
+    themes, category, category_label: item.category_label || null, team, free, difficulty,
     title: item.title || "Quiz", lede: item.lede || "", questions: item.questions,
     hero_img: item.hero_img || CATEGORY_TO_IMG[category],
     source: item.source || "nightly", model: item.model || null, grounded: !!item.grounded,
