@@ -871,6 +871,27 @@
 
   .action-row { margin-top: 40px; display: flex; gap: 12px; flex-wrap: wrap; }
 
+  /* Post-quiz «Hva nå?» — felles avslutning på tvers av produktet (matcher dagens.html). */
+  .next-steps { margin-top: 40px; }
+  .next-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+  .next-card { display: flex; flex-direction: column; gap: 6px; padding: 18px; border-radius: var(--r-card);
+    border: .5px solid var(--rule-strong); background: var(--bg-soft); text-decoration: none; color: var(--ink);
+    transition: border-color .16s, background .16s, transform .16s; }
+  .next-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .next-card .k { font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--ink); }
+  .next-card .d { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .next-card-primary { background: var(--accent); border-color: var(--accent); }
+  .next-card-primary .k, .next-card-primary .d { color: var(--bg-soft); }
+  .next-card-primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  @media (max-width: 640px) { .next-grid { grid-template-columns: 1fr; } }
+
+  /* Abonnent-nudge under «Hva nå?» — vises kun for ikke-abonnenter. */
+  .sub-nudge { margin-top: 16px; padding: 16px 18px; background: var(--accent-soft); border-radius: var(--r-card);
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .sub-nudge p { margin: 0; font-size: 14px; color: var(--accent-deep); }
+  .sub-nudge .btn { white-space: nowrap; }
+  .hidden { display: none !important; }
+
   /* Modal overlay (paywall + email-gate) */
   .modal-overlay {
     display: none;
@@ -1330,9 +1351,27 @@
     <div class="recap-header">Gjennomgang av spørsmålene</div>
     <div id="recap-list"></div>
 
-    <div class="action-row">
-      <button class="btn" onclick="showHome()">Ny quiz <span class="btn-arrow">→</span></button>
-      <button class="btn btn-secondary" onclick="showPaywall()">Bli abonnent</button>
+    <!-- Post-quiz: Hva nå? — felles avslutning (matcher dagens.html) -->
+    <div class="next-steps">
+      <div class="eyebrow">Hva nå?</div>
+      <div class="next-grid">
+        <a class="next-card next-card-primary" href="javascript:void(0)" onclick="showHome()">
+          <span class="k">Ny quiz</span>
+          <span class="d">Velg et tema, eller skriv ditt eget.</span>
+        </a>
+        <a class="next-card" href="arkiv.html">
+          <span class="k">Arkivet</span>
+          <span class="d">Bla i alt vi har publisert.</span>
+        </a>
+        <a class="next-card" href="vm.html">
+          <span class="k">VM-quiz</span>
+          <span class="d">Fotball-VM — gratis hele veien.</span>
+        </a>
+      </div>
+      <div class="sub-nudge hidden" id="result-sub-nudge">
+        <p>Lås opp hele arkivet, ubegrensede egne quizer og ukeskonkurransen.</p>
+        <button class="btn" onclick="showPaywall()">Bli abonnent <span class="btn-arrow">→</span></button>
+      </div>
     </div>
   </section>
 
@@ -2228,6 +2267,20 @@
     });
 
     showScreen('result');
+
+    // Abonnent-nudge i avslutningen: vis kun for ikke-abonnenter.
+    const subNudge = document.getElementById('result-sub-nudge');
+    if (subNudge) {
+      subNudge.classList.add('hidden');
+      if (window.CQAuth && typeof window.CQAuth.isPremium === 'function') {
+        Promise.resolve(window.CQAuth.isPremium())
+          .then(premium => { if (!premium) subNudge.classList.remove('hidden'); })
+          .catch(() => subNudge.classList.remove('hidden'));
+      } else {
+        subNudge.classList.remove('hidden');
+      }
+    }
+
     if (state.eventContext) { recordEventAttempt(correctCount, total); }
     else { maybeShowEmailGate(); }
   }
