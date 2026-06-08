@@ -382,6 +382,8 @@
     align-items: baseline;
   }
   .section-meta { color: var(--ink-mute); font-weight: 400; }
+  .section-label a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .section-label a:hover { text-decoration-thickness: 2px; }
 
   /* Quiz grid */
   .quiz-grid {
@@ -977,7 +979,7 @@
   <!-- QUIZ ARCHIVE — dynamisk utvalg fra basen. Statiske kort under er fallback
        hvis /api/featured er tom/feiler; JS erstatter dem ved treff. -->
   <div class="section-label">
-    <span>Et utvalg fra <em>arkivet</em></span>
+    <span>Et utvalg fra <a href="arkiv.html"><em>arkivet</em></a></span>
     <span class="section-meta">Allmenn, sport og fotball — og en rotasjon på tvers</span>
   </div>
   <section class="quiz-grid" id="featured-grid">
@@ -1046,7 +1048,7 @@
 
   <!-- NYLIG LAGET AV FELLESSKAPET — fylles av JS (skjult til det finnes innhold) -->
   <div class="section-label" id="community-label" hidden>
-    <span>Nylig laget av <em>fellesskapet</em></span>
+    <span>Nylig laget av <a href="arkiv.html#community-head"><em>fellesskapet</em></a></span>
     <span class="section-meta">Temaer andre har bedt om</span>
   </div>
   <section class="quiz-grid" id="community-grid" hidden></section>

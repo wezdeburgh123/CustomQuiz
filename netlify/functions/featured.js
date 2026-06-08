@@ -16,7 +16,7 @@ const library = require("./_library");
 
 const PINNED_CATS = ["mix", "sport", "fotball"];
 const ROTATING_POOL = ["historie", "verdenshistorie", "vitenskap", "geografi", "litteratur", "kunst", "film", "musikk", "filosofi", "teknologi"];
-const ROTATING_COUNT = 3;
+const ROTATING_COUNT = 2;
 const COMMUNITY_COUNT = 3;
 
 const SELECT = "slug, title, lede, difficulty, category, category_label, team, hero_img, num_questions, plays, source, created_at";
@@ -71,21 +71,27 @@ exports.handler = async (event) => {
     const rows = pool || [];
 
     const used = new Set();
-    const bestInCat = (cat) => rows.find((r) => r.category === cat && !used.has(r.slug));
+    // rows er allerede sortert på plays desc, så [0]=mest spilt, [1]=nest mest spilt.
+    const inCat = (cat) => rows.filter((r) => r.category === cat && !used.has(r.slug));
 
-    // Pinnet: beste i hver pinnede kategori, i fast rekkefølge.
+    // Dagsfrø: stabil per dag (cachebart), varierer dag til dag.
+    const rng = seededRng(daySeed());
+
+    // Pinnet: per kategori, velg dagsfrø-tilfeldig mellom mest spilt og nest mest
+    // spilt — bryter plays-tregheten uten å miste «dette er de beste»-følelsen.
     const pinned = [];
     for (const cat of PINNED_CATS) {
-      const r = bestInCat(cat);
-      if (r) { pinned.push(lean(r)); used.add(r.slug); }
+      const top = inCat(cat).slice(0, 2);
+      if (!top.length) continue;
+      const r = (top.length > 1 && rng() < 0.5) ? top[1] : top[0];
+      pinned.push(lean(r)); used.add(r.slug);
     }
 
     // Roterende: dagsfrø velger hvilke andre kategorier, beste-spilte i hver.
-    const rng = seededRng(daySeed());
     const rotating = [];
     for (const cat of shuffle(ROTATING_POOL, rng)) {
       if (rotating.length >= ROTATING_COUNT) break;
-      const r = bestInCat(cat);
+      const r = inCat(cat)[0];
       if (r) { rotating.push(lean(r)); used.add(r.slug); }
     }
 
