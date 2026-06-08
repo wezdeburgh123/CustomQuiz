@@ -37,22 +37,15 @@ html { scrollbar-gutter: stable; }
   padding: var(--grid-pad-top) var(--grid-pad-x) var(--grid-pad-bottom);
 }
 
-/* Eksplisitt lese-bredde-modifikator (alternativ til :root-override) */
+/* Eksplisitt lese-bredde-modifikator (beholdt for ev. fremtidig bruk) */
 .container--read {
   --container-max: var(--w-read);
 }
 
-/* Fluid ramme, smal lesetekst (single-frame-modellen):
-   Lese-sider beholder den BREDE rammen (1080) — lik alle andre sider, så
-   masthead/sidekanter står identisk og ingenting «spretter» ved navigering.
-   Selve lese-innholdet holdes komfortabelt smalt (760) ved at alle direkte
-   barn UNNTATT masthead sentreres på --w-read. Masthead får dermed full
-   rammebredde av seg selv. Sett klassen `reading` på containeren og IKKE
-   sett --container-max på lese-sider. */
-.reading > :not(#cq-masthead) {
-  max-width: var(--w-read);
-  margin-inline: auto;
-}
+/* Valgt modell (8. juni 2026): UNIFORM bredde — alle sider bruker den brede
+   rammen (--w-wide = 1080), lik arkivet. Ingen lese/galleri-forskjell, så
+   ramme + masthead står identisk overalt og ingenting «spretter». Sider skal
+   derfor IKKE sette --container-max. */
 
 /* clamp() over håndterer mobil→desktop-skalering, så ingen egen mobil-override
    trengs lenger. (Floor = 20px på smale skjermer.) */
