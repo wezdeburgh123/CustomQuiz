@@ -20,9 +20,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="layout.css">
 <script src="supabase-config.js"></script>
 <style>
   :root {
+    --container-max: var(--w-read);
     --bg:#F5F0E6; --bg-soft:#FBF7EE; --bg-deep:#ECE3CE;
     --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
     --rule:#E2D8C2; --rule-strong:#C9BD9F;
@@ -44,7 +46,7 @@
     background-image:radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0);
     background-size:4px 4px; }
   a { color:var(--accent); }
-  .wrap { max-width:640px; margin:0 auto; padding:20px 20px 80px; position:relative; z-index:1; }
+  .wrap { position:relative; z-index:1; }
 
   /* Spot-color-overlay på kategori-bilder (likt arkiv/index) */
   [data-spot] { position:relative; }

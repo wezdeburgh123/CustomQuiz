@@ -1,0 +1,42 @@
+/* ============================================================
+   CustomQuiz — delt layout/grid (single source of truth)
+   Lenket fra alle sider etter font-link i <head>.
+   Styrer KUN bredde, sentrering og sidepadding. Farger/typografi
+   bor fortsatt i hver sides :root (designsystemet).
+
+   To gjenkjennbare bredder på én grid:
+     --w-read  760px  — lese-flyt (daglig, generator, min-side, vm)
+     --w-wide 1080px  — kortrutenett/galleri (forside, arkiv)
+
+   En side velger lese-bredde ved å sette i sin egen :root:
+     --container-max: var(--w-read);
+   Uten override faller den til galleri-bredde (1080).
+   ============================================================ */
+
+:root {
+  --w-read: 760px;
+  --w-wide: 1080px;
+
+  /* Sidepadding (gutter mot viewport): vokser med skjermbredden så innholdet
+     aldri ligger tett på kantene på desktop, men holder seg stramt på mobil.
+     Juster taket (56px) om du vil ha enda mer/mindre luft. */
+  --grid-pad-x: clamp(20px, 5vw, 56px);
+  --grid-pad-top: 32px;
+  --grid-pad-bottom: 96px;
+}
+
+.container,
+.wrap {
+  width: 100%;
+  max-width: var(--container-max, var(--w-wide));
+  margin-inline: auto;
+  padding: var(--grid-pad-top) var(--grid-pad-x) var(--grid-pad-bottom);
+}
+
+/* Eksplisitt lese-bredde-modifikator (alternativ til :root-override) */
+.container--read {
+  --container-max: var(--w-read);
+}
+
+/* clamp() over håndterer mobil→desktop-skalering, så ingen egen mobil-override
+   trengs lenger. (Floor = 20px på smale skjermer.) */
