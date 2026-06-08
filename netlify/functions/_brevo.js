@@ -58,6 +58,33 @@ async function sendTemplate(templateId, toEmail, params) {
 }
 
 /**
+ * Sender en rå transaksjons-e-post (subject + HTML) uten Brevo-mal. Brukt til
+ * interne varsler (moderasjon). Krever en avsender — bruk BREVO_SENDER_EMAIL
+ * (samme verifiserte avsender som malene). Feiler stille (kaster aldri).
+ */
+async function sendEmail(toEmail, subject, htmlContent) {
+  const key = process.env.BREVO_API_KEY;
+  const senderEmail = process.env.BREVO_SENDER_EMAIL;
+  if (!key || !toEmail || !senderEmail) return false; // ikke konfigurert → hopp stille
+  const payload = {
+    sender: { email: senderEmail, name: process.env.BREVO_SENDER_NAME || "CustomQuiz" },
+    to: [{ email: toEmail }],
+    subject: String(subject || "CustomQuiz"),
+    htmlContent: String(htmlContent || ""),
+  };
+  try {
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: { "api-key": key, "Content-Type": "application/json", accept: "application/json" },
+      body: JSON.stringify(payload),
+    });
+    return res.ok;
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
  * Oppretter/oppdaterer en kontakt i Brevo (Contacts API) og legger den ev. i
  * en liste. Brukes for myk opt-in (VM-ligaer → e-post senere/reaktivering).
  * Brevo håndterer avmelding/unsubscribe for lista. Kaster aldri.
@@ -109,4 +136,4 @@ async function removeFromList(email, listIds) {
   return ok;
 }
 
-module.exports = { sendTemplate, welcomeTemplateId, receiptTemplateId, formatDateNb, upsertContact, vmListIds, removeFromList };
+module.exports = { sendTemplate, sendEmail, welcomeTemplateId, receiptTemplateId, formatDateNb, upsertContact, vmListIds, removeFromList };

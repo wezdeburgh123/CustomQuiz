@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<meta name="robots" content="noindex, nofollow">
+<title>Moderasjon — CustomQuiz</title>
+<link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F5F0E6; --bg-soft:#FBF7EE; --bg-deep:#ECE3CE;
+    --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
+    --rule:#E2D8C2; --rule-strong:#C9BD9F;
+    --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
+    --danger:#B05238;
+    --r-pill:999px; --r-card:16px; --r-md:8px;
+    --font-display:'Fraunces',Georgia,serif;
+    --font-sans:'Manrope','Inter',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body {
+    background:var(--bg); color:var(--ink); font-family:var(--font-sans);
+    font-size:17px; line-height:1.55; min-height:100vh;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background-image:radial-gradient(circle at 1px 1px, rgba(201,189,159,.30) 1px, transparent 0);
+    background-size:4px 4px; pointer-events:none; z-index:1;
+  }
+  .container { max-width:880px; margin:0 auto; padding:32px 24px 96px; position:relative; z-index:2; }
+
+  .masthead {
+    border-top:1px solid var(--rule-strong); border-bottom:1px solid var(--rule-strong);
+    padding:18px 0; margin-bottom:40px; display:flex; justify-content:space-between; align-items:center; gap:16px;
+  }
+  .masthead-wordmark {
+    font-family:var(--font-display); font-style:italic; font-weight:500; font-size:32px;
+    line-height:1; letter-spacing:-.02em; color:var(--ink); text-decoration:none; font-variation-settings:"opsz" 96;
+  }
+  .masthead-tag {
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent);
+  }
+
+  .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+  h1 { font-family:var(--font-display); font-size:40px; font-weight:500; line-height:1.1; margin-bottom:10px; }
+  h1 em { font-style:italic; color:var(--accent); }
+  .lede { color:var(--ink-soft); max-width:60ch; margin-bottom:32px; font-size:15px; }
+
+  /* Token-gate */
+  .gate { max-width:420px; margin:8px 0; }
+  .gate-row { display:flex; gap:10px; margin-top:14px; }
+  .gate-input {
+    flex:1; font-family:var(--font-mono); font-size:14px; padding:12px 14px;
+    background:var(--bg-soft); border:1px solid var(--rule-strong); border-radius:var(--r-md); color:var(--ink);
+  }
+  .gate-input:focus { outline:none; border-color:var(--accent); }
+  .btn {
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer;
+    padding:12px 22px; border-radius:var(--r-pill); border:1px solid var(--accent);
+    background:var(--accent); color:var(--bg-soft); transition:background .15s, color .15s, border-color .15s;
+  }
+  .btn:hover { background:var(--accent-deep); border-color:var(--accent-deep); }
+  .btn-ghost { background:none; color:var(--ink); border-color:var(--rule-strong); }
+  .btn-ghost:hover { background:none; color:var(--accent); border-color:var(--accent); }
+  .btn-danger { background:none; color:var(--danger); border-color:var(--danger); }
+  .btn-danger:hover { background:var(--danger); color:var(--bg-soft); }
+  .btn[disabled] { opacity:.5; cursor:default; }
+
+  .msg { font-family:var(--font-mono); font-size:12px; margin-top:12px; color:var(--ink-mute); }
+  .msg.error { color:var(--danger); }
+
+  /* Toolbar */
+  .toolbar { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--rule-strong); }
+  .toolbar-meta { font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-mute); }
+  .toolbar-meta strong { color:var(--accent); }
+  .refresh-btn { font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; background:none; border:1px solid var(--rule-strong); border-radius:var(--r-pill); padding:8px 16px; color:var(--ink-soft); }
+  .refresh-btn:hover { color:var(--accent); border-color:var(--accent); }
+
+  /* Queue cards */
+  .queue { display:flex; flex-direction:column; gap:14px; }
+  .mod-card {
+    background:var(--bg-soft); border:1px solid var(--rule); border-radius:var(--r-card);
+    padding:20px 22px; display:flex; flex-direction:column; gap:6px;
+  }
+  .mod-card-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .status-badge {
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    padding:4px 10px; border-radius:var(--r-pill);
+  }
+  .status-flagged { background:#F6E3C8; color:#8A5A12; }
+  .status-removed { background:#EAD3CB; color:#7A2F1B; }
+  .mod-cat { font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-mute); }
+  .mod-title { font-family:var(--font-display); font-size:22px; font-weight:500; line-height:1.18; }
+  .mod-title em { font-style:italic; color:var(--accent); }
+  .mod-lede { font-size:14px; color:var(--ink-soft); line-height:1.45; }
+  .mod-meta { font-family:var(--font-mono); font-size:11px; color:var(--ink-mute); margin-top:2px; }
+  .mod-actions { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  .mod-actions .btn { padding:9px 18px; }
+
+  .empty { text-align:center; padding:64px 20px; color:var(--ink-mute); font-family:var(--font-display); font-style:italic; font-size:19px; }
+  .hidden { display:none !important; }
+  @media (max-width:560px) { h1 { font-size:30px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="masthead">
+    <a class="masthead-wordmark" href="index.html">CustomQuiz</a>
+    <span class="masthead-tag">Moderasjon</span>
+  </div>
+
+  <div class="eyebrow">Admin</div>
+  <h1>Rapporterte <em>quizer</em></h1>
+  <p class="lede">Quizer brukere har rapportert er skjult fra arkiv og forside til du vurderer dem. Gjenåpne det som er greit, fjern det som ikke hører hjemme.</p>
+
+  <!-- Token-gate -->
+  <div class="gate" id="gate">
+    <div class="eyebrow" style="margin-bottom:6px">Admin-token</div>
+    <div class="gate-row">
+      <input class="gate-input" id="token-input" type="password" placeholder="ADMIN_TOKEN" autocomplete="off" aria-label="Admin-token">
+      <button class="btn" id="unlock-btn" onclick="unlock()">Lås opp</button>
+    </div>
+    <div class="msg" id="gate-msg"></div>
+  </div>
+
+  <!-- Queue -->
+  <div id="panel" class="hidden">
+    <div class="toolbar">
+      <div class="toolbar-meta"><strong id="queue-count">0</strong> i kø</div>
+      <button class="refresh-btn" onclick="loadQueue()">↻ Oppdater</button>
+    </div>
+    <div class="queue" id="queue"></div>
+    <div class="empty hidden" id="empty">Ingenting i køen — alt er rent. ✦</div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var TOKEN_KEY = 'cq_admin_token';
+  var token = sessionStorage.getItem(TOKEN_KEY) || '';
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+  async function api(payload) {
+    var res = await fetch('/api/library-flag', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(Object.assign({ token: token }, payload))
+    });
+    var data = await res.json().catch(function(){ return {}; });
+    return { ok: res.ok, status: res.status, data: data };
+  }
+
+  window.unlock = async function () {
+    var input = document.getElementById('token-input');
+    var msg = document.getElementById('gate-msg');
+    token = (input.value || '').trim();
+    if (!token) { msg.textContent = 'Lim inn admin-token.'; msg.className = 'msg error'; return; }
+    msg.textContent = 'Sjekker …'; msg.className = 'msg';
+    var r = await api({ action: 'list' });
+    if (r.ok && r.data.ok) {
+      sessionStorage.setItem(TOKEN_KEY, token);
+      document.getElementById('gate').classList.add('hidden');
+      document.getElementById('panel').classList.remove('hidden');
+      renderQueue(r.data.items || []);
+    } else {
+      msg.className = 'msg error';
+      msg.textContent = r.status === 403 ? 'Feil token.' : (r.data.error || 'Kunne ikke laste køen.');
+    }
+  };
+
+  window.loadQueue = async function () {
+    var r = await api({ action: 'list' });
+    if (r.ok && r.data.ok) { renderQueue(r.data.items || []); }
+    else if (r.status === 403) { lock('Token utløpt — lås opp på nytt.'); }
+  };
+
+  function lock(message) {
+    sessionStorage.removeItem(TOKEN_KEY); token = '';
+    document.getElementById('panel').classList.add('hidden');
+    document.getElementById('gate').classList.remove('hidden');
+    var msg = document.getElementById('gate-msg');
+    msg.className = 'msg error'; msg.textContent = message || '';
+  }
+
+  function fmtDate(s){ if(!s) return ''; var d=new Date(s); return isNaN(d)?'':d.toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'}); }
+
+  function renderQueue(items) {
+    var queue = document.getElementById('queue');
+    var empty = document.getElementById('empty');
+    document.getElementById('queue-count').textContent = items.length;
+    if (!items.length) { queue.innerHTML = ''; empty.classList.remove('hidden'); return; }
+    empty.classList.add('hidden');
+    queue.innerHTML = items.map(function (q) {
+      var cat = q.category_label || q.category || '—';
+      if (q.team) cat = 'Fotball · ' + q.team;
+      var st = q.review_status === 'removed' ? 'removed' : 'flagged';
+      var stLabel = st === 'removed' ? 'Fjernet' : 'Rapportert';
+      var actions = st === 'flagged'
+        ? '<button class="btn btn-ghost" data-act="restore" data-slug="'+esc(q.slug)+'">Gjenåpne</button>' +
+          '<button class="btn btn-danger" data-act="remove" data-slug="'+esc(q.slug)+'">Fjern permanent</button>'
+        : '<button class="btn btn-ghost" data-act="restore" data-slug="'+esc(q.slug)+'">Gjenåpne</button>';
+      return '<div class="mod-card" data-row="'+esc(q.slug)+'">' +
+        '<div class="mod-card-top">' +
+          '<span class="status-badge status-'+st+'">'+stLabel+'</span>' +
+          '<span class="mod-cat">'+esc(cat)+'</span>' +
+        '</div>' +
+        '<div class="mod-title">'+esc(q.title||'Quiz')+'</div>' +
+        (q.lede ? '<div class="mod-lede">'+esc(q.lede)+'</div>' : '') +
+        '<div class="mod-meta">'+esc(q.num_questions||'?')+' spørsmål · '+esc(q.plays||0)+' spilt · '+fmtDate(q.created_at)+' · '+esc(q.slug)+'</div>' +
+        '<div class="mod-actions">'+actions+'</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // Delegert handling på Gjenåpne/Fjern.
+  document.getElementById('queue').addEventListener('click', async function (e) {
+    var btn = e.target.closest('button[data-act]');
+    if (!btn || btn.disabled) return;
+    var act = btn.dataset.act, slug = btn.dataset.slug;
+    if (act === 'remove' && !confirm('Fjerne denne quizen permanent? Den blir borte fra arkivet for godt.')) return;
+    var card = btn.closest('.mod-card');
+    card.querySelectorAll('button').forEach(function(b){ b.disabled = true; });
+    var r = await api({ slug: slug, action: act });
+    if (r.ok && r.data.ok) {
+      // Oppdater hele køen så status/knapper stemmer.
+      loadQueue();
+    } else if (r.status === 403) {
+      lock('Token utløpt — lås opp på nytt.');
+    } else {
+      card.querySelectorAll('button').forEach(function(b){ b.disabled = false; });
+      alert('Kunne ikke oppdatere: ' + (r.data.error || ('HTTP ' + r.status)));
+    }
+  });
+
+  document.getElementById('token-input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') unlock();
+  });
+
+  // Auto-lås-opp hvis token alt ligger i sessionStorage.
+  if (token) { loadQueueInitial(); }
+  async function loadQueueInitial() {
+    var r = await api({ action: 'list' });
+    if (r.ok && r.data.ok) {
+      document.getElementById('gate').classList.add('hidden');
+      document.getElementById('panel').classList.remove('hidden');
+      renderQueue(r.data.items || []);
+    } else { sessionStorage.removeItem(TOKEN_KEY); token = ''; }
+  }
+})();
+</script>
+</body>
+</html>

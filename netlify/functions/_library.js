@@ -148,8 +148,30 @@ async function setReviewStatus(slug, status) {
   }
 }
 
+/**
+ * Hent moderasjons-køen: rader med review_status i de oppgitte statusene
+ * (default flagged + removed), nyeste først. Lesing — fungerer med anon-nøkkel.
+ * Returnerer { ok, rows, error? }.
+ */
+async function listByReviewStatus(statuses = ["flagged", "removed"], limit = 200) {
+  const client = db();
+  if (!client) return { ok: false, rows: [], error: "db ikke konfigurert" };
+  try {
+    const { data, error } = await client
+      .from(TABLE)
+      .select("slug, title, lede, category, category_label, team, source, review_status, num_questions, plays, created_at")
+      .in("review_status", statuses)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (error) return { ok: false, rows: [], error: error.message };
+    return { ok: true, rows: data || [] };
+  } catch (e) {
+    return { ok: false, rows: [], error: e.message };
+  }
+}
+
 module.exports = {
   TABLE, CATEGORY_TO_IMG, VALID_CATEGORIES,
   heroForCategory, normToken, makeSlug,
-  db, canWrite, findByThemes, saveQuiz, setReviewStatus,
+  db, canWrite, findByThemes, saveQuiz, setReviewStatus, listByReviewStatus,
 };
