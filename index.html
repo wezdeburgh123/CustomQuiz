@@ -31,6 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="layout.css">
 <script>document.documentElement.classList.add('pre-reveal');</script>
+<script src="intro-state.js"></script>
 <style>
   :root {
     --bg:           #F5F0E6;
@@ -146,8 +147,10 @@
     .masthead-mark { height: 40px; width: 40px; }
     .masthead-wordmark { font-size: 18px; }
   }
-  /* Intro ved sidelast: Q males inn, så ordmerke, så resten av menyen */
-  .masthead-mark {
+  /* Intro KUN ved fersk inngang (html.cq-fresh): Q males inn, så ordmerke, så
+     menyen. Ved intern nav / tilbake-fram står mastheaden helt stille (ankret
+     av View Transitions) og spiller ingen intro. */
+  html.cq-fresh .masthead-mark {
     -webkit-mask-image: linear-gradient(108deg, #000 0 40%, rgba(0,0,0,0) 50%);
             mask-image: linear-gradient(108deg, #000 0 40%, rgba(0,0,0,0) 50%);
     -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
@@ -155,12 +158,12 @@
     -webkit-mask-position: 100% 0; mask-position: 100% 0;
     animation: genBrush 0.7s cubic-bezier(.42, 0, .2, 1) 0s forwards;
   }
-  .masthead-wordmark {
+  html.cq-fresh .masthead-wordmark {
     opacity: 0;
     transform: translateX(-8px);
     animation: introFade 0.3s ease 0.08s forwards;
   }
-  .masthead-meta {
+  html.cq-fresh .masthead-meta {
     opacity: 0;
     transform: translateY(-4px);
     animation: introFade 0.32s ease 0.16s forwards;
@@ -1353,7 +1356,9 @@
     if (window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var blocks = document.querySelectorAll('.container > *:not(.masthead)');
-    var start = 340, step = 45;
+    // Lead kun ved fersk inngang (menyen animerer og skal lande først); ved
+    // intern nav starter innholds-bølgen umiddelbart.
+    var start = (root.classList.contains('cq-fresh') ? 340 : 0), step = 45;
     Array.prototype.forEach.call(blocks, function (el, i) {
       setTimeout(function () { el.classList.add('is-in'); }, start + i * step);
     });
