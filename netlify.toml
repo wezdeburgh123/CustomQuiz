@@ -43,6 +43,12 @@
 [functions."daily-email"]
   schedule = "0 6 * * 1"
 
+# Riktig MIME for web app manifest (ellers kan nettleseren ignorere det).
+[[headers]]
+  for = "/*.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
 # Pene URL-er: /api/* -> funksjoner
 [[redirects]]
   from = "/api/generate-quiz"

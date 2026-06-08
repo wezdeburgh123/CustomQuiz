@@ -1,0 +1,27 @@
+{
+  "name": "VM-quiz 2026 — CustomQuiz",
+  "short_name": "VM-quiz",
+  "description": "Fotball-VM-quizen på CustomQuiz. Ta quizene, samle poeng gjennom hele mesterskapet, og konkurrer mot venner og alle andre.",
+  "lang": "nb",
+  "dir": "ltr",
+  "start_url": "/vm.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5F0E6",
+  "theme_color": "#F5F0E6",
+  "icons": [
+    {
+      "src": "/IMG/app-icon-vm.jpg",
+      "sizes": "1254x1254",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/IMG/app-icon-maskable-vm.jpg",
+      "sizes": "1254x1254",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ]
+}
