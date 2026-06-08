@@ -501,7 +501,7 @@
   .community-sub { color: var(--ink-mute); font-size: 14.5px; max-width: 60ch; margin: 0; }
   .community-card { position: relative; }
   .report-btn {
-    position: absolute; top: 10px; right: 10px; z-index: 3;
+    position: absolute; top: 10px; left: 10px; z-index: 3;
     font-family: var(--font-mono); font-size: 11px; letter-spacing: .02em;
     padding: 5px 10px; border-radius: var(--r-pill); cursor: pointer;
     background: rgba(20,18,14,.62); color: #fff; border: 1px solid rgba(255,255,255,.28);
@@ -843,7 +843,7 @@
   <div class="community-head" id="community-head" hidden>
     <div class="eyebrow">Fellesskapet</div>
     <h2 class="community-title">Laget av <em>fellesskapet</em></h2>
-    <p class="community-sub">Tema andre har bedt om — automatisk sjekket før publisering. Ser du noe som ikke hører hjemme? Trykk «Rapportér», så vurderer vi det.</p>
+    <p class="community-sub">Quizer folk lager lagres og blir synlige for alle her — automatisk sjekket før publisering. Vil du fjerne en du har laget, eller ser du noe som ikke hører hjemme? Trykk «Rapportér», så skjules den til vi har vurdert den.</p>
   </div>
   <section class="quiz-grid" id="community-grid" hidden></section>
 
@@ -1428,8 +1428,10 @@
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: (q.created_at || '').slice(0, 10) || '2026-06-01',
             url: 'quiz-app-v2.html?lib=' + encodeURIComponent(q.slug),
-            free: !!q.free,      // gratis-flagg fra quiz_library (per-lag fotball m.m.)
-            locked: !q.free,
+            // Fellesskaps-quizer (source='user') er åpne for alle — aldri premium-
+            // gatet og aldri skjult av «kun gratis». Driver organisk vekst (BASEN-spec).
+            free: q.source === 'user' ? false : !!q.free,
+            locked: q.source === 'user' ? false : !q.free,
             source: q.source || 'nightly',  // 'user' = laget av fellesskapet
             slug: q.slug || ''
           });

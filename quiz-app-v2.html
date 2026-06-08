@@ -377,6 +377,19 @@
   }
   .custom-input::placeholder { color: var(--ink-mute); font-style: italic; opacity: 0.7; }
 
+  /* Note om at egne quizer lagres og blir offentlige */
+  .generate-note {
+    margin: 14px 0 0;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink-mute);
+    text-align: center;
+    max-width: 52ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   /* Control row (nivå + antall) */
   .control-row {
     display: grid;
@@ -1227,6 +1240,7 @@
     <button class="btn" id="generate-btn" onclick="generateQuiz()">
       Generer quiz <span class="btn-arrow">→</span>
     </button>
+    <p class="generate-note">Quizer du lager lagres og blir synlige for alle i arkivet, under «Laget av fellesskapet». Vil du fjerne en senere? Trykk «Rapportér» på kortet i arkivet, så skjules den.</p>
   </section>
 
   <!-- LOADING -->
