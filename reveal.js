@@ -66,11 +66,18 @@
     items.forEach(function (el) { el.classList.add("cq-reveal"); });
     root.classList.remove("cq-reveal-init");
 
-    var STAGGER = 55;   // ms mellom hvert element
+    var LEAD = 340;     // kort pause så masthead/logo «lander» FØR innholdet starter
+    var STAGGER = 42;   // rask, diskret stagger mellom hvert element
     var CAP = 8;        // ikke forskyv mer enn de første N (resten kommer samlet)
+    var t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+    function nowMs() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
 
     function reveal(el, idx) {
-      var d = Math.min(idx, CAP) * STAGGER;
+      // Lead-pausen gjelder KUN førstegangs-innlasting (innhold over folden), så
+      // logoen rekker å komme inn først. Innhold som trigges når man scroller dit
+      // skal komme prompt — uten ekstra forsinkelse.
+      var lead = (nowMs() - t0 < 450) ? LEAD : 0;
+      var d = lead + Math.min(idx, CAP) * STAGGER;
       setTimeout(function () { el.classList.add("cq-in"); }, d);
     }
 
