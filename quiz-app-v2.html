@@ -911,38 +911,61 @@
     line-height: 1.5;
   }
 
-  /* Plan cards */
-  .plan {
-    border: 0.5px solid var(--rule);
-    border-radius: var(--r-card);
-    padding: 18px 22px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: border-color 180ms ease, background 180ms ease;
-    position: relative;
+  /* Premium-tilbud (i synk med arkiv.html) */
+  .pay-price {
+    font-family: var(--font-display);
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1.1;
+    margin: 12px 0 2px;
   }
-  .plan:hover { border-color: var(--rule-strong); }
-  .plan.selected { border-color: var(--accent); background: var(--bg-soft); }
-  .plan-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .plan-name { font-family: var(--font-display); font-size: 22px; font-weight: 500; color: var(--ink); font-variation-settings: "opsz" 36; }
-  .plan-price { font-family: var(--font-mono); font-size: 14px; color: var(--ink); font-weight: 500; }
-  .plan-desc { font-family: var(--font-sans); font-size: 13px; color: var(--ink-mute); margin-top: 6px; }
-  .plan-badge {
-    position: absolute;
-    top: -10px;
-    left: 18px;
-    background: var(--accent);
-    color: var(--bg-soft);
+  .pay-price span { font-family: var(--font-sans); font-size: 15px; color: var(--ink-mute); font-weight: 500; }
+  .pay-subnote {
     font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
+    font-size: 11px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: var(--r-pill);
+    color: var(--ink-mute);
+    margin-bottom: 22px;
   }
+  .pay-features {
+    list-style: none;
+    text-align: left;
+    margin: 0 auto 24px;
+    max-width: 330px;
+    display: grid;
+    gap: 10px;
+    padding: 0;
+  }
+  .pay-features li {
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    padding-left: 26px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .pay-features li::before {
+    content: "✓";
+    position: absolute; left: 0; top: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .pay-email {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--r-md);
+    background: var(--bg-soft);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .pay-email:focus { outline: none; border-color: var(--accent); }
 
-  .pay-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
+  .pay-buttons { display: grid; gap: 10px; margin-top: 0; }
   .pay-btn {
     padding: 14px 20px;
     border: none;
@@ -958,19 +981,29 @@
     transition: opacity 200ms ease, background 200ms ease;
   }
   .pay-btn:hover { opacity: 0.92; }
-  .pay-vipps { background: #ff5b24; color: #fff; }
-  .pay-apple { background: #000; color: #fff; }
-  .pay-card { background: var(--accent); color: var(--bg-soft); }
-  .pay-card:hover { background: var(--accent-deep); opacity: 1; }
+  .pay-vipps { background: #FF5B24; color: #fff; }
+  .pay-vipps:hover { background: #E64E1B; opacity: 1; }
+  .pay-card { background: var(--ink); color: var(--bg-soft); }
+  .pay-card:hover { background: #000; opacity: 1; }
 
-  .pay-disclaimer {
+  .pay-msg {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--accent-deep);
+    min-height: 18px;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+  .pay-msg.error { color: #B05238; }
+  .pay-secure {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--ink-mute);
-    text-align: center;
-    margin-top: 20px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 14px;
+    line-height: 1.5;
+    text-align: center;
   }
 
   /* Email-gate */
@@ -1292,39 +1325,22 @@
   <div class="modal-card">
     <button class="modal-close" onclick="closePaywall()">×</button>
     <div class="eyebrow">Abonnement</div>
-    <h2>Quiz, hver <em>dag</em>.</h2>
-    <p class="modal-lede">Ubegrenset tilgang til daglige quizer på alle tema, statistikk, og lagrede resultater. Si opp når du vil.</p>
-
-    <div class="plan selected" data-plan="monthly" onclick="selectPlan(this)">
-      <div class="plan-row">
-        <div class="plan-name">Månedlig</div>
-        <div class="plan-price">49 kr / mnd</div>
-      </div>
-      <div class="plan-desc">Fornyes automatisk. Si opp når som helst.</div>
-    </div>
-
-    <div class="plan" data-plan="yearly" onclick="selectPlan(this)">
-      <div class="plan-badge">Spar 30 %</div>
-      <div class="plan-row">
-        <div class="plan-name">Årlig</div>
-        <div class="plan-price">399 kr / år</div>
-      </div>
-      <div class="plan-desc">Tilsvarer ca. 33 kr / mnd. Tre måneder gratis.</div>
-    </div>
-
+    <h2>CustomQuiz <em>Premium</em></h2>
+    <div class="pay-price">49 kr <span>/ mnd</span></div>
+    <div class="pay-subnote">Si opp når som helst</div>
+    <ul class="pay-features">
+      <li>Hele arkivet — alle quizer, ikke bare gratis-utvalget</li>
+      <li>Ubegrenset egne tema-quizer på hva du vil</li>
+      <li>Ukeskonkurransen og lagring av streak</li>
+      <li>Ny utgave rett i innboksen hver morgen</li>
+    </ul>
+    <input class="pay-email" id="pay-email" type="email" inputmode="email" autocomplete="email" placeholder="Din e-post" aria-label="E-post">
     <div class="pay-buttons">
-      <button class="pay-btn pay-vipps" onclick="mockPay('Vipps')">
-        <span style="font-weight: 800; letter-spacing: -0.02em;">vipps</span>
-      </button>
-      <button class="pay-btn pay-apple" onclick="mockPay('Apple Pay')">
-        <span>Betal med</span> <span style="font-weight: 700;"> Pay</span>
-      </button>
-      <button class="pay-btn pay-card" onclick="mockPay('kort')">
-        Betal med kort
-      </button>
+      <button class="pay-btn pay-vipps" type="button" onclick="startCheckout('vipps')">Betal med Vipps</button>
+      <button class="pay-btn pay-card" type="button" onclick="startCheckout('stripe')">Apple Pay / kort</button>
     </div>
-
-    <div class="pay-disclaimer">Demo · betaling ikke aktivert</div>
+    <div class="pay-msg" id="pay-msg"></div>
+    <div class="pay-secure">Sikker betaling via Stripe og Vipps · E-posten brukes til innlogging og kvittering</div>
   </div>
 </div>
 
@@ -1377,7 +1393,6 @@
     currentIndex: 0,
     selectedOption: null,
     userAnswers: [],
-    selectedPlan: 'monthly',
     history: { streak: 0, total: 0, scores: [] },
     currentSlug: null,      // slug for quizen som spilles nå (for delelenke)
     challengeScore: null    // venns skår fra ?utfordring=… (slå-min-score-hook)
@@ -2272,16 +2287,42 @@
   }
 
   /* --------------- PAYWALL --------------- */
-  function showPaywall() { document.getElementById('paywall').classList.add('active'); }
-  function closePaywall() { document.getElementById('paywall').classList.remove('active'); }
-  function selectPlan(el) {
-    document.querySelectorAll('.plan').forEach(p => p.classList.remove('selected'));
-    el.classList.add('selected');
-    state.selectedPlan = el.dataset.plan;
+  function showPaywall() {
+    // Forhåndsfyll e-post hvis brukeren er innlogget (i synk med arkiv.html)
+    try { const e = window.CQAuth && window.CQAuth.getEmail(); if (e) document.getElementById('pay-email').value = e; } catch (_) {}
+    document.getElementById('paywall').classList.add('active');
+    setTimeout(() => { const f = document.getElementById('pay-email'); if (f) f.focus(); }, 60);
   }
-  function mockPay(method) {
-    const plan = state.selectedPlan === 'monthly' ? '49 kr/mnd' : '399 kr/år';
-    alert(`Demo: ${method} for "${plan}" ville her åpne ${method}-flyten.\n\nI produksjon ville dette starte en ${method}-betaling via partnerens API og opprette et abonnement i backend.`);
+  function closePaywall() { document.getElementById('paywall').classList.remove('active'); }
+
+  // Starter betaling. Backend returnerer { url } vi sender brukeren til
+  // (Stripe Checkout-URL eller Vipps-bekreftelses-URL). Til funksjonene er
+  // koblet på viser vi en vennlig melding i stedet for å navigere bort.
+  // Holdes i synk med startCheckout() i arkiv.html — samme plan: premium_monthly.
+  async function startCheckout(method) {
+    const msg = document.getElementById('pay-msg');
+    const email = (document.getElementById('pay-email').value || '').trim();
+    msg.classList.remove('error');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      msg.classList.add('error');
+      msg.textContent = 'Skriv inn en gyldig e-postadresse først.';
+      return;
+    }
+    const endpoint = method === 'vipps' ? '/api/vipps-agreement' : '/api/create-checkout';
+    msg.textContent = method === 'vipps' ? 'Åpner Vipps …' : 'Åpner betaling …';
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, plan: 'premium_monthly' })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.url) { window.location.href = data.url; return; }
+      throw new Error(data.error || ('HTTP ' + res.status));
+    } catch (err) {
+      msg.classList.add('error');
+      msg.textContent = 'Betaling er ikke koblet til ennå. (' + err.message + ')';
+    }
   }
 
   /* --------------- BIBLIOTEK-SPILLER (?quiz=<id>) --------------- */
@@ -2314,7 +2355,8 @@
   const AVAILABLE_CRESTS = {
     'crest-arsenal':1, 'crest-chelsea':1, 'crest-everton':1, 'crest-leeds':1, 'crest-liverpool':1,
     'crest-man-city':1, 'crest-man-united':1, 'crest-newcastle':1, 'crest-tottenham':1,
-    'crest-bodo-glimt':1, 'crest-brann':1, 'crest-lillestrom':1
+    'crest-bodo-glimt':1, 'crest-brann':1, 'crest-lillestrom':1,
+    'crest-molde':1, 'crest-rosenborg':1, 'crest-viking':1, 'crest-valerenga':1
   };
   function crestFor(q) {
     if (!q || q.category !== 'fotball' || !q.team) return null;
