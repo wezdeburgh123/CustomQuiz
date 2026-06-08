@@ -885,13 +885,9 @@
 <script>
   // Quiz-data: 6 ekte + 16 plassholdere som demonstrerer dybden
   const QUIZZES = [
-    // — EKTE —
-    { num: "01", title: "Hva <em>vet</em> du, egentlig?", category: "mix", categoryLabel: "Blandet", img: "kategori-mix", sub: "Ti spørsmål på tvers av historie, naturvitenskap, litteratur, geografi og kultur. Medium til vanskelig.", rating: 4.6, plays: 1248, date: "2026-04-15", url: "quiz-v2.html", locked: false },
-    { num: "02", title: "Tilbake for <em>mer</em>?", category: "mix", categoryLabel: "Blandet", img: "kategori-mix", sub: "Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.", rating: 4.4, plays: 892, date: "2026-04-22", url: "quiz-2-v2.html", locked: false },
-    { num: "03", title: "Hvor godt kjenner du <em>Oslo</em>?", category: "geografi", categoryLabel: "Geografi", img: "kategori-geografi", sub: "Fra Håkon V til Snøhetta, fra Akerselva til Bjørvika.", rating: 4.7, plays: 1067, date: "2026-04-29", url: "oslo-quiz-v2.html", locked: false },
-    { num: "04", title: "Tigerbyens <em>baksider</em>", category: "geografi", categoryLabel: "Geografi", img: "kategori-geografi", sub: "Puber, gater og folklore som ikke står i turistbrosjyrene.", rating: 4.8, plays: 743, date: "2026-05-06", url: "oslo-quiz-puber-v2.html", locked: false },
-    { num: "05", title: "Hud, hender, <em>helbredelse</em>", category: "vitenskap", categoryLabel: "Naturvitenskap", img: "kategori-naturvitenskap", sub: "Hudpleie, fysioterapi, fotpleie og litt energiarbeid. Fagspråk.", rating: 4.5, plays: 318, date: "2026-05-13", url: "klinikk-quiz-v2.html", locked: false },
-    { num: "06", title: "Hvor godt kjenner du <em>YUNGBLUD</em>?", category: "musikk", categoryLabel: "Musikk", img: "kategori-musikk", sub: "Dominic Harrison fra Doncaster — tre UK #1-album på rad.", rating: 4.9, plays: 542, date: "2026-05-20", url: "yungblud-quiz-v2.html", locked: false },
+    // De 6 opprinnelige «ekte» quizene ligger nå i quizzes-data.json (mix-10/11,
+    // geografi-08/09, vitenskap-08, musikk-15) og lastes via bootstrapArchive
+    // nedenfor — spilles gjennom quiz-app-v2.html som resten av arkivet.
 
     // — PLASSHOLDERE (Premium) —
     { num: "07", title: "Romerrikets <em>fall</em>", category: "verdenshistorie", categoryLabel: "Verdenshistorie", img: "kategori-verdenshistorie", sub: "Diocletian, Konstantin, splittelsen og det som kom etter.", rating: 4.8, plays: 2103, date: "2026-05-23", url: null, locked: true },

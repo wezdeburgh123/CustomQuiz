@@ -12028,6 +12028,816 @@ window.__QUIZ_DATA__ = {
           "explanation": "Kunstig intelligens er det brede paraplyfeltet; maskinlæring er én tilnærming innenfor det, og dyp læring igjen en del av maskinlæring. Tenk konsentriske sirkler — det utelukker at de er identiske eller helt atskilte."
         }
       ]
+    },
+    {
+      "id": "mix-10",
+      "num": "96",
+      "category": "mix",
+      "categoryLabel": "Blandet",
+      "title": "Hva vet du, egentlig?",
+      "sub": "Ti spørsmål på tvers av historie, naturvitenskap, litteratur, geografi og kultur.",
+      "lede": "Ti spørsmål på tvers av historie, naturvitenskap, litteratur, geografi og kultur.",
+      "difficulty": "medium",
+      "rating": 4.4,
+      "plays": 51,
+      "date": "2026-06-07",
+      "questions": [
+        {
+          "category": "Norsk historie",
+          "q": "Hvilken dansk prins ble valgt til norsk konge etter unionsoppløsningen i 1905, og tok deretter navnet Haakon VII?",
+          "options": [
+            "Prins Carl av Danmark",
+            "Prins Valdemar av Danmark",
+            "Prins Frederik av Danmark",
+            "Prins Christian av Danmark"
+          ],
+          "correct": 0,
+          "explanation": "Prins Carl (1872-1957) var sønnesønn av Christian IX. Etter en folkeavstemning hvor 79 % stemte for monarki, ble han konge og lot seg krone i Nidarosdomen sommeren 1906."
+        },
+        {
+          "category": "Astronomi",
+          "q": "Hvilken planet i solsystemet har den lengste rotasjonstiden, altså det lengste døgnet?",
+          "options": [
+            "Jupiter",
+            "Merkur",
+            "Saturn",
+            "Venus"
+          ],
+          "correct": 3,
+          "explanation": "Ett venusdøgn varer 243 jorddager, lengre enn ett venusår på 225 jorddager. Venus roterer dessuten mot solens omløpsretning — en av få planeter med slik retrograd rotasjon."
+        },
+        {
+          "category": "Litteratur",
+          "q": "Hvilken roman ga Knut Hamsun Nobelprisen i litteratur i 1920?",
+          "options": [
+            "Pan",
+            "Markens Grøde",
+            "Mysterier",
+            "Sult"
+          ],
+          "correct": 1,
+          "explanation": "Markens Grøde (1917) skildrer rydningsmannen Isak som bygger opp gården Sellanrå. Sult fra 1890 er kanskje mer berømt i dag, men det var bondeeposet som ga ham prisen."
+        },
+        {
+          "category": "Geografi",
+          "q": "Hvilken innsjø er størst i verden målt i overflateareal?",
+          "options": [
+            "Viktoriasjøen",
+            "Bajkalsjøen",
+            "Det kaspiske hav",
+            "Lake Superior"
+          ],
+          "correct": 2,
+          "explanation": "Det kaspiske hav er ca. 371 000 km², over fem ganger større enn Lake Superior. Det kalles 'hav', men er teknisk sett en innsjø uten avløp. Bajkalsjøen er derimot verdens dypeste."
+        },
+        {
+          "category": "Kjemi",
+          "q": "Hva er det kjemiske symbolet for grunnstoffet wolfram?",
+          "options": [
+            "W",
+            "Wo",
+            "Wm",
+            "Wf"
+          ],
+          "correct": 0,
+          "explanation": "Symbolet W kommer fra det tyske navnet wolfram. På engelsk heter grunnstoffet tungsten. Det har det høyeste smeltepunktet av alle metaller (3422 °C) og brukes blant annet i glødetråder."
+        },
+        {
+          "category": "Filosofi",
+          "q": "Hvilken dansk filosof regnes som eksistensialismens far?",
+          "options": [
+            "Niels Bohr",
+            "Søren Kierkegaard",
+            "Harald Høffding",
+            "Georg Brandes"
+          ],
+          "correct": 1,
+          "explanation": "Kierkegaard (1813-1855) sentrerte tenkningen rundt den enkeltes valg, angst og tro. Sartre og Heidegger anerkjente begge gjelden til ham, selv om termen 'eksistensialisme' først ble brukt på 1900-tallet."
+        },
+        {
+          "category": "Teknologihistorie",
+          "q": "Hvem regnes ofte som verdens første dataprogrammerer, og skrev algoritmer for Charles Babbages Analytical Engine på 1840-tallet?",
+          "options": [
+            "Ada Lovelace",
+            "Mary Somerville",
+            "Hedy Lamarr",
+            "Grace Hopper"
+          ],
+          "correct": 0,
+          "explanation": "Ada Lovelace skrev en algoritme for å beregne Bernoulli-tall. Maskinen ble aldri ferdigbygd i hennes levetid, men notatene hennes regnes som det første publiserte dataprogrammet."
+        },
+        {
+          "category": "Klassisk musikk",
+          "q": "Hvilken italiensk komponist skrev operaen 'La Bohème' (1896)?",
+          "options": [
+            "Giuseppe Verdi",
+            "Giacomo Puccini",
+            "Gioachino Rossini",
+            "Vincenzo Bellini"
+          ],
+          "correct": 1,
+          "explanation": "Puccini (1858-1924) skrev også Tosca og Madama Butterfly. La Bohème følger sultne kunstnere i Paris og har vært den hyppigst oppførte operaen ved Metropolitan i New York."
+        },
+        {
+          "category": "Idrettshistorie",
+          "q": "I hvilken by ble de første moderne olympiske leker arrangert i 1896?",
+          "options": [
+            "Athen",
+            "London",
+            "Roma",
+            "Paris"
+          ],
+          "correct": 0,
+          "explanation": "Lekene gikk i Athen 6.-15. april 1896 med 241 utøvere fra 14 nasjoner. Pierre de Coubertin sto bak gjenopplivingen, og maraton ble inkludert for første gang — til ære for det greske slaget."
+        },
+        {
+          "category": "Anatomi",
+          "q": "Hvilket er det største organet i menneskekroppen?",
+          "options": [
+            "Lever",
+            "Lunger",
+            "Hud",
+            "Tarm"
+          ],
+          "correct": 2,
+          "explanation": "Huden veier rundt 4 kg hos en voksen og dekker ca. 2 m². Den regnes som organ fordi den består av flere vevstyper og har klare funksjoner: termoregulering, beskyttelse, sansing og D-vitaminsyntese."
+        }
+      ]
+    },
+    {
+      "id": "mix-11",
+      "num": "97",
+      "category": "mix",
+      "categoryLabel": "Blandet",
+      "title": "Tilbake for mer?",
+      "sub": "Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.",
+      "lede": "Vikingtid og kvantefysikk, magisk realisme og maleriske brudd.",
+      "difficulty": "medium",
+      "rating": 4.5,
+      "plays": 313,
+      "date": "2026-06-07",
+      "questions": [
+        {
+          "category": "Norsk historie",
+          "q": "Hvilken norsk konge falt i slaget ved Stamford Bridge i England i september 1066, en hendelse som ofte regnes som slutten på vikingtiden?",
+          "options": [
+            "Harald Hardråde",
+            "Sverre Sigurdsson",
+            "Magnus den Gode",
+            "Olav Tryggvason"
+          ],
+          "correct": 0,
+          "explanation": "Harald Sigurdsson Hardråde (Harald III) regnes som 'den siste viking'. Slaget fant sted 25. september 1066, bare tre uker før Harald Godwinson selv falt for Vilhelm Erobreren ved Hastings."
+        },
+        {
+          "category": "Kvantefysikk",
+          "q": "Hvem formulerte usikkerhetsprinsippet i kvantemekanikken, som sier at posisjon og bevegelsesmengde ikke kan måles eksakt samtidig?",
+          "options": [
+            "Max Planck",
+            "Erwin Schrödinger",
+            "Niels Bohr",
+            "Werner Heisenberg"
+          ],
+          "correct": 3,
+          "explanation": "Heisenberg publiserte prinsippet i 1927. Det er ikke en målefeil, men en fundamental egenskap ved naturen på kvantenivå: jo mer presist du kjenner posisjonen, desto mer usikker er bevegelsesmengden."
+        },
+        {
+          "category": "Geografi",
+          "q": "Hvilket er verdens minste suverene stat målt i areal?",
+          "options": [
+            "Liechtenstein",
+            "Monaco",
+            "Vatikanstaten",
+            "San Marino"
+          ],
+          "correct": 2,
+          "explanation": "Vatikanstaten er bare 0,49 km², mindre enn Frognerparken. Den oppsto i 1929 gjennom Lateranavtalen mellom pave Pius XI og Mussolini-regimet, og har rundt 800 innbyggere."
+        },
+        {
+          "category": "Latin-Amerika / litteratur",
+          "q": "Hvilken forfatter skrev romanen 'Hundre års ensomhet' (1967), et hovedverk i magisk realisme?",
+          "options": [
+            "Pablo Neruda",
+            "Gabriel García Márquez",
+            "Jorge Luis Borges",
+            "Mario Vargas Llosa"
+          ],
+          "correct": 1,
+          "explanation": "García Márquez (1927-2014) fortalte historien om familien Buendía i den fiktive byen Macondo. Han fikk Nobelprisen i 1982, og romanen er solgt i over 50 millioner eksemplarer på 46 språk."
+        },
+        {
+          "category": "Biokjemi",
+          "q": "Hva er et annet vanlig navn på Krebs-syklusen, den sentrale metabolske prosessen i mitokondriene?",
+          "options": [
+            "Sitronsyresyklusen",
+            "Glykolysen",
+            "Calvin-syklusen",
+            "Pentosefosfatveien"
+          ],
+          "correct": 0,
+          "explanation": "Sitronsyresyklusen heter den fordi det første mellomproduktet er sitronsyre (citrat). Hans Krebs beskrev den i 1937 og fikk Nobelprisen i 1953. Calvin-syklusen er derimot fotosyntesens karbonfiksering."
+        },
+        {
+          "category": "Verdenshistorie",
+          "q": "I hvilket år falt Konstantinopel til osmanene under sultan Mehmet II, en hendelse som regnes som slutten på Det østromerske riket?",
+          "options": [
+            "1521",
+            "1492",
+            "1389",
+            "1453"
+          ],
+          "correct": 3,
+          "explanation": "Byen falt 29. mai 1453 etter 53 dagers beleiring. Mehmet II var bare 21 år. Hendelsen regnes ofte som overgangen fra middelalder til tidlig moderne tid, og bidro til å sende greske lærde og manuskripter mot vest."
+        },
+        {
+          "category": "Kunsthistorie",
+          "q": "Hvilken kunstretning grunnla Pablo Picasso og Georges Braque rundt 1907-1908, kjennetegnet av oppbrutte former og flere perspektiver i samme bilde?",
+          "options": [
+            "Futurismen",
+            "Surrealismen",
+            "Kubismen",
+            "Dadaismen"
+          ],
+          "correct": 2,
+          "explanation": "Kubismen brøt med renessansens sentralperspektiv og viste objekter fra flere vinkler samtidig. Picassos 'Les Demoiselles d'Avignon' (1907) regnes som det første kubistiske verket. Surrealismen kom senere, på 1920-tallet."
+        },
+        {
+          "category": "Matematikkens historie",
+          "q": "Hvilken britisk matematiker la i 1994 fram beviset for Fermats siste teorem, et problem som hadde stått ubesvart i 357 år?",
+          "options": [
+            "Terence Tao",
+            "John Nash",
+            "Grigori Perelman",
+            "Andrew Wiles"
+          ],
+          "correct": 3,
+          "explanation": "Wiles ved Princeton jobbet syv år i hemmelighet. Da første versjon hadde en feil, brukte han enda et år sammen med Richard Taylor for å fikse den. Perelman løste forresten Poincaré-konjekturen i 2003."
+        },
+        {
+          "category": "Populærmusikk",
+          "q": "Hvilket Beatles-album fra 1967 regnes ofte som musikkhistoriens første store konseptalbum og en milepæl i innspillingsteknikk?",
+          "options": [
+            "Abbey Road",
+            "Revolver",
+            "The White Album",
+            "Sgt. Pepper's Lonely Hearts Club Band"
+          ],
+          "correct": 3,
+          "explanation": "Sgt. Pepper's kom i juni 1967 og blandet sjangre fra music hall til indisk klassisk. George Martins studiogrep, som overdubbing og strykere på 'A Day in the Life', endret hva en pop-LP kunne være."
+        },
+        {
+          "category": "Vitenskapshistorie",
+          "q": "I hvilket år publiserte James Watson og Francis Crick sin modell av DNA-molekylets dobbelthelixstruktur i tidsskriftet Nature?",
+          "options": [
+            "1962",
+            "1945",
+            "1969",
+            "1953"
+          ],
+          "correct": 3,
+          "explanation": "Artikkelen kom i april 1953 og var bare én side lang. Modellen hvilte sterkt på Rosalind Franklins røntgenkrystallografi (særlig 'Photo 51'), uten at hun var kreditert. Franklin døde i 1958, fire år før Nobelprisen ble delt ut til Watson, Crick og Wilkins."
+        }
+      ]
+    },
+    {
+      "id": "geografi-08",
+      "num": "98",
+      "category": "geografi",
+      "categoryLabel": "Geografi",
+      "title": "Oslo",
+      "sub": "Fra Håkon V til Snøhetta, fra Akerselva til Bjørvika.",
+      "lede": "Fra Håkon V til Snøhetta, fra Akerselva til Bjørvika.",
+      "difficulty": "medium",
+      "rating": 4.8,
+      "plays": 217,
+      "date": "2026-06-07",
+      "questions": [
+        {
+          "category": "Bynavn",
+          "q": "I hvilket år byttet byen offisielt navn fra Kristiania tilbake til Oslo?",
+          "options": [
+            "1925",
+            "1914",
+            "1905",
+            "1945"
+          ],
+          "correct": 0,
+          "explanation": "Navneendringen trådte i kraft 1. januar 1925, 300 år etter at Christian IV hadde flyttet byen vestover under Akershus og gitt den sitt eget navn. 'Oslo' var det opprinnelige navnet på området fra middelalderen, og navnet ble løftet fram igjen som del av en nasjonal selvbevissthet."
+        },
+        {
+          "category": "Middelalderhistorie",
+          "q": "Hvilken norsk konge regnes som byggherre for Akershus festning, som ble påbegynt rundt 1290?",
+          "options": [
+            "Erik Magnusson",
+            "Håkon V Magnusson",
+            "Olav den Hellige",
+            "Magnus Lagabøte"
+          ],
+          "correct": 1,
+          "explanation": "Håkon V (1270-1319) flyttet hovedstadsfunksjonene fra Bergen til Oslo og startet byggingen av festningen rundt år 1300. Akershus har aldri blitt inntatt med makt, til tross for flere beleiringer gjennom århundrene."
+        },
+        {
+          "category": "Gatenavn",
+          "q": "Etter hvilken konge er Karl Johans gate oppkalt?",
+          "options": [
+            "Karl XII av Sverige",
+            "Karl XV",
+            "Karl XIII",
+            "Karl XIV Johan (Jean Bernadotte)"
+          ],
+          "correct": 3,
+          "explanation": "Karl XIV Johan ble født som Jean-Baptiste Bernadotte, en av Napoleons marskalker, og ble valgt til svensk-norsk konge i 1818. Gaten fikk navnet sitt i 1852, ett år før hans død. Den var opprinnelig flere ulike gater som ble slått sammen."
+        },
+        {
+          "category": "Arkitektur",
+          "q": "Hvilket arkitektkontor tegnet Operahuset i Bjørvika, som åpnet i 2008?",
+          "options": [
+            "Lund Hagem Arkitekter",
+            "Snøhetta",
+            "C.F. Møller",
+            "Reiulf Ramstad Arkitekter"
+          ],
+          "correct": 1,
+          "explanation": "Snøhetta vant arkitektkonkurransen i 2000. Bygget er kledd i italiensk Carrara-marmor og norsk granitt, og det skrånende taket er bevisst utformet som offentlig rom man kan gå opp på. Det vant Mies van der Rohe-prisen i 2009."
+        },
+        {
+          "category": "Kunst",
+          "q": "Omtrent hvor mange skulpturer består Vigelandsanlegget i Frognerparken av?",
+          "options": [
+            "cirka 350",
+            "cirka 80",
+            "cirka 130",
+            "cirka 210"
+          ],
+          "correct": 3,
+          "explanation": "Gustav Vigeland brukte over 20 år (1924-1943) på anlegget, som har rundt 212 skulpturer i bronse, granitt og smijern. Monolitten består av 121 sammenflettede menneskeskikkelser, hugget i én granittblokk over 14 år."
+        },
+        {
+          "category": "Byggverk",
+          "q": "I hvilket år ble Oslo Rådhus offisielt åpnet?",
+          "options": [
+            "1945",
+            "1939",
+            "1956",
+            "1950"
+          ],
+          "correct": 3,
+          "explanation": "Byggingen startet i 1931 og skulle vært ferdig til byens 900-årsjubileum i 1950. Krigen forsinket arbeidet. Hver 10. desember siden 1990 har Nobels fredspris blitt delt ut her, ikke i Stortinget som tidligere."
+        },
+        {
+          "category": "Vintersport",
+          "q": "I hvilket år ble det arrangert hopprenn for første gang i Holmenkollbakken?",
+          "options": [
+            "1879",
+            "1892",
+            "1903",
+            "1924"
+          ],
+          "correct": 1,
+          "explanation": "Det første hoppet i Holmenkollen ble holdt 31. januar 1892. Vinneren Arne Ustvedt hoppet 21,5 meter. Bakken er blitt totalrenovert flere ganger, sist helt revet og gjenoppbygd til VM i 2011."
+        },
+        {
+          "category": "Moderne arkitektur",
+          "q": "Hvor i Oslo ligger det nye Munchmuseet, åpnet i 2021?",
+          "options": [
+            "Sørenga",
+            "Grünerløkka",
+            "Tjuvholmen",
+            "Bjørvika"
+          ],
+          "correct": 3,
+          "explanation": "Bygget, kalt Lambda, ble tegnet av spanske Estudio Herreros og er 60 meter høyt med 13 etasjer. Munch testamenterte hele sin private samling, over 28 000 verk, til Oslo kommune da han døde i 1944."
+        },
+        {
+          "category": "Geografi",
+          "q": "Omtrent hvor stor andel av Oslo kommunes areal er marka (skog, vann og åser)?",
+          "options": [
+            "cirka halvparten",
+            "cirka tre fjerdedeler",
+            "cirka en tredjedel",
+            "cirka to tredjedeler"
+          ],
+          "correct": 3,
+          "explanation": "Marka utgjør rundt 63-67 % av Oslos areal og har vært beskyttet av Markaloven siden 2009. Det gjør Oslo til en av Europas mest naturrike storbyer per innbygger — en kortere t-banetur skiller deg fra dyp granskog."
+        },
+        {
+          "category": "Elver og natur",
+          "q": "Hvor lang er Akerselva, som renner gjennom Oslo fra Maridalsvannet til Bjørvika?",
+          "options": [
+            "cirka 15 km",
+            "cirka 22 km",
+            "cirka 4 km",
+            "cirka 8 km"
+          ],
+          "correct": 3,
+          "explanation": "Akerselva er ca. 8,2 km lang og faller 149 meter på veien ned. De rundt 20 fossene drev industri på 1800-tallet — tekstilfabrikker, mølleri, spikerverk. Elva er fortsatt en av byens viktigste grønne ferdselsårer."
+        }
+      ]
+    },
+    {
+      "id": "geografi-09",
+      "num": "99",
+      "category": "geografi",
+      "categoryLabel": "Geografi",
+      "title": "Tigerbyens baksider",
+      "sub": "Puber, gater og folklore som ikke står i turistbrosjyrene.",
+      "lede": "Puber, gater og folklore som ikke står i turistbrosjyrene.",
+      "difficulty": "medium",
+      "rating": 4.9,
+      "plays": 50,
+      "date": "2026-06-07",
+      "questions": [
+        {
+          "category": "Kallenavn",
+          "q": "Oslo har vært kjent som 'Tigerstaden' i over 150 år. Hvor stammer kallenavnet opprinnelig fra?",
+          "options": [
+            "Et politisk slagord fra arbeiderbevegelsen rundt 1900",
+            "En lederartikkel i Morgenbladet på 1850-tallet",
+            "Et dikt av Bjørnstjerne Bjørnson fra 1870",
+            "En tigerunge på Tøyen Zoologisk hage på 1880-tallet"
+          ],
+          "correct": 2,
+          "explanation": "I diktet 'Sidste Sang' (1870) skildret Bjørnstjerne Bjørnson Kristiania som en farlig 'Tigerstad' der unge mennesker fra landsbygda kunne miste seg selv. Til byens 1000-årsjubileum i år 2000 satte Elena Engelsen opp den 4,5 meter lange bronseskulpturen 'Tigeren' foran Oslo S."
+        },
+        {
+          "category": "Stedsnavn",
+          "q": "Hva er den historiske bakgrunnen for navnet Tjuvholmen?",
+          "options": [
+            "Det var et offentlig henrettelsessted for tyver på 17-1800-tallet",
+            "Svenske pirater plyndret skip her på 1600-tallet",
+            "Sjøfolk gjemte gull og varer fra reisene sine",
+            "Smuglere brukte holmen til å gjemme tollunngåtte varer"
+          ],
+          "correct": 0,
+          "explanation": "Tjuvholmen var faktisk henrettelsessted for tyver og forbrytere på 1700- og 1800-tallet, ofte med publikum til stede som avskrekkende eksempel. I dag er det blant Norges dyreste boligområder, en heller markant statusforvandling for et hjørne av byen."
+        },
+        {
+          "category": "Spisesteder",
+          "q": "I hvilket år ble Engebret Café etablert, ofte regnet som Oslos eldste eksisterende restaurant i sammenhengende drift?",
+          "options": [
+            "1881",
+            "1857",
+            "1903",
+            "1827"
+          ],
+          "correct": 1,
+          "explanation": "Engebret Café i Bankplassen 1, rett ved Akershus, åpnet i 1857 og har stort sett bevart interiøret siden. Henrik Ibsen, Edvard Grieg og Bjørnstjerne Bjørnson var alle stamgjester. Bygningen er fra 1700-tallet."
+        },
+        {
+          "category": "Litteratur og puber",
+          "q": "Hvilken norsk forfatter har gjort restauranten Schrøder på St. Hanshaugen kjent over hele landet gjennom sine kriminalromaner?",
+          "options": [
+            "Jo Nesbø",
+            "Anne Holt",
+            "Karin Fossum",
+            "Jørn Lier Horst"
+          ],
+          "correct": 0,
+          "explanation": "Schrøder i Waldemar Thranes gate er stamlokalet til den alkoholiserte etterforskeren Harry Hole i Jo Nesbøs romanserie. Den faktiske restauranten har eksistert siden 1956 og holder fortsatt på den autentiske, lett nedslitte brunpub-stilen."
+        },
+        {
+          "category": "Gatenavn",
+          "q": "Hva er den historiske bakgrunnen for gatenavnet Pilestredet?",
+          "options": [
+            "Det vokste piletrær langs ferdselsåren",
+            "Gaten var smal som en pil",
+            "Pilegrimsruten mot Trondheim startet her",
+            "En kjøpmann ved navn Pyle bodde og handlet der"
+          ],
+          "correct": 0,
+          "explanation": "Pilestredet er en av Oslos eldste gateløp. Navnet kommer fra piletrærne (Salix) som vokste langs veien da området ennå var landlig utenfor de gamle byportene. Ordet 'stredet' betyr smalt smug eller passasje."
+        },
+        {
+          "category": "Stamgjester",
+          "q": "Hvilken norsk forfatter regnes som Grand Cafés mest berømte faste gjest, kjent for sine daglige aperitif-besøk fram til 1906?",
+          "options": [
+            "Henrik Ibsen",
+            "Knut Hamsun",
+            "Bjørnstjerne Bjørnson",
+            "Sigrid Undset"
+          ],
+          "correct": 0,
+          "explanation": "Henrik Ibsen tok daglig spasertur fra hjemmet sitt i Arbins gate til Grand Café fra 1895 og fram til kort før han døde i 1906. Hans faste bord er fortsatt markert, og Per Krohgs veggmaleri fra 1928 viser Kristiania-kulturen rundt år 1900 med Ibsen i sentrum."
+        },
+        {
+          "category": "Gater med profesjon",
+          "q": "Akersgata har lenge hatt et bestemt yrkesmiljø som har preget identiteten. Hva er gaten mest kjent for?",
+          "options": [
+            "Antikvariater og bokhandlere",
+            "Avisredaksjoner",
+            "Advokat- og rettskontorer",
+            "Klassiske kafeer og konditorier"
+          ],
+          "correct": 1,
+          "explanation": "Akersgata er 'pressens gate' i Oslo, med redaksjonene til Aftenposten, VG, Dagbladet og andre. Uttrykket 'i Akersgata sier man at...' viste til at noe var snakkis i mediemiljøet. Etter at flere aviser har flyttet til Bjørvika, har miljøet endret seg."
+        },
+        {
+          "category": "Folkelige kallenavn",
+          "q": "Den klassiske restauranten Olympen i Grønland er kjent for et kjælent folkelig kallenavn. Hva heter den i folkemunne?",
+          "options": [
+            "Lampen",
+            "Lompa",
+            "Lampegrøa",
+            "Lommen"
+          ],
+          "correct": 1,
+          "explanation": "Olympen i Grønlandsleiret 15 har holdt på siden 1892 og kalles 'Lompa' i folkemunne. Stedet har bevart det meste av interiøret fra 1920-tallet, inkludert et stort veggmaleri av Per Krohg som viser arbeidsfolk i Grønland-strøket."
+        },
+        {
+          "category": "Gamle bygninger",
+          "q": "Hva regnes som den eldste eksisterende bygningen i Oslo som fortsatt er i bruk?",
+          "options": [
+            "Akershus festning",
+            "Oslo domkirke",
+            "Oslo Ladegård",
+            "Gamle Aker kirke"
+          ],
+          "correct": 3,
+          "explanation": "Gamle Aker kirke ble reist rundt 1100-tallet i romansk stil av kalkstein og er Oslos eldste stående bygning, fortsatt aktiv menighetskirke. Akershus kom rundt 1290, og Oslo domkirke ble innviet først i 1697. Gamle Aker ble restaurert flere ganger på 1800-tallet."
+        },
+        {
+          "category": "Bevart historie",
+          "q": "Damstredet og Telthusbakken er blant Oslos mest fotograferte gater. Hva gjør dem spesielle?",
+          "options": [
+            "Velbevarte trehus fra tidlig 1800-tall",
+            "Norges første gatebelysning ble satt opp her",
+            "Var sete for Christianias myndigheter på 1600-tallet",
+            "Eldste brosteinslagte gateløp i byen"
+          ],
+          "correct": 0,
+          "explanation": "Damstredet og nabostredet Telthusbakken har en sjelden samling små trehus fra tidlig 1800-tall — et glimt av hvordan store deler av byen så ut før murtvangen ble innført på 1830-tallet etter flere store bybranner. Edvard Munch bodde en periode i Telthusbakken 5."
+        }
+      ]
+    },
+    {
+      "id": "vitenskap-08",
+      "num": "100",
+      "category": "vitenskap",
+      "categoryLabel": "Naturvitenskap",
+      "title": "Hud, hender, helbredelse",
+      "sub": "Hudpleie, fysioterapi, fotpleie og litt energiarbeid. Fagspråk.",
+      "lede": "Hudpleie, fysioterapi, fotpleie og litt energiarbeid. Fagspråk.",
+      "difficulty": "hard",
+      "rating": 4.2,
+      "plays": 241,
+      "date": "2026-06-07",
+      "questions": [
+        {
+          "category": "Hudpleie · syrer",
+          "q": "Salicylsyre er populært i produkter mot akne og uren hud. Hva er den viktigste kjemiske forskjellen fra AHA-syrer som glykolsyre og melkesyre?",
+          "options": [
+            "Salicylsyre er et peptid, ikke en hydroksysyre",
+            "Salicylsyre er en sterkere syre og virker raskere",
+            "Salicylsyre virker bare ved pH under 4",
+            "Salicylsyre er fettløselig og kan trenge inn i porene"
+          ],
+          "correct": 3,
+          "explanation": "AHA-syrer (alfa-hydroksy) er hydrofile og virker på selve hudoverflaten. BHA — beta-hydroksy, altså salicylsyre — er lipofil og kan løse seg i talgen og trenge ned i porene. Derfor brukes den mot akne og komedoner, mens AHA er førstevalget for tørr og solskadet hud. pH spiller en rolle for begge, men fettløseligheten er den definerende forskjellen."
+        },
+        {
+          "category": "Hudpleie · retinoider",
+          "q": "Når retinol påføres huden må det omdannes biokjemisk til den aktive formen retinsyre. Hvor mange trinn krever den omdanningen?",
+          "options": [
+            "To trinn",
+            "Ett trinn",
+            "Tre trinn",
+            "Fire trinn"
+          ],
+          "correct": 0,
+          "explanation": "Retinol omdannes først til retinaldehyd, deretter til retinsyre — to enzymatiske trinn. Hvert trinn reduserer styrken omtrent tidoblet, så ren retinsyre (Tretinoin, reseptbelagt) er rundt 100 ganger sterkere enn vanlig retinol. Retinaldehyd er populært som et mellomalternativ — bare ett trinn unna virkning, men uten resept."
+        },
+        {
+          "category": "Hudpleie · solbeskyttelse",
+          "q": "SPF 50 markedsføres ofte som vesentlig bedre enn SPF 30. Hvor mye mer UVB blokkerer SPF 50 i praksis?",
+          "options": [
+            "Omtrent 20 prosent mer",
+            "Omtrent ett prosentpoeng mer",
+            "Det er helt avhengig av hudtype",
+            "Omtrent dobbelt så mye"
+          ],
+          "correct": 1,
+          "explanation": "SPF 30 blokkerer cirka 97 % av UVB-strålene, SPF 50 blokkerer cirka 98 %. Forskjellen er marginal, men kan likevel ha betydning ved langvarig eksponering eller særlig sensitiv hud. SPF-tallet angir teoretisk forlenget tid før forbrenning, ikke hvor mye stråling som slipper gjennom — en hyppig misforståelse, også blant ansatte i bransjen."
+        },
+        {
+          "category": "Fysioterapi · anatomi",
+          "q": "Fascia har fått mye oppmerksomhet i moderne fysioterapi. Hva består fascia i hovedsak av?",
+          "options": [
+            "Tett bindevev, hovedsakelig kollagen",
+            "Fettvev og blodkar",
+            "Muskelceller med kontraktil evne",
+            "Lymfevev og ekstracellulær væske"
+          ],
+          "correct": 0,
+          "explanation": "Fascia er bindevev — hovedsakelig type I-kollagen — som omslutter og forbinder muskler, organer, sener og nerver. Nyere forskning viser at fascia er rik på sensoriske nerver og fungerer som et proprioceptivt sansevev, ikke bare passiv emballasje rundt muskulaturen. Det er det biologiske grunnlaget for teknikker som myofascial release og strukturell integrasjon."
+        },
+        {
+          "category": "Massasje · klassisk teknikk",
+          "q": "I klassisk svensk massasje brukes begrepet «effleurage». Hva betyr det konkret?",
+          "options": [
+            "Friksjon tvers på muskelfibrene",
+            "Rytmisk klapping eller perkusjon",
+            "Lette, glidende strøk",
+            "Dype, statiske trykkpunkter mot triggerpunkter"
+          ],
+          "correct": 2,
+          "explanation": "Effleurage — fra fransk «effleurer», å streife — er lette glidende strøk, brukt til å åpne og avslutte en behandling og fordele olje. De fire klassiske svenske grunnteknikkene er effleurage, petrissage (knaing), tapotement (rytmisk klapping) og friksjon (sirkulær eller tverrgående). Per Henrik Ling systematiserte teknikkene tidlig på 1800-tallet."
+        },
+        {
+          "category": "Lymfedrenasje",
+          "q": "Manuell lymfedrenasje etter Vodder-metoden bruker et bestemt trykknivå. Hvor lett er trykket, sammenlignet med en vanlig klassisk massasje?",
+          "options": [
+            "Vesentlig lettere — bare nok til å forskyve huden",
+            "Tyngre, for å presse væske ut av vevet",
+            "Litt lettere",
+            "Omtrent likt"
+          ],
+          "correct": 0,
+          "explanation": "Lymfedrenasje bruker et svært lett trykk, ofte beskrevet som «nok til å bevege huden, men ikke nok til å rødme den». Lymfekarene ligger overfladisk i huden, og for hardt trykk lukker dem heller enn å åpne dem. Bevegelsene gjøres alltid retningsbestemt mot nærmeste lymfeknutestasjon — ikke vilkårlig. Emil og Estrid Vodder utviklet metoden på 1930-tallet."
+        },
+        {
+          "category": "Fysioterapi · trening",
+          "q": "Det engelske faguttrykket DOMS beskriver muskelsmertene som typisk kommer dagen etter hard trening. Når topper smertene seg vanligvis?",
+          "options": [
+            "Mellom 24 og 72 timer etter belastningen",
+            "Cirka en uke etterpå",
+            "Umiddelbart, under selve treningen",
+            "Innen et par timer"
+          ],
+          "correct": 0,
+          "explanation": "DOMS — Delayed Onset Muscle Soreness — topper seg typisk 24-72 timer etter trening og kan vare opp til en uke. Den knyttes hovedsakelig til ekssentrisk muskelarbeid og mikroskader i muskelfibre og bindevev. Den umiddelbare «brenningen» under selve treningen er noe annet — der er det opphopning av hydrogenioner og metabolitter som spiller hovedrollen, ikke melkesyre alene, slik myten lenge påsto."
+        },
+        {
+          "category": "Fotpleie · diagnose",
+          "q": "Hallux valgus er en av de vanligste tilstandene fotterapeuter møter. Hva beskriver det?",
+          "options": [
+            "Soppinfeksjon under stortåneglen",
+            "Skjevstilling av stortåen mot de andre tærne, med knast på innsiden av foten",
+            "Smerter i hælen ved første skritt om morgenen",
+            "Inngrodd negl med betennelse"
+          ],
+          "correct": 1,
+          "explanation": "Hallux valgus er en skjevstilling der stortåens grunnledd bøyer seg utover og selve tåen vinkles inn mot de andre tærne. Det skaper den karakteristiske knasten («bunion») på innsiden av foten. Genetikk, fottype og trange sko er hovedårsakene. De fleste behandles konservativt med ortoser, avlastning og sko med god tåboks — operasjon er siste utvei."
+        },
+        {
+          "category": "Fotpleie · anatomi",
+          "q": "Hvor i kroppen finner du plantarfascien?",
+          "options": [
+            "Rundt skulderbladet og overarmen",
+            "På utsiden av låret, fra hofte til kne",
+            "Under foten, fra hælbenet og fram til tærnes grunnledd",
+            "Langs ryggraden, mellom korsbenet og nakken"
+          ],
+          "correct": 2,
+          "explanation": "Plantarfascien er en kraftig bindevevsstreng på undersiden av foten, fra hælbenet (calcaneus) og fram til tærne. Den støtter fotens lengdebue som en buestreng. Betennelse eller mikroriving her — plantar fasciitt — gir den klassiske hælsmerten ved første skritt om morgenen, særlig hyppig hos løpere og folk som står mye på harde underlag."
+        },
+        {
+          "category": "Healing · tradisjon",
+          "q": "I tradisjonell indisk yoga- og healing-lære refereres det til et system av «hovedchakraer» langs kroppens midtlinje. Hvor mange er det vanligvis snakk om?",
+          "options": [
+            "Sju",
+            "Fem",
+            "Tjueén",
+            "Tolv"
+          ],
+          "correct": 0,
+          "explanation": "Det tradisjonelle systemet beskriver sju hovedchakraer langs kroppens midtakse, fra rotchakra (muladhara) ved haleben til kronechakra (sahasrara) på toppen av hodet. Noen tibetanske og esoteriske retninger opererer med tolv eller flere, og enkelte moderne healing-systemer legger til chakraer over hodet og under føttene — men sju er det mest utbredte i moderne yoga-, reiki- og healing-praksis."
+        }
+      ]
+    },
+    {
+      "id": "musikk-15",
+      "num": "101",
+      "category": "musikk",
+      "categoryLabel": "Musikk",
+      "title": "YUNGBLUD",
+      "sub": "Ti spørsmål om Dominic Harrison og Black Hearts Club.",
+      "lede": "Ti spørsmål om Dominic Harrison og Black Hearts Club.",
+      "difficulty": "medium",
+      "rating": 4.7,
+      "plays": 134,
+      "date": "2026-06-07",
+      "questions": [
+        {
+          "category": "Biografi",
+          "q": "Hva er YUNGBLUDs fulle borgerlige navn?",
+          "options": [
+            "Daniel Robert Harrington",
+            "Dylan Henry Hartley",
+            "Dominic Richard Harrison",
+            "Damien Ross Hutchinson"
+          ],
+          "correct": 2,
+          "explanation": "Han ble født Dominic Richard Harrison 5. august 1997. «YUNGBLUD» er et bevisst valgt artistnavn, skrevet med store bokstaver som en signaturmarkør — aldri «Yungblud» i offisiell kommunikasjon."
+        },
+        {
+          "category": "Geografi",
+          "q": "I hvilken engelsk by ble YUNGBLUD født og vokste opp?",
+          "options": [
+            "Sheffield",
+            "Manchester",
+            "Liverpool",
+            "Doncaster"
+          ],
+          "correct": 3,
+          "explanation": "Doncaster i South Yorkshire. Han flyttet til London som 16-åring for å studere ved Arts Educational Schools (ArtsEd) i Chiswick. Doncaster har vært en gjentagende referanse i låttekstene hans og en del av identitetsfortellingen."
+        },
+        {
+          "category": "Skuespill",
+          "q": "Før musikkarrieren hadde han små roller i britisk såpeopera. Hvilken?",
+          "options": [
+            "Emmerdale",
+            "Coronation Street",
+            "Hollyoaks",
+            "EastEnders"
+          ],
+          "correct": 0,
+          "explanation": "Han hadde to opptredener i Emmerdale i 2015 — først som en navnløs «Teenage Boy» i mars, deretter som karakteren Matt i november. Faktum mange Emmerdale-fans først oppdaget i etterkant av musikksuksessen hans."
+        },
+        {
+          "category": "Disney-rollen",
+          "q": "I Disney Channel-serien «The Lodge» spilte han en karakter. Hva var rollen?",
+          "options": [
+            "En skater",
+            "En musiker ved navn Oz",
+            "En idrettsutøver",
+            "En kokk"
+          ],
+          "correct": 1,
+          "explanation": "Han spilte musikeren Oz i sesong 1 av «The Lodge» (2016). Han returnerte ikke for sesong 2 — musikken hadde tatt over. Samme år signerte han med Interscope Records og begynte for alvor å bygge YUNGBLUD-prosjektet."
+        },
+        {
+          "category": "Diskografi",
+          "q": "Hva het hans aller første offisielle singel, sluppet i april 2017?",
+          "options": [
+            "Polygraph Eyes",
+            "Tin Pan Boy",
+            "King Charles",
+            "I Love You, Will You Marry Me"
+          ],
+          "correct": 2,
+          "explanation": "«King Charles» kom 7. april 2017 og markerte starten på YUNGBLUD-prosjektet. Tematisk handler den om britisk klassesystem og avstanden mellom kongelig dekadens og virkeligheten på gata — et politisk fingeravtrykk som har fulgt ham siden."
+        },
+        {
+          "category": "Samarbeider",
+          "q": "I 2019 ga han ut et samarbeid med Halsey og Travis Barker. Hva het låta?",
+          "options": [
+            "Loner",
+            "I Think I'm OKAY",
+            "11 Minutes",
+            "Strawberry Lipstick"
+          ],
+          "correct": 2,
+          "explanation": "«11 Minutes» kom på Valentinsdagen 2019. Tittelen viser til statistikken om at det tar 11 minutter for kjærligheten å rakne i et selvdestruktivt forhold. Samme år samarbeidet han også med Machine Gun Kelly og Travis Barker på «I Think I'm OKAY»."
+        },
+        {
+          "category": "Plate-bragd",
+          "q": "Med «Idols» som ble nummer 1 i Storbritannia i 2025, har YUNGBLUD nådd UK #1 hvor mange ganger på rad?",
+          "options": [
+            "Fem album på rad",
+            "Tre album på rad",
+            "To album på rad",
+            "Fire album på rad"
+          ],
+          "correct": 1,
+          "explanation": "Tre nummer-én-album på rad: «Weird!» (2020), «YUNGBLUD» (2022) og «Idols» (juni 2025). Debutalbumet «21st Century Liability» (2018) nådde ikke toppen — men EP-en «The Underrated Youth» (2019) ble en sterk nr. 6."
+        },
+        {
+          "category": "Album-konsept",
+          "q": "«Idols» (2025) utforsker ett gjennomgående tematisk grep. Hva handler albumet om?",
+          "options": [
+            "Heltedyrkelse — hvordan man søker validering hos andre i stedet for i seg selv",
+            "Klimakrise og fremtidsangst",
+            "Klasseskiller og britisk politikk",
+            "Kjærlighetssorg og brutte relasjoner"
+          ],
+          "correct": 0,
+          "explanation": "YUNGBLUD har beskrevet «Idols» som en utforskning av heltedyrkelse: hvordan vi setter andre på pidestall og dermed nedvurderer vårt eget liv. Musikalsk trekker albumet på britpop og glamrock — Oasis, The Verve, Queen og My Chemical Romance er nevnte inspirasjonskilder."
+        },
+        {
+          "category": "Festivalen",
+          "q": "Hva heter festivalen YUNGBLUD startet og kuraterer selv, og hvor avholdes den?",
+          "options": [
+            "DomFest, på Reading-området",
+            "YB Live, i Hyde Park",
+            "BLUDFEST, ved National Bowl i Milton Keynes",
+            "Black Heart Festival, på Wembley"
+          ],
+          "correct": 2,
+          "explanation": "BLUDFEST hadde sin første utgave 11. august 2024 ved The National Bowl i Milton Keynes — rundt 30 000 fans, billettpris på £50, og en bevisst kuratert sjangermiks fra The Damned til Lil Yachty. Andre utgave gikk av stabelen 21. juni 2025, med Chase Atlantic, blackbear, Denzel Curry og Rachel Chinouriri."
+        },
+        {
+          "category": "Familie og arv",
+          "q": "YUNGBLUD har en spesiell familietilknytning til britisk rockehistorie. Hvilken?",
+          "options": [
+            "Onkelen var trommis i The Clash",
+            "Moren skrev tekster for The Cure",
+            "Faren produserte tidlige Arctic Monkeys-singler",
+            "Bestefaren drev en kjent gitarbutikk i Doncaster og leverte gitarer til blant andre Oasis"
+          ],
+          "correct": 3,
+          "explanation": "Bestefaren Rick Harrison drev Music Ground i Hall Gate, Doncaster — en butikk hvor blant andre Noel Gallagher (Oasis), Johnny Marr (The Smiths) og Bryan Adams hentet utstyr. Faren Justin drev butikken sammen med ham. Det er Dom Harrisons egen forklaring på hvorfor han «vokste opp i gitarstrenger»."
+        }
+      ]
     }
   ]
 };
