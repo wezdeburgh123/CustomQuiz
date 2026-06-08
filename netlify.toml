@@ -37,11 +37,11 @@
 [functions."daily-quiz-generate"]
   schedule = "0 20 * * *"
 
-# Quiz-e-post (mal #4) til påmeldte — UKENTLIG, mandag kl. 06:00 UTC (~07-08 Oslo).
-# Daglig opplevdes for mye; ukentlig nudge i stedet. Endre til "0 6 * * *" for daglig.
-# AVSKRUDD med mindre DAILY_EMAIL_ENABLED=true (sikkerhet mot utilsiktet blast).
+# Quiz-e-post (mal #4) til påmeldte — DAGLIG kl. 06:00 UTC (~07-08 Oslo).
+# Satt til daglig 8. juni 2026 (Christian). Trekk ned frekvensen senere ved behov
+# (ukentlig = "0 6 * * 1"). AVSKRUDD med mindre DAILY_EMAIL_ENABLED=true.
 [functions."daily-email"]
-  schedule = "0 6 * * 1"
+  schedule = "0 6 * * *"
 
 # Riktig MIME for web app manifest (ellers kan nettleseren ignorere det).
 [[headers]]
