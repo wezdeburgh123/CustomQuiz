@@ -22,7 +22,7 @@
  *   <SUPABASE_URL>/storage/v1/object/public/quiz-covers/<slug>.png
  */
 const { supa } = require("./_supabase");
-const { makeCover, safeKey } = require("./_images");
+const { makeCover, safeKey, coverExists, publicUrlFor } = require("./_images");
 
 const TABLE = "quiz_library";
 
@@ -51,7 +51,16 @@ async function pickCandidates(db, limit, force) {
   return rows.slice(0, limit);
 }
 
-async function processRow(db, row) {
+async function processRow(db, row, force) {
+  // Gratis re-link: finnes bildet allerede i Storage (f.eks. fordi library-sync
+  // nullet hero_img tilbake til kategori-bildet), peker vi bare raden dit igjen
+  // uten å betale for et nytt OpenAI-kall.
+  if (!force && (await coverExists(row.slug))) {
+    const url = publicUrlFor(row.slug);
+    const { error } = await db.from(TABLE).update({ hero_img: url }).eq("slug", row.slug);
+    if (error) throw new Error("re-link hero_img: " + error.message);
+    return { slug: row.slug, key: safeKey(row.slug) + ".png", url, relinked: true };
+  }
   const { url, prompt } = await makeCover({
     slug: row.slug,
     title: row.title,
@@ -105,7 +114,7 @@ exports.handler = async (event) => {
 
     for (const row of rows) {
       try {
-        const res = await processRow(db, row);
+        const res = await processRow(db, row, force);
         results.push(res);
         console.log("[cover] OK", res.slug, "→", res.url);
       } catch (e) {

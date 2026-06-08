@@ -68,7 +68,9 @@ function toRow(item) {
     title: item.title || "Quiz",
     lede: item.lede || "",
     questions: item.questions,
-    hero_img: item.hero_img || library.heroForCategory(category),
+    // NB: hero_img settes BEVISST IKKE her — ellers ville upsert overskrive de
+    // AI-genererte cover-URL-ene ved hver synk. Frontend faller tilbake til
+    // kategori-bildet når hero_img mangler; cover-URL-er eies av quiz-cover.
     source: item.source || "nightly",
     model: item.model || null,
     grounded: !!item.grounded,

@@ -162,7 +162,29 @@ async function makeCover({ slug, title, category, categoryLabel, lede }) {
   return { url, prompt };
 }
 
+// Offentlig URL for et cover (uten å sjekke at fila finnes).
+function publicUrlFor(slug) {
+  const db = supa();
+  const { data } = db.storage.from(BUCKET).getPublicUrl(`${safeKey(slug)}.png`);
+  return data.publicUrl;
+}
+
+// Finnes cover-fila allerede i Storage? Brukes til gratis re-linking (slipper
+// å betale for å regenerere bilder vi allerede har laget).
+async function coverExists(slug) {
+  const db = supa();
+  const key = safeKey(slug);
+  try {
+    const { data, error } = await db.storage.from(BUCKET).list("", { limit: 200, search: key });
+    if (error) return false;
+    return (data || []).some((o) => o.name === `${key}.png`);
+  } catch (_) {
+    return false;
+  }
+}
+
 module.exports = {
   BUCKET, SPOT, CATEGORY_TO_SPOT,
   spotHexFor, coverPrompt, generateImageB64, uploadCover, makeCover, safeKey,
+  publicUrlFor, coverExists,
 };

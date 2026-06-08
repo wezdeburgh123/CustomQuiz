@@ -50,7 +50,10 @@ function toRow(item) {
     slug: item.slug || makeSlug(themes, difficulty),
     themes, category, category_label: item.category_label || null, team, free, difficulty,
     title: item.title || "Quiz", lede: item.lede || "", questions: item.questions,
-    hero_img: item.hero_img || CATEGORY_TO_IMG[category],
+    // NB: hero_img settes BEVISST IKKE her. Upsert ville ellers overskrive de
+    // AI-genererte cover-URL-ene (quiz-covers) ved hver deploy/synk. Frontend
+    // faller tilbake til kategori-bildet når hero_img er tomt. Cover-URL-er
+    // settes/bevares av quiz-cover-background.
     source: item.source || "nightly", model: item.model || null, grounded: !!item.grounded,
     published: item.published === false ? false : true,
   };
