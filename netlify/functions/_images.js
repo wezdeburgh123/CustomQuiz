@@ -70,26 +70,30 @@ function safeKey(slug) {
 }
 
 /**
- * Bygger brand-stil prompt for ett quiz-cover. Stilen er IDENTISK for alle
- * bilder; kun SUBJECT-linjen lar modellen velge et motiv som passer temaet.
+ * Bygger brand-stil prompt for ett quiz-cover. Stilen MATCHER de eksisterende
+ * kategori-illustrasjonene på siden (f.eks. IMG/kategori-sport.jpg): et
+ * vintage kobberstikk/etsning i ÉN monokrom dyp tealgrønn på cream-papir, med
+ * fin kryss-hatching som skyggelegging og en lett hatchet slagskygge. Kun
+ * MOTIVET varierer med temaet; selve stilen er låst, så hele arkivet henger
+ * visuelt sammen med resten av siden (ikke VM-modulen).
  */
 function coverPrompt({ title, categoryLabel, category, lede }) {
   const t = plain(title);
   const sub = plain(lede);
-  const { hex } = spotHexFor(category);
   const topic = [t, categoryLabel || category, sub].filter(Boolean).join(" — ");
   return [
-    `Editorial cover illustration for a Norwegian quiz titled "${t}" (category: ${categoryLabel || category}).`,
+    `A single vintage engraving illustration for a Norwegian quiz titled "${t}" (category: ${categoryLabel || category}).`,
     ``,
-    `VISUAL STYLE — fixed, do not deviate:`,
-    `- Square 1024x1024. Background: warm cream paper #F5F0E6 with subtle paper grain.`,
-    `- Two layers. Underneath: ONE soft hand-printed organic shape (irregular blob, ~40% of the frame) in the spot colour ${hex}, slightly off-register like a risograph print.`,
-    `- On top: the subject in deep teal ink #0A6E5A — confident, varied line weight, woodcut-style imperfection, LINE ONLY.`,
-    `- Absolutely NO cross-hatching, NO tonal/engraved shading, NO hatched fills, NO gradients, NO drop shadows, and NO text, letters, numbers or logos anywhere.`,
-    `- Mood: Scandinavian editorial illustration, modern but quiet. NOT childish, NOT corporate, NOT vintage encyclopedia, NOT 19th-century.`,
-    `- The subject occupies ~55% of the frame with generous whitespace and overlaps the spot shape. It must read clearly even at 80x80 pixels.`,
+    `VISUAL STYLE — fixed, match exactly, do not deviate:`,
+    `- Square 1024x1024. Warm cream paper background (#F5EEDD) with subtle paper grain and lots of empty space around the subject.`,
+    `- ONE single subject, centered, occupying ~55-60% of the frame.`,
+    `- Rendered as a classic vintage engraving / etching / copperplate illustration, like a 19th-century encyclopedia plate or banknote engraving.`,
+    `- Drawn entirely in ONE monochrome deep teal-green ink (#0A6E5A) on the cream paper — no other colours.`,
+    `- Use fine cross-hatching and line-hatching to build tonal shading and volume; confident, detailed linework. Add a subtle hatched cast shadow directly beneath the subject.`,
+    `- NO flat colour fills, NO spot-colour shapes or blobs, NO gradients, NO soft/blurred drop shadows, NO photographic rendering, and NO text, letters, numbers or logos anywhere.`,
+    `- Mood: refined, timeless, classic vintage engraving. It must read clearly even at 80x80 pixels.`,
     ``,
-    `SUBJECT: choose ONE simple, evocative object or motif that suggests the theme "${topic}" at a glance — symbolic and decorative. Never depict a specific quiz answer, no maps full of labels, no readable text.`,
+    `SUBJECT: choose ONE simple, iconic object that represents the theme "${topic}" at a glance — symbolic and recognisable, like a single well-chosen prop. Never depict a specific quiz answer, no maps full of labels, no readable text.`,
   ].join("\n");
 }
 
