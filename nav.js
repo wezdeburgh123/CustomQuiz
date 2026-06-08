@@ -41,7 +41,7 @@
     "#cq-masthead .masthead-logo:hover{opacity:.82;}" +
     // Base: masthead står statisk/synlig (gjelder intern nav + tilbake/fram).
     "#cq-masthead .masthead-mark{height:48px;width:48px;object-fit:contain;display:block;border-radius:0;}" +
-    "#cq-masthead .masthead-wordmark{font-family:var(--font-display,Georgia,serif);font-style:italic;font-weight:500;font-size:20px;line-height:1;letter-spacing:-.01em;color:var(--ink,#1F1A14);}" +
+    "#cq-masthead .masthead-wordmark{font-family:var(--font-display,Georgia,serif);font-style:italic;font-weight:500;font-size:20px;line-height:1;letter-spacing:-.01em;color:var(--ink,#1F1A14);font-variation-settings:'opsz' 40;}" +
     "#cq-masthead .masthead-meta{display:flex;align-items:center;gap:14px;font-family:var(--font-mono,monospace);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute,#7A6F5A);flex-wrap:wrap;}" +
     // Fersk inngang (html.cq-fresh): logo males inn, så ordmerke + meny fader inn.
     "html.cq-fresh #cq-masthead .masthead-mark{-webkit-mask-image:linear-gradient(108deg,#000 0 40%,rgba(0,0,0,0) 50%);mask-image:linear-gradient(108deg,#000 0 40%,rgba(0,0,0,0) 50%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;animation:cqGenBrush .7s cubic-bezier(.42,0,.2,1) 0s forwards;}" +
