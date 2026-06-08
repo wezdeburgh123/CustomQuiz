@@ -66,7 +66,9 @@
     items.forEach(function (el) { el.classList.add("cq-reveal"); });
     root.classList.remove("cq-reveal-init");
 
-    var LEAD = 340;     // kort pause så masthead/logo «lander» FØR innholdet starter
+    // Lead kun ved fersk inngang (da animerer menyen og skal lande først). Ved
+    // intern nav står menyen stille → ingen grunn til å holde innholdet igjen.
+    var LEAD = root.classList.contains("cq-fresh") ? 340 : 0;
     var STAGGER = 42;   // rask, diskret stagger mellom hvert element
     var CAP = 8;        // ikke forskyv mer enn de første N (resten kommer samlet)
     var t0 = (window.performance && performance.now) ? performance.now() : Date.now();
