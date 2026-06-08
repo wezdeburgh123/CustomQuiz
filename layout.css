@@ -74,6 +74,12 @@ html { scrollbar-gutter: stable; }
   /* Mastheaden ankres som delt element → den står helt stille mens
      innholdet krysser. Gir den sømløse «samme skall, nytt innhold»-følelsen. */
   .masthead { view-transition-name: cq-masthead; }
+  /* Logo + ordmerke får EGNE transition-navn, så de matches direkte (logo↔logo)
+     i sin faktiske 48px-størrelse uavhengig av masthead-boksen. Uten dette
+     skaleres hele masthead-snapshotet hvis boksen er marginalt ulik høyde
+     mellom sider, og logoen «hopper» i størrelse. Hver er unik per side. */
+  .masthead-mark { view-transition-name: cq-logo; }
+  .masthead-wordmark { view-transition-name: cq-wordmark; }
 }
 
 /* Respekter redusert bevegelse: ingen kryss-animasjon, bare hardt bytte. */

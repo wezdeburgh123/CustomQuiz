@@ -37,7 +37,7 @@
   if (document.getElementById("cq-nav-style")) return;
   var css =
     "#cq-masthead.masthead{border-top:1px solid var(--rule-strong,#C9BD9F);border-bottom:1px solid var(--rule-strong,#C9BD9F);padding:20px 0;margin-bottom:48px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}" +
-    "#cq-masthead .masthead-logo{display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:opacity .2s ease;}" +
+    "#cq-masthead .masthead-logo{display:inline-flex;align-items:center;gap:4px;text-decoration:none;transition:opacity .2s ease;}" +
     "#cq-masthead .masthead-logo:hover{opacity:.82;}" +
     // Base: masthead står statisk/synlig (gjelder intern nav + tilbake/fram).
     "#cq-masthead .masthead-mark{height:48px;width:48px;object-fit:contain;display:block;border-radius:0;}" +
