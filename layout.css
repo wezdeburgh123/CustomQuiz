@@ -49,3 +49,35 @@ html { scrollbar-gutter: stable; }
 
 /* clamp() over håndterer mobil→desktop-skalering, så ingen egen mobil-override
    trengs lenger. (Floor = 20px på smale skjermer.) */
+
+/* ============================================================
+   Sidovergang — native cross-document View Transitions
+   ------------------------------------------------------------
+   Gjelder HELE siden automatisk: alle interne, samme-origin
+   navigasjoner (klikk + tilbake/fram) får en rask, diskret
+   cross-fade i stedet for hvit blink. Eksterne lenker,
+   target=_blank og nedlastinger transitioneres ikke av browseren.
+   Hver side laster fortsatt helt normalt → ingen SPA-risiko,
+   alle inline-scripts (auth/quiz) kjører som før.
+   Støtte: Chrome/Edge/Safari 18+. Eldre browsere ignorerer
+   reglene og navigerer som vanlig (graceful fallback).
+   ============================================================ */
+@view-transition { navigation: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Rask, men merkbar: ~210ms mykt inn-ut-kryss. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 210ms;
+    animation-timing-function: cubic-bezier(.42, 0, .2, 1);
+  }
+  /* Mastheaden ankres som delt element → den står helt stille mens
+     innholdet krysser. Gir den sømløse «samme skall, nytt innhold»-følelsen. */
+  .masthead { view-transition-name: cq-masthead; }
+}
+
+/* Respekter redusert bevegelse: ingen kryss-animasjon, bare hardt bytte. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+}
