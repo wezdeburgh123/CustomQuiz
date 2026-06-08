@@ -355,7 +355,7 @@
     ["start","done"].forEach(function(p){
       var hero = $(p+"-hero"), img = $(p+"-img");
       if (hero) hero.setAttribute("data-spot", spot);
-      if (img) img.src = "IMG/" + imgName + ".jpg";
+      if (img) img.src = /^https?:\/\//.test(imgName) ? imgName : "IMG/" + imgName + ".jpg";
     });
   }
 

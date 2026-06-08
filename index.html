@@ -1454,9 +1454,10 @@
     if (q.team) label = 'Fotball · ' + q.team;
     var crest = crestFor(q);
     var hero = crest || q.hero_img || ('kategori-' + (q.category || 'mix'));
+    var heroSrc = /^https?:\/\//.test(hero) ? hero : 'IMG/' + esc(hero) + '.jpg';
     var imageDiv = crest
-      ? '<div class="quiz-image is-crest"><img src="IMG/' + esc(hero) + '.jpg" alt=""></div>'
-      : '<div class="quiz-image" data-spot="' + spot + '"><img src="IMG/' + esc(hero) + '.jpg" alt=""></div>';
+      ? '<div class="quiz-image is-crest"><img src="' + heroSrc + '" alt="" loading="lazy"></div>'
+      : '<div class="quiz-image" data-spot="' + spot + '"><img src="' + heroSrc + '" alt="" loading="lazy"></div>';
     return '<a class="quiz-card' + (featured ? ' featured' : '') + '" href="quiz-app-v2.html?lib=' + encodeURIComponent(q.slug) + '">' +
       imageDiv +
       '<div class="quiz-body">' +

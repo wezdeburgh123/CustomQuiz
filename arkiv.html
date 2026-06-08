@@ -1070,7 +1070,7 @@
          href="${locked ? 'javascript:void(0)' : q.url}"
          ${onclick}>
         <div class="quiz-image${crest ? ' is-crest' : ''}"${spotAttr}>
-          <img src="IMG/${imgSlug}.jpg" alt=""${imgClass}>
+          <img src="${/^https?:\/\//.test(imgSlug) ? imgSlug : `IMG/${imgSlug}.jpg`}" alt="" loading="lazy"${imgClass}>
           ${badge}
         </div>
         <div class="quiz-body">

@@ -169,3 +169,10 @@
   from = "/api/brevo-webhook"
   to = "/.netlify/functions/brevo-webhook"
   status = 200
+
+# Quiz-cover-generator (OpenAI → Supabase Storage). Token-beskyttet (COVER_TOKEN).
+# Bakgrunnsfunksjon: ?slug=<slug> for ett bilde, ?all=1&limit=N for backfill-batch.
+[[redirects]]
+  from = "/api/quiz-cover"
+  to = "/.netlify/functions/quiz-cover-background"
+  status = 200

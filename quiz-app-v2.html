@@ -2389,7 +2389,7 @@
       banner.removeAttribute('data-spot');
       banner.classList.add('is-crest');
     } else {
-      img.src = 'IMG/' + (q.hero_img || LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
+      img.src = /^https?:\/\//.test(q.hero_img || '') ? q.hero_img : 'IMG/' + (q.hero_img || LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
       banner.classList.remove('is-crest');
       banner.setAttribute('data-spot', LIB_CAT_SPOT[q.category] || 'teal');
     }
