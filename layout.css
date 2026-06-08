@@ -13,6 +13,10 @@
    Uten override faller den til galleri-bredde (1080).
    ============================================================ */
 
+/* Reserver scrollbar-plass alltid → ingen ~15px sidelengs hopp mellom
+   korte sider (uten scrollbar) og lange (med scrollbar). */
+html { scrollbar-gutter: stable; }
+
 :root {
   --w-read: 760px;
   --w-wide: 1080px;
@@ -36,6 +40,18 @@
 /* Eksplisitt lese-bredde-modifikator (alternativ til :root-override) */
 .container--read {
   --container-max: var(--w-read);
+}
+
+/* Fluid ramme, smal lesetekst (single-frame-modellen):
+   Lese-sider beholder den BREDE rammen (1080) — lik alle andre sider, så
+   masthead/sidekanter står identisk og ingenting «spretter» ved navigering.
+   Selve lese-innholdet holdes komfortabelt smalt (760) ved at alle direkte
+   barn UNNTATT masthead sentreres på --w-read. Masthead får dermed full
+   rammebredde av seg selv. Sett klassen `reading` på containeren og IKKE
+   sett --container-max på lese-sider. */
+.reading > :not(#cq-masthead) {
+  max-width: var(--w-read);
+  margin-inline: auto;
 }
 
 /* clamp() over håndterer mobil→desktop-skalering, så ingen egen mobil-override
