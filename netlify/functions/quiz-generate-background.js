@@ -121,6 +121,21 @@ exports.handler = async (event) => {
             themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
             category: "mix", model: res.model, grounded: withSearch, source: "user",
           });
+          // Cover i BAKGRUNNEN: generér et unikt arkiv-bilde i brand-stil og pek
+          // raden dit. Klienten har alt fått quizen (status «done» over) og viser
+          // kategori-bildet umiddelbart; den poller storage-URL-en og bytter inn
+          // coveret når det er klart. Feiler dette, beholdes kategori-bildet.
+          try {
+            const images = require("./_images");
+            const { supa } = require("./_supabase");
+            const made = await images.makeCover({
+              slug: shareSlug, title: res.quiz.title, category: "mix", lede: res.quiz.lede,
+            });
+            await supa().from(library.TABLE).update({ hero_img: made.url }).eq("slug", shareSlug);
+            console.log("[bg] cover OK", shareSlug, "→", made.url);
+          } catch (coverErr) {
+            console.warn("[bg] cover-generering feilet:", coverErr.message);
+          }
         } catch (saveErr) {
           console.warn("[bg] arkiv-lagring feilet:", saveErr.message);
         }

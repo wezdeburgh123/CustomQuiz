@@ -1537,6 +1537,49 @@
     banner.classList.add('active');
   }
 
+  // Deterministisk URL til et quiz-cover i Supabase Storage (samme filnavn-
+  // normalisering som safeKey() i netlify/functions/_images.js).
+  function coverUrlForSlug(slug) {
+    try {
+      var base = (window.CQ_SUPABASE && window.CQ_SUPABASE.url) || '';
+      if (!base || !slug) return '';
+      var key = String(slug).toLowerCase()
+        .replace(/[^a-z0-9_-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      return base.replace(/\/$/, '') + '/storage/v1/object/public/quiz-covers/' + key + '.png';
+    } catch (_) { return ''; }
+  }
+
+  // Live-cover: kategori-bildet vises med en gang quizen er klar. Coveret lages
+  // i bakgrunnen på serveren — vi poller storage-URL-en og fader det inn så
+  // snart det finnes (uten å mase: ~4 s mellomrom i opptil ~3 min). Stilen
+  // (cream + grønn etsning) matcher kategorifargen som ligger som data-spot.
+  var _coverPollTimer = null;
+  function pollAndSwapCover(slug) {
+    if (_coverPollTimer) { clearTimeout(_coverPollTimer); _coverPollTimer = null; }
+    var url = coverUrlForSlug(slug);
+    if (!url) return;
+    var attempts = 0, max = 45;
+    function tryOnce() {
+      attempts++;
+      var probe = new Image();
+      probe.onload = function () {
+        var img = document.getElementById('quiz-banner-img');
+        if (!img) return;
+        img.style.transition = 'opacity .4s ease';
+        img.style.opacity = '0';
+        setTimeout(function () {
+          img.onload = function () { img.style.opacity = '1'; img.onload = null; };
+          img.src = probe.src;
+        }, 180);
+      };
+      probe.onerror = function () {
+        if (attempts < max) _coverPollTimer = setTimeout(tryOnce, 4000);
+      };
+      probe.src = url + '?p=' + Date.now();
+    }
+    tryOnce();
+  }
+
   // Viser hva slags quiz man tar, som overlegg på banner-bildet
   function setBannerText(category, title) {
     const c = document.getElementById('quiz-banner-cat');
@@ -2059,6 +2102,9 @@
       setQuizBanner(bannerTheme);
       setBannerText('Din egen quiz', themeLabel);
       setBannerDifficulty(quiz.difficulty);
+      // Bytt inn det unike coveret når serveren har laget det (kategori-bildet
+      // vises imens). Krever slug fra genererings-jobben.
+      if (state.currentSlug) pollAndSwapCover(state.currentSlug);
       renderQuestion();
       try { await QuizLoader.settle(); } catch (_) {}  // la baren vise 100 % før bytte
       showScreen('quiz');

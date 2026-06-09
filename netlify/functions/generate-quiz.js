@@ -86,6 +86,19 @@ exports.handler = async (event) => {
       themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
       category: "mix", model: res.model, grounded: false, source: "user",
     }).catch(() => {});
+    // Cover i bakgrunnen: trigg bakgrunnsfunksjonen (fire-and-forget). Den
+    // genererer et unikt arkiv-bilde og setter hero_img. Klienten viser
+    // kategori-bildet nå og bytter inn coveret når det er klart. Vi venter kun
+    // på 202-en (~200 ms), ikke på selve bildet.
+    try {
+      const host = event.headers.host || event.headers.Host;
+      const ctoken = process.env.COVER_TOKEN;
+      if (host && ctoken) {
+        const slug = library.makeSlug(input.themes, input.difficulty);
+        const u = `https://${host}/.netlify/functions/quiz-cover-background?slug=${encodeURIComponent(slug)}&token=${encodeURIComponent(ctoken)}&n=${Date.now()}`;
+        await fetch(u).catch(() => {});
+      }
+    } catch (_) { /* cover skal aldri blokkere quiz-svaret */ }
     return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(res.quiz) };
   } catch (err) {
     return {
