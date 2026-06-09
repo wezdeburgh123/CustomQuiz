@@ -84,7 +84,7 @@ exports.handler = async (event) => {
     // Nytt tema → lagre i arkivet så neste forespørsel treffer cachen.
     library.saveQuiz({
       themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
-      category: "mix", model: res.model, grounded: false, source: "user",
+      category: library.categorizeThemes(input.themes), model: res.model, grounded: false, source: "user",
     }).catch(() => {});
     // Cover i bakgrunnen: trigg bakgrunnsfunksjonen (fire-and-forget). Den
     // genererer et unikt arkiv-bilde og setter hero_img. Klienten viser

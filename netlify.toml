@@ -83,6 +83,12 @@
   to = "/.netlify/functions/library-play"
   status = 200
 
+# Backfill: re-utled arkivkategori fra temaene for bruker-quizer (token-beskyttet)
+[[redirects]]
+  from = "/api/library-recategorize"
+  to = "/.netlify/functions/library-recategorize"
+  status = 200
+
 # Forsidas dynamiske utvalg (pinnet + roterende + fellesskap)
 [[redirects]]
   from = "/api/featured"

@@ -119,7 +119,7 @@ exports.handler = async (event) => {
         try {
           await library.saveQuiz({
             themes: input.themes, difficulty: input.difficulty, quiz: res.quiz,
-            category: "mix", model: res.model, grounded: withSearch, source: "user",
+            category: library.categorizeThemes(input.themes), model: res.model, grounded: withSearch, source: "user",
           });
           // Cover i BAKGRUNNEN: generér et unikt arkiv-bilde i brand-stil og pek
           // raden dit. Klienten har alt fått quizen (status «done» over) og viser

@@ -40,6 +40,57 @@ function heroForCategory(category) {
   return CATEGORY_TO_IMG[category] || CATEGORY_TO_IMG.mix;
 }
 
+// ── tema → kategori (kun visning/filter — påvirker IKKE slug/cache) ──
+// Nøkkelord sjekkes i prioritert rekkefølge (spesifikk → generell) så f.eks.
+// «verdenshistorie» ikke fanges av norsk-historie, og «fotball» går foran «sport».
+// Brukes til å gi bruker-genererte quizer riktig arkivkategori i stedet for «mix».
+const CATEGORY_KEYWORDS = [
+  ["fotball", ["fotball", "eliteserien", "premier league", "champions league", "la liga", "bundesliga", "serie a", "cupfinale", "rosenborg", "bodo glimt", "valerenga", "lillestrom", "liverpool", "arsenal", "manchester", "chelsea", "tottenham", "everton", "newcastle", "barcelona", "real madrid"]],
+  ["verdenshistorie", ["verdenshistorie", "verdenskrig", "romerrik", "romersk", "antikken", "det gamle egypt", "napoleon", "den kalde krigen", "middelalderen", "den franske revolusjon", "vikingtid"]],
+  ["historie", ["norsk historie", "norgeshistorie", "norges historie", "unionen", "grunnloven", "eidsvoll", "quisling", "norske konger", "okkupasjonen"]],
+  ["geografi", ["geografi", "hovedstad", "hovedsteder", "verdenskart", "kontinent", "fjell", "elver", "innsjo", "flagg", "fylke", "kommune", "geologi"]],
+  ["vitenskap", ["vitenskap", "naturvitenskap", "fysikk", "kjemi", "biologi", "astronomi", "matematikk", "universet", "evolusjon", "kvante", "periodesystem", "celler"]],
+  ["teknologi", ["teknologi", "datateknologi", "programmering", "internett", "kunstig intelligens", "software", "maskinvare", "smarttelefon", "datamaskin", "robotikk"]],
+  ["litteratur", ["litteratur", "roman", "forfatter", "poesi", "diktning", "boker", "ibsen", "hamsun", "shakespeare"]],
+  ["kunst", ["kunst", "maleri", "skulptur", "kunstner", "arkitektur", "billedkunst", "kunsthistorie"]],
+  ["film", ["film", "kino", "oscar", "regissor", "skuespiller", "hollywood", "netflix", "tv serie", "tv-serie"]],
+  ["musikk", ["musikk", "bandet", " band", "artist", "sanger", "album", "jazz", "metal", "hiphop", "hip-hop", "komponist", "platebransje"]],
+  ["filosofi", ["filosofi", "filosof", "etikk", "platon", "aristoteles", "sokrates", "nietzsche", "eksistensialisme", "metafysikk"]],
+  ["sport", ["sport", "idrett", "olympisk", "langrenn", "skiskyting", "friidrett", "bokser", "boksing", "sykling", "handball", "tennis", "golf", "motorsport", "formel 1", "sjakk", "alpint", "skoyter"]],
+];
+
+// Normaliser tema for nøkkelord-match (behold ord-grenser; samme translitt som slug).
+function _normTheme(theme) {
+  let s = " " + String(theme || "").toLowerCase();
+  s = s.replace(/[æøå]/g, (c) => TRANSLIT[c] || c);
+  s = s.replace(/[-_/]+/g, " ").replace(/\s+/g, " ").trim();
+  return " " + s + " ";
+}
+
+function categoryForTheme(theme) {
+  const t = _normTheme(theme);
+  for (const [cat, kws] of CATEGORY_KEYWORDS) {
+    for (const kw of kws) {
+      if (t.includes(kw)) return cat;
+    }
+  }
+  return null;
+}
+
+/**
+ * Utled arkivkategori fra temaene. Ett entydig tema-treff → den kategorien.
+ * Flere ulike kategorier (ekte blanding) eller ingen treff → «mix».
+ */
+function categorizeThemes(themes) {
+  const list = Array.isArray(themes) ? themes : [themes];
+  const cats = new Set();
+  for (const th of list) {
+    const c = categoryForTheme(th);
+    if (c) cats.add(c);
+  }
+  return cats.size === 1 ? [...cats][0] : "mix";
+}
+
 // ── slug: identisk med Python make_slug() ──
 const TRANSLIT = { "æ": "ae", "ø": "o", "å": "a" };
 function normToken(s) {
@@ -172,6 +223,6 @@ async function listByReviewStatus(statuses = ["flagged", "removed"], limit = 200
 
 module.exports = {
   TABLE, CATEGORY_TO_IMG, VALID_CATEGORIES,
-  heroForCategory, normToken, makeSlug,
+  heroForCategory, normToken, makeSlug, categoryForTheme, categorizeThemes,
   db, canWrite, findByThemes, saveQuiz, setReviewStatus, listByReviewStatus,
 };
