@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /min-side.html
+Disallow: /admin.html
+Disallow: /auth-confirm.html
+
+Sitemap: https://customquiz.no/sitemap.xml
