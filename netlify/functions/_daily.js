@@ -7,11 +7,14 @@
  * daily-quiz-generate.js. Brukeren spiller én utgave per dag; ett tellende
  * forsøk per dag (unique på quiz_attempt) holder ukesledertavla intakt.
  *
- * Bruker den delte anon-klienten fra _jobs.js (offentlig nøkkel, ingen secret).
- * daily_quiz har RLS: alle kan lese, kun innsetting (ingen overskriving).
- * quiz_library har RLS: alle kan lese publiserte rader.
+ * Lesing bruker den delte anon-klienten fra _jobs.js (offentlig nøkkel).
+ * SKRIVING (saveEdition) bruker service-klienten fra _supabase.js — anon
+ * INSERT-policyen på daily_quiz er fjernet (10. juni 2026) så ingen utenfra
+ * kan forhåndsplante utgaver med den offentlige nøkkelen.
+ * quiz_library har RLS: alle kan lese publiserte rader (auto_ok).
  */
 const { anonClient } = require("./_jobs");
+const { supa } = require("./_supabase");
 const lib = require("./_library");
 
 // Dato i Europe/Oslo som "YYYY-MM-DD".
@@ -54,8 +57,9 @@ async function getEdition(dateStr, category) {
 }
 
 // Insert-only (ON CONFLICT DO NOTHING) → en publisert utgave kan ikke overskrives.
+// Service-klient: kun serveren kan skrive utgaver (anon-policyen er droppet).
 async function saveEdition(dateStr, category, theme, quiz) {
-  const { error } = await anonClient()
+  const { error } = await supa()
     .from("daily_quiz")
     .upsert({ quiz_date: dateStr, category, theme, quiz },
             { onConflict: "quiz_date,category", ignoreDuplicates: true });
@@ -74,7 +78,8 @@ async function getLatestDate() {
 // Kategorier som faktisk har publisert innhold + antall (for «hva kan tilbys»).
 async function libraryCategories() {
   const { data, error } = await anonClient()
-    .from("quiz_library").select("category").eq("published", true);
+    .from("quiz_library").select("category")
+    .eq("published", true).eq("review_status", "auto_ok");
   if (error) throw new Error("quiz_library categories: " + error.message);
   const counts = {};
   (data || []).forEach((r) => { counts[r.category] = (counts[r.category] || 0) + 1; });
@@ -88,7 +93,7 @@ async function pickFromLibrary(category, dateStr) {
   const { data, error } = await anonClient()
     .from("quiz_library")
     .select("slug,title,lede,questions,hero_img,category,category_label")
-    .eq("category", category).eq("published", true)
+    .eq("category", category).eq("published", true).eq("review_status", "auto_ok")
     .order("created_at", { ascending: true }).order("slug", { ascending: true });
   if (error) throw new Error("quiz_library pick: " + error.message);
   const rows = data || [];
