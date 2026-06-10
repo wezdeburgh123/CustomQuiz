@@ -11,6 +11,9 @@
  * Env:
  *   STRIPE_SECRET_KEY        (sk_live_… / sk_test_…)
  *   STRIPE_PRICE_ID          (price_… for 49 kr/mnd, recurring)
+ *   STRIPE_TAX_RATE_ID       (valgfri — txr_… for 25% MVA, "inclusive". Settes
+ *                             når AS-et er MVA-registrert; da bryter Stripe ut
+ *                             MVA på faktura/kvittering. Tom = ingen MVA-linje.)
  *   SITE_URL                 (https://customquiz.no)
  */
 const Stripe = require("stripe");
@@ -23,7 +26,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers: JSON_HEADERS, body: JSON.stringify({ error: "Bruk POST." }) };
   }
 
-  const { STRIPE_SECRET_KEY, STRIPE_PRICE_ID, SITE_URL } = process.env;
+  const { STRIPE_SECRET_KEY, STRIPE_PRICE_ID, STRIPE_TAX_RATE_ID, SITE_URL } = process.env;
   if (!STRIPE_SECRET_KEY || !STRIPE_PRICE_ID) {
     return { statusCode: 500, headers: JSON_HEADERS, body: JSON.stringify({ error: "Stripe er ikke konfigurert (STRIPE_SECRET_KEY / STRIPE_PRICE_ID mangler)." }) };
   }
@@ -55,7 +58,13 @@ exports.handler = async (event) => {
       success_url: `${base}/?betaling=ok&kilde=stripe`,
       cancel_url: `${base}/arkiv.html?betaling=avbrutt`,
       metadata: { email, plan: "premium_monthly", source: "stripe" },
-      subscription_data: { metadata: { email } },
+      subscription_data: {
+        metadata: { email },
+        // MVA: når AS-et er MVA-registrert og STRIPE_TAX_RATE_ID er satt
+        // (25%, "inclusive"), bryter Stripe ut MVA på abonnementets faktura.
+        // Uten env settes ingen sats → prisen selges uten MVA-linje.
+        ...(STRIPE_TAX_RATE_ID ? { default_tax_rates: [STRIPE_TAX_RATE_ID] } : {}),
+      },
     });
 
     // Marker som pending til webhooken bekrefter aktivt abonnement.

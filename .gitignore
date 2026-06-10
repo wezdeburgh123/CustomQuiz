@@ -23,3 +23,5 @@ scripts/_natt-input.json
 # Python-skrot
 __pycache__/
 *.pyc
+
+.fuse_hidden*

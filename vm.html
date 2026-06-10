@@ -19,13 +19,13 @@
 
 <meta property="og:title" content="VM-quiz 2026 — CustomQuiz">
 <meta property="og:description" content="Ta quizene, samle poeng gjennom hele VM, og konkurrer mot venner og alle andre.">
-<meta property="og:image" content="IMG/vm-share.jpg">
+<meta property="og:image" content="https://customquiz.no/IMG/vm-share.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://customquiz.no/vm.html">
 <meta property="og:locale" content="nb_NO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="VM-quiz 2026 — CustomQuiz">
-<meta name="twitter:image" content="IMG/vm-share.jpg">
+<meta name="twitter:image" content="https://customquiz.no/IMG/vm-share.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -273,7 +273,7 @@
   <!-- QUIZER -->
   <div class="section-label" id="quizer">
     <span>Quizene</span>
-    <span class="section-meta" id="quiz-progress">2 av 7 fullført</span>
+    <span class="section-meta" id="quiz-progress">&nbsp;</span>
   </div>
   <section class="quiz-grid" id="quiz-grid"><!-- bygges av JS fra QUIZER --></section>
 
@@ -295,7 +295,7 @@
       </svg>
       <div>
         <div class="mono-label" style="font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute)">Stilling</div>
-        <div style="font-family:var(--font-display);font-size:20px;font-weight:500" id="lb-scope-title">Din liga · Kontoret ⚽</div>
+        <div style="font-family:var(--font-display);font-size:20px;font-weight:500" id="lb-scope-title">&nbsp;</div>
       </div>
       <div class="lb-tabs">
         <button class="lb-tab active" data-scope="liga">Min liga</button>
@@ -382,7 +382,11 @@
   function renderGrid(){
     var grid=document.getElementById('quiz-grid'); if(!grid) return;
     var rows=data.quizzes;
-    if(!rows.length){ grid.innerHTML='<p style="color:var(--ink-mute);font-size:14px">Quizene legges ut snart.</p>'; return; }
+    if(!rows.length){
+      grid.innerHTML='<p style="color:var(--ink-mute);font-size:14px">Quizene legges ut snart.</p>';
+      var prog0=document.getElementById('quiz-progress'); if(prog0) prog0.innerHTML='&nbsp;';
+      return;
+    }
     var html='';
     rows.forEach(function(q){
       var att=data.attempts[q.slug];
@@ -743,11 +747,15 @@
 
   (function kickoff(){
     var el=document.getElementById('kickoff'); if(!el) return;
-    var start=new Date('2026-06-11T18:00:00+02:00').getTime();
-    var diff=start-Date.now();
-    if(diff<=0){ el.textContent='· VM er i gang'; return; }
-    var d=Math.ceil(diff/86400000);
-    el.textContent='· '+d+(d===1?' dag til avspark':' dager til avspark');
+    var start=new Date('2026-06-11T18:00:00+02:00');
+    if(start.getTime()-Date.now()<=0){ el.textContent='· VM er i gang'; return; }
+    // Tell kalenderdager (lokal tid), ikke 24t-bolker — ellers vises «2 dager» dagen før avspark.
+    var now=new Date();
+    var d=Math.round((new Date(start.getFullYear(),start.getMonth(),start.getDate()).getTime()
+                     -new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime())/86400000);
+    el.textContent = d<=0 ? '· avspark i dag!'
+                   : d===1 ? '· avspark i morgen'
+                   : '· '+d+' dager til avspark';
   })();
 
   wireTabs();

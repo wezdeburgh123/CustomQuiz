@@ -79,9 +79,19 @@ exports.handler = async (event) => {
         // Bruk ekte periodeslutt fra Stripe; fall tilbake på «nå + 1 mnd».
         const neste = periodEnd ? new Date(periodEnd)
           : new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate()));
+        // MVA-fordeling for kvittering. Stripe gir oss MVA-beløpet direkte når
+        // en tax_rate er aktiv (amount_tax); ellers regner vi 25% inkl. ut av
+        // totalen. mva="0" når prisen selges uten MVA (ikke MVA-registrert).
+        const mvaOre = (obj.total_details && typeof obj.total_details.amount_tax === "number")
+          ? obj.total_details.amount_tax
+          : (process.env.STRIPE_TAX_RATE_ID ? Math.round((belop * 100) - (belop * 100) / 1.25) : 0);
+        const mva = (mvaOre / 100).toFixed(2).replace(".", ",");
+        const netto = (belop - mvaOre / 100).toFixed(2).replace(".", ",");
         await sendTemplate(welcomeTemplateId(), email, { quiz_url: site + "/" });
         await sendTemplate(receiptTemplateId(), email, {
           belop: String(belop),
+          netto: netto,
+          mva: mva,
           dato: formatDateNb(now),
           betalingsmetode: "Apple Pay / kort",
           neste_trekk: formatDateNb(neste),

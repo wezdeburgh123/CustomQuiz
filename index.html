@@ -15,7 +15,7 @@
 <!-- Open Graph -->
 <meta property="og:title" content="CustomQuiz — daglige quizer på norsk">
 <meta property="og:description" content="Skreddersydde quizer på norsk, generert akkurat nå. Ny quiz hver morgen.">
-<meta property="og:image" content="IMG/og.jpg">
+<meta property="og:image" content="https://customquiz.no/IMG/og.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://customquiz.no">
 <meta property="og:locale" content="nb_NO">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CustomQuiz — daglige quizer på norsk">
 <meta name="twitter:description" content="Skreddersydde quizer på norsk, generert akkurat nå.">
-<meta name="twitter:image" content="IMG/og.jpg">
+<meta name="twitter:image" content="https://customquiz.no/IMG/og.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1223,11 +1223,15 @@
 
     var c = document.getElementById('vm-banner-count');
     if (c) {
-      var start = new Date('2026-06-11T18:00:00+02:00').getTime();
-      var diff = start - Date.now();
-      if (diff > 0) {
-        var d = Math.ceil(diff / 86400000);
-        c.textContent = d === 1 ? 'Avspark i morgen.' : d + ' dager til avspark.';
+      var start = new Date('2026-06-11T18:00:00+02:00');
+      if (start.getTime() - Date.now() > 0) {
+        // Tell kalenderdager (lokal tid), ikke 24t-bolker — ellers vises «2 dager» dagen før avspark.
+        var now = new Date();
+        var d = Math.round((new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime()
+                          - new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()) / 86400000);
+        c.textContent = d <= 0 ? 'Avspark i dag!'
+                      : d === 1 ? 'Avspark i morgen.'
+                      : d + ' dager til avspark.';
       } else {
         c.textContent = 'VM er i gang.';
       }
