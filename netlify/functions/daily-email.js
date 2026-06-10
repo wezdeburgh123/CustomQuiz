@@ -18,25 +18,55 @@
  * i Brevo reflekteres ikke automatisk tilbake til profiles (kjent begrensning —
  * vurder Brevo-webhook eller ukentlig kampanje på sikt).
  *
- * Manuell test: GET /api/daily-email  (krever fortsatt DAILY_EMAIL_ENABLED=true)
+ * Manuell test: GET /api/daily-email med header `x-admin-token: <ADMIN_TOKEN>`
+ * (krever DAILY_EMAIL_ENABLED=true; maks én utsendelse per dag uansett kilde)
  * Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, BREVO_API_KEY, BREVO_DAILY_TEMPLATE_ID,
  *      BREVO_VM_DAILY_TEMPLATE_ID (valgfri — VM-segment under turneringen), SITE_URL
  */
 const { createClient } = require("@supabase/supabase-js");
 const { sendTemplate } = require("./_brevo");
 
-exports.handler = async () => {
+exports.handler = async (event) => {
   const done = (msg) => ({ statusCode: 200, body: msg });
 
   if (process.env.DAILY_EMAIL_ENABLED !== "true") {
     return done("daily-email er avskrudd (sett DAILY_EMAIL_ENABLED=true for å aktivere).");
   }
+
+  // ── VAKT 1: hvem kaller? ───────────────────────────────────────────
+  // Netlify-scheduleren sender body {"next_run": ...}. Manuelle kall må
+  // bære ADMIN_TOKEN i x-admin-token-headeren. Alt annet avvises — uten
+  // dette kunne hvem som helst trigge masseutsendelse via /api/daily-email.
+  let isScheduled = false;
+  try { isScheduled = !!JSON.parse(event && event.body || "{}").next_run; } catch (_) {}
+  const adminToken = process.env.ADMIN_TOKEN || "";
+  const givenToken = (event && event.headers && (event.headers["x-admin-token"] || event.headers["X-Admin-Token"])) || "";
+  if (!isScheduled && (!adminToken || givenToken !== adminToken)) {
+    return { statusCode: 401, body: "Krever x-admin-token (eller kjøres av scheduleren)." };
+  }
+
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const tid = Number(process.env.BREVO_DAILY_TEMPLATE_ID || 4);
   if (!url || !key || !tid || !process.env.BREVO_API_KEY) return done("Mangler konfig (Supabase/Brevo).");
 
   const db = createClient(url, key, { auth: { persistSession: false } });
+
+  // ── VAKT 2: maks én utsendelse per dag ─────────────────────────────
+  // Logger i payment_events (source='daily-email'). Gjentatte kall samme
+  // dag (uansett kilde) blir no-op — ingen dobbel-mail, ingen spam-loop.
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Oslo" }).format(new Date());
+  try {
+    const { data: already } = await db.from("payment_events")
+      .select("id").eq("source", "daily-email").eq("ref_id", today).limit(1);
+    if (already && already.length) return done("Allerede sendt i dag (" + today + ") — hopper over.");
+    await db.from("payment_events").insert({
+      source: "daily-email", event_type: "send-start", email: null, ref_id: today, payload: {},
+    });
+  } catch (e) {
+    // Vakta er best-effort: feiler oppslaget, fortsetter vi som før.
+    console.warn("daily-email dedupe-vakt feilet:", e.message || e);
+  }
 
   // Påmeldte med e-post + opt-in-kilde (begge lagres på profiles ved opt-in).
   let recipients = [];

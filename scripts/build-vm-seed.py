@@ -209,6 +209,45 @@ QUIZZES = [
      "45 lag kvalifiserte seg; med tre verter blir det 48 totalt."),
   ]
  },
+ {
+  "slug":"apningskamp","num":"06","phase":"Åpning","status":"locked","sort":6,
+  "hero_img":"vm-gruppespill-1",
+  "title":"Åpningskampen — VM er i gang",
+  "sub":"Storyline, arena og gruppe A før Mexico–Sør-Afrika.",
+  "difficulty":"lett",
+  "questions":[
+    Q("Arena","Hvilket stadion er vert for åpningskampen i VM 2026?",
+      ["Estadio Azteca i Mexico by","Estadio BBVA i Monterrey","MetLife Stadium i New Jersey","SoFi Stadium i Los Angeles"],0,
+      "Åpningskampen Mexico–Sør-Afrika spilles på Estadio Azteca 11. juni — under VM offisielt «Estadio Ciudad de México» etter FIFAs sponsorregler."),
+    Q("Historie","Hvilken historisk rekord setter Estadio Azteca med åpningskampen i 2026?",
+      ["Første stadion som er vert for tre VM-åpningskamper","Største stadion i VM-historien","Første stadion med tak i et VM","Eneste stadion brukt i fem ulike VM"],0,
+      "Azteca var åpningsarena også i 1970 og 1986 — 2026 blir den tredje."),
+    Q("Historie","Estadio Azteca er det første stadionet som har vært vert for to VM-finaler. Hvilke år?",
+      ["1970 og 1986","1970 og 1994","1986 og 2002","1962 og 1978"],0,
+      "Mexico arrangerte VM i både 1970 og 1986, begge med finale på Azteca."),
+    Q("Historie","Hvem vant VM-finalen på Estadio Azteca i 1970?",
+      ["Brasil","Italia","Vest-Tyskland","Uruguay"],0,
+      "Brasil slo Italia 4–1 og sikret sin tredje VM-tittel, med Pelé på laget."),
+    Q("Stjerner","Hvilken spiller står bak både «Guds hånd» og «århundrets mål» på Estadio Azteca i 1986?",
+      ["Diego Maradona","Pelé","Michel Platini","Gary Lineker"],0,
+      "Begge mål kom mot England i kvartfinalen; Argentina vant VM-et det året."),
+    Q("Gruppe A","Hvilket lag møter vertsnasjonen Mexico i åpningskampen?",
+      ["Sør-Afrika","Sør-Korea","Tsjekkia","USA"],0,
+      "Mexico–Sør-Afrika åpner mesterskapet 11. juni."),
+    Q("Gruppe A","Hvilke tre lag er i gruppe A sammen med Mexico?",
+      ["Sør-Afrika, Sør-Korea og Tsjekkia","Sør-Afrika, Japan og Polen","Sør-Korea, Tsjekkia og Uruguay","Sør-Afrika, Sør-Korea og Kroatia"],0,
+      "Gruppe A spilles fra 11. til 24. juni."),
+    Q("Kuriosa","VM 2026 er det første mesterskapet med tre vertsnasjoner. Hvilke?",
+      ["USA, Mexico og Canada","USA, Mexico og Guatemala","Canada, Mexico og Costa Rica","USA, Canada og Brasil"],0,
+      "Kampene fordeles på de tre landene fra 11. juni til 19. juli."),
+    Q("Rekord","Hvor mange lag deltar i VM 2026 — tidenes største sluttspill?",
+      ["48","32","40","64"],0,
+      "Utvidet fra 32 lag; totalt 104 kamper, mot 64 tidligere."),
+    Q("Format","Hvordan er gruppespillet i VM 2026 satt opp?",
+      ["12 grupper med 4 lag","8 grupper med 6 lag","16 grupper med 3 lag","4 grupper med 12 lag"],0,
+      "De to beste i hver gruppe, pluss de åtte beste treerne, går videre til en ny 32-delsfinale."),
+  ]
+ },
 ]
 
 def sql_str(s):
@@ -259,7 +298,7 @@ def main():
         lines.append("insert into public.event_quizzes (event_id, slug, num, phase, title, sub, hero_img, difficulty, questions, status, sort, published)")
         lines.append("values (")
         lines.append(f"  {sql_str(EVENT['id'])}, {sql_str(qz['slug'])}, {sql_str(qz['num'])}, {sql_str(qz['phase'])},")
-        lines.append(f"  {sql_str(qz['title'])}, {sql_str(qz['sub'])}, {sql_str('vm-'+qz['slug'])}, {sql_str(qz['difficulty'])},")
+        lines.append(f"  {sql_str(qz['title'])}, {sql_str(qz['sub'])}, {sql_str(qz.get('hero_img', 'vm-'+qz['slug']))}, {sql_str(qz['difficulty'])},")
         lines.append(f"  {sql_str(qjson)}::jsonb, {sql_str(qz['status'])}, {qz['sort']}, true")
         lines.append(")")
         lines.append("on conflict (event_id, slug) do update set")
