@@ -1,5 +1,14 @@
 # VM 2026 — runbook for 10. juni + kampdag-drift
 
+> ⚡ **STATUS-OPPDATERING 10. juni ~13:00 (denne økta — autoritativ for §1):**
+> §1 #1 Brevo-env ✅ VERIFISERT (LIST_ID=3, WELCOME=5, DAILY_TEMPLATE satt, DAILY_EMAIL_ENABLED=true).
+> §1 #2 Redeploy ✅ (to deploys i dag: nedtelling/og-image-fiks + daily_quiz-sikring).
+> §1 #3 Rydde-SQL ✅ KJØRT inkl. DEL B — tavla helt nullstilt. NB: «testspillerne» var ekte venner; poeng/ligaer kan ikke gjenopprettes (Free-plan) — de spiller på nytt.
+> §1 #4 Auth-testbrukere ✅ N/A — smoke@/teststripe@/slett@ fantes aldri som auth-brukere (verifisert i UI).
+> EKSTRA gjort: score-CHECK på event_attempts+quiz_attempt, daily_quiz anon-insert droppet (_daily.js skriver m/service-nøkkel), daily-email.js fått token-vakt + én-per-dag-sperre (sjekk at den er pushet).
+> GJENSTÅR: §1 #5 tørrkjøring, #6 åpningskamp-review+seed, #7 kickoff-flip-valg.
+> Full funnliste: `AUDIT-rapport-10juni.md`.
+
 > Skrevet 9. juni 2026. Avspark **torsdag 11. juni 2026**, åpningskamp Mexico–Sør-Afrika på Estadio Azteca. Finale 19. juli.
 > «C» = Christian (push, secrets, Supabase, nettleser/Stripe). «Cl» = Claude (kode, prompt, faktasjekk, /api-probe).
 > Forankret i `VM-LAUNCH-plan.md`, `VM-fotball-prompt.md`, [[customquiz-vm-modul]], [[customquiz-status]].
