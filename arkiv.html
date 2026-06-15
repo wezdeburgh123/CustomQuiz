@@ -384,6 +384,51 @@
   }
   .free-toggle[aria-pressed="true"]::before { background: var(--bg-soft); }
 
+  /* Del-knapp: deler det utvalget brukeren ser nå (alle, en kategori, eller et
+     klubblag). Matcher free-toggle-stilen, men nøytral aksent. */
+  .share-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--r-pill);
+    padding: 7px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .share-filter:hover { border-color: var(--accent); color: var(--ink); }
+  .share-filter.copied { background: var(--accent); border-color: var(--accent); color: var(--bg-soft); }
+
+  /* Liten bekreftelse-toast nederst når lenken er kopiert. */
+  .share-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--ink);
+    color: var(--bg-soft);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 12px 20px;
+    border-radius: var(--r-pill);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+    z-index: 1000;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   .quiz-body {
     padding: 18px 20px 22px;
     display: flex;
@@ -757,7 +802,10 @@
       <button class="sort-btn active" data-sort="plays">Mest spilt</button>
       <button class="sort-btn" data-sort="date">Nyeste</button>
     </div>
-    <div class="toolbar-meta"><strong id="result-count">0</strong> utgaver</div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="toolbar-meta"><strong id="result-count">0</strong> utgaver</div>
+      <button class="share-filter" id="share-filter" type="button" onclick="copyShareFilter()">Del utvalget ↗</button>
+    </div>
   </div>
 
   <div class="filter-row" id="filter-row">
@@ -795,6 +843,9 @@
   </div>
 
   <div class="empty-state" id="empty-state" style="display:none;">Ingen utgaver matcher filteret. Prøv en annen kategori.</div>
+
+  <!-- Bekreftelse når en delelenke er kopiert. -->
+  <div class="share-toast" id="share-toast" role="status" aria-live="polite"></div>
 
   <!-- Laget av fellesskapet — quizzer brukere har bedt om (source=user). Egen
        seksjon, adskilt fra det kuraterte. Skjult til det finnes innhold. -->
@@ -1005,6 +1056,80 @@
     return first.concat(byPlays.filter(q => !used.has(q)));
   }
 
+  // — Deling av et helt utvalg —
+  // Bygger en lenke til arkivet, forhåndsfiltrert på det brukeren ser nå:
+  //   alle      → https://customquiz.no/arkiv.html
+  //   kategori  → …/arkiv.html?category=fotball
+  //   klubblag  → …/arkiv.html?category=fotball&team=Liverpool
+  // Arkivet leser ?category= og ?team= ved innlasting (se applyInitialCategoryFromUrl).
+  const SHARE_BASE = 'https://customquiz.no/arkiv.html';
+  const FILTER_LABELS = {
+    all: 'alle quizene', mix: 'Blandet', historie: 'Norsk historie',
+    verdenshistorie: 'Verdenshistorie', vitenskap: 'Naturvitenskap', geografi: 'Geografi',
+    litteratur: 'Litteratur', kunst: 'Kunst', film: 'Film og TV', musikk: 'Musikk',
+    sport: 'Sport', fotball: 'Fotball', filosofi: 'Filosofi', teknologi: 'Teknologi'
+  };
+
+  function buildShareUrl() {
+    const p = new URLSearchParams();
+    if (currentFilter && currentFilter !== 'all') p.set('category', currentFilter);
+    if (currentFilter === 'fotball' && currentTeam && currentTeam !== 'all') p.set('team', currentTeam);
+    const qs = p.toString();
+    return qs ? SHARE_BASE + '?' + qs : SHARE_BASE;
+  }
+
+  function shareSelectionName() {
+    if (currentFilter === 'fotball' && currentTeam && currentTeam !== 'all') return currentTeam;
+    return FILTER_LABELS[currentFilter] || 'utvalget';
+  }
+
+  function updateShareLabel() {
+    const btn = document.getElementById('share-filter');
+    if (!btn || btn.classList.contains('copied')) return;
+    btn.textContent = (currentFilter === 'all')
+      ? 'Del alle quizene ↗'
+      : 'Del ' + shareSelectionName() + ' ↗';
+  }
+
+  let shareToastTimer = null;
+  function showShareToast(msg) {
+    const t = document.getElementById('share-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(shareToastTimer);
+    shareToastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  function copyShareFilter() {
+    const url = buildShareUrl();
+    const name = shareSelectionName();
+    const finish = (ok) => {
+      const btn = document.getElementById('share-filter');
+      if (btn && ok) {
+        btn.classList.add('copied');
+        btn.textContent = 'Lenke kopiert ✓';
+        setTimeout(() => { btn.classList.remove('copied'); updateShareLabel(); }, 2000);
+      }
+      showShareToast(ok
+        ? 'Lenke til «' + name + '» kopiert — lim inn og del.'
+        : 'Kunne ikke kopiere. Lenke: ' + url);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => finish(true)).catch(() => finish(false));
+    } else {
+      // Eldre nettlesere: fall tilbake til et midlertidig tekstfelt.
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        finish(true);
+      } catch (_) { finish(false); }
+    }
+  }
+  window.copyShareFilter = copyShareFilter;
+
   function render() {
     const grid = document.getElementById('quiz-grid');
     const empty = document.getElementById('empty-state');
@@ -1040,6 +1165,7 @@
 
     count.textContent = items.length;
     empty.style.display = items.length === 0 ? 'block' : 'none';
+    updateShareLabel();
 
     // Speil sorterings-knappenes aktive tilstand (ingen aktiv i tverrsnitt-modus).
     document.querySelectorAll('.sort-btn').forEach(b =>
