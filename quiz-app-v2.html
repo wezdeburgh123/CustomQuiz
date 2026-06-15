@@ -1762,22 +1762,13 @@
     return Math.max(0, FREE_GENERATION_LIMIT - getFreeGenCount());
   }
 
-  // Avgjør om brukeren får generere nå. Aktive abonnenter passerer alltid;
-  // alle andre får FREE_GENERATION_LIMIT genereringer før paywall vises.
+  // GRATIS-PERIODE (15. juni 2026): betaling er av. Kvoten håndheves nå
+  // SERVER-SIDE (DAILY_GEN_LIMIT, default 2/dag, + globalt tak) — se _usage.js.
+  // Klienten gater derfor IKKE lenger på localStorage-telleren, og paywallen
+  // vises ikke. Innloggingskravet (ensureLoggedIn) står. Vi lar denne funksjonen
+  // + showPaywall + free-telleren ligge i DVALE, klare til å skrus på igjen når
+  // betaling kommer tilbake (bytt da til ensureAccess() — se kommentar nedenfor).
   async function ensureCanGenerate() {
-    // Aktivt abonnement → ubegrenset (gjelder først når betaling er live).
-    try {
-      if (window.CQAuth && window.CQAuth.isConfigured && window.CQAuth.isConfigured()
-          && window.CQAuth.getEmail && window.CQAuth.getEmail()
-          && window.CQAuth.isPremium && (await window.CQAuth.isPremium())) {
-        return true;
-      }
-    } catch (_) { /* fall gjennom til gratis-grensa */ }
-
-    if (getFreeGenCount() >= FREE_GENERATION_LIMIT) {
-      showPaywall();
-      return false;
-    }
     return true;
   }
 
@@ -1830,6 +1821,9 @@
     if (job.status === 'error') {
       if (job.code === 'SUBSCRIPTION') {
         const err = new Error(job.error || 'Abonnement kreves'); err.code = 'SUBSCRIPTION'; throw err;
+      }
+      if (job.code === 'daily_limit' || job.code === 'global_cap') {
+        const err = new Error(job.error || 'Daglig grense nådd.'); err.code = 'LIMIT'; throw err;
       }
       throw new Error(job.error || 'Generering feilet.');
     }
@@ -1897,6 +1891,9 @@
     catch (e) { throw new Error('Ugyldig svar fra serveren: ' + bodyText.slice(0, 160)); }
     if (response.status === 401 || response.status === 402 || response.status === 403) {
       const err = new Error(data.error || 'Abonnement kreves'); err.code = 'SUBSCRIPTION'; throw err;
+    }
+    if (response.status === 429 || (data && (data.code === 'daily_limit' || data.code === 'global_cap'))) {
+      const err = new Error(data.error || 'Daglig grense nådd.'); err.code = 'LIMIT'; throw err;
     }
     if (data && data.code === 'blocked_topic') {
       const err = new Error(data.error || 'Dette temaet kan vi ikke lage quiz om.');
@@ -2118,6 +2115,22 @@
           window.location.href = 'arkiv.html#abonnement';
         }
         showScreen('home');
+        return;
+      }
+      // Daglig grense nådd (server-håndhevet kvote) — vennlig melding, IKKE
+      // demo-fallback. Pek mot arkivet så de kan spille videre gratis.
+      if (err && err.code === 'LIMIT') {
+        QuizLoader.stop();
+        const titleEl = document.querySelector('#error .error-title');
+        const msgEl = document.getElementById('error-msg');
+        if (titleEl) titleEl.textContent = 'Dagens quizer er brukt opp';
+        if (msgEl) {
+          msgEl.innerHTML = (err.message || 'Du har laget dagens quizer.')
+            + ' Spill gjerne videre i <a href="arkiv.html">arkivet</a> imens — kom tilbake i morgen for å lage flere.';
+        }
+        const dbg = document.getElementById('error-debug');
+        if (dbg) { dbg.style.display = 'none'; dbg.textContent = ''; }
+        showScreen('error');
         return;
       }
       // Kunnskapsvakt avviste temaet — vis vennlig melding, IKKE demo-quiz.

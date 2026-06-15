@@ -11,6 +11,7 @@
 const core = require("./_quizcore");
 const library = require("./_library");
 const moderation = require("./_moderation");
+const usage = require("./_usage");
 const { CORS_HEADERS } = core;
 
 exports.handler = async (event) => {
@@ -60,6 +61,15 @@ exports.handler = async (event) => {
     }
   } catch (_) { /* cache-bom skal aldri blokkere generering */ }
 
+  // DAGLIG KVOTE: vi skal nå GENERERE (cache-bom). Tell mot brukerens dagskvote
+  // + globalt tak. Cachede treff over teller bevisst IKKE. Logges attempt-based.
+  const quota = await usage.checkAndRecordGeneration(sub.user);
+  if (!quota.ok)
+    return { statusCode: quota.status, headers: CORS_HEADERS, body: JSON.stringify({ error: quota.message, code: quota.code }) };
+  const remHeaders = Number.isFinite(quota.remaining)
+    ? { ...CORS_HEADERS, "X-Gen-Remaining": String(quota.remaining) }
+    : CORS_HEADERS;
+
   const gateOn = process.env.KNOWLEDGE_GATE !== "false";
   try {
     const res = await core.generateQuiz(apiKey, { ...input, gateOn, withSearch: false });
@@ -99,7 +109,7 @@ exports.handler = async (event) => {
         await fetch(u).catch(() => {});
       }
     } catch (_) { /* cover skal aldri blokkere quiz-svaret */ }
-    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(res.quiz) };
+    return { statusCode: 200, headers: remHeaders, body: JSON.stringify(res.quiz) };
   } catch (err) {
     return {
       statusCode: 502,

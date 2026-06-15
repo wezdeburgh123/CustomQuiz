@@ -277,7 +277,9 @@ async function checkSubscription(authHeader) {
   const requireSub = process.env.REQUIRE_SUBSCRIPTION !== "false"
     && SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_SERVICE_ROLE_KEY;
   const requireLogin = process.env.REQUIRE_LOGIN === "true" && SUPABASE_URL && SUPABASE_ANON_KEY;
-  if (!requireSub && !requireLogin) return { ok: true };
+  // Åpen modus (verken innlogging eller abonnement): ingen bruker å telle mot,
+  // så den daglige kvoten er også av (se _usage.js).
+  if (!requireSub && !requireLogin) return { ok: true, user: null };
 
   const token = String(authHeader || "").replace(/^Bearer\s+/i, "").trim();
   if (!token) return { ok: false, status: 401, code: "SUBSCRIPTION", message: "Logg inn for å generere quizer." };
@@ -289,18 +291,21 @@ async function checkSubscription(authHeader) {
     if (error || !u || !u.user || !u.user.email)
       return { ok: false, status: 401, code: "SUBSCRIPTION", message: "Økten er ugyldig. Logg inn på nytt." };
 
+    const who = { id: u.user.id, email: u.user.email.toLowerCase() };
+
     // Innloggings-sperre: gyldig innlogging er nok (ingen abonnementssjekk).
-    if (!requireSub) return { ok: true };
+    // Returnerer brukeren så kallerne kan håndheve daglig kvote (_usage.js).
+    if (!requireSub) return { ok: true, user: who };
 
     // Abonnement-modus: krev aktiv abonnent (krever SERVICE_ROLE).
-    const email = u.user.email.toLowerCase();
+    const email = who.email;
     const svc = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
     const { data: sub, error: e2 } = await svc
       .from("subscribers").select("status").eq("email", email).maybeSingle();
     if (e2) throw new Error(e2.message);
     if (!sub || sub.status !== "active")
       return { ok: false, status: 402, code: "SUBSCRIPTION", message: "Aktivt abonnement kreves for å generere egne quizer." };
-    return { ok: true };
+    return { ok: true, user: who };
   } catch (err) {
     return { ok: false, status: 503, code: "VERIFY_FAILED", message: "Kunne ikke verifisere tilgang akkurat nå. Prøv igjen om litt." };
   }

@@ -18,6 +18,7 @@ const core = require("./_quizcore");
 const jobs = require("./_jobs");
 const library = require("./_library");
 const moderation = require("./_moderation");
+const usage = require("./_usage");
 
 async function writeJob(jobId, obj) {
   try {
@@ -83,6 +84,15 @@ exports.handler = async (event) => {
       }
     } catch (_) { /* cache-bom skal aldri blokkere generering */ }
 
+    // DAGLIG KVOTE: cache-bom → vi skal faktisk generere. Tell mot dagskvote +
+    // globalt tak (cachede treff over teller bevisst ikke). Attempt-based.
+    const quota = await usage.checkAndRecordGeneration(sub.user);
+    if (!quota.ok) {
+      await writeJob(jobId, { status: "error", code: quota.code, error: quota.message });
+      return { statusCode: 202, body: "" };
+    }
+    const remaining = Number.isFinite(quota.remaining) ? quota.remaining : null;
+
     // Cache-bom: temaet finnes ikke i arkivet → ekte generering starter.
     // Signaliser fase til poll-klienten så loaderen kan skyve steget videre.
     await writeJob(jobId, { status: "running", phase: "generating" });
@@ -111,7 +121,7 @@ exports.handler = async (event) => {
       } else if (!res.ok && res.insufficient) {
         await writeJob(jobId, { status: "insufficient", reason: res.reason });
       } else {
-        await writeJob(jobId, { status: "done", quiz: res.quiz, slug: shareSlug });
+        await writeJob(jobId, { status: "done", quiz: res.quiz, slug: shareSlug, remaining });
         // Nytt tema → lagre i arkivet (grunnet via websøk når withSearch var på).
         // MÅ await-es: i serverless fryses funksjonen når handleren returnerer,
         // så en fire-and-forget-skriving rekker ikke fullføre → delelenka 404-er.
