@@ -211,7 +211,10 @@
         var cb = document.getElementById("cancel-btn");
         if (cb) cb.addEventListener("click", cancelSub);
       } else {
-        actions.innerHTML = '<a class="btn" href="arkiv.html#abonnement">Bli abonnent <span class="btn-arrow">→</span></a>';
+        // GRATIS-PERIODE (15. juni 2026): betaling av → ingen «Bli abonnent»-CTA.
+        // Reverter til lenken under når paywall skrus på igjen:
+        //   '<a class="btn" href="arkiv.html#abonnement">Bli abonnent <span class="btn-arrow">→</span></a>'
+        actions.innerHTML = '<span class="muted">Alt er gratis nå — ingen abonnement nødvendig.</span>';
       }
     } catch (e) {
       badge.className = "badge none"; text.textContent = "Kunne ikke hente status";

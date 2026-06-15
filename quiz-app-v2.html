@@ -2327,18 +2327,10 @@
 
     showScreen('result');
 
-    // Abonnent-nudge i avslutningen: vis kun for ikke-abonnenter.
+    // GRATIS-PERIODE (15. juni 2026): betaling av → ikke vis abonnent-nudge.
+    // Hold den skjult (markup ligger i dvale, klar til paywall skrus på igjen).
     const subNudge = document.getElementById('result-sub-nudge');
-    if (subNudge) {
-      subNudge.classList.add('hidden');
-      if (window.CQAuth && typeof window.CQAuth.isPremium === 'function') {
-        Promise.resolve(window.CQAuth.isPremium())
-          .then(premium => { if (!premium) subNudge.classList.remove('hidden'); })
-          .catch(() => subNudge.classList.remove('hidden'));
-      } else {
-        subNudge.classList.remove('hidden');
-      }
-    }
+    if (subNudge) subNudge.classList.add('hidden');
 
     if (state.eventContext) { recordEventAttempt(correctCount, total); }
     else { maybeShowEmailGate(); }

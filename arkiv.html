@@ -889,9 +889,13 @@
   const PAGE_SIZE = 18;          // «Vis flere» slipper 18 om gangen
   let visibleCount = PAGE_SIZE;  // antall kuraterte kort som vises nå
   function resetPaging() { visibleCount = PAGE_SIZE; }
-  let premium = false;  // aktivt abonnement (via CQAuth.isPremium)
+  // GRATIS-PERIODE (15. juni 2026): betaling av → arkivet er HELT ÅPENT (alle
+  // spiller alt, ingen innlogging for å spille). Sett FREE_PERIOD=false for å
+  // skru paywall/låsing på igjen (sammen med REQUIRE_SUBSCRIPTION=true server-side).
+  const FREE_PERIOD = true;
+  let premium = FREE_PERIOD; // i gratis-perioden får alle full tilgang
   let loggedIn = false; // innlogget e-post-konto (via CQAuth.getUser)
-  let onlyFree = true;  // «Vis kun gratis»-toggle — default PÅ for ikke-betalende
+  let onlyFree = !FREE_PERIOD; // ingen «kun gratis»-filtrering når alt er gratis
   let userToggledFree = false; // har brukeren rørt toggelen selv?
 
   // Tre tilgangsnivåer per quiz:
@@ -1056,7 +1060,7 @@
       const onclick = !locked ? ''
         : (lockKind === 'login' ? `onclick="promptLogin()"` : `onclick="openLockModal('${safeTitle}')"`);
       // «Gratis»-merket vises på alle free-quizer (også når de krever innlogging).
-      const badge = tier === 'free'
+      const badge = (!FREE_PERIOD && tier === 'free')
         ? '<span class="free-badge">Gratis</span>'
         : (locked ? '<span class="lock-badge">Premium</span>' : '');
       const numLabel = q.num ? `№ ${q.num} · ${q.categoryLabel}` : (q.categoryLabel || '');
@@ -1408,9 +1412,16 @@
     render();
   })();
 
+  // GRATIS-PERIODE: skjul abonnements-UI (toggle + tease er meningsløse når alt
+  // er gratis). Reversibelt — fjernes når FREE_PERIOD=false.
+  if (FREE_PERIOD) {
+    document.querySelectorAll('.free-toggle-row, .subscribe-tease')
+      .forEach(el => { if (el) el.style.display = 'none'; });
+  }
+
   // Åpne betalingsmodal direkte når man kommer fra arkiv.html#abonnement
-  // (f.eks. fra generatoren eller Min side).
-  if (window.location.hash === '#abonnement') {
+  // (f.eks. fra generatoren eller Min side). Av i gratis-perioden.
+  if (!FREE_PERIOD && window.location.hash === '#abonnement') {
     setTimeout(openPayModal, 200);
   }
 
@@ -1418,12 +1429,12 @@
   // innloggingsstatus er avgjort; vi sjekker abonnement server-side og re-render.
   document.addEventListener('cq-auth', async () => {
     loggedIn = !!(window.CQAuth && window.CQAuth.getUser());
-    try { premium = !!(window.CQAuth && await window.CQAuth.isPremium()); }
-    catch (_) { premium = false; }
+    try { premium = FREE_PERIOD || !!(window.CQAuth && await window.CQAuth.isPremium()); }
+    catch (_) { premium = FREE_PERIOD; }
     // Toggle-default følger nivået, men bare til brukeren rører den selv.
     if (!userToggledFree) { onlyFree = !premium; syncFreeToggle(); }
     const tease = document.querySelector('.subscribe-tease');
-    if (tease) tease.style.display = premium ? 'none' : '';
+    if (tease) tease.style.display = (FREE_PERIOD || premium) ? 'none' : '';
     render();
   });
 </script>
