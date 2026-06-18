@@ -394,12 +394,13 @@
     border-radius: var(--r-card);
   }
   .makeown-art {
-    aspect-ratio: 1 / 1;
+    width: 132px;
+    height: 132px;
+    flex: none;
+    align-self: center;
     border-radius: var(--r-md);
     overflow: hidden;
     border: 0.5px solid var(--rule);
-    align-self: stretch;
-    min-height: 132px;
   }
   .makeown-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .makeown-eyebrow {
@@ -495,7 +496,7 @@
   .ex-pill:hover { border-color: var(--accent); background: #BBDBCE; }
   @media (max-width: 560px) {
     .makeown { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
-    .makeown-art { width: 84px; min-height: 0; }
+    .makeown-art { width: 96px; height: 96px; }
   }
 
   /* Note om at egne quizer lagres og blir offentlige */
