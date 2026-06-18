@@ -149,7 +149,7 @@ async function findByThemes(themes, difficulty) {
  * Lagre en nygenerert quiz i arkivet (source='user' når en bruker traff et nytt
  * tema). Idempotent på slug. Stille no-op uten service-nøkkel.
  */
-async function saveQuiz({ themes, difficulty, quiz, category, team, model, grounded, source = "user" }) {
+async function saveQuiz({ themes, difficulty, quiz, category, team, model, grounded, source = "user", createdBy = null }) {
   if (!canWrite()) return false;
   const client = db();
   if (!client) return false;
@@ -165,6 +165,7 @@ async function saveQuiz({ themes, difficulty, quiz, category, team, model, groun
     questions: quiz.questions,
     hero_img: heroForCategory(cat),
     source,
+    created_by: createdBy || null,  // hvem genererte (kun source='user'); null for nightly/seed
     model: model || null,
     grounded: !!grounded,
     review_status: "auto_ok",  // passerte begge moderingsporter → auto-publisert
