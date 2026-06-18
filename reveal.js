@@ -59,6 +59,13 @@
       var tag = el.tagName;
       if (tag === "SCRIPT" || tag === "STYLE" || tag === "LINK") continue;
       if (el.id === "cq-masthead" || el.classList.contains("masthead")) continue;
+      if (el.classList.contains("cq-no-reveal")) continue;
+      // Hopp over overlays/toasts/sticky-barer (position: fixed/sticky). De
+      // styrer sin egen synlighet — reveal-systemets cq-in ville ellers tvinge
+      // opacity:1/transform:none på dem (ga «tom mørk pille» / synlig sticky-bar).
+      var pos = "";
+      try { pos = getComputedStyle(el).position; } catch (e) {}
+      if (pos === "fixed" || pos === "sticky") continue;
       items.push(el);
     }
 
