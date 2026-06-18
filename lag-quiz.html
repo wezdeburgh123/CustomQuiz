@@ -518,10 +518,13 @@
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     border-top: 1px solid var(--rule-strong);
-    /* Skjult tilstand: glir ned OG fader/deaktiveres. opacity+pointer-events
-       garanterer at baren forsvinner selv om prosent-transformen skulle henge. */
+    /* Skjult tilstand. visibility er IKKE i transition-lista, så den slår inn
+       momentant ved klasse-bytte og skjuler baren garantert — selv om
+       transform/opacity-transitionene skulle henge på startverdien (observert
+       quirk på denne siden). pointer-events sikrer at den ikke kan klikkes. */
     transform: translateY(115%);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     transition: transform 280ms ease, opacity 240ms ease;
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -529,6 +532,7 @@
   .gen-bar.show {
     transform: translateY(0);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
   }
   .gen-bar-inner {
