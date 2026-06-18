@@ -384,8 +384,8 @@
   /* LAG DIN EGEN — primært inngangskort (flyttet over kategoriene, 18. juni 2026) */
   .makeown {
     display: grid;
-    grid-template-columns: 132px 1fr;
-    gap: 26px;
+    grid-template-columns: 172px 1fr;
+    gap: 28px;
     align-items: center;
     padding: 26px;
     margin-bottom: 34px;
@@ -395,8 +395,8 @@
   }
   .makeown-art {
     position: relative;
-    width: 132px;
-    height: 132px;
+    width: 172px;
+    height: 172px;
     flex: none;
     align-self: center;
     border-radius: var(--r-md);
@@ -505,11 +505,11 @@
   .ex-pill:hover { border-color: var(--accent); background: #BBDBCE; }
   @media (max-width: 560px) {
     .makeown { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
-    .makeown-art { width: 96px; height: 96px; }
+    .makeown-art { width: 132px; height: 132px; }
   }
 
   /* Sticky generer-bar (festet til bunnen av viewporten, kun på hjem-skjermen) */
-  #home { padding-bottom: 96px; }
+  #home { padding-bottom: 120px; }
   .gen-bar {
     position: fixed;
     left: 0; right: 0; bottom: 0;
@@ -526,9 +526,30 @@
   .gen-bar-inner {
     max-width: var(--container-max, var(--w-wide, 760px));
     margin: 0 auto;
-    padding: 13px 24px;
+    padding: 11px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
   }
-  .gen-bar .btn { margin: 0; width: 100%; }
+  .gen-controls {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+  }
+  .gen-ctrl { display: flex; align-items: center; gap: 10px; }
+  .gen-ctrl-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    white-space: nowrap;
+  }
+  .gen-bar .pill-row { gap: 6px; flex-wrap: nowrap; }
+  .gen-bar .pill { flex: 0 0 auto; min-width: 0; padding: 7px 13px; }
+  .gen-bar .btn { margin: 0; flex: 0 0 auto; padding: 12px 22px; }
   @media (prefers-reduced-motion: reduce) {
     .gen-bar { transition: none; }
   }
@@ -1293,6 +1314,10 @@
 
   @media (max-width: 560px) {
     .container { padding-bottom: 72px; }
+    #home { padding-bottom: 188px; }
+    .gen-bar-inner { flex-direction: column; align-items: stretch; gap: 10px; padding: 10px 16px; }
+    .gen-controls { justify-content: space-between; gap: 14px; }
+    .gen-bar .btn { width: 100%; justify-content: center; }
     .masthead { flex-direction: column; align-items: flex-start; gap: 8px; }
     .control-row { grid-template-columns: 1fr; gap: 20px; }
     .question-text { font-size: 22px; }
@@ -1415,25 +1440,6 @@
       </button>
     </div>
 
-    <div class="control-row">
-      <div>
-        <div class="section-label">Nivå</div>
-        <div class="pill-row" id="difficulty-row">
-          <button class="pill" data-difficulty="lett">Lett</button>
-          <button class="pill selected" data-difficulty="medium">Medium</button>
-          <button class="pill" data-difficulty="vanskelig">Vanskelig</button>
-        </div>
-      </div>
-      <div>
-        <div class="section-label">Antall spørsmål</div>
-        <div class="pill-row" id="count-row">
-          <button class="pill" data-count="5">5</button>
-          <button class="pill selected" data-count="10">10</button>
-          <button class="pill" data-count="15">15</button>
-        </div>
-      </div>
-    </div>
-
     <p class="generate-note">Quizer du lager lagres og blir synlige for alle i arkivet, under «Laget av fellesskapet». Vil du fjerne en senere? Trykk «Rapportér» på kortet i arkivet, så skjules den.</p>
   </section>
 
@@ -1442,6 +1448,24 @@
        så den er festet til viewporten. Vises kun mens hjem-skjermen er aktiv. -->
   <div class="gen-bar" id="gen-bar">
     <div class="gen-bar-inner">
+      <div class="gen-controls">
+        <div class="gen-ctrl">
+          <span class="gen-ctrl-label">Nivå</span>
+          <div class="pill-row" id="difficulty-row">
+            <button class="pill" data-difficulty="lett">Lett</button>
+            <button class="pill selected" data-difficulty="medium">Medium</button>
+            <button class="pill" data-difficulty="vanskelig">Vanskelig</button>
+          </div>
+        </div>
+        <div class="gen-ctrl">
+          <span class="gen-ctrl-label">Antall</span>
+          <div class="pill-row" id="count-row">
+            <button class="pill" data-count="5">5</button>
+            <button class="pill selected" data-count="10">10</button>
+            <button class="pill" data-count="15">15</button>
+          </div>
+        </div>
+      </div>
       <button class="btn" id="generate-btn" onclick="generateQuiz()">
         Generer quiz <span class="btn-arrow">→</span>
       </button>
