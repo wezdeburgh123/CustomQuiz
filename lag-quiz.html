@@ -518,11 +518,19 @@
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     border-top: 1px solid var(--rule-strong);
-    transform: translateY(110%);
-    transition: transform 280ms ease;
+    /* Skjult tilstand: glir ned OG fader/deaktiveres. opacity+pointer-events
+       garanterer at baren forsvinner selv om prosent-transformen skulle henge. */
+    transform: translateY(115%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 280ms ease, opacity 240ms ease;
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  .gen-bar.show { transform: translateY(0); }
+  .gen-bar.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
   .gen-bar-inner {
     max-width: var(--container-max, var(--w-wide, 760px));
     margin: 0 auto;
