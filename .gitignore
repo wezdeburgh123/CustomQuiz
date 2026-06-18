@@ -29,3 +29,12 @@ __pycache__/
 /quiz/
 
 .fuse_hidden*
+
+# Kladd, utkast og backup-filer — beholdes lokalt, men ute av repoet (ryddet 19.6.2026)
+*.bak
+*.bak-*
+quiz-library/*.bak-*
+AI-kompetanse-analyse — kjor per prosjekt.md
+VM-runde-utkast-2026-06-15.md
+VM-runde-utkast-gruppespill-1-15juni.md
+profil-seed-loop.md
