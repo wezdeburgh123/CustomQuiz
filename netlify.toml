@@ -11,7 +11,11 @@
   # aldri velte selve site-deployen. Den planlagte 04:30-synken står igjen som
   # sikkerhetsnett. NB: SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY må være
   # tilgjengelige for "Builds" (ikke bare "Functions") i Netlify-env.
-  command = "node scripts/sync-library.mjs || echo 'library-sync hoppet over (ikke-blokkerende)'"
+  # Etter synk: generer statiske, crawlbare /quiz/<slug>-sider + sitemap.xml fra
+  # quiz_library (SEO). Steget er ikke-blokkerende (`|| echo`) — en SEO-glipp skal
+  # aldri velte selve site-deployen. build-quiz-pages leser primært Supabase og
+  # faller tilbake til library.ndjson uten DB.
+  command = "node scripts/sync-library.mjs || echo 'library-sync hoppet over (ikke-blokkerende)'; node scripts/build-quiz-pages.mjs || echo 'build-quiz-pages hoppet over (ikke-blokkerende)'"
 
 # Funksjonene kjører på Node 18+ (global fetch tilgjengelig, ingen avhengigheter).
 [functions]
@@ -48,6 +52,19 @@
   for = "/*.webmanifest"
   [headers.values]
     Content-Type = "application/manifest+json"
+
+# Pene arkiv-URL-er: /arkiv og /arkiv/<kategori>/<lag>... serveres av arkiv.html.
+# status=200 = rewrite (adressen i nettleseren beholdes). arkiv.html leser selv
+# path-en og forhåndsfiltrerer. /arkiv.html fortsetter å virke som før.
+[[redirects]]
+  from = "/arkiv"
+  to = "/arkiv.html"
+  status = 200
+
+[[redirects]]
+  from = "/arkiv/*"
+  to = "/arkiv.html"
+  status = 200
 
 # Pene URL-er: /api/* -> funksjoner
 [[redirects]]

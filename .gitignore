@@ -24,4 +24,8 @@ scripts/_natt-input.json
 __pycache__/
 *.pyc
 
+# Build-artefakter: statiske quiz-sider genereres av scripts/build-quiz-pages.mjs
+# ved hver Netlify-deploy. Skal IKKE committes.
+/quiz/
+
 .fuse_hidden*
