@@ -394,6 +394,7 @@
     border-radius: var(--r-card);
   }
   .makeown-art {
+    position: relative;
     width: 132px;
     height: 132px;
     flex: none;
@@ -401,8 +402,16 @@
     border-radius: var(--r-md);
     overflow: hidden;
     border: 0.5px solid var(--rule);
+    background: var(--bg-deep);
   }
-  .makeown-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .makeown-art-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 900ms ease;
+  }
+  .makeown-art-layer.is-on { opacity: 1; }
+  .makeown-art-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .makeown-eyebrow {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -497,6 +506,31 @@
   @media (max-width: 560px) {
     .makeown { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
     .makeown-art { width: 96px; height: 96px; }
+  }
+
+  /* Sticky generer-bar (festet til bunnen av viewporten, kun på hjem-skjermen) */
+  #home { padding-bottom: 96px; }
+  .gen-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    background: rgba(245, 240, 230, 0.92);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--rule-strong);
+    transform: translateY(110%);
+    transition: transform 280ms ease;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .gen-bar.show { transform: translateY(0); }
+  .gen-bar-inner {
+    max-width: var(--container-max, var(--w-wide, 760px));
+    margin: 0 auto;
+    padding: 13px 24px;
+  }
+  .gen-bar .btn { margin: 0; width: 100%; }
+  @media (prefers-reduced-motion: reduce) {
+    .gen-bar { transition: none; }
   }
 
   /* Note om at egne quizer lagres og blir offentlige */
@@ -1300,8 +1334,9 @@
 
     <!-- LAG DIN EGEN — primær inngang, flyttet over kategoriene -->
     <div class="makeown">
-      <div class="makeown-art" data-spot="teal" aria-hidden="true">
-        <img src="IMG/kategori-custom.jpg" alt="">
+      <div class="makeown-art" id="makeown-art" aria-hidden="true">
+        <div class="makeown-art-layer is-on" data-spot="teal"><img src="IMG/kategori-custom.jpg" alt=""></div>
+        <div class="makeown-art-layer" data-spot="teal"><img src="" alt=""></div>
       </div>
       <div class="makeown-body">
         <span class="makeown-eyebrow">Lag din egen</span>
@@ -1399,11 +1434,19 @@
       </div>
     </div>
 
-    <button class="btn" id="generate-btn" onclick="generateQuiz()">
-      Generer quiz <span class="btn-arrow">→</span>
-    </button>
     <p class="generate-note">Quizer du lager lagres og blir synlige for alle i arkivet, under «Laget av fellesskapet». Vil du fjerne en senere? Trykk «Rapportér» på kortet i arkivet, så skjules den.</p>
   </section>
+
+  <!-- Sticky generer-handling — alltid innen rekkevidde, både for custom-feltet
+       og kategori-valg. Ligger UTENFOR .screen (som har en vedvarende transform)
+       så den er festet til viewporten. Vises kun mens hjem-skjermen er aktiv. -->
+  <div class="gen-bar" id="gen-bar">
+    <div class="gen-bar-inner">
+      <button class="btn" id="generate-btn" onclick="generateQuiz()">
+        Generer quiz <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </div>
 
   <!-- LOADING -->
   <section id="loading" class="screen">
@@ -1628,6 +1671,9 @@
     if (id !== 'loading') { try { QuizLoader.stop(); } catch (e) {} }
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    // Sticky generer-bar kun på hjem-skjermen
+    var bar = document.getElementById('gen-bar');
+    if (bar) bar.classList.toggle('show', id === 'home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function showHome() { showScreen('home'); renderStats(); }
@@ -1838,6 +1884,89 @@
     } else if (!input.value.trim()) {
       start();
     }
+  })();
+
+  /* --------------- BILDEMONTASJE I «LAG DIN EGEN»-KORTET --------------- */
+  // Krysstoner et tilfeldig quiz-card-bilde i toppen av kortet for å vise
+  // bredden: lokale kategori-illustrasjoner + ekte bruker-genererte covers
+  // (hentet fra /api/featured via coverUrlForSlug). Samme spot-fargetone som
+  // kortene i arkivet/forsiden, så uttrykket matcher. Står stille ved
+  // prefers-reduced-motion.
+  (function () {
+    var box = document.getElementById('makeown-art');
+    if (!box) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var layers = box.querySelectorAll('.makeown-art-layer');
+    if (layers.length < 2) return;
+
+    var CAT_SPOT = {
+      'norsk-historie': 'terracotta', 'naturvitenskap': 'cobalt', 'verdenshistorie': 'terracotta',
+      'geografi': 'moss', 'litteratur': 'plum', 'kunst': 'saffron', 'film': 'terracotta',
+      'musikk': 'saffron', 'sport': 'saffron', 'filosofi': 'plum', 'teknologi': 'cobalt',
+      'mix': 'teal', 'fotball': 'moss', 'custom': 'teal'
+    };
+
+    // Base: lokale kategori-illustrasjoner (alltid tilgjengelige)
+    var pool = [
+      ['kategori-norsk-historie', 'terracotta'], ['kategori-naturvitenskap', 'cobalt'],
+      ['kategori-verdenshistorie', 'terracotta'], ['kategori-geografi', 'moss'],
+      ['kategori-litteratur', 'plum'], ['kategori-kunst', 'saffron'],
+      ['kategori-film', 'terracotta'], ['kategori-musikk', 'saffron'],
+      ['kategori-sport', 'saffron'], ['kategori-filosofi', 'plum'],
+      ['kategori-teknologi', 'cobalt'], ['kategori-mix', 'teal']
+    ].map(function (p) { return { src: 'IMG/' + p[0] + '.jpg', spot: p[1] }; });
+
+    var seen = {}; pool.forEach(function (p) { seen[p.src] = 1; });
+    var cur = 0, idx = -1, timer = null;
+
+    function pick() {
+      if (pool.length < 2) return pool[0];
+      var n; do { n = Math.floor(Math.random() * pool.length); } while (n === idx);
+      idx = n; return pool[n];
+    }
+    function step() {
+      var item = pick();
+      var on = layers[cur], off = layers[1 - cur];
+      var img = off.querySelector('img');
+      var pre = new Image();
+      pre.onload = function () {
+        img.src = pre.src;
+        off.setAttribute('data-spot', item.spot);
+        off.classList.add('is-on');
+        on.classList.remove('is-on');
+        cur = 1 - cur;
+        timer = setTimeout(step, 2600);
+      };
+      pre.onerror = function () { timer = setTimeout(step, 200); };
+      pre.src = item.src;
+    }
+
+    // Start på de lokale bildene
+    timer = setTimeout(step, 1800);
+
+    // Berik med ekte bruker-covers. Probe URL-en før vi tar den inn i poolen,
+    // så vi aldri krysstoner inn et manglende/tomt cover.
+    try {
+      fetch('/api/featured', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data) return;
+          var items = [].concat(data.community || [], data.rotating || [], data.pinned || []);
+          items.slice(0, 18).forEach(function (q) {
+            if (!q || !q.slug) return;
+            var url = (typeof coverUrlForSlug === 'function') ? coverUrlForSlug(q.slug) : '';
+            if (!url || seen[url]) return;
+            var probe = new Image();
+            probe.onload = function () {
+              if (seen[url]) return;
+              seen[url] = 1;
+              pool.push({ src: url, spot: CAT_SPOT[q.category] || 'teal' });
+            };
+            probe.src = url;
+          });
+        })
+        .catch(function () {});
+    } catch (_) {}
   })();
 
   document.querySelectorAll('#difficulty-row .pill').forEach(pill => {
@@ -2920,6 +3049,12 @@
   renderStats();
   updateThemeCounter();
   loadLibraryQuizFromUrl();
+  // Vis sticky generer-bar dersom hjem-skjermen er aktiv ved innlasting
+  // (deep-link til en quiz lar showScreen styre synligheten videre).
+  (function () {
+    var b = document.getElementById('gen-bar'), h = document.getElementById('home');
+    if (b && h) b.classList.toggle('show', h.classList.contains('active'));
+  })();
 </script>
 
 <script src="supabase-config.js"></script>
