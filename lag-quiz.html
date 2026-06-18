@@ -249,6 +249,13 @@
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
   }
+  /* Stats som dempet footer nederst (flyttet ned for mer luft i toppen) */
+  .stats-row--footer {
+    margin-top: 36px;
+    margin-bottom: 0;
+    border-bottom: none;
+    opacity: 0.85;
+  }
   .stat { flex: 1; text-align: center; }
   .stat-num {
     font-family: var(--font-mono);
@@ -1354,21 +1361,6 @@
     <h1>Velg ditt <em>tema</em>.</h1>
     <p class="lede">Skreddersydde quizer på norsk, generert akkurat nå. Skriv ditt eget tema — fra norsk middelalderhistorie til kvantefysikk eller 80-tallets popkultur — eller velg blant forslagene.</p>
 
-    <div class="stats-row">
-      <div class="stat">
-        <div class="stat-num" id="stat-streak">0</div>
-        <div class="stat-label">Dager på rad</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-total">0</div>
-        <div class="stat-label">Tatt totalt</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-avg">—</div>
-        <div class="stat-label">Snittskår</div>
-      </div>
-    </div>
-
     <!-- LAG DIN EGEN — primær inngang, flyttet over kategoriene -->
     <div class="makeown">
       <div class="makeown-art" id="makeown-art" aria-hidden="true">
@@ -1453,6 +1445,22 @@
     </div>
 
     <p class="generate-note">Quizer du lager lagres og blir synlige for alle i arkivet, under «Laget av fellesskapet». Vil du fjerne en senere? Trykk «Rapportér» på kortet i arkivet, så skjules den.</p>
+
+    <!-- Din statistikk — flyttet ned (mer luft i toppen) -->
+    <div class="stats-row stats-row--footer">
+      <div class="stat">
+        <div class="stat-num" id="stat-streak">0</div>
+        <div class="stat-label">Dager på rad</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-total">0</div>
+        <div class="stat-label">Tatt totalt</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-avg">—</div>
+        <div class="stat-label">Snittskår</div>
+      </div>
+    </div>
   </section>
 
   <!-- Sticky generer-handling — alltid innen rekkevidde, både for custom-feltet
