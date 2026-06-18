@@ -75,7 +75,7 @@ function ogImageFor(q) {
 
 function pageHtml(q) {
   const slug = q.slug;
-  const playUrl = `/quiz-app-v2.html?lib=${encodeURIComponent(slug)}`;
+  const playUrl = `/lag-quiz.html?lib=${encodeURIComponent(slug)}`;
   const catLabel = q.category_label || CAT_LABEL[q.category] || "Allmennkunnskap";
   const diffLabel = DIFF_LABEL[q.difficulty] || "Middels";
   const n = q.questions.length;
@@ -220,7 +220,7 @@ ${fasitHtml}
   </details>
 
   <footer>
-    <p>Vil du ha flere? Spill <a href="/dagens.html">dagens quiz</a>, utforsk <a href="/arkiv.html">hele arkivet</a>, eller <a href="/quiz-app-v2.html">lag din egen quiz</a> på CustomQuiz — gratis quizer på norsk.</p>
+    <p>Vil du ha flere? Spill <a href="/dagens.html">dagens quiz</a>, utforsk <a href="/arkiv.html">hele arkivet</a>, eller <a href="/lag-quiz.html">lag din egen quiz</a> på CustomQuiz — gratis quizer på norsk.</p>
   </footer>
 </main>
 </body>
@@ -291,7 +291,7 @@ function writeSitemap(slugs) {
     { loc: `${SITE}/dagens.html`, freq: "daily", pri: "0.9" },
     { loc: `${SITE}/vm.html`, freq: "daily", pri: "0.9" },
     { loc: `${SITE}/arkiv.html`, freq: "daily", pri: "0.8" },
-    { loc: `${SITE}/quiz-app-v2.html`, freq: "weekly", pri: "0.6" },
+    { loc: `${SITE}/lag-quiz.html`, freq: "weekly", pri: "0.6" },
   ];
   const urls = core.map((u) =>
     `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`

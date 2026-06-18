@@ -399,7 +399,7 @@
         : st==='done' ? '<div class="quiz-result">'+att.score+' / '+att.total+' riktige</div>'
         : '<div class="quiz-locked-note">'+(q.unlock_at?('Åpner '+new Date(q.unlock_at).toLocaleDateString('nb-NO',{day:'numeric',month:'long'})):'Åpner senere i mesterskapet')+'</div>';
       var tag = st==='open' ? 'a' : 'div';
-      var href = st==='open' ? ' href="quiz-app-v2.html?event='+EVENT_ID+'&quiz='+encodeURIComponent(q.slug)+'"' : '';
+      var href = st==='open' ? ' href="lag-quiz.html?event='+EVENT_ID+'&quiz='+encodeURIComponent(q.slug)+'"' : '';
       html += '<'+tag+' class="quiz-card '+st+'"'+href+'>'+
         '<div class="quiz-image"><img src="IMG/'+esc(q.hero_img||('vm-'+q.slug))+'.jpg" alt="" loading="lazy">'+badge+'</div>'+
         '<div class="quiz-body">'+

@@ -915,7 +915,7 @@
   const QUIZZES = [
     // De 6 opprinnelige «ekte» quizene ligger nå i quizzes-data.json (mix-10/11,
     // geografi-08/09, vitenskap-08, musikk-15) og lastes via bootstrapArchive
-    // nedenfor — spilles gjennom quiz-app-v2.html som resten av arkivet.
+    // nedenfor — spilles gjennom lag-quiz.html som resten av arkivet.
 
     // — PLASSHOLDERE (Premium) —
     { num: "07", title: "Romerrikets <em>fall</em>", category: "verdenshistorie", categoryLabel: "Verdenshistorie", img: "kategori-verdenshistorie", sub: "Diocletian, Konstantin, splittelsen og det som kom etter.", rating: 4.8, plays: 2103, date: "2026-05-23", url: null, locked: true },
@@ -1589,7 +1589,7 @@
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: q.date || '2026-05-28',
-            url: 'quiz-app-v2.html?quiz=' + encodeURIComponent(q.id),
+            url: 'lag-quiz.html?quiz=' + encodeURIComponent(q.id),
             free: !!q.free,      // gratis-biblioteket (free:true i quizzes-data.json)
             locked: !q.free,     // alt annet er premium-gated
             source: 'curated',   // statisk gratis-bibliotek = kuratert
@@ -1618,7 +1618,7 @@
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: (q.created_at || '').slice(0, 10) || '2026-06-01',
-            url: 'quiz-app-v2.html?lib=' + encodeURIComponent(q.slug),
+            url: 'lag-quiz.html?lib=' + encodeURIComponent(q.slug),
             // Fellesskaps-quizer (source='user') er åpne for alle — aldri premium-
             // gatet og aldri skjult av «kun gratis». Driver organisk vekst (BASEN-spec).
             free: q.source === 'user' ? false : !!q.free,

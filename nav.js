@@ -31,7 +31,7 @@
       '<span class="masthead-sep">·</span>' +
       '<a href="dagens.html" class="masthead-link' + active("dagens.html") + '">Daglig quiz</a>' +
       '<span class="masthead-sep">·</span>' +
-      '<a href="quiz-app-v2.html" class="masthead-link' + active("quiz-app-v2.html") + '">Generator</a>' +
+      '<a href="lag-quiz.html" class="masthead-link' + active("lag-quiz.html") + '">Generator</a>' +
     "</nav>";
 
   if (document.getElementById("cq-nav-style")) return;

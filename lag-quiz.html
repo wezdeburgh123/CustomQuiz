@@ -381,6 +381,123 @@
   }
   .custom-input::placeholder { color: var(--ink-mute); font-style: italic; opacity: 0.7; }
 
+  /* LAG DIN EGEN — primært inngangskort (flyttet over kategoriene, 18. juni 2026) */
+  .makeown {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    gap: 26px;
+    align-items: center;
+    padding: 26px;
+    margin-bottom: 34px;
+    background: var(--bg-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-card);
+  }
+  .makeown-art {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 0.5px solid var(--rule);
+    align-self: stretch;
+    min-height: 132px;
+  }
+  .makeown-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .makeown-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 9px;
+  }
+  .makeown-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(26px, 3.6vw, 34px);
+    line-height: 1.0;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 10px;
+    font-variation-settings: "opsz" 144;
+  }
+  .makeown-title em { font-style: italic; color: var(--accent); }
+  .makeown-sub {
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    max-width: 470px;
+    margin-bottom: 18px;
+  }
+  .makeown-field { margin-bottom: 14px; }
+  .makeown-input-wrap { position: relative; }
+  .makeown .custom-input {
+    font-size: 20px;
+    padding: 18px 24px;
+    border-width: 1px;
+    border-color: var(--rule-strong);
+    background: var(--bg);
+  }
+  .makeown .custom-input:focus { border-color: var(--accent); background: var(--bg-soft); }
+  .makeown-ghost {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    pointer-events: none;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink-mute);
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .makeown-ghost.hidden { display: none; }
+  .ghost-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    margin-left: 3px;
+    background: var(--accent);
+    transform: translateY(3px);
+    animation: ghostBlink 1s steps(1) infinite;
+  }
+  @keyframes ghostBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  .makeown-examples {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .makeown-ex-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-right: 2px;
+  }
+  .ex-pill {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-deep);
+    background: var(--accent-soft);
+    border: 1px solid transparent;
+    border-radius: var(--r-pill);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease;
+  }
+  .ex-pill:hover { border-color: var(--accent); background: #BBDBCE; }
+  @media (max-width: 560px) {
+    .makeown { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+    .makeown-art { width: 84px; min-height: 0; }
+  }
+
   /* Note om at egne quizer lagres og blir offentlige */
   .generate-note {
     margin: 14px 0 0;
@@ -1163,7 +1280,7 @@
   <section id="home" class="screen active">
     <div class="eyebrow">Daglig quiz · drevet av AI</div>
     <h1>Velg ditt <em>tema</em>.</h1>
-    <p class="lede">Skreddersydde quizer på norsk, generert akkurat nå. Velg fra forslagene, eller skriv ditt eget tema — fra norsk middelalderhistorie til kvantefysikk eller 80-tallets popkultur.</p>
+    <p class="lede">Skreddersydde quizer på norsk, generert akkurat nå. Skriv ditt eget tema — fra norsk middelalderhistorie til kvantefysikk eller 80-tallets popkultur — eller velg blant forslagene.</p>
 
     <div class="stats-row">
       <div class="stat">
@@ -1180,8 +1297,35 @@
       </div>
     </div>
 
+    <!-- LAG DIN EGEN — primær inngang, flyttet over kategoriene -->
+    <div class="makeown">
+      <div class="makeown-art" data-spot="teal" aria-hidden="true">
+        <img src="IMG/kategori-custom.jpg" alt="">
+      </div>
+      <div class="makeown-body">
+        <span class="makeown-eyebrow">Lag din egen</span>
+        <h2 class="makeown-title">Quiz om <em>hva som helst</em>.</h2>
+        <p class="makeown-sub">Din lille sære interesse, et lokalt fenomen, eller to tema kombinert — skriv det inn, så bygger AI-en quizen på sekunder.</p>
+
+        <div class="makeown-field">
+          <div class="makeown-input-wrap">
+            <input type="text" id="custom-theme" class="custom-input" autocomplete="off" placeholder="" aria-label="Skriv ditt eget quiz-tema">
+            <div class="makeown-ghost" id="makeown-ghost" aria-hidden="true"><span id="ghost-text"></span><span class="ghost-caret"></span></div>
+          </div>
+        </div>
+
+        <div class="makeown-examples">
+          <span class="makeown-ex-label">Prøv</span>
+          <button type="button" class="ex-pill" data-ex="Romerrikets fall">Romerrikets fall</button>
+          <button type="button" class="ex-pill" data-ex="Motorsykkelens historie">Motorsykkelens historie</button>
+          <button type="button" class="ex-pill" data-ex="Norsk svartmetall + 90-tallet">Svartmetall + 90-tallet</button>
+          <button type="button" class="ex-pill" data-ex="Lokalhistorien til hjembyen min">Hjembyen min</button>
+        </div>
+      </div>
+    </div>
+
     <div class="section-label-row">
-      <span class="section-label">Foreslåtte tema</span>
+      <span class="section-label">Eller velg et ferdig tema</span>
       <span class="section-hint" id="theme-hint">Velg ett — eller inntil 3. <span class="count" id="theme-count">0/3</span></span>
     </div>
     <div class="chip-grid" id="chip-grid">
@@ -1233,14 +1377,6 @@
         <div class="chip-image" data-spot="teal"><img src="IMG/kategori-mix.jpg" alt=""></div>
         <span class="chip-label">Mix</span>
       </button>
-    </div>
-
-    <div class="section-label">Eller skriv ditt eget</div>
-    <div class="custom-row">
-      <div class="custom-illustration" data-spot="teal">
-        <img src="IMG/kategori-custom.jpg" alt="">
-      </div>
-      <input type="text" id="custom-theme" class="custom-input" placeholder="F.eks. Romerrikets fall, motorsykkelens historie, eller japansk matkultur">
     </div>
 
     <div class="control-row">
@@ -1637,6 +1773,72 @@
     state.customTheme = newVal;
     updateThemeCounter();
   });
+
+  /* --------------- TYPEWRITER-GHOST + EKSEMPEL-PILLER --------------- */
+  // Animerer en spøkelses-tekst oppå inputfeltet for å vise at man kan skrive
+  // HVA SOM HELST — inkl. å kombinere to tema («X + Y»). Rører aldri .value,
+  // så den eksisterende input-listeneren over påvirkes ikke. Pauses ved fokus
+  // eller når feltet har innhold.
+  (function () {
+    var input = document.getElementById('custom-theme');
+    var ghost = document.getElementById('makeown-ghost');
+    var txt   = document.getElementById('ghost-text');
+    if (!input || !ghost || !txt) return;
+
+    var phrases = [
+      'Romerrikets fall',
+      'Romerrikets fall + romersk mat',
+      'Motorsykkelens historie',
+      'Norsk svartmetall + 90-tallet',
+      'Geologien i fjellet bak hytta',
+      'The Beatles + norsk 60-tallspop',
+      'Japansk matkultur',
+      'Den lille sære interessen din'
+    ];
+    var pi = 0, ci = 0, deleting = false, timer = null, paused = false;
+
+    function tick() {
+      if (paused) return;
+      var full = phrases[pi];
+      if (!deleting) {
+        ci++;
+        txt.textContent = full.slice(0, ci);
+        if (ci >= full.length) { deleting = true; timer = setTimeout(tick, 1600); return; }
+        timer = setTimeout(tick, 52 + Math.random() * 46);
+      } else {
+        ci--;
+        txt.textContent = full.slice(0, ci);
+        if (ci <= 0) { deleting = false; pi = (pi + 1) % phrases.length; timer = setTimeout(tick, 380); return; }
+        timer = setTimeout(tick, 26);
+      }
+    }
+    function start() { if (paused) return; clearTimeout(timer); ghost.classList.remove('hidden'); tick(); }
+    function stop()  { clearTimeout(timer); ghost.classList.add('hidden'); }
+
+    input.addEventListener('focus', stop);
+    input.addEventListener('blur', function () {
+      if (!input.value.trim()) { paused = false; ci = 0; deleting = false; start(); }
+    });
+    input.addEventListener('input', function () {
+      if (input.value.trim()) { paused = true; stop(); }
+    });
+
+    document.querySelectorAll('.ex-pill').forEach(function (b) {
+      b.addEventListener('click', function () {
+        paused = true; stop();
+        input.value = b.dataset.ex || b.textContent.trim();
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.focus();
+      });
+    });
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      txt.textContent = phrases[0];
+    } else if (!input.value.trim()) {
+      start();
+    }
+  })();
+
   document.querySelectorAll('#difficulty-row .pill').forEach(pill => {
     pill.addEventListener('click', () => {
       document.querySelectorAll('#difficulty-row .pill').forEach(p => p.classList.remove('selected'));
@@ -2343,7 +2545,7 @@
     // Dyplenke til nøyaktig samme quiz + min skår, så vennen kan prøve å slå den.
     let link = 'customquiz.no';
     if (state.currentSlug) {
-      link = 'https://customquiz.no/quiz-app-v2.html?lib=' + encodeURIComponent(state.currentSlug) + '&utfordring=' + score;
+      link = 'https://customquiz.no/lag-quiz.html?lib=' + encodeURIComponent(state.currentSlug) + '&utfordring=' + score;
     }
     const text = `CustomQuiz · ${score}/${total}\n${grid}\n${link}`;
     navigator.clipboard.writeText(text).then(() => {
