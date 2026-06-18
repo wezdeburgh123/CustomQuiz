@@ -39,8 +39,10 @@ CATEGORIES = {
 DIFFICULTIES = ["lett", "medium", "vanskelig"]
 
 # Hvor mange underemner per kategori som tas med i køen.
-# 3 × 12 kategorier × 3 nivå = 108 emner (≈100). Sett None for ALLE (~1008).
-SUBTOPICS_PER_CATEGORY = 3
+# 6 × 12 kategorier × 3 nivå = 216 emner. Doblet fra 3 (18. juni 2026) for å
+# rette opp tynne generelle kategorier (hver gikk fra 9 → 18 quizer). Sett None
+# for ALLE (~1008).
+SUBTOPICS_PER_CATEGORY = 6
 
 # ── Underemner per kategori (norsk bokmål). ~28 hver → x3 nivå ≈ 1000 ──
 SUBTOPICS = {
@@ -261,6 +263,26 @@ CLUB_DEEP_DIVE = {
     ],
 }
 
+# ── VM 2026-bølge (lagt til 18. juni 2026) ──
+# Mesterskapet pågår (11. juni–19. juli 2026). Disse er EVERGREEN, trygge å
+# grunne (vertsnasjoner, format, historie, rekorder) — IKKE ferske live-resultater.
+# Volatile kamp-fakta (hvem vant, stillinger) holdes i pre-game-modulen (vm.html),
+# ikke i arkivet. Generelle fotball-emner → ingen team (havner under «Alle lag»).
+# Priority 2: rett bak de allerede genererte klubb-dypdykkene, så de tas FØRST i
+# den gjenstående køen mens VM ruller.
+WORLD_CUP_2026 = {
+    "fotball": [
+        ("Fotball-VM 2026 — vertsnasjoner og vertsbyer", "lett"),
+        ("Fotball-VM 2026 — det nye 48-lags-formatet", "medium"),
+        ("Fotball-VM 2026 — arenaer og finalen", "medium"),
+        ("Fotball-VM — alle verdensmesterne fra 1930", "lett"),
+        ("Fotball-VM — legendariske spillere gjennom tidene", "medium"),
+        ("Fotball-VM — minneverdige finaler", "vanskelig"),
+        ("Fotball-VM — rekorder og kuriosa", "vanskelig"),
+        ("Norge i fotball-VM gjennom historien", "medium"),
+    ],
+}
+
 # ── Klubblag-tagg (team) for fotball-kategorien ──
 # Kanonisk visningsnavn per klubb = det arkivets lag-underfilter viser som chip.
 # Et emne tagges med team hvis temateksten starter med ett av prefiksene under.
@@ -357,6 +379,27 @@ def build():
                 "difficulty": diff,
                 "count": 10,
                 "priority": 1,  # foran alt annet i køen
+            }
+            team = team_of(theme) if cat == "fotball" else None
+            if team:
+                row["team"] = team
+            rows.append(row)
+    # VM 2026-bølge: prioritet 2 (rett bak klubb-dypdykkene som alt er generert).
+    for cat, angles in WORLD_CUP_2026.items():
+        label = CATEGORIES[cat]
+        for theme, diff in angles:
+            slug = make_slug([theme], diff)
+            if slug in seen:
+                continue
+            seen.add(slug)
+            row = {
+                "slug": slug,
+                "themes": [theme],
+                "category": cat,
+                "category_label": label,
+                "difficulty": diff,
+                "count": 10,
+                "priority": 2,
             }
             team = team_of(theme) if cat == "fotball" else None
             if team:
