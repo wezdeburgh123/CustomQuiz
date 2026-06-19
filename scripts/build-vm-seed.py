@@ -210,7 +210,7 @@ QUIZZES = [
   ]
  },
  {
-  "slug":"apningskamp","num":"06","phase":"Åpning","status":"locked","sort":6,
+  "slug":"apningskamp","num":"06","phase":"Åpning","status":"open","sort":6,
   "hero_img":"vm-gruppespill-1",
   "title":"Åpningskampen — VM er i gang",
   "sub":"Storyline, arena og gruppe A før Mexico–Sør-Afrika.",
@@ -249,7 +249,7 @@ QUIZZES = [
   ]
  },
  {
-  "slug":"pregame-irak-norge","num":"07","phase":"Pre-game","status":"locked","sort":7,
+  "slug":"pregame-irak-norge","num":"07","phase":"Pre-game","status":"open","sort":7,
   "hero_img":"vm-gruppespill-1",
   "title":"Før kampen: Irak–Norge",
   "sub":"Norges VM-comeback møter Mesopotamias løver — ta den før avspark.",
@@ -288,7 +288,7 @@ QUIZZES = [
   ]
  },
  {
-  "slug":"gruppespill-1","num":"08","phase":"Gruppespill","status":"locked","sort":8,
+  "slug":"gruppespill-1","num":"08","phase":"Gruppespill","status":"open","sort":8,
   "hero_img":"vm-gruppespill-1",
   "title":"Gruppespill — omgang 1",
   "sub":"Det som faktisk skjedde i åpningsrunden.",
@@ -324,6 +324,45 @@ QUIZZES = [
    Q("Arena","På hvilket legendariske stadion ble VM 2026 sparket i gang med Mexico–Sør-Afrika?",
      ["Estadio Azteca","Estadio BBVA","MetLife Stadium","SoFi Stadium"],0,
      "Azteca i Mexico by er nå vert for sitt tredje VM (1970, 1986, 2026)."),
+  ]
+ },
+ {
+  "slug":"gruppespill-2","num":"09","phase":"Gruppespill omgang 2","status":"locked","sort":9,
+  "hero_img":"vm-gruppespill-1",
+  "title":"Runde 2 — VM tar form",
+  "sub":"Norge braker løs, Messi- og Mbappé-rekorder og Canadas målfest — kampene 15.–18. juni.",
+  "difficulty":"middels",
+  "questions":[
+   Q("Norge","Norge åpnet VM med solid seier 16. juni. Hva ble resultatet mot Irak?",
+     ["4–1","2–1","1–0","3–3"],0,
+     "Norge vant 4–1 i sin første VM-kamp på 28 år og toppet gruppe I på målforskjell foran Frankrike."),
+   Q("Haaland","Erling Haaland scoret sine aller første VM-mål mot Irak. Hvor mange ble det?",
+     ["To","Ett","Tre","Null"],0,
+     "Haaland scoret to mål (29. og 43. minutt) på sin VM-debut da Norge slo Irak 4–1."),
+   Q("Messi-rekord","Argentina slo Algerie 3–0. Hva gjorde Lionel Messi i kampen?",
+     ["Scoret hat-trick og tangerte Kloses VM-målrekord","Scoret ett mål fra straffe","Stod over kampen med skade","Ble utvist"],0,
+     "Messi scoret tre og tangerte Miroslav Kloses rekord på 16 VM-mål — hans første hat-trick i et VM, på sin 200. landskamp."),
+   Q("Mbappé","Frankrike vant 3–1 over Senegal. Hva ble Kylian Mbappé etter sine to mål?",
+     ["Frankrikes mestscorende landslagsspiller gjennom tidene","Utvist i sluttminuttene","Byttet ut i pausen","Toppscorer i hele VM-historien"],0,
+     "Mbappés dobbel sendte ham forbi alle andre på Frankrikes evige scoringsliste."),
+   Q("Skrell","Hvilket lag holdt storfavoritten Spania til 0–0 i åpningskampen?",
+     ["Kapp Verde","Marokko","Panama","Haiti"],0,
+     "VM-debutant Kapp Verde tok et sensasjonelt poeng mot Spania, med målvakt Vozinha som den store helten."),
+   Q("England","England slo Kroatia 4–2. Hvem scoret to av målene?",
+     ["Harry Kane","Jude Bellingham","Marcus Rashford","Bukayo Saka"],0,
+     "Kane scoret to, mens Bellingham og Rashford scoret ett hver i en målrik åpningskamp."),
+   Q("Målfest","Vertsnasjonen Canada knuste Qatar i sin andre kamp. Hva ble resultatet?",
+     ["6–0","2–0","3–1","1–0"],0,
+     "Canada vant 6–0 med hat-trick av Jonathan David — tidenes største VM-seier for et CONCACAF-lag."),
+   Q("Først videre","Hvilket vertsland ble det aller første laget som sikret avansement, etter 1–0 mot Sør-Korea?",
+     ["Mexico","USA","Canada","Brasil"],0,
+     "Mexico slo Sør-Korea 1–0 og ble første lag klar for sluttspillet i VM 2026."),
+   Q("Debutant","Colombia vant 3–1 i sin åpningskamp. Mot hvilken VM-debutant?",
+     ["Usbekistan","Curaçao","Kapp Verde","Jordan"],0,
+     "Colombia slo VM-debutant Usbekistan 3–1 i gruppe K."),
+   Q("Uavgjort","Cristiano Ronaldos Portugal måtte nøye seg med uavgjort i åpningskampen. Mot hvem?",
+     ["DR Kongo","Usbekistan","Marokko","Panama"],0,
+     "Portugal og DR Kongo spilte 1–1 i gruppe K."),
   ]
  },
 ]
