@@ -28,6 +28,7 @@ const SPOT = {
   terracotta: "#B05238",
   plum:       "#6B3050",
   saffron:    "#C68A2E",
+  oker:       "#9A5B26",
 };
 
 // Kategori → spot-fargenavn. MÅ matche CATEGORY_TO_SPOT i arkiv.html.
@@ -48,6 +49,7 @@ const CATEGORY_TO_SPOT = {
   kunst: "saffron",
   musikk: "saffron",
   fotball: "saffron",
+  dyr: "oker",
 };
 
 function spotHexFor(category) {

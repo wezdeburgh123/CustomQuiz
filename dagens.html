@@ -33,7 +33,7 @@
     --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
     /* Spot-color-system for kategori-illustrasjoner (likt arkiv/index) */
     --spot-teal:#0A6E5A; --spot-moss:#5C7A3C; --spot-cobalt:#2C4A8F;
-    --spot-terracotta:#B05238; --spot-plum:#6B3050; --spot-saffron:#C68A2E;
+    --spot-terracotta:#B05238; --spot-plum:#6B3050; --spot-saffron:#C68A2E; --spot-oker:#9A5B26;
     --success:#2D7A4C; --success-soft:#DDE9D7; --danger:#A82E1F; --danger-soft:#F3D9D2;
     --r-pill:999px; --r-card:16px; --r-md:8px;
     --font-display:'Fraunces',Georgia,serif;
@@ -57,7 +57,7 @@
   [data-spot] > img { position:relative; z-index:2; mix-blend-mode:multiply; }
   [data-spot="teal"]{--spot:var(--spot-teal);} [data-spot="moss"]{--spot:var(--spot-moss);}
   [data-spot="cobalt"]{--spot:var(--spot-cobalt);} [data-spot="terracotta"]{--spot:var(--spot-terracotta);}
-  [data-spot="plum"]{--spot:var(--spot-plum);} [data-spot="saffron"]{--spot:var(--spot-saffron);}
+  [data-spot="plum"]{--spot:var(--spot-plum);} [data-spot="saffron"]{--spot:var(--spot-saffron);} [data-spot="oker"]{--spot:var(--spot-oker);}
 
   /* Hero-banner på start-skjermen */
   .hero-banner { aspect-ratio:16/9; border-radius:var(--r-card); overflow:hidden;
@@ -80,7 +80,7 @@
   .chip.active { border-color:var(--spot,var(--accent)); background:var(--bg); box-shadow:inset 0 0 0 1px var(--spot,var(--accent)); }
   .chip[data-spot="teal"]{--spot:var(--spot-teal);} .chip[data-spot="moss"]{--spot:var(--spot-moss);}
   .chip[data-spot="cobalt"]{--spot:var(--spot-cobalt);} .chip[data-spot="terracotta"]{--spot:var(--spot-terracotta);}
-  .chip[data-spot="plum"]{--spot:var(--spot-plum);} .chip[data-spot="saffron"]{--spot:var(--spot-saffron);}
+  .chip[data-spot="plum"]{--spot:var(--spot-plum);} .chip[data-spot="saffron"]{--spot:var(--spot-saffron);} .chip[data-spot="oker"]{--spot:var(--spot-oker);}
   .chip-more { background:transparent; border-style:dashed; color:var(--ink-mute); }
   .chip-more:hover { color:var(--accent); border-color:var(--accent); }
   /* «Fast tema»-rad under chipsene (innlogget) */
@@ -310,7 +310,7 @@
   var CATEGORY_SPOT = {
     mix:"teal", historie:"terracotta", verdenshistorie:"terracotta", vitenskap:"moss",
     geografi:"cobalt", litteratur:"plum", kunst:"terracotta", film:"saffron",
-    musikk:"plum", sport:"cobalt", fotball:"moss", filosofi:"plum", teknologi:"cobalt"
+    musikk:"plum", sport:"cobalt", fotball:"moss", filosofi:"plum", teknologi:"cobalt", dyr:"oker"
   };
   function spotForCategory(cat){ return CATEGORY_SPOT[cat] || "teal"; }
 

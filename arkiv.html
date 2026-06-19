@@ -51,6 +51,7 @@
     --spot-terracotta:  #B05238;
     --spot-plum:        #6B3050;
     --spot-saffron:     #C68A2E;
+    --spot-oker:        #9A5B26;   /* Dyr (barneserie) */
     --r-pill:       999px;
     --r-card:       16px;
     --r-md:         8px;
@@ -82,6 +83,7 @@
   [data-spot="terracotta"] { --spot: var(--spot-terracotta); }
   [data-spot="plum"]       { --spot: var(--spot-plum); }
   [data-spot="saffron"]    { --spot: var(--spot-saffron); }
+  [data-spot="oker"]       { --spot: var(--spot-oker); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     background: var(--bg);
@@ -827,6 +829,7 @@
     <button class="filter-chip" data-filter="fotball">Fotball</button>
     <button class="filter-chip" data-filter="filosofi">Filosofi</button>
     <button class="filter-chip" data-filter="teknologi">Teknologi</button>
+    <button class="filter-chip" data-filter="dyr">Dyr</button>
   </div>
 
   <!-- Lag-underfilter: vises kun når Fotball er valgt. Bygges dynamisk fra
@@ -989,7 +992,8 @@
     musikk:          'saffron',
     kunst:           'saffron',
     sport:           'saffron',
-    fotball:         'moss'
+    fotball:         'moss',
+    dyr:             'oker'
   };
 
   // Klubblag → crest-bilde (IMG/crest-*.jpg). Crestene har lagets egen
@@ -1075,7 +1079,8 @@
     mix: 'Blandet', historie: 'Norsk historie',
     verdenshistorie: 'Verdenshistorie', vitenskap: 'Naturvitenskap', geografi: 'Geografi',
     litteratur: 'Litteratur', kunst: 'Kunst', film: 'Film og TV', musikk: 'Musikk',
-    sport: 'Sport', fotball: 'Fotball', filosofi: 'Filosofi', teknologi: 'Teknologi'
+    sport: 'Sport', fotball: 'Fotball', filosofi: 'Filosofi', teknologi: 'Teknologi',
+    dyr: 'Dyr'
   };
   // Kjente kategori-slugger (brukes til å skille kategori fra lag i path-en).
   const KNOWN_CATS = new Set(Object.keys(FILTER_LABELS));
@@ -1562,7 +1567,8 @@
     mix: 'kategori-mix', historie: 'kategori-norsk-historie', verdenshistorie: 'kategori-verdenshistorie',
     vitenskap: 'kategori-naturvitenskap', geografi: 'kategori-geografi', litteratur: 'kategori-litteratur',
     kunst: 'kategori-kunst', film: 'kategori-film', musikk: 'kategori-musikk', sport: 'kategori-sport',
-    fotball: 'kategori-sport', filosofi: 'kategori-filosofi', teknologi: 'kategori-teknologi'
+    fotball: 'kategori-sport', filosofi: 'kategori-filosofi', teknologi: 'kategori-teknologi',
+    dyr: 'kategori-mix'
   };
 
   // Last inn biblioteket, slå sammen med de ekte quizene, og render.
