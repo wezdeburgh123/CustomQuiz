@@ -33,6 +33,7 @@ const CATEGORY_TO_IMG = {
   fotball: "kategori-sport",
   filosofi: "kategori-filosofi",
   teknologi: "kategori-teknologi",
+  dyr: "kategori-mix",
 };
 const VALID_CATEGORIES = Object.keys(CATEGORY_TO_IMG);
 

@@ -36,6 +36,7 @@ const CATEGORY_TO_IMG = {
   vitenskap: "kategori-naturvitenskap", geografi: "kategori-geografi", litteratur: "kategori-litteratur",
   kunst: "kategori-kunst", film: "kategori-film", musikk: "kategori-musikk", sport: "kategori-sport",
   fotball: "kategori-sport", filosofi: "kategori-filosofi", teknologi: "kategori-teknologi",
+  dyr: "kategori-mix",
 };
 const VALID = Object.keys(CATEGORY_TO_IMG);
 

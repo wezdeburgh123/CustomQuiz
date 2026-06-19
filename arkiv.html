@@ -1245,7 +1245,7 @@
          href="${locked ? 'javascript:void(0)' : q.url}"
          ${onclick}>
         <div class="quiz-image${crest ? ' is-crest' : ''}"${spotAttr}>
-          <img src="${/^https?:\/\//.test(imgSlug) ? imgSlug : `IMG/${imgSlug}.jpg`}" alt="" loading="lazy"${imgClass}>
+          <img src="${/^https?:\/\//.test(imgSlug) ? imgSlug : `IMG/${imgSlug}.jpg`}" alt="" loading="lazy"${imgClass} onerror="this.onerror=null;this.src='IMG/${CATEGORY_TO_IMG[q.category] || 'kategori-mix'}.jpg'">
           ${badge}
         </div>
         <div class="quiz-body">
@@ -1619,7 +1619,7 @@
             category: q.category || 'mix',
             categoryLabel: q.category_label || '',
             team: q.team || '',
-            img: q.hero_img || CATEGORY_TO_IMG[q.category] || 'kategori-mix',
+            img: q.hero_img || (q.category === 'dyr' ? q.slug : null) || CATEGORY_TO_IMG[q.category] || 'kategori-mix',
             sub: q.lede || '',
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
             plays: typeof q.plays === 'number' ? q.plays : 0,
