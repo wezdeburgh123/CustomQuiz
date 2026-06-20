@@ -1197,6 +1197,139 @@
           "explanation": "Portugal og DR Kongo spilte 1–1 i gruppe K."
         }
       ]
+    },
+    {
+      "slug": "gruppespill-2b",
+      "num": "10",
+      "phase": "Gruppespill omgang 2",
+      "status": "locked",
+      "sort": 10,
+      "hero_img": "vm-gruppespill-1",
+      "title": "Runde 2 — flere svar faller",
+      "sub": "USA, Marokko, Brasil og Paraguay tar grep — omgang 2-kampene 18.–20. juni.",
+      "difficulty": "middels",
+      "questions": [
+        {
+          "category": "Resultat",
+          "q": "Hva ble resultatet da USA møtte Australia i Seattle 19. juni?",
+          "options": [
+            "2–0 til USA",
+            "3–1 til USA",
+            "2–2",
+            "1–0 til USA"
+          ],
+          "correct": 0,
+          "explanation": "USA vant 2–0 på Lumen Field; et selvmål og en heading avgjorde, og Christian Pulisic sto over med leggskade."
+        },
+        {
+          "category": "Kuriosa",
+          "q": "Hvordan kom USAs første mål mot Australia i stand?",
+          "options": [
+            "Frispark direkte i mål",
+            "Langskudd av Weston McKennie",
+            "Straffemål av Folarin Balogun",
+            "Selvmål av Cameron Burgess"
+          ],
+          "correct": 3,
+          "explanation": "Et innlegg fra Balogun ble styrt i eget nett av Cameron Burgess i det 11. minutt; Alex Freeman stanget inn 2–0 før pause."
+        },
+        {
+          "category": "Drama",
+          "q": "Marokko slo Skottland 1–0. Når falt det avgjørende målet?",
+          "options": [
+            "Fra straffe i andre omgang",
+            "I det 89. minutt",
+            "Etter drøyt ett minutt",
+            "På overtid"
+          ],
+          "correct": 2,
+          "explanation": "Ismael Saibari curlet inn vinnermålet etter rundt 70 sekunder, framspilt av Brahim Díaz; Scott McTominay ropte forgjeves på straffe sent i kampen."
+        },
+        {
+          "category": "Målscorer",
+          "q": "Hvem scoret Marokkos vinnermål mot Skottland — sitt andre i VM 2026?",
+          "options": [
+            "Hakim Ziyech",
+            "Ismael Saibari",
+            "Youssef En-Nesyri",
+            "Brahim Díaz"
+          ],
+          "correct": 1,
+          "explanation": "Saibari, som også scoret mot Brasil i åpningskampen, avgjorde tidlig mot Skottland."
+        },
+        {
+          "category": "Resultat",
+          "q": "Hvordan endte Brasils andre kamp, mot Haiti?",
+          "options": [
+            "2–2",
+            "1–0 til Brasil",
+            "3–0 til Brasil",
+            "4–1 til Brasil"
+          ],
+          "correct": 2,
+          "explanation": "Matheus Cunha scoret to og Vinícius Júnior ett — Brasils første seier i VM 2026 etter 1–1 mot Marokko."
+        },
+        {
+          "category": "Stjerner",
+          "q": "Hvem scoret to mål for Brasil mot Haiti?",
+          "options": [
+            "Raphinha",
+            "Rodrygo",
+            "Matheus Cunha",
+            "Vinícius Júnior"
+          ],
+          "correct": 2,
+          "explanation": "Cunha scoret i det 23. og 36. minutt; Vinícius Júnior la på til 3–0 på overtid i første omgang."
+        },
+        {
+          "category": "Stjerner",
+          "q": "Sveits vant 4–1 over Bosnia-Hercegovina. Hvem ble tomålshelt — fra innbytterbenken?",
+          "options": [
+            "Ruben Vargas",
+            "Granit Xhaka",
+            "Breel Embolo",
+            "Johan Manzambi"
+          ],
+          "correct": 3,
+          "explanation": "Innbytter Manzambi scoret to sene mål; Ruben Vargas og Granit Xhaka (straffe) sto for de andre i 4–1-seieren."
+        },
+        {
+          "category": "Resultat",
+          "q": "Hva ble resultatet i gruppe D-kampen mellom Tyrkia og Paraguay?",
+          "options": [
+            "1–0 til Paraguay",
+            "0–0",
+            "1–1",
+            "2–1 til Tyrkia"
+          ],
+          "correct": 0,
+          "explanation": "Matías Galarza avgjorde tidlig med et langskudd; Tyrkia tapte dermed sin andre kamp på rad."
+        },
+        {
+          "category": "Målscorer",
+          "q": "Hvem scoret Paraguays vinnermål mot Tyrkia, etter drøyt ett minutt?",
+          "options": [
+            "Miguel Almirón",
+            "Matías Galarza",
+            "Antonio Sanabria",
+            "Julio Enciso"
+          ],
+          "correct": 1,
+          "explanation": "Galarza dunket inn fra utenfor sekstenmeteren etter rundt ett minutt; Paraguays Miguel Almirón ble senere utvist."
+        },
+        {
+          "category": "Gruppe A",
+          "q": "Sør-Afrika sikret sitt første poeng med 1–1 mot Tsjekkia. Hvordan kom utligningen?",
+          "options": [
+            "Frisparkmål",
+            "Heading på hjørnespark",
+            "Straffemål av Teboho Mokoena",
+            "Selvmål"
+          ],
+          "correct": 2,
+          "explanation": "Michal Sadílek scoret tidlig for Tsjekkia, men Teboho Mokoena utlignet på straffe sju minutter før slutt."
+        }
+      ]
     }
   ]
 }
