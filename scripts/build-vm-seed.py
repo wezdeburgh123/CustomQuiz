@@ -327,7 +327,7 @@ QUIZZES = [
   ]
  },
  {
-  "slug":"gruppespill-2","num":"09","phase":"Gruppespill omgang 2","status":"locked","sort":9,
+  "slug":"gruppespill-2","num":"09","phase":"Gruppespill omgang 2","status":"open","sort":9,
   "hero_img":"vm-gruppespill-1",
   "title":"Runde 2 — VM tar form",
   "sub":"Norge braker løs, Messi- og Mbappé-rekorder og Canadas målfest — kampene 15.–18. juni.",
@@ -366,7 +366,7 @@ QUIZZES = [
   ]
  },
  {
-  "slug":"gruppespill-2b","num":"10","phase":"Gruppespill omgang 2","status":"locked","sort":10,
+  "slug":"gruppespill-2b","num":"10","phase":"Gruppespill omgang 2","status":"open","sort":10,
   "hero_img":"vm-gruppespill-1",
   "title":"Runde 2 — flere svar faller",
   "sub":"USA, Marokko, Brasil og Paraguay tar grep — omgang 2-kampene 18.–20. juni.",
@@ -402,6 +402,45 @@ QUIZZES = [
    Q("Gruppe A","Sør-Afrika sikret sitt første poeng med 1–1 mot Tsjekkia. Hvordan kom utligningen?",
      ["Straffemål av Teboho Mokoena","Frisparkmål","Selvmål","Heading på hjørnespark"],0,
      "Michal Sadílek scoret tidlig for Tsjekkia, men Teboho Mokoena utlignet på straffe sju minutter før slutt."),
+  ]
+ },
+ {
+  "slug":"pregame-norge-senegal","num":"11","phase":"Pre-game","status":"open","sort":11,
+  "hero_img":"vm-gruppespill-1",
+  "title":"Før kampen: Norge–Senegal",
+  "sub":"Norges VM-comeback møter Terangas løver — ta den før avspark.",
+  "difficulty":"medium",
+  "questions":[
+   Q("Senegal","Senegals landslag har et velkjent kallenavn. Hvilket?",
+     ["Terangas løver","Atlasløvene","Ørnene","Elefantene"],0,
+     "Senegal kalles «Terangas løver» (Lions of Teranga) — teranga er et wolof-ord for gjestfrihet."),
+   Q("Senegal","Senegal sjokkerte fotball-verdenen i sin VM-debut i 2002 ved å slå de regjerende verdensmesterne 1–0 i åpningskampen. Hvilket land?",
+     ["Frankrike","Brasil","Italia","Tyskland"],0,
+     "Senegal slo regjerende verdensmester Frankrike 1–0 i åpningskampen i 2002 — en av VM-historiens største skreller."),
+   Q("Senegal","Hvem scoret Senegals historiske mål i 1–0-seieren over Frankrike i 2002?",
+     ["Papa Bouba Diop","El-Hadji Diouf","Henri Camara","Khalilou Fadiga"],0,
+     "Papa Bouba Diop scoret i det 30. minutt og ble nasjonalhelt; han gikk bort i 2020."),
+   Q("Senegal","Hvor langt nådde Senegal i sitt aller første VM i 2002?",
+     ["Kvartfinalen","Åttedelsfinalen","Semifinalen","Ut i gruppespillet"],0,
+     "Senegal nådde kvartfinalen på sin VM-debut, der Tyrkia slo dem ut på golden goal."),
+   Q("Senegal","Senegals store stjerne og talisman, som har sagt at VM 2026 blir hans siste, er en veteranspiss. Hvem?",
+     ["Sadio Mané","Kalidou Koulibaly","Ismaïla Sarr","Nicolas Jackson"],0,
+     "Sadio Mané (34) har varslet at han gir seg på landslaget etter VM 2026."),
+   Q("Senegal","Senegal vant sin første store kontinentale tittel i 2021. Hvilken?",
+     ["Afrikamesterskapet (AFCON)","FIFA Confederations Cup","OL-gull i fotball","FIFA Arab Cup"],0,
+     "Senegal vant Afrikamesterskapet (AFCON) 2021 — landets første store tittel, etter finaleseier på straffer over Egypt."),
+   Q("Norge","Senegals bragd i 2002 har en norsk parallell: i VM 1998 slo Norge de daværende regjerende verdensmesterne 2–1 i gruppespillet. Hvilket land?",
+     ["Brasil","Italia","Argentina","Frankrike"],0,
+     "Norge slo regjerende verdensmester Brasil 2–1 i Marseille i 1998 (Flo og Rekdal-straffe) — akkurat som Senegal felte mester Frankrike i 2002."),
+   Q("Norge","Norge åpnet VM 2026 med seier 16. juni. Hva ble resultatet mot Irak?",
+     ["4–1","2–1","1–0","3–3"],0,
+     "Norge vant 4–1 i sin første VM-kamp på 28 år og toppet gruppe I på målforskjell foran Frankrike."),
+   Q("Norge","Erling Haaland markerte sin VM-debut mot Irak med en sterk førsteomgang. Hvor mange mål scoret han i kampen?",
+     ["To","Ett","Tre","Null"],0,
+     "Haaland scoret to mål (28. og 42. minutt) på sin VM-debut da Norge slo Irak 4–1."),
+   Q("Senegal","Senegal gikk på et tap i sin åpningskamp mot Frankrike. Hva ble sluttresultatet?",
+     ["1–3","0–2","2–2","1–1"],0,
+     "Frankrike vant 3–1; Mbappé scoret to og passerte alle andre på Frankrikes evige scoringsliste, mens Ibrahim Mbaye reduserte for Senegal."),
   ]
  },
 ]

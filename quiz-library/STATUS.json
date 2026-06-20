@@ -1,10 +1,10 @@
 {
-  "nights_run": 3,
-  "total_generated": 247,
-  "last_run": "2026-06-19T09:45:41.643550+00:00",
-  "last_batch": 40,
+  "nights_run": 4,
+  "total_generated": 297,
+  "last_run": "2026-06-20T00:41:15.061915+00:00",
+  "last_batch": 50,
   "skipped": [],
-  "note": "Nattskift 19. juni 2026: generert 40 quizer fra den utvidede koen (8 VM-2026/historie-fotball priority 2 + 32 doblede generelle lett-emner). Alle 10 spm, websok-grunnet (VM 2026: 48 lag/104 kamper/16 byer/MetLife-finale 19.7, Estadio Azteca apning; Norge VM 1938/1994/1998 + Mirakelet i Marseille; Klose 16 VM-mal; Pogacar/Vingegaard TdF; Viking seriemester 2025). Fasit jevnt omfordelt 0/1/2/3 per quiz. Ingen hoppet over.",
+  "note": "Nattskift 20. juni 2026: generert 50 quizer (priority 10/20/30 evergreen-emner: verdenshistorie, vitenskap, film, filosofi, fotball, geografi, norsk historie, kunst, litteratur, mix, musikk, sport, teknologi). Alle 10 spm, websok-grunnet pa fakta-sensitive (fjell/elver/Afrika/TdF/skiskyting/kvinnefotball/friidrett/norsk fotball); resten fra etablert kunnskap. Fasit variert 0-3 per quiz.",
   "queue_complete": false,
   "queue_note": "18. juni 2026: KØEN UTVIDET. SUBTOPICS_PER_CATEGORY 3→6 (12 generelle kategorier doblet 9→18 quizer) + ny WORLD_CUP_2026-blokk (8 evergreen VM-emner, priority 2 → genereres først). topics.json: 207→329 emner. NY KØ = 122 emner å generere (108 generelle + 14 fotball). De 207 ferdige er uberørt (verifisert: 0 reshuffle, 0 dubletter). Nattjobben tar batch=min(60, 20+nights_run*10) per natt. Volatile VM-live-resultater holdes i pre-game-modulen (vm.html), IKKE i arkivet."
 }
