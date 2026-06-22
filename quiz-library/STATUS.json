@@ -1,10 +1,10 @@
 {
-  "nights_run": 4,
-  "total_generated": 297,
-  "last_run": "2026-06-20T00:41:15.061915+00:00",
-  "last_batch": 50,
+  "nights_run": 5,
+  "total_generated": 329,
+  "last_run": "2026-06-21T02:03:56.790579+00:00",
+  "last_batch": 32,
   "skipped": [],
-  "note": "Nattskift 20. juni 2026: generert 50 quizer (priority 10/20/30 evergreen-emner: verdenshistorie, vitenskap, film, filosofi, fotball, geografi, norsk historie, kunst, litteratur, mix, musikk, sport, teknologi). Alle 10 spm, websok-grunnet pa fakta-sensitive (fjell/elver/Afrika/TdF/skiskyting/kvinnefotball/friidrett/norsk fotball); resten fra etablert kunnskap. Fasit variert 0-3 per quiz.",
-  "queue_complete": false,
-  "queue_note": "18. juni 2026: KØEN UTVIDET. SUBTOPICS_PER_CATEGORY 3→6 (12 generelle kategorier doblet 9→18 quizer) + ny WORLD_CUP_2026-blokk (8 evergreen VM-emner, priority 2 → genereres først). topics.json: 207→329 emner. NY KØ = 122 emner å generere (108 generelle + 14 fotball). De 207 ferdige er uberørt (verifisert: 0 reshuffle, 0 dubletter). Nattjobben tar batch=min(60, 20+nights_run*10) per natt. Volatile VM-live-resultater holdes i pre-game-modulen (vm.html), IKKE i arkivet."
+  "note": "Nattskift 21. juni 2026: generert 32 quizer — alle de gjenstaende vanskelig-emnene (priority 30) på tvers av fotball, geografi, norsk+verdenshistorie, kunst, litteratur, mix, musikk, sport, teknologi, vitenskap. Fakta-sensitive emner websok-grunnet (fjellhoyder, elvelengder, kvinnefotball-VM, norsk fotballhistorie, friidrett, skiskyting, Tour de France); resten fra etablert kunnskap. Alle 10 spm, 4 alt, correct 0-3 balansert (96/96/64/64) og alle fire posisjoner i hver quiz. KOEN ER NA TOM.",
+  "queue_complete": true,
+  "queue_note": "KOEN TOM per 21.6.26 — alle 335 emner i topics.json er generert. Utvid topics.json for a generere mer."
 }
