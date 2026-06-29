@@ -37,6 +37,9 @@ const CATEGORY_TO_IMG = {
   kunst: "kategori-kunst", film: "kategori-film", musikk: "kategori-musikk", sport: "kategori-sport",
   fotball: "kategori-sport", filosofi: "kategori-filosofi", teknologi: "kategori-teknologi",
   dyr: "kategori-mix",
+  // Barneserier (per-slug cover i IMG/<slug>.jpg; kategori-fallback = mix til
+  // egne kategori-cover finnes). MÅ stå her ellers omskrives de til "mix" ved synk.
+  spill: "kategori-mix", monstere: "kategori-mix",
 };
 const VALID = Object.keys(CATEGORY_TO_IMG);
 

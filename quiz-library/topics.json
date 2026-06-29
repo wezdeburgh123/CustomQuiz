@@ -3764,6 +3764,138 @@
       "difficulty": "lett",
       "count": 10,
       "priority": 15
+    },
+    {
+      "slug": "minecraft__lett",
+      "themes": [
+        "Minecraft"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "super-mario__lett",
+      "themes": [
+        "Super Mario"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "pokemon-spillet__lett",
+      "themes": [
+        "Pokémon"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "roblox__lett",
+      "themes": [
+        "Roblox"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "fortnite__lett",
+      "themes": [
+        "Fortnite"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "spillklassikere__lett",
+      "themes": [
+        "Spillklassikere"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "godzilla__lett",
+      "themes": [
+        "Godzilla"
+      ],
+      "category": "monstere",
+      "category_label": "Monstere",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "lommemonstre__lett",
+      "themes": [
+        "Lommemonstre"
+      ],
+      "category": "monstere",
+      "category_label": "Monstere",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "drager-i-popkultur__lett",
+      "themes": [
+        "Drager"
+      ],
+      "category": "monstere",
+      "category_label": "Monstere",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "snille-monstre__lett",
+      "themes": [
+        "Snille monstre"
+      ],
+      "category": "monstere",
+      "category_label": "Monstere",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "king-kong-og-filmmonstre__lett",
+      "themes": [
+        "King Kong og de klassiske filmmonstrene"
+      ],
+      "category": "monstere",
+      "category_label": "Monstere",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "monsterfakta__lett",
+      "themes": [
+        "Monsterfakta"
+      ],
+      "category": "monstere",
+      "category_label": "Monstere",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
     }
   ]
 }

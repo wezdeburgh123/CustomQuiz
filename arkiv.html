@@ -52,6 +52,8 @@
     --spot-plum:        #6B3050;
     --spot-saffron:     #C68A2E;
     --spot-oker:        #9A5B26;   /* Dyr (barneserie) */
+    --spot-spill:       #1F7A8A;   /* Spill (barneserie) */
+    --spot-monstere:    #6F3F96;   /* Monstere (barneserie) */
     --r-pill:       999px;
     --r-card:       16px;
     --r-md:         8px;
@@ -84,6 +86,8 @@
   [data-spot="plum"]       { --spot: var(--spot-plum); }
   [data-spot="saffron"]    { --spot: var(--spot-saffron); }
   [data-spot="oker"]       { --spot: var(--spot-oker); }
+  [data-spot="spill"]      { --spot: var(--spot-spill); }
+  [data-spot="monstere"]   { --spot: var(--spot-monstere); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     background: var(--bg);
@@ -1063,7 +1067,9 @@
     kunst:           'saffron',
     sport:           'saffron',
     fotball:         'moss',
-    dyr:             'oker'
+    dyr:             'oker',
+    spill:           'spill',
+    monstere:        'monstere'
   };
 
   // Klubblag → crest-bilde (IMG/crest-*.jpg). Crestene har lagets egen
@@ -1150,7 +1156,7 @@
     verdenshistorie: 'Verdenshistorie', vitenskap: 'Naturvitenskap', geografi: 'Geografi',
     litteratur: 'Litteratur', kunst: 'Kunst', film: 'Film og TV', musikk: 'Musikk',
     sport: 'Sport', fotball: 'Fotball', filosofi: 'Filosofi', teknologi: 'Teknologi',
-    dyr: 'Dyr'
+    dyr: 'Dyr', spill: 'Spill', monstere: 'Monstere'
   };
   // Kjente kategori-slugger (brukes til å skille kategori fra lag i path-en).
   const KNOWN_CATS = new Set(Object.keys(FILTER_LABELS));
@@ -1752,7 +1758,7 @@
     vitenskap: 'kategori-naturvitenskap', geografi: 'kategori-geografi', litteratur: 'kategori-litteratur',
     kunst: 'kategori-kunst', film: 'kategori-film', musikk: 'kategori-musikk', sport: 'kategori-sport',
     fotball: 'kategori-sport', filosofi: 'kategori-filosofi', teknologi: 'kategori-teknologi',
-    dyr: 'kategori-mix'
+    dyr: 'kategori-mix', spill: 'kategori-mix', monstere: 'kategori-mix'
   };
 
   // Last inn biblioteket, slå sammen med de ekte quizene, og render.
@@ -1803,7 +1809,7 @@
             category: q.category || 'mix',
             categoryLabel: q.category_label || '',
             team: q.team || '',
-            img: q.hero_img || (q.category === 'dyr' ? q.slug : null) || CATEGORY_TO_IMG[q.category] || 'kategori-mix',
+            img: q.hero_img || (['dyr','spill','monstere'].includes(q.category) ? q.slug : null) || CATEGORY_TO_IMG[q.category] || 'kategori-mix',
             sub: q.lede || '',
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
             plays: typeof q.plays === 'number' ? q.plays : 0,

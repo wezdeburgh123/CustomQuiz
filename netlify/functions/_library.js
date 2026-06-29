@@ -34,6 +34,9 @@ const CATEGORY_TO_IMG = {
   filosofi: "kategori-filosofi",
   teknologi: "kategori-teknologi",
   dyr: "kategori-mix",
+  // Barneserier — fallback til mix til egne kategori-cover finnes (per-slug cover i IMG/).
+  spill: "kategori-mix",
+  monstere: "kategori-mix",
 };
 const VALID_CATEGORIES = Object.keys(CATEGORY_TO_IMG);
 

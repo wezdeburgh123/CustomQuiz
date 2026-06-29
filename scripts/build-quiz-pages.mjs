@@ -40,7 +40,7 @@ const CATEGORY_TO_IMG = {
   vitenskap: "kategori-naturvitenskap", geografi: "kategori-geografi", litteratur: "kategori-litteratur",
   kunst: "kategori-kunst", film: "kategori-film", musikk: "kategori-musikk", sport: "kategori-sport",
   fotball: "kategori-sport", filosofi: "kategori-filosofi", teknologi: "kategori-teknologi",
-  dyr: "kategori-mix",
+  dyr: "kategori-mix", spill: "kategori-mix", monstere: "kategori-mix",
 };
 
 // Visningsnavn på tema-landingssidene (speiler arkivets FILTER_LABELS).
@@ -48,7 +48,7 @@ const THEME_PAGE_LABEL = {
   mix: "Allmennkunnskap", historie: "Norsk historie", verdenshistorie: "Verdenshistorie",
   vitenskap: "Naturvitenskap", geografi: "Geografi", litteratur: "Litteratur", kunst: "Kunst",
   film: "Film og TV", musikk: "Musikk", sport: "Sport", fotball: "Fotball",
-  filosofi: "Filosofi", teknologi: "Teknologi", dyr: "Dyr",
+  filosofi: "Filosofi", teknologi: "Teknologi", dyr: "Dyr", spill: "Spill", monstere: "Monstere",
 };
 
 // Kategori → spot-farge (speiler arkiv.html CATEGORY_TO_SPOT).
@@ -56,7 +56,7 @@ const CATEGORY_TO_SPOT = {
   mix: "teal", geografi: "moss", vitenskap: "cobalt", teknologi: "cobalt",
   historie: "terracotta", verdenshistorie: "terracotta", film: "terracotta",
   litteratur: "plum", filosofi: "plum", musikk: "saffron", kunst: "saffron",
-  sport: "saffron", fotball: "moss", dyr: "oker",
+  sport: "saffron", fotball: "moss", dyr: "oker", spill: "spill", monstere: "monstere",
 };
 // Klubblag → crest, og hvilke crests som faktisk finnes (speiler arkiv.html).
 const TEAM_TO_CREST = {
@@ -97,7 +97,7 @@ const CAT_LABEL = {
   mix: "Allmennkunnskap", historie: "Historie", verdenshistorie: "Verdenshistorie",
   vitenskap: "Vitenskap", geografi: "Geografi", litteratur: "Litteratur", kunst: "Kunst",
   film: "Film", musikk: "Musikk", sport: "Sport", fotball: "Fotball",
-  filosofi: "Filosofi", teknologi: "Teknologi", dyr: "Dyr",
+  filosofi: "Filosofi", teknologi: "Teknologi", dyr: "Dyr", spill: "Spill", monstere: "Monstere",
 };
 const DIFF_LABEL = { lett: "Lett", medium: "Middels", vanskelig: "Vanskelig" };
 
@@ -273,7 +273,7 @@ function themeCard(q) {
   const hero = (q.hero_img && /^https?:\/\//i.test(q.hero_img)) ? q.hero_img : null;
   // Dyr-/barneserien har lokale cover-filer navngitt etter slug (IMG/<slug>.jpg),
   // ikke http-hero_img. Onerror faller tilbake til kategoribildet om filen mangler.
-  const slugCover = (q.category === "dyr" && q.slug) ? `/IMG/${q.slug}.jpg` : null;
+  const slugCover = (["dyr", "spill", "monstere"].includes(q.category) && q.slug) ? `/IMG/${q.slug}.jpg` : null;
   const imgSrc = crest ? `/IMG/${crest}.jpg` : (hero || slugCover || `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`);
   const fallback = `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`;
   const spot = CATEGORY_TO_SPOT[q.category] || "teal";
@@ -355,7 +355,7 @@ function themePageHtml(cat, quizzes) {
     --bg:#F5F0E6;--bg-soft:#FBF7EE;--bg-deep:#ECE3CE;--ink:#1F1A14;--ink-soft:#4B4338;--ink-mute:#7A6F5A;
     --rule:#E2D8C2;--rule-strong:#C9BD9F;--accent:#0A6E5A;--accent-soft:#C9E2D8;--accent-deep:#074538;
     --spot-teal:#0A6E5A;--spot-moss:#5C7A3C;--spot-cobalt:#2C4A8F;--spot-terracotta:#B05238;
-    --spot-plum:#6B3050;--spot-saffron:#C68A2E;--spot-oker:#9A5B26;
+    --spot-plum:#6B3050;--spot-saffron:#C68A2E;--spot-oker:#9A5B26;--spot-spill:#1F7A8A;--spot-monstere:#6F3F96;
     --r-pill:999px;--r-card:16px;
     --font-display:'Fraunces',Georgia,serif;--font-sans:'Manrope','Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono',ui-monospace,monospace;
   }
@@ -370,6 +370,7 @@ function themePageHtml(cat, quizzes) {
   [data-spot="teal"]{--spot:var(--spot-teal);}[data-spot="moss"]{--spot:var(--spot-moss);}
   [data-spot="cobalt"]{--spot:var(--spot-cobalt);}[data-spot="terracotta"]{--spot:var(--spot-terracotta);}
   [data-spot="plum"]{--spot:var(--spot-plum);}[data-spot="saffron"]{--spot:var(--spot-saffron);}[data-spot="oker"]{--spot:var(--spot-oker);}
+  [data-spot="spill"]{--spot:var(--spot-spill);}[data-spot="monstere"]{--spot:var(--spot-monstere);}
   .crumbs{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:22px;}
   .crumbs a{color:var(--ink-mute);text-decoration:none;}
   .crumbs a:hover{color:var(--accent);}
