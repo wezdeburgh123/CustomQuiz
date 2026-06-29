@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<title>Fotball — quizer om klubber, serier, landslag og VM | CustomQuiz</title>
+<meta name="description" content="Fotballquizer på CustomQuiz: klubblegender, Premier League og Eliteserien, landslag og VM. Test kunnskapen din — gratis quizer på norsk.">
+<link rel="canonical" href="https://customquiz.no/fotball">
+<script src="quizzes-data.js"></script>
+
+<link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
+<link rel="apple-touch-icon" href="IMG/signature.jpg">
+<meta property="og:title" content="Fotball — egen verden | CustomQuiz">
+<meta property="og:description" content="Klubber, serier, landslag og VM. Fotballquizer på norsk.">
+<meta property="og:image" content="https://customquiz.no/IMG/kategori-sport.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://customquiz.no/fotball">
+<meta property="og:locale" content="nb_NO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://customquiz.no/IMG/kategori-sport.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="layout.css">
+<script src="intro-state.js"></script>
+<script src="reveal.js"></script>
+<style>
+  :root {
+    --bg:#F5F0E6; --bg-soft:#FBF7EE; --bg-deep:#ECE3CE;
+    --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
+    --rule:#E2D8C2; --rule-strong:#C9BD9F;
+    --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
+    --spot-moss:#5C7A3C;
+    --r-pill:999px; --r-card:16px; --r-md:8px;
+    --font-display:'Fraunces',Georgia,'Times New Roman',serif;
+    --font-sans:'Manrope','Inter',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;
+  }
+  [data-spot] { position:relative; }
+  [data-spot]::before { content:""; position:absolute; inset:0; background:var(--spot-moss); opacity:0.55; z-index:1; pointer-events:none; }
+  [data-spot] > img { position:relative; z-index:2; mix-blend-mode:multiply; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { background:var(--bg); color:var(--ink); font-family:var(--font-sans); font-size:17px; line-height:1.55; min-height:100vh; -webkit-font-smoothing:antialiased; }
+  body::before { content:''; position:fixed; inset:0; background-image:radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0); background-size:4px 4px; pointer-events:none; z-index:1; }
+  .container { position:relative; z-index:2; max-width:1120px; margin:0 auto; padding:0 28px; }
+
+  .page-header { margin:8px 0 36px; }
+  .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+  h1 { font-family:var(--font-display); font-weight:500; font-size:clamp(40px,5.4vw,64px); line-height:0.98; letter-spacing:-0.025em; margin-bottom:20px; font-variation-settings:"opsz" 120; }
+  h1 em { font-style:italic; color:var(--accent); }
+  .page-lede { font-family:var(--font-display); font-size:21px; line-height:1.45; color:var(--ink-soft); max-width:560px; }
+  .crumbs { font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:24px; }
+  .crumbs a { color:var(--ink-mute); text-decoration:none; }
+  .crumbs a:hover { color:var(--accent); }
+
+  /* Seksjons-nav + lag-chips */
+  .chip-row { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 18px; }
+  .chip { display:inline-flex; align-items:center; gap:8px; background:none; border:1px solid var(--rule-strong); border-radius:var(--r-pill); padding:9px 16px; font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); cursor:pointer; transition:background 160ms,color 160ms,border-color 160ms; }
+  .chip:hover { border-color:var(--accent); color:var(--ink); }
+  .chip.active { background:var(--accent); border-color:var(--accent); color:var(--bg-soft); }
+  .team-row { margin:0 0 28px; }
+  .team-row-label { display:block; font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-mute); margin:0 0 10px 2px; }
+  .team-chip { display:inline-flex; align-items:center; gap:7px; background:none; border:1px solid var(--rule-strong); border-radius:var(--r-pill); padding:6px 13px 6px 7px; font-family:var(--font-sans); font-size:13px; font-weight:500; color:var(--ink-soft); cursor:pointer; transition:background 160ms,color 160ms,border-color 160ms; }
+  .team-chip.no-crest { padding-left:13px; }
+  .team-chip:hover { border-color:var(--spot-moss); color:var(--ink); }
+  .team-chip.active { background:var(--spot-moss); border-color:var(--spot-moss); color:var(--bg-soft); }
+  .team-chip-crest { width:22px; height:22px; border-radius:50%; object-fit:cover; background:#F5EEDC; }
+
+  .sec { display:flex; align-items:baseline; justify-content:space-between; margin:48px 0 22px; padding-bottom:13px; border-bottom:1px solid var(--rule-strong); }
+  .sec:first-of-type { margin-top:8px; }
+  .sec-title { font-family:var(--font-display); font-weight:500; font-size:26px; letter-spacing:-0.02em; font-variation-settings:"opsz" 72; }
+  .sec-meta { font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); }
+
+  .quiz-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:16px; margin-bottom:8px; }
+  .quiz-card { display:flex; flex-direction:column; background:var(--bg-soft); border:0.5px solid var(--rule); border-radius:var(--r-card); text-decoration:none; transition:border-color 200ms ease; position:relative; overflow:hidden; }
+  .quiz-card:hover { border-color:var(--accent); }
+  .quiz-card:hover .quiz-image img { transform:scale(1.025); }
+  .quiz-image { aspect-ratio:5/3; background:var(--bg); overflow:hidden; border-bottom:0.5px solid var(--rule); position:relative; }
+  .quiz-image img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 220ms ease; }
+  .quiz-image.is-crest { background:#F5EEDC; }
+  .quiz-image.is-crest img { object-fit:contain; mix-blend-mode:normal; padding:14px; }
+  .quiz-body { padding:18px 20px 22px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .quiz-num { font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-mute); }
+  .quiz-title { font-family:var(--font-display); font-size:22px; font-weight:500; line-height:1.18; color:var(--ink); font-variation-settings:"opsz" 36; }
+  .quiz-title em { font-style:italic; color:var(--accent); }
+  .quiz-sub { font-family:var(--font-sans); font-size:13px; color:var(--ink-soft); line-height:1.45; margin-bottom:4px; }
+  .quiz-rating { display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:12px; border-top:1px solid var(--rule); font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; color:var(--ink-mute); }
+  .quiz-plays { font-variant-numeric:tabular-nums; }
+
+  .group { margin-bottom:8px; }
+  .empty-state { text-align:center; padding:60px 20px; color:var(--ink-mute); font-family:var(--font-display); font-style:italic; font-size:19px; }
+  footer { font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); text-align:center; padding:56px 0 64px; }
+  footer a { color:var(--ink-mute); text-decoration:none; }
+  @media (max-width:560px){ .container{ padding:0 18px; } }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div id="cq-masthead"></div>
+
+  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv.html">Arkivet</a> › Fotball</nav>
+
+  <header class="page-header">
+    <div class="eyebrow">Fotball</div>
+    <h1>Fotball, <em>egen verden</em>.</h1>
+    <p class="page-lede" id="fb-lede">Klubblegender, serier og cuper, landslag og VM — samlet på ett sted. Velg en inngang under.</p>
+  </header>
+
+  <div class="chip-row" id="section-nav">
+    <button class="chip active" data-sec="all">Alle</button>
+    <button class="chip" data-sec="klubb">Klubber</button>
+    <button class="chip" data-sec="landslag">Landslag &amp; VM</button>
+    <button class="chip" data-sec="serier">Serier &amp; cuper</button>
+  </div>
+
+  <div class="team-row" id="team-row" hidden>
+    <span class="team-row-label">Filtrer på lag</span>
+    <div class="chip-row" id="team-chips"></div>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="empty-state" id="empty-state" style="display:none;">Ingen fotballquizer lastet ennå.</div>
+
+  <footer>
+    <div><a href="/arkiv.html">← Tilbake til arkivet</a></div>
+  </footer>
+
+</div>
+
+<script>
+  // Fotball er åpent for alle i gratis-perioden — ingen lås/innlogging for å spille.
+  const FB = [];
+
+  const TEAM_TO_CREST = {
+    'Arsenal':'crest-arsenal','Chelsea':'crest-chelsea','Everton':'crest-everton',
+    'Leeds United':'crest-leeds','Liverpool':'crest-liverpool','Manchester City':'crest-man-city',
+    'Manchester United':'crest-man-united','Newcastle United':'crest-newcastle','Tottenham':'crest-tottenham',
+    'Bodø/Glimt':'crest-bodo-glimt','Brann':'crest-brann','Lillestrøm':'crest-lillestrom',
+    'Molde':'crest-molde','Rosenborg':'crest-rosenborg','Viking':'crest-viking','Vålerenga':'crest-valerenga'
+  };
+  const AVAILABLE_CRESTS = new Set([
+    'crest-arsenal','crest-chelsea','crest-everton','crest-leeds','crest-liverpool',
+    'crest-man-city','crest-man-united','crest-newcastle','crest-tottenham',
+    'crest-bodo-glimt','crest-brann','crest-lillestrom','crest-molde','crest-rosenborg','crest-viking','crest-valerenga'
+  ]);
+  function crestFor(team) {
+    const slug = TEAM_TO_CREST[String(team || '').trim()];
+    return (slug && AVAILABLE_CRESTS.has(slug)) ? slug : null;
+  }
+  function formatPlays(n) { return (n || 0).toLocaleString('nb-NO').replace(',', ' '); }
+  function norm(s) { return String(s || '').toLowerCase().replace(/æ/g,'ae').replace(/ø/g,'o').replace(/å/g,'a'); }
+
+  // Klassifiser de uten lag-tagg i Landslag/VM vs Serier/annet (heuristikk på tittel+lede).
+  const LANDSLAG_RE = /\b(vm|verdensmester|world cup|em|euro|landslag|landskamp|norge|fifa|uefa nations|gull|ol\b)/;
+  function sectionOf(q) {
+    if (q.team) return 'klubb';
+    const blob = norm((q.title || '') + ' ' + (q.sub || ''));
+    if (LANDSLAG_RE.test(blob)) return 'landslag';
+    return 'serier';
+  }
+
+  function cardFor(q) {
+    const crest = crestFor(q.team);
+    const imgSlug = crest || q.img || 'kategori-sport';
+    const isHttp = /^https?:\/\//.test(imgSlug);
+    const spotAttr = crest ? '' : ' data-spot="moss"';
+    return `
+      <a class="quiz-card" href="${q.url}">
+        <div class="quiz-image${crest ? ' is-crest' : ''}"${spotAttr}>
+          <img src="${isHttp ? imgSlug : 'IMG/' + imgSlug + '.jpg'}" alt="" loading="lazy" onerror="this.onerror=null;this.src='IMG/kategori-sport.jpg'">
+        </div>
+        <div class="quiz-body">
+          <div class="quiz-num">${q.team ? q.team : 'Fotball'}</div>
+          <div class="quiz-title">${q.title}</div>
+          <div class="quiz-sub">${q.sub || ''}</div>
+          <div class="quiz-rating"><span class="quiz-plays">${formatPlays(q.plays)} spilt</span></div>
+        </div>
+      </a>`;
+  }
+
+  // Visningstilstand.
+  let activeSec = 'all';
+  let activeTeam = '';   // '' = alle lag
+
+  const SEC_TITLES = { klubb: 'Klubber', landslag: 'Landslag & VM', serier: 'Serier, cuper & annet' };
+  const SEC_ORDER = ['klubb', 'landslag', 'serier'];
+
+  function render() {
+    const wrap = document.getElementById('sections');
+    const empty = document.getElementById('empty-state');
+    const teamRow = document.getElementById('team-row');
+
+    // Lag-filter vises kun for Klubber (og «Alle»).
+    teamRow.hidden = !(activeSec === 'all' || activeSec === 'klubb');
+
+    const groups = activeSec === 'all' ? SEC_ORDER : [activeSec];
+    let html = '';
+    let total = 0;
+    groups.forEach(sec => {
+      let items = FB.filter(q => sectionOf(q) === sec);
+      if (sec === 'klubb' && activeTeam) items = items.filter(q => q.team === activeTeam);
+      items.sort((a, b) => (b.plays || 0) - (a.plays || 0));
+      if (!items.length) return;
+      total += items.length;
+      const head = (activeSec === 'all')
+        ? `<div class="sec"><div class="sec-title">${SEC_TITLES[sec]}</div><div class="sec-meta">${items.length} utgaver</div></div>`
+        : '';
+      html += `<div class="group">${head}<div class="quiz-grid">${items.map(cardFor).join('')}</div></div>`;
+    });
+    wrap.innerHTML = html;
+    empty.style.display = total === 0 ? 'block' : 'none';
+  }
+
+  function buildTeamChips() {
+    const wrap = document.getElementById('team-chips');
+    const teams = [...new Set(FB.filter(q => q.team).map(q => String(q.team).trim()).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, 'nb-NO'));
+    const chips = ['', ...teams].map(t => {
+      const label = t === '' ? 'Alle lag' : t;
+      const active = (t === activeTeam) ? ' active' : '';
+      const crest = t ? crestFor(t) : null;
+      const icon = crest ? `<img class="team-chip-crest" src="IMG/${crest}.jpg" alt="" aria-hidden="true">` : '';
+      const cls = crest ? '' : ' no-crest';
+      return `<button class="team-chip${active}${cls}" data-team="${t.replace(/"/g, '&quot;')}">${icon}${label}</button>`;
+    }).join('');
+    wrap.innerHTML = chips;
+    wrap.querySelectorAll('.team-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        activeTeam = chip.dataset.team;
+        // Velger man et lag, hopp til Klubber-seksjonen.
+        if (activeTeam && activeSec === 'all') setSection('klubb', false);
+        buildTeamChips();
+        render();
+      });
+    });
+  }
+
+  function setSection(sec, rerenderTeams) {
+    activeSec = sec;
+    document.querySelectorAll('#section-nav .chip').forEach(c =>
+      c.classList.toggle('active', c.dataset.sec === sec));
+    if (sec !== 'klubb' && sec !== 'all') activeTeam = '';
+    if (rerenderTeams !== false) buildTeamChips();
+    render();
+  }
+
+  document.querySelectorAll('#section-nav .chip').forEach(chip => {
+    chip.addEventListener('click', () => setSection(chip.dataset.sec));
+  });
+
+  // ── Datalasting: gratis-biblioteket (quizzes-data) + Supabase quiz_library ──
+  const CATEGORY_TO_IMG_FB = 'kategori-sport';
+  function pushData(list, fromLib) {
+    (list || []).forEach(q => {
+      if ((q.category || '') !== 'fotball') return;
+      FB.push({
+        title: q.title || 'Quiz',
+        sub: q.lede || q.sub || '',
+        team: (q.team || '').trim(),
+        plays: typeof q.plays === 'number' ? q.plays : 0,
+        date: (q.created_at || q.date || '').slice(0, 10),
+        img: q.hero_img || CATEGORY_TO_IMG_FB,
+        url: fromLib ? ('lag-quiz.html?lib=' + encodeURIComponent(q.slug)) : ('lag-quiz.html?quiz=' + encodeURIComponent(q.id))
+      });
+    });
+  }
+
+  (async function boot() {
+    // 1) Statisk gratis-bibliotek (global eller fetch).
+    try {
+      let data = window.__QUIZ_DATA__;
+      if (!data) { const r = await fetch('quizzes-data.json', { cache: 'no-store' }); if (r.ok) data = await r.json(); }
+      if (data) pushData(Array.isArray(data) ? data : (data.quizzes || []), false);
+    } catch (_) {}
+    // 2) Voksende Supabase-arkiv (kun fotball).
+    try {
+      const r = await fetch('/api/library-list?category=fotball&limit=2000', { cache: 'no-store' });
+      if (r.ok) { const { quizzes } = await r.json(); pushData(quizzes, true); }
+    } catch (_) {}
+
+    const lede = document.getElementById('fb-lede');
+    if (lede && FB.length) lede.textContent = `Klubblegender, serier og cuper, landslag og VM — ${FB.length} fotballquizer samlet på ett sted.`;
+    buildTeamChips();
+    render();
+  })();
+</script>
+
+<script src="supabase-config.js"></script>
+<script src="nav.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>

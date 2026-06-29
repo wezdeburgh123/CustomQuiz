@@ -76,6 +76,15 @@
   to = "/arkiv.html"
   status = 200
 
+# Fotball — egen verden (klubber/serier/landslag/VM). Pen URL /fotball serverer
+# fotball.html (status=200 = rewrite, adressen beholdes). NB: /tema/<kategori>
+# trenger INGEN regel — det er statiske mapper generert av build-quiz-pages.mjs
+# (/tema/<kat>/index.html) som Netlify serverer direkte.
+[[redirects]]
+  from = "/fotball"
+  to = "/fotball.html"
+  status = 200
+
 # Pene URL-er: /api/* -> funksjoner
 [[redirects]]
   from = "/api/generate-quiz"

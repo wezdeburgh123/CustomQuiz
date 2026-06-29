@@ -24,9 +24,10 @@ scripts/_natt-input.json
 __pycache__/
 *.pyc
 
-# Build-artefakter: statiske quiz-sider genereres av scripts/build-quiz-pages.mjs
-# ved hver Netlify-deploy. Skal IKKE committes.
+# Build-artefakter: statiske quiz-sider OG tema-landingssider genereres av
+# scripts/build-quiz-pages.mjs ved hver Netlify-deploy. Skal IKKE committes.
 /quiz/
+/tema/
 
 .fuse_hidden*
 

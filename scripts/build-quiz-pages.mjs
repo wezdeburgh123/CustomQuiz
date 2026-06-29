@@ -28,6 +28,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const NDJSON = path.join(ROOT, "quiz-library", "library.ndjson");
 const OUT_DIR = path.join(ROOT, "quiz");
+const OUT_TEMA = path.join(ROOT, "tema");
 const SITEMAP = path.join(ROOT, "sitemap.xml");
 
 const SITE = "https://customquiz.no";
@@ -39,6 +40,15 @@ const CATEGORY_TO_IMG = {
   vitenskap: "kategori-naturvitenskap", geografi: "kategori-geografi", litteratur: "kategori-litteratur",
   kunst: "kategori-kunst", film: "kategori-film", musikk: "kategori-musikk", sport: "kategori-sport",
   fotball: "kategori-sport", filosofi: "kategori-filosofi", teknologi: "kategori-teknologi",
+  dyr: "kategori-mix",
+};
+
+// Visningsnavn på tema-landingssidene (speiler arkivets FILTER_LABELS).
+const THEME_PAGE_LABEL = {
+  mix: "Allmennkunnskap", historie: "Norsk historie", verdenshistorie: "Verdenshistorie",
+  vitenskap: "Naturvitenskap", geografi: "Geografi", litteratur: "Litteratur", kunst: "Kunst",
+  film: "Film og TV", musikk: "Musikk", sport: "Sport", fotball: "Fotball",
+  filosofi: "Filosofi", teknologi: "Teknologi", dyr: "Dyr",
 };
 
 // Slug-utleder (speiler sync-library.mjs) for ndjson-records uten ferdig slug.
@@ -62,7 +72,7 @@ const CAT_LABEL = {
   mix: "Allmennkunnskap", historie: "Historie", verdenshistorie: "Verdenshistorie",
   vitenskap: "Vitenskap", geografi: "Geografi", litteratur: "Litteratur", kunst: "Kunst",
   film: "Film", musikk: "Musikk", sport: "Sport", fotball: "Fotball",
-  filosofi: "Filosofi", teknologi: "Teknologi",
+  filosofi: "Filosofi", teknologi: "Teknologi", dyr: "Dyr",
 };
 const DIFF_LABEL = { lett: "Lett", medium: "Middels", vanskelig: "Vanskelig" };
 
@@ -228,6 +238,113 @@ ${fasitHtml}
 `;
 }
 
+// ---------- Tema-landingsside (SEO) ----------
+// Én crawlbar side per arkivkategori på /tema/<kategori>/index.html med unik
+// tittel/meta/OG, synlig liste over temaets quizer (lenket til /quiz/<slug>) og
+// JSON-LD ItemList. Gir Google selvstendige landingssider per tema.
+function themePageHtml(cat, quizzes) {
+  const label = THEME_PAGE_LABEL[cat] || CAT_LABEL[cat] || cat;
+  const n = quizzes.length;
+  const canonical = `${SITE}/tema/${cat}/`;
+  const imgKey = CATEGORY_TO_IMG[cat] || CATEGORY_TO_IMG.mix;
+  const ogImg = `${SITE}/IMG/${imgKey}.jpg`;
+  const title = `${label} — ${n} quizer | CustomQuiz`;
+  const metaDesc = `Utforsk ${n} ${label.toLowerCase()}-quizer på CustomQuiz. Test kunnskapen din med faktasjekkede spørsmål på norsk — gratis å spille.`;
+
+  const sorted = quizzes.slice().sort((a, b) => (b.plays || 0) - (a.plays || 0));
+
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${label} — quizer`,
+    url: canonical,
+    numberOfItems: n,
+    itemListElement: sorted.slice(0, 100).map((q, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${SITE}/quiz/${encodeURI(q.slug)}/`,
+      name: q.title,
+    })),
+  };
+
+  const cards = sorted.map((q) => {
+    const diff = DIFF_LABEL[q.difficulty] || "Middels";
+    const nq = Array.isArray(q.questions) ? q.questions.length : (q.num_questions || 0);
+    const sub = q.lede && q.lede.trim() ? q.lede.trim() : "";
+    const teamTag = q.team ? `<span class="tag">${esc(q.team)}</span>` : "";
+    return `<li class="card">
+        <a href="/quiz/${encodeURI(q.slug)}/">
+          <h2>${esc(q.title)}</h2>
+          ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
+          <div class="meta">${teamTag}<span class="tag">${diff}</span><span class="tag">${nq} spørsmål</span></div>
+        </a>
+        <a class="play" href="/lag-quiz.html?lib=${encodeURIComponent(q.slug)}">▶ Spill</a>
+      </li>`;
+  }).join("\n");
+
+  return `<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F0E6">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(metaDesc)}">
+<link rel="canonical" href="${esc(canonical)}">
+<link rel="icon" type="image/jpeg" href="/IMG/signature.jpg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${esc(label)} — ${n} quizer">
+<meta property="og:description" content="${esc(metaDesc)}">
+<meta property="og:image" content="${esc(ogImg)}">
+<meta property="og:url" content="${esc(canonical)}">
+<meta property="og:locale" content="nb_NO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${esc(ogImg)}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">${jsonLdSafe(ld)}</script>
+<style>
+  :root{--bg:#F5F0E6;--bg-soft:#FBF7EE;--ink:#1F1A14;--muted:#6B6256;--teal:#0A6E5A;--line:#E3D9C4;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;line-height:1.55;}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 64px;}
+  a{color:var(--teal);}
+  .crumbs{font-size:13px;color:var(--muted);margin-bottom:22px;}
+  .crumbs a{text-decoration:none;}
+  h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(30px,5vw,46px);line-height:1.1;margin:0 0 12px;}
+  .lede{font-size:18px;color:var(--muted);margin:0 0 32px;max-width:560px;}
+  ul.list{list-style:none;padding:0;margin:0;display:grid;gap:14px;}
+  li.card{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  li.card a{text-decoration:none;color:inherit;flex:1 1 320px;}
+  li.card h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:21px;margin:0 0 4px;color:var(--ink);}
+  li.card .sub{font-size:14px;color:var(--muted);margin:0 0 8px;}
+  .meta{display:flex;flex-wrap:wrap;gap:7px;}
+  .tag{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:12px;color:var(--muted);}
+  a.play{flex:0 0 auto;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;padding:10px 18px;border-radius:10px;font-size:15px;}
+  a.play:hover{filter:brightness(1.08);}
+  footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted);}
+  footer a{text-decoration:none;}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv.html">Arkivet</a> › ${esc(label)}</nav>
+  <h1>${esc(label)}</h1>
+  <p class="lede">${n} quizer i kategorien ${esc(label.toLowerCase())} — faktasjekket og gratis å spille.</p>
+  <ul class="list">
+${cards}
+  </ul>
+  <footer>
+    <p>Utforsk <a href="/arkiv.html">hele arkivet</a>, spill <a href="/dagens.html">dagens quiz</a>, eller <a href="/lag-quiz.html">lag din egen</a> på CustomQuiz.</p>
+  </footer>
+</main>
+</body>
+</html>
+`;
+}
+
 // ---------- Datakilder ----------
 async function fromSupabase() {
   const url = process.env.SUPABASE_URL;
@@ -285,17 +402,24 @@ function isRenderable(q) {
 }
 
 // ---------- Sitemap ----------
-function writeSitemap(slugs) {
+function writeSitemap(slugs, temaCats = []) {
   const core = [
     { loc: `${SITE}/`, freq: "daily", pri: "1.0" },
     { loc: `${SITE}/dagens.html`, freq: "daily", pri: "0.9" },
     { loc: `${SITE}/vm.html`, freq: "daily", pri: "0.9" },
     { loc: `${SITE}/arkiv.html`, freq: "daily", pri: "0.8" },
+    { loc: `${SITE}/fotball`, freq: "weekly", pri: "0.7" },
     { loc: `${SITE}/lag-quiz.html`, freq: "weekly", pri: "0.6" },
   ];
   const urls = core.map((u) =>
     `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`
   );
+  // Tema-landingssider (/tema/<kategori>/).
+  for (const cat of temaCats) {
+    urls.push(
+      `  <url>\n    <loc>${SITE}/tema/${encodeURI(cat)}/</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`
+    );
+  }
   for (const slug of slugs) {
     urls.push(
       `  <url>\n    <loc>${SITE}/quiz/${encodeURI(slug)}/</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>`
@@ -347,8 +471,34 @@ async function main() {
     }
   }
 
-  writeSitemap(slugs);
-  console.log(`build-quiz-pages: skrev ${written} quiz-sider (kilde: ${kilde}) + sitemap.xml med ${slugs.length + 5} URL-er.`);
+  // Tema-landingssider per kategori (SEO) — egen crawlbar side per tema.
+  try {
+    if (fs.existsSync(OUT_TEMA)) fs.rmSync(OUT_TEMA, { recursive: true, force: true });
+  } catch (e) {
+    console.warn("build-quiz-pages: kunne ikke rense gammel tema/ (" + e.message + ") — overskriver i stedet.");
+  }
+  fs.mkdirSync(OUT_TEMA, { recursive: true });
+
+  const byCat = new Map();
+  for (const q of renderable) {
+    const cat = q.category || "mix";
+    if (!byCat.has(cat)) byCat.set(cat, []);
+    byCat.get(cat).push(q);
+  }
+  const temaCats = [];
+  for (const [cat, list] of byCat) {
+    try {
+      const dir = path.join(OUT_TEMA, cat);
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, "index.html"), themePageHtml(cat, list), "utf8");
+      temaCats.push(cat);
+    } catch (e) {
+      console.warn("build-quiz-pages: hoppet over tema '" + cat + "' (" + e.message + ")");
+    }
+  }
+
+  writeSitemap(slugs, temaCats);
+  console.log(`build-quiz-pages: skrev ${written} quiz-sider + ${temaCats.length} tema-sider (kilde: ${kilde}) + sitemap.xml.`);
 }
 
 main().catch((e) => {

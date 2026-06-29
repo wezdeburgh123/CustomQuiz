@@ -788,6 +788,59 @@
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* ── Ny arkiv-IA (23. juni 2026): søk + lead-kort + tema-hub ───────────── */
+  .searchbar { display:flex; align-items:center; gap:14px; background:var(--bg-soft); border:0.5px solid var(--rule-strong); border-radius:var(--r-pill); padding:16px 24px; margin:0 0 14px; transition:border-color 200ms ease; }
+  .searchbar:focus-within { border-color:var(--accent); }
+  .searchbar svg { flex:0 0 auto; color:var(--ink-mute); }
+  .searchbar input { border:none; background:transparent; flex:1; font-family:var(--font-display); font-size:19px; color:var(--ink); outline:none; }
+  .searchbar input::placeholder { color:var(--ink-mute); font-style:italic; }
+  .search-clear { flex:0 0 auto; border:none; background:transparent; color:var(--ink-mute); font-size:16px; cursor:pointer; padding:4px 6px; border-radius:50%; line-height:1; }
+  .search-clear:hover { color:var(--ink); }
+  .meta-line { font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); margin:0 0 48px 4px; min-height:14px; }
+
+  /* Tre redaksjonelle lead-kort */
+  .lead-row { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:0 0 72px; }
+  .lead-card { display:flex; flex-direction:column; background:var(--bg-soft); border:0.5px solid var(--rule-strong); border-radius:var(--r-card); overflow:hidden; text-decoration:none; color:var(--ink); transition:border-color 240ms ease, transform 240ms cubic-bezier(.2,.6,.2,1); transform:translateZ(0); }
+  a.lead-card:hover { transform:translateY(-3px); border-color:var(--accent); }
+  .lead-img { width:100%; height:104px; overflow:hidden; background:var(--bg-deep); border-bottom:0.5px solid var(--rule); position:relative; isolation:isolate; }
+  .lead-img img { width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.02); transition:transform 520ms cubic-bezier(.2,.6,.2,1); }
+  a.lead-card:hover .lead-img img { transform:scale(1.06); }
+  .lead-img .tint { position:absolute; inset:0; mix-blend-mode:multiply; opacity:0.20; pointer-events:none; z-index:1; }
+  .lead-body { padding:22px 24px 24px; display:flex; flex-direction:column; flex:1; }
+  .lead-eyebrow { font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:12px; }
+  .lead-title { font-family:var(--font-display); font-weight:500; font-size:26px; line-height:1.04; letter-spacing:-0.015em; margin-bottom:10px; font-variation-settings:"opsz" 60; }
+  .lead-sub { font-family:var(--font-display); font-size:15px; line-height:1.45; color:var(--ink-soft); }
+  .lead-list { margin-top:6px; display:flex; flex-direction:column; gap:2px; }
+  .lead-item { display:flex; align-items:baseline; gap:10px; font-size:14.5px; color:var(--ink-soft); text-decoration:none; padding:6px 0; border-bottom:0.5px solid var(--rule); transition:color 160ms ease; }
+  .lead-item:last-child { border-bottom:none; }
+  .lead-item:hover { color:var(--accent); }
+  .lead-item .rk { font-family:var(--font-mono); font-size:11px; color:var(--ink-mute); flex:0 0 auto; }
+  .lead-item .nm { flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lead-item .ago { font-family:var(--font-mono); font-size:10px; margin-left:auto; flex:0 0 auto; color:var(--spot-moss); }
+  .crests { display:flex; gap:7px; margin-top:auto; padding-top:16px; }
+  .crests img { width:30px; height:30px; border-radius:50%; object-fit:cover; background:#F5EEDC; border:0.5px solid var(--rule); }
+
+  /* Seksjonshode */
+  .sec { display:flex; align-items:baseline; justify-content:space-between; margin:0 0 24px; padding-bottom:14px; border-bottom:1px solid var(--rule-strong); }
+  .sec-l { display:flex; align-items:baseline; gap:14px; }
+  .sec-title { font-family:var(--font-display); font-weight:500; font-size:28px; letter-spacing:-0.02em; font-variation-settings:"opsz" 72; }
+  .sec-meta { font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); }
+
+  /* Tema-rutenett */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:18px; margin:0 0 72px; }
+  .card { display:flex; flex-direction:column; background:var(--bg-soft); border:0.5px solid var(--rule); border-radius:var(--r-card); overflow:hidden; text-decoration:none; color:var(--ink); transition:border-color 240ms ease, transform 240ms cubic-bezier(.2,.6,.2,1); transform:translateZ(0); }
+  .card:hover { transform:translateY(-3px); }
+  .card-img { aspect-ratio:16/10; overflow:hidden; background:var(--bg-deep); border-bottom:0.5px solid var(--rule); position:relative; isolation:isolate; display:flex; align-items:center; justify-content:center; }
+  .card-img img { width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.02); transition:transform 520ms cubic-bezier(.2,.6,.2,1); }
+  .card:hover .card-img img { transform:scale(1.06); }
+  .card-img .tint { position:absolute; inset:0; mix-blend-mode:multiply; opacity:0.20; pointer-events:none; z-index:1; }
+  .card-body { padding:20px 22px 24px; }
+  .card-eyebrow { font-family:var(--font-mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:9px; }
+  .card-title { font-family:var(--font-display); font-weight:500; font-size:25px; line-height:1.05; letter-spacing:-0.015em; font-variation-settings:"opsz" 60; }
+  .barn-lede { font-family:var(--font-display); font-size:17px; color:var(--ink-soft); margin:-8px 0 22px; max-width:560px; }
+
+  @media (max-width:820px){ .lead-row{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -802,54 +855,71 @@
     <p class="page-lede" id="page-lede">Bla i alt CustomQuiz har publisert. Filtrer etter tema, sorter etter popularitet eller dato. Med gratis konto spiller du gratis-utvalget — se etter «Gratis»-merket. Abonnenter får tilgang til hele arkivet.</p>
   </header>
 
-  <div class="toolbar">
-    <div class="sort-row">
-      <span class="sort-label">Sorter</span>
-      <button class="sort-btn active" data-sort="plays">Mest spilt</button>
-      <button class="sort-btn" data-sort="date">Nyeste</button>
+  <!-- Søk på topp — fritekst, filtrerer client-side i alt som er lastet. -->
+  <div class="searchbar">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+    <input id="arkiv-search" placeholder="Søk i alle utgaver — tittel, tema, stikkord…" aria-label="Søk i arkivet" autocomplete="off">
+    <button class="search-clear" id="search-clear" type="button" aria-label="Tøm søk" hidden>✕</button>
+  </div>
+  <div class="meta-line" id="metaline">Laster arkivet …</div>
+
+  <!-- HUB — vises når søkefeltet er tomt. -->
+  <div id="hub">
+    <div class="lead-row">
+      <a class="lead-card" href="/fotball">
+        <div class="lead-img"><img src="IMG/kategori-sport.jpg" alt="" loading="lazy"><span class="tint" style="background:var(--accent)"></span></div>
+        <div class="lead-body">
+          <div class="lead-eyebrow" style="color:var(--accent)">Egen verden</div>
+          <div class="lead-title">Fotball</div>
+          <div class="lead-sub" id="fotball-sub">Klubber, serier, landslag og VM — egen inngang.</div>
+          <div class="crests" id="fotball-crests"></div>
+        </div>
+      </a>
+
+      <div class="lead-card lead-card--static">
+        <div class="lead-img"><img src="IMG/kategori-mix.jpg" alt="" loading="lazy"><span class="tint" style="background:var(--spot-saffron)"></span></div>
+        <div class="lead-body">
+          <div class="lead-eyebrow" style="color:var(--spot-saffron)">Mest spilt nå</div>
+          <div class="lead-title">Populært</div>
+          <div class="lead-list" id="popular-list"></div>
+        </div>
+      </div>
+
+      <div class="lead-card lead-card--static">
+        <div class="lead-img"><img src="IMG/kategori-custom.jpg" alt="" loading="lazy" onerror="this.onerror=null;this.src='IMG/kategori-mix.jpg'"><span class="tint" style="background:var(--spot-moss)"></span></div>
+        <div class="lead-body">
+          <div class="lead-eyebrow" style="color:var(--spot-moss)">Fellesskapet</div>
+          <div class="lead-title">Laget av spillere</div>
+          <div class="lead-list" id="community-list"></div>
+        </div>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;gap:16px;">
-      <div class="toolbar-meta"><strong id="result-count">0</strong> utgaver</div>
-      <button class="share-filter" id="share-filter" type="button" onclick="copyShareFilter()">Del utvalget ↗</button>
+
+    <div class="sec">
+      <div class="sec-l"><div class="sec-title">Utforsk etter tema</div></div>
+      <div class="sec-meta" id="theme-count">12 temaer</div>
     </div>
+    <div class="grid" id="theme-grid"></div>
+
+    <div class="sec" id="barn-sec" hidden>
+      <div class="sec-l"><div class="sec-title">For barn</div><div class="sec-meta">8–12 år</div></div>
+    </div>
+    <p class="barn-lede" id="barn-lede" hidden>Egen verden for de yngste — enkle, morsomme og faktasjekkede utgaver.</p>
+    <div class="grid" id="barn-grid"></div>
   </div>
 
-  <div class="filter-row" id="filter-row">
-    <button class="filter-chip active" data-filter="all">Alle</button>
-    <button class="filter-chip" data-filter="mix">Blandet</button>
-    <button class="filter-chip" data-filter="historie">Norsk historie</button>
-    <button class="filter-chip" data-filter="verdenshistorie">Verdenshistorie</button>
-    <button class="filter-chip" data-filter="vitenskap">Naturvitenskap</button>
-    <button class="filter-chip" data-filter="geografi">Geografi</button>
-    <button class="filter-chip" data-filter="litteratur">Litteratur</button>
-    <button class="filter-chip" data-filter="kunst">Kunst</button>
-    <button class="filter-chip" data-filter="film">Film og TV</button>
-    <button class="filter-chip" data-filter="musikk">Musikk</button>
-    <button class="filter-chip" data-filter="sport">Sport</button>
-    <button class="filter-chip" data-filter="fotball">Fotball</button>
-    <button class="filter-chip" data-filter="filosofi">Filosofi</button>
-    <button class="filter-chip" data-filter="teknologi">Teknologi</button>
-    <button class="filter-chip" data-filter="dyr">Dyr</button>
+  <!-- SØKERESULTAT — vises kun når søkefeltet har innhold. -->
+  <div id="searchresults" hidden>
+    <div class="sec">
+      <div class="sec-l"><div class="sec-title">Søkeresultat</div><div class="sec-meta"><strong id="result-count">0</strong> treff</div></div>
+    </div>
+    <button class="share-filter" id="share-filter" type="button" hidden aria-hidden="true"></button>
+    <section class="quiz-grid" id="quiz-grid"></section>
+    <div class="load-more-row">
+      <button class="load-more-btn" id="load-more" type="button" hidden>Vis flere</button>
+    </div>
+    <div class="empty-state" id="empty-state" style="display:none;">Ingen utgaver matcher søket. Prøv et annet ord.</div>
   </div>
-
-  <!-- Lag-underfilter: vises kun når Fotball er valgt. Bygges dynamisk fra
-       klubblagene som finnes blant fotball-quizene (q.team). -->
-  <div class="team-row" id="team-row" hidden>
-    <span class="team-row-label">Lag</span>
-    <div class="team-chips" id="team-chips"></div>
-  </div>
-
-  <div class="free-toggle-row" style="display:flex;justify-content:flex-end;margin:0 0 18px;">
-    <button class="free-toggle" id="free-toggle" type="button" aria-pressed="true">Vis kun gratis</button>
-  </div>
-
-  <section class="quiz-grid" id="quiz-grid"></section>
-
-  <div class="load-more-row">
-    <button class="load-more-btn" id="load-more" type="button" hidden>Vis flere</button>
-  </div>
-
-  <div class="empty-state" id="empty-state" style="display:none;">Ingen utgaver matcher filteret. Prøv en annen kategori.</div>
 
   <!-- Bekreftelse når en delelenke er kopiert. -->
   <div class="share-toast" id="share-toast" role="status" aria-live="polite"></div>
@@ -1173,74 +1243,36 @@
   }
   window.copyShareFilter = copyShareFilter;
 
-  function render() {
-    const grid = document.getElementById('quiz-grid');
-    const empty = document.getElementById('empty-state');
-    const count = document.getElementById('result-count');
+  // Søk-/visningstilstand (ny IA).
+  let searchQuery = '';
+  const RESULT_PAGE = 18;
+  let resultVisible = RESULT_PAGE;
 
-    // Filter — fler-valg. Tom selectedCats = alle kategorier.
-    let items = selectedCats.size === 0
-      ? QUIZZES.slice()
-      : QUIZZES.filter(q => selectedCats.has(q.category));
-
-    // Lag-underfilter: hvis fotball er valgt OG ett/flere lag er huket av,
-    // begrenses KUN fotball-quizene til de lagene — andre kategorier røres ikke.
-    if (selectedCats.has('fotball') && selectedTeams.size > 0) {
-      items = items.filter(q => q.category !== 'fotball' || selectedTeams.has(q.team));
+  // Ett kort — delt mellom søkeresultat og fellesskaps-seksjonen.
+  function cardFor(q) {
+    const tier = tierOf(q);
+    // Premium-bruker spiller alt. Ellers: free krever innlogging, premium krever abonnement.
+    let locked = false, lockKind = '';
+    if (!premium) {
+      if (tier === 'free') { locked = !loggedIn; lockKind = 'login'; }
+      else if (tier === 'premium') { locked = true; lockKind = 'premium'; }
     }
-
-    // «Vis kun gratis»: vis alt som ikke krever abonnement (open + free).
-    if (onlyFree) {
-      items = items.filter(q => tierOf(q) !== 'premium');
-    }
-
-    // Sort (community-seksjonen bruker alltid denne; hovedgriddet kan bygges som
-    // tverrsnitt i stedet, se under).
-    items.sort(SORTS[currentSort]);
-
-    // Skill kuratert fra fellesskaps-generert (sistnevnte får egen seksjon).
-    const community  = items.filter(q => q.source === 'user');
-    const curatedAll = items.filter(q => q.source !== 'user');
-
-    // «Alle» med urørt sortering → tverrsnitt først, så resten. Ellers ren sortert
-    // liste. Begge pagineres med «Vis flere» (PAGE_SIZE om gangen).
-    const sampler = (selectedCats.size === 0 && !sortTouched);
-    const ordered = sampler ? buildSampler(curatedAll) : curatedAll;
-
-    count.textContent = items.length;
-    empty.style.display = items.length === 0 ? 'block' : 'none';
-    updateShareLabel();
-    syncAddressBar();
-
-    // Speil sorterings-knappenes aktive tilstand (ingen aktiv i tverrsnitt-modus).
-    document.querySelectorAll('.sort-btn').forEach(b =>
-      b.classList.toggle('active', !sampler && b.dataset.sort === currentSort));
-
-    // Ett kort — delt mellom hovedgrid og fellesskaps-seksjonen.
-    function cardFor(q) {
-      const tier = tierOf(q);
-      // Premium-bruker spiller alt. Ellers: free krever innlogging, premium krever abonnement.
-      let locked = false, lockKind = '';
-      if (!premium) {
-        if (tier === 'free') { locked = !loggedIn; lockKind = 'login'; }
-        else if (tier === 'premium') { locked = true; lockKind = 'premium'; }
-      }
-      // Kun premium-lås dempes visuelt; gratis-quizer holdes innbydende (gulroten).
-      const dim = locked && lockKind === 'premium';
-      const safeTitle = q.title.replace(/<\/?em>/g, '').replace(/'/g, "\\'");
-      const onclick = !locked ? ''
-        : (lockKind === 'login' ? `onclick="promptLogin()"` : `onclick="openLockModal('${safeTitle}')"`);
-      // «Gratis»-merket vises på alle free-quizer (også når de krever innlogging).
-      const badge = (!FREE_PERIOD && tier === 'free')
-        ? '<span class="free-badge">Gratis</span>'
-        : (locked ? '<span class="lock-badge">Premium</span>' : '');
-      const numLabel = q.num ? `№ ${q.num} · ${q.categoryLabel}` : (q.categoryLabel || '');
-      // Klubblag-quizer får lagets crest (egen farge bakt inn) → ingen spot-overlay.
-      const crest = crestFor(q);
-      const imgSlug = crest || q.img;
-      const spotAttr = crest ? '' : ` data-spot="${CATEGORY_TO_SPOT[q.category] || 'teal'}"`;
-      const imgClass = crest ? ' class="is-crest"' : '';
-      return `
+    // Kun premium-lås dempes visuelt; gratis-quizer holdes innbydende (gulroten).
+    const dim = locked && lockKind === 'premium';
+    const safeTitle = q.title.replace(/<\/?em>/g, '').replace(/'/g, "\\'");
+    const onclick = !locked ? ''
+      : (lockKind === 'login' ? `onclick="promptLogin()"` : `onclick="openLockModal('${safeTitle}')"`);
+    // «Gratis»-merket vises på alle free-quizer (også når de krever innlogging).
+    const badge = (!FREE_PERIOD && tier === 'free')
+      ? '<span class="free-badge">Gratis</span>'
+      : (locked ? '<span class="lock-badge">Premium</span>' : '');
+    const numLabel = q.num ? `№ ${q.num} · ${q.categoryLabel}` : (q.categoryLabel || '');
+    // Klubblag-quizer får lagets crest (egen farge bakt inn) → ingen spot-overlay.
+    const crest = crestFor(q);
+    const imgSlug = crest || q.img;
+    const spotAttr = crest ? '' : ` data-spot="${CATEGORY_TO_SPOT[q.category] || 'teal'}"`;
+    const imgClass = crest ? ' class="is-crest"' : '';
+    return `
       <a class="quiz-card ${dim ? 'locked' : ''}"
          href="${locked ? 'javascript:void(0)' : q.url}"
          ${onclick}>
@@ -1257,37 +1289,63 @@
           </div>
         </div>
       </a>`;
-    }
+  }
 
-    // Kuratert → hovedgrid, begrenset til visibleCount (paginering).
-    const shown = ordered.slice(0, visibleCount);
+  // Normaliser for søk (samme translitt som resten av koden — æøå → ae/o/a).
+  function normSearch(s) {
+    return String(s || '').toLowerCase()
+      .replace(/æ/g, 'ae').replace(/ø/g, 'o').replace(/å/g, 'a');
+  }
+  function matchesQuery(q, terms) {
+    const hay = normSearch([
+      String(q.title).replace(/<\/?em>/g, ''),
+      q.sub, q.categoryLabel, q.category, q.team
+    ].filter(Boolean).join(' '));
+    return terms.every(t => hay.indexOf(t) !== -1);
+  }
+
+  // Søkeresultat → #quiz-grid (paginert, sortert på mest spilt).
+  function renderResults() {
+    const grid  = document.getElementById('quiz-grid');
+    const empty = document.getElementById('empty-state');
+    const count = document.getElementById('result-count');
+    const terms = normSearch(searchQuery).split(/\s+/).filter(Boolean);
+    let items = QUIZZES.filter(q => matchesQuery(q, terms));
+    if (onlyFree) items = items.filter(q => tierOf(q) !== 'premium');
+    items.sort(SORTS.plays);
+    if (count) count.textContent = items.length;
+    if (empty) empty.style.display = items.length === 0 ? 'block' : 'none';
+    const shown = items.slice(0, resultVisible);
     grid.innerHTML = shown.map(cardFor).join('');
-
-    // «Vis flere»: vis knappen når det finnes mer å laste i hovedgriddet.
     const moreBtn = document.getElementById('load-more');
     if (moreBtn) {
-      const remaining = ordered.length - shown.length;
+      const remaining = items.length - shown.length;
       moreBtn.hidden = remaining <= 0;
       if (remaining > 0) moreBtn.textContent = `Vis flere (${remaining} igjen)`;
     }
+  }
 
-    // Fellesskap → egen seksjon med rapport-knapp. Skjult når tom.
+  // Fellesskaps-seksjonen nederst (hub-modus) — quizer brukere har laget.
+  function renderCommunitySection() {
     const cGrid = document.getElementById('community-grid');
     const cHead = document.getElementById('community-head');
-    if (cGrid && cHead) {
-      if (community.length) {
-        cGrid.innerHTML = community.map(q => {
-          const rep = q.slug
-            ? `<button class="report-btn" type="button" data-slug="${String(q.slug).replace(/"/g, '&quot;')}" aria-label="Rapportér denne quizen">⚐ Rapportér</button>`
-            : '';
-          return `<div class="community-card">${cardFor(q)}${rep}</div>`;
-        }).join('');
-        cGrid.hidden = false; cHead.hidden = false;
-      } else {
-        cGrid.innerHTML = ''; cGrid.hidden = true; cHead.hidden = true;
-      }
+    if (!cGrid || !cHead) return;
+    const community = QUIZZES.filter(q => q.source === 'user').sort(SORTS.date);
+    if (community.length) {
+      cGrid.innerHTML = community.map(q => {
+        const rep = q.slug
+          ? `<button class="report-btn" type="button" data-slug="${String(q.slug).replace(/"/g, '&quot;')}" aria-label="Rapportér denne quizen">⚐ Rapportér</button>`
+          : '';
+        return `<div class="community-card">${cardFor(q)}${rep}</div>`;
+      }).join('');
+      cGrid.hidden = false; cHead.hidden = false;
+    } else {
+      cGrid.innerHTML = ''; cGrid.hidden = true; cHead.hidden = true;
     }
   }
+
+  // Bakoverkompatibel no-op for gammel kode (delelenke-knappen er borte i ny IA).
+  function render() { renderResults(); }
 
   // Sort buttons
   document.querySelectorAll('.sort-btn').forEach(btn => {
@@ -1299,11 +1357,11 @@
     });
   });
 
-  // «Vis flere» → slipp neste bolk.
+  // «Vis flere» → slipp neste bolk søkeresultat.
   (function initLoadMore() {
     const btn = document.getElementById('load-more');
     if (!btn) return;
-    btn.addEventListener('click', () => { visibleCount += PAGE_SIZE; render(); });
+    btn.addEventListener('click', () => { resultVisible += RESULT_PAGE; renderResults(); });
   })();
 
   // Rapport-knapp (delegert; #community-grid består selv om innholdet re-rendres).
@@ -1525,13 +1583,17 @@
   // OG gamle query-lenker (?category=fotball&team=Liverpool, evt. komma-separert).
   // Lag-slugger tas vare på og løses opp til lagnavn etter at fotball-quizene
   // er lastet inn (se bootstrap-koden lenger ned).
+  // Bakoverkompatibilitet: gamle dypelenker til arkivet (/arkiv/<kategori>[/<lag>]
+  // og ?category=/?team=) peker nå på egne tema-/fotball-sider. Send brukeren
+  // videre dit i stedet for å vise et tomt filter. ?q=… forhåndsutfyller søket.
   let pendingTeamSlugs = [];
+  let pendingSearch = '';
   (function parseUrlSelection() {
+    const params = new URLSearchParams(window.location.search);
+    pendingSearch = (params.get('q') || '').trim();
+
     const cats = [];
     const teamSlugs = [];
-
-    // 1) Pen path: /arkiv/<seg>/<seg>… — hvert segment er enten en kjent
-    //    kategori-slug eller (ellers) en lag-slug.
     const path = decodeURIComponent(window.location.pathname).replace(/^\/+|\/+$/g, '');
     const parts = path.split('/').filter(Boolean);
     if (parts[0] === 'arkiv') {
@@ -1541,26 +1603,143 @@
         else teamSlugs.push(s);
       });
     }
-
-    // 2) Bakoverkompatibel query: ?category=&team= (kan være komma-separert).
-    const params = new URLSearchParams(window.location.search);
     (params.get('category') || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
       .forEach(s => { if (KNOWN_CATS.has(s) && !cats.includes(s)) cats.push(s); });
-    (params.get('team') || '').split(',').map(s => s.trim()).filter(Boolean)
-      .forEach(s => teamSlugs.push(teamSlug(s)));
+    if ((params.get('team') || '').trim()) cats.push('fotball');
 
-    // Lag impliserer fotball-kategorien.
-    if (teamSlugs.length && !cats.includes('fotball')) cats.push('fotball');
-    if (cats.length === 0 && teamSlugs.length === 0) return; // ingen URL-filter
-
-    selectedCats = new Set(cats);
-    pendingTeamSlugs = teamSlugs;
-    refreshCatChips();
-    syncTeamRow(); // viser/bygger lag-raden hvis fotball er valgt
-
-    const firstChip = document.querySelector(`.filter-chip[data-filter="${cats[0]}"]`);
-    if (firstChip) firstChip.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
+    // Redirect: fotball/lag → /fotball ; annen kategori → /tema/<kategori>.
+    if (cats.includes('fotball') || teamSlugs.length) { window.location.replace('/fotball'); return; }
+    if (cats.length) { window.location.replace('/tema/' + cats[0]); return; }
   })();
+
+  // ── Ny IA: hub-bygging + søk ───────────────────────────────────────────
+  // De 12 voksen-temaene i fast rekkefølge (tema-hub). Fotball + barn egne soner.
+  const THEME_CATS = ['mix','historie','verdenshistorie','geografi','vitenskap','teknologi','litteratur','kunst','film','musikk','sport','filosofi'];
+  const BARN_META = [
+    ['dyr','Dyr','Verdens raskeste · Dyr i dypet · Skumle dyr'],
+    ['spill','Spill','Minecraft · Super Mario · Fortnite'],
+    ['monstere','Monstere','Godzilla · Drager · Snille monstre']
+  ];
+  function countCat(cat) { return QUIZZES.filter(q => q.category === cat).length; }
+  function repImg(cat) {
+    const rep = QUIZZES.find(q => q.category === cat && /^https?:\/\//.test(q.img));
+    return rep ? rep.img : 'IMG/' + (CATEGORY_TO_IMG[cat] || 'kategori-mix') + '.jpg';
+  }
+  function relAgo(dateStr) {
+    const d = new Date(dateStr); if (isNaN(d)) return '';
+    const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+    if (days <= 0) return 'i dag';
+    if (days === 1) return 'i går';
+    if (days < 7) return days + ' d';
+    if (days < 30) return Math.floor(days / 7) + ' uker';
+    return Math.floor(days / 30) + ' mnd';
+  }
+  const stripEm = (s) => String(s || '').replace(/<\/?em>/g, '');
+
+  function renderHub() {
+    // Tema-rutenett
+    const grid = document.getElementById('theme-grid');
+    if (grid) {
+      grid.innerHTML = THEME_CATS.map(cat => {
+        const n = countCat(cat); if (!n) return '';
+        const label = FILTER_LABELS[cat] || cat;
+        const img = CATEGORY_TO_IMG[cat] || 'kategori-mix';
+        const spot = CATEGORY_TO_SPOT[cat] || 'teal';
+        return `<a class="card" href="/tema/${cat}">
+          <div class="card-img"><img src="IMG/${img}.jpg" alt="" loading="lazy"><span class="tint" style="background:var(--spot-${spot})"></span></div>
+          <div class="card-body"><div class="card-eyebrow" style="color:var(--spot-${spot})">${n} utgaver</div><div class="card-title">${label}</div></div>
+        </a>`;
+      }).join('');
+      const tc = document.getElementById('theme-count');
+      if (tc) tc.textContent = THEME_CATS.filter(c => countCat(c)).length + ' temaer';
+    }
+
+    // For barn (kun kategorier som finnes i data)
+    const bg = document.getElementById('barn-grid');
+    if (bg) {
+      const cards = BARN_META.map(([cat, label, sub]) => {
+        const n = countCat(cat); if (!n) return '';
+        const spot = CATEGORY_TO_SPOT[cat] || 'oker';
+        const src = repImg(cat);
+        return `<a class="card" href="/tema/${cat}">
+          <div class="card-img"><img src="${src}" alt="" loading="lazy" onerror="this.onerror=null;this.src='IMG/kategori-mix.jpg'"><span class="tint" style="background:var(--spot-${spot})"></span></div>
+          <div class="card-body"><div class="card-eyebrow" style="color:var(--spot-${spot})">${n} utgaver · 8–12 år</div><div class="card-title">${label}</div><div class="lead-sub" style="margin-top:8px">${sub}</div></div>
+        </a>`;
+      }).filter(Boolean);
+      bg.innerHTML = cards.join('');
+      const has = cards.length > 0;
+      const sec = document.getElementById('barn-sec'); if (sec) sec.hidden = !has;
+      const lede = document.getElementById('barn-lede'); if (lede) lede.hidden = !has;
+    }
+
+    // Fotball lead-kort: antall + crests
+    const fb = QUIZZES.filter(q => q.category === 'fotball');
+    const fbSub = document.getElementById('fotball-sub');
+    if (fbSub) fbSub.textContent = fb.length
+      ? `Klubber, serier, landslag og VM — ${fb.length} utgaver med egen inngang.`
+      : 'Klubber, serier, landslag og VM — egen inngang.';
+    const crestWrap = document.getElementById('fotball-crests');
+    if (crestWrap) {
+      const seen = new Set(); const cr = [];
+      fb.forEach(q => { const s = crestFor(q); if (s && !seen.has(s)) { seen.add(s); cr.push(s); } });
+      crestWrap.innerHTML = cr.slice(0, 5).map(s => `<img src="IMG/${s}.jpg" alt="" loading="lazy">`).join('');
+    }
+
+    // Populært (top 3 kuratert på plays)
+    const pop = QUIZZES.filter(q => q.source !== 'user').slice().sort(SORTS.plays).slice(0, 3);
+    const popList = document.getElementById('popular-list');
+    if (popList) popList.innerHTML = pop.map((q, i) =>
+      `<a class="lead-item" href="${q.url}"><span class="rk">0${i + 1}</span><span class="nm">${stripEm(q.title)}</span></a>`
+    ).join('');
+
+    // Fellesskapet (3 nyeste user-quizer)
+    const com = QUIZZES.filter(q => q.source === 'user').slice().sort(SORTS.date).slice(0, 3);
+    const comList = document.getElementById('community-list');
+    if (comList) {
+      comList.innerHTML = com.length
+        ? com.map(q => `<a class="lead-item" href="${q.url}"><span class="rk">›</span><span class="nm">${stripEm(q.title)}</span><span class="ago">${relAgo(q.date)}</span></a>`).join('')
+        : '<div class="lead-sub">Ingen ennå — <a href="/lag-quiz.html" style="color:var(--spot-moss)">lag den første</a>.</div>';
+    }
+
+    // Meta-linje
+    const meta = document.getElementById('metaline');
+    if (meta) meta.textContent = QUIZZES.length + ' utgaver · ' + THEME_CATS.filter(c => countCat(c)).length + ' temaer · oppdatert daglig';
+
+    renderCommunitySection();
+  }
+
+  function setSearchMode(on) {
+    const hub = document.getElementById('hub');
+    const res = document.getElementById('searchresults');
+    if (hub) hub.hidden = on;
+    if (res) res.hidden = !on;
+    if (on) {
+      const cHead = document.getElementById('community-head'); if (cHead) cHead.hidden = true;
+      const cGrid = document.getElementById('community-grid'); if (cGrid) cGrid.hidden = true;
+    } else {
+      renderCommunitySection();
+    }
+  }
+  function applySearch(q) {
+    searchQuery = q;
+    const clear = document.getElementById('search-clear');
+    if (clear) clear.hidden = !q;
+    if (q) { resultVisible = RESULT_PAGE; setSearchMode(true); renderResults(); }
+    else { setSearchMode(false); }
+  }
+  function initArchive() {
+    renderHub();
+    const input = document.getElementById('arkiv-search');
+    const clear = document.getElementById('search-clear');
+    if (input) {
+      input.addEventListener('input', (e) => applySearch(e.target.value.trim()));
+      if (pendingSearch) { input.value = pendingSearch; applySearch(pendingSearch); }
+    }
+    if (clear) clear.addEventListener('click', () => { if (input) { input.value = ''; input.focus(); } applySearch(''); });
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); if (input) input.focus(); }
+    });
+  }
 
   // Kategori → kategoribilde (for bibliotek-quizene fra quizzes-data.json)
   const CATEGORY_TO_IMG = {
@@ -1650,7 +1829,7 @@
         buildTeamFilter(); // re-render chips med aktiv-tilstand
       }
     }
-    render();
+    initArchive();
   })();
 
   // GRATIS-PERIODE: skjul abonnements-UI (toggle + tease er meningsløse når alt
@@ -1681,7 +1860,8 @@
     if (!userToggledFree) { onlyFree = !premium; syncFreeToggle(); }
     const tease = document.querySelector('.subscribe-tease');
     if (tease) tease.style.display = (FREE_PERIOD || premium) ? 'none' : '';
-    render();
+    renderHub();
+    if (searchQuery) renderResults();
   });
 </script>
 

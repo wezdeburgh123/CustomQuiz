@@ -913,6 +913,15 @@
     .masthead { flex-wrap: wrap; gap: 12px; }
     .masthead-meta { font-size: 10px; gap: 8px; }
   }
+
+  /* Globalt søk i hero → tar deg inn i arkivet (/arkiv?q=…). */
+  .home-search { display:flex; align-items:center; gap:12px; background:var(--bg-soft); border:0.5px solid var(--rule-strong); border-radius:var(--r-pill); padding:13px 18px; margin:22px 0 0; max-width:480px; transition:border-color 200ms ease; }
+  .home-search:focus-within { border-color:var(--accent); }
+  .home-search svg { flex:0 0 auto; color:var(--ink-mute); }
+  .home-search input { border:none; background:transparent; flex:1; font-family:var(--font-display); font-size:17px; color:var(--ink); outline:none; min-width:0; }
+  .home-search input::placeholder { color:var(--ink-mute); font-style:italic; }
+  .home-search button { flex:0 0 auto; border:none; background:var(--accent); color:var(--bg-soft); width:34px; height:34px; border-radius:50%; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 160ms ease; }
+  .home-search button:hover { background:var(--accent-deep); }
 </style>
 </head>
 <body>
@@ -942,6 +951,11 @@
       <h1>Du <em>vet</em> mindre enn du tror. Heldigvis.</h1>
       <p class="lede">En quiz om dagen er starten på løsningen. Velg blant tolv kuraterte tema — eller skriv ditt eget, fra norsk historie til japansk matkultur. Ta den alene, eller sammen med venner rundt bordet.</p>
       <a class="btn" href="dagens.html">Start dagens quiz <span class="btn-arrow">→</span></a>
+      <form class="home-search" role="search" onsubmit="event.preventDefault();var q=this.q.value.trim();window.location.href='/arkiv'+(q?'?q='+encodeURIComponent(q):'');">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+        <input name="q" type="search" placeholder="Søk i hele arkivet — tema, tittel, stikkord…" aria-label="Søk i arkivet">
+        <button type="submit" aria-label="Søk">→</button>
+      </form>
     </div>
     <div class="hero-image">
       <img id="hero-img" src="IMG/hero.jpg" alt="Kategori-illustrasjon fra Allmennkunnskap">
@@ -1097,22 +1111,22 @@
   <section class="theme-shortcuts">
     <div class="section-label">
       <span>Bla etter tema</span>
-      <span class="section-meta">Filtrer arkivet direkte</span>
+      <span class="section-meta">Egen side per tema</span>
     </div>
     <div class="theme-grid">
-      <a class="theme-chip" data-spot-name="teal"       href="arkiv.html?category=mix"><span class="theme-chip-dot"></span>Blandet</a>
-      <a class="theme-chip" data-spot-name="terracotta" href="arkiv.html?category=historie"><span class="theme-chip-dot"></span>Norsk historie</a>
-      <a class="theme-chip" data-spot-name="terracotta" href="arkiv.html?category=verdenshistorie"><span class="theme-chip-dot"></span>Verdenshistorie</a>
-      <a class="theme-chip" data-spot-name="cobalt"     href="arkiv.html?category=vitenskap"><span class="theme-chip-dot"></span>Naturvitenskap</a>
-      <a class="theme-chip" data-spot-name="moss"       href="arkiv.html?category=geografi"><span class="theme-chip-dot"></span>Geografi</a>
-      <a class="theme-chip" data-spot-name="plum"       href="arkiv.html?category=litteratur"><span class="theme-chip-dot"></span>Litteratur</a>
-      <a class="theme-chip" data-spot-name="saffron"    href="arkiv.html?category=kunst"><span class="theme-chip-dot"></span>Kunst</a>
-      <a class="theme-chip" data-spot-name="terracotta" href="arkiv.html?category=film"><span class="theme-chip-dot"></span>Film og TV</a>
-      <a class="theme-chip" data-spot-name="saffron"    href="arkiv.html?category=musikk"><span class="theme-chip-dot"></span>Musikk</a>
-      <a class="theme-chip" data-spot-name="saffron"    href="arkiv.html?category=sport"><span class="theme-chip-dot"></span>Sport</a>
-      <a class="theme-chip" data-spot-name="moss"       href="arkiv.html?category=fotball"><span class="theme-chip-dot"></span>Fotball</a>
-      <a class="theme-chip" data-spot-name="plum"       href="arkiv.html?category=filosofi"><span class="theme-chip-dot"></span>Filosofi</a>
-      <a class="theme-chip" data-spot-name="cobalt"     href="arkiv.html?category=teknologi"><span class="theme-chip-dot"></span>Teknologi</a>
+      <a class="theme-chip" data-spot-name="teal"       href="/tema/mix"><span class="theme-chip-dot"></span>Blandet</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="/tema/historie"><span class="theme-chip-dot"></span>Norsk historie</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="/tema/verdenshistorie"><span class="theme-chip-dot"></span>Verdenshistorie</a>
+      <a class="theme-chip" data-spot-name="cobalt"     href="/tema/vitenskap"><span class="theme-chip-dot"></span>Naturvitenskap</a>
+      <a class="theme-chip" data-spot-name="moss"       href="/tema/geografi"><span class="theme-chip-dot"></span>Geografi</a>
+      <a class="theme-chip" data-spot-name="plum"       href="/tema/litteratur"><span class="theme-chip-dot"></span>Litteratur</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="/tema/kunst"><span class="theme-chip-dot"></span>Kunst</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="/tema/film"><span class="theme-chip-dot"></span>Film og TV</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="/tema/musikk"><span class="theme-chip-dot"></span>Musikk</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="/tema/sport"><span class="theme-chip-dot"></span>Sport</a>
+      <a class="theme-chip" data-spot-name="moss"       href="/fotball"><span class="theme-chip-dot"></span>Fotball</a>
+      <a class="theme-chip" data-spot-name="plum"       href="/tema/filosofi"><span class="theme-chip-dot"></span>Filosofi</a>
+      <a class="theme-chip" data-spot-name="cobalt"     href="/tema/teknologi"><span class="theme-chip-dot"></span>Teknologi</a>
     </div>
   </section>
 
