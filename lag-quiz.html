@@ -59,6 +59,8 @@
     --spot-plum:        #6B3050;
     --spot-saffron:     #C68A2E;
     --spot-oker:        #9A5B26;   /* Dyr (barneserie) */
+    --spot-spill:       #1F7A8A;   /* Spill (barneserie) */
+    --spot-monstere:    #6F3F96;   /* Monstere (barneserie) */
     --r-pill:       999px;
     --r-card:       16px;
     --r-md:         8px;
@@ -89,6 +91,8 @@
   [data-spot="plum"]       { --spot: var(--spot-plum); }
   [data-spot="saffron"]    { --spot: var(--spot-saffron); }
   [data-spot="oker"]       { --spot: var(--spot-oker); }
+  [data-spot="spill"]      { --spot: var(--spot-spill); }
+  [data-spot="monstere"]   { --spot: var(--spot-monstere); }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -2832,12 +2836,14 @@
     mix: 'kategori-mix', historie: 'kategori-norsk-historie', verdenshistorie: 'kategori-verdenshistorie',
     vitenskap: 'kategori-naturvitenskap', geografi: 'kategori-geografi', litteratur: 'kategori-litteratur',
     kunst: 'kategori-kunst', film: 'kategori-film', musikk: 'kategori-musikk', sport: 'kategori-sport',
-    filosofi: 'kategori-filosofi', teknologi: 'kategori-teknologi'
+    filosofi: 'kategori-filosofi', teknologi: 'kategori-teknologi',
+    dyr: 'kategori-mix', spill: 'kategori-mix', monstere: 'kategori-mix'
   };
   const LIB_CAT_SPOT = {
     mix: 'teal', historie: 'terracotta', verdenshistorie: 'terracotta', vitenskap: 'cobalt',
     geografi: 'moss', litteratur: 'plum', kunst: 'saffron', film: 'terracotta',
-    musikk: 'saffron', sport: 'saffron', filosofi: 'plum', teknologi: 'cobalt'
+    musikk: 'saffron', sport: 'saffron', filosofi: 'plum', teknologi: 'cobalt',
+    dyr: 'oker', spill: 'spill', monstere: 'monstere'
   };
 
   // Klubblag → crest (IMG/crest-*.jpg). Holdes i synk med index.html/arkiv.html.
@@ -2871,7 +2877,16 @@
       banner.removeAttribute('data-spot');
       banner.classList.add('is-crest');
     } else {
-      img.src = /^https?:\/\//.test(q.hero_img || '') ? q.hero_img : 'IMG/' + (q.hero_img || LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
+      // Barneseriene (dyr/spill/monstere) har lokale cover-filer navngitt etter
+      // slug (IMG/<slug>.jpg) — samme bilde som arkiv-kortet — ikke http-hero_img.
+      // Onerror faller tilbake til kategoribildet om cover-filen mangler.
+      const catImg = 'IMG/' + (LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
+      let src;
+      if (/^https?:\/\//.test(q.hero_img || '')) src = q.hero_img;
+      else if (['dyr', 'spill', 'monstere'].includes(q.category) && q.slug) src = 'IMG/' + q.slug + '.jpg';
+      else src = 'IMG/' + (q.hero_img || LIB_CAT_IMG[q.category] || 'kategori-custom') + '.jpg';
+      img.onerror = function () { this.onerror = null; this.src = catImg; };
+      img.src = src;
       banner.classList.remove('is-crest');
       banner.setAttribute('data-spot', LIB_CAT_SPOT[q.category] || 'teal');
     }
