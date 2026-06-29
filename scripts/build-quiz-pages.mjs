@@ -51,6 +51,31 @@ const THEME_PAGE_LABEL = {
   filosofi: "Filosofi", teknologi: "Teknologi", dyr: "Dyr",
 };
 
+// Kategori → spot-farge (speiler arkiv.html CATEGORY_TO_SPOT).
+const CATEGORY_TO_SPOT = {
+  mix: "teal", geografi: "moss", vitenskap: "cobalt", teknologi: "cobalt",
+  historie: "terracotta", verdenshistorie: "terracotta", film: "terracotta",
+  litteratur: "plum", filosofi: "plum", musikk: "saffron", kunst: "saffron",
+  sport: "saffron", fotball: "moss", dyr: "oker",
+};
+// Klubblag → crest, og hvilke crests som faktisk finnes (speiler arkiv.html).
+const TEAM_TO_CREST = {
+  "Arsenal": "crest-arsenal", "Chelsea": "crest-chelsea", "Everton": "crest-everton",
+  "Leeds United": "crest-leeds", "Liverpool": "crest-liverpool", "Manchester City": "crest-man-city",
+  "Manchester United": "crest-man-united", "Newcastle United": "crest-newcastle", "Tottenham": "crest-tottenham",
+  "Bodø/Glimt": "crest-bodo-glimt", "Brann": "crest-brann", "Lillestrøm": "crest-lillestrom",
+  "Molde": "crest-molde", "Rosenborg": "crest-rosenborg", "Viking": "crest-viking", "Vålerenga": "crest-valerenga",
+};
+const AVAILABLE_CRESTS = new Set([
+  "crest-arsenal", "crest-chelsea", "crest-everton", "crest-leeds", "crest-liverpool",
+  "crest-man-city", "crest-man-united", "crest-newcastle", "crest-tottenham",
+  "crest-bodo-glimt", "crest-brann", "crest-lillestrom", "crest-molde", "crest-rosenborg", "crest-viking", "crest-valerenga",
+]);
+function crestForBuild(team) {
+  const slug = TEAM_TO_CREST[String(team || "").trim()];
+  return (slug && AVAILABLE_CRESTS.has(slug)) ? slug : null;
+}
+
 // Slug-utleder (speiler sync-library.mjs) for ndjson-records uten ferdig slug.
 const TRANSLIT = { "æ": "ae", "ø": "o", "å": "a" };
 const normToken = (s) =>
@@ -239,9 +264,35 @@ ${fasitHtml}
 }
 
 // ---------- Tema-landingsside (SEO) ----------
-// Én crawlbar side per arkivkategori på /tema/<kategori>/index.html med unik
-// tittel/meta/OG, synlig liste over temaets quizer (lenket til /quiz/<slug>) og
-// JSON-LD ItemList. Gir Google selvstendige landingssider per tema.
+// Én crawlbar side per arkivkategori på /tema/<kategori>/index.html — bygd som
+// arkivets bildekort-grid (delt masthead via nav.js, samme .quiz-card-uttrykk,
+// 3–4 i bredden) med unik tittel/meta/OG + JSON-LD ItemList. <base href="/">
+// gjør at nav.js' relative lenker + IMG/ + script-stier løses fra roten.
+function themeCard(q) {
+  const crest = crestForBuild(q.team);
+  const hero = (q.hero_img && /^https?:\/\//i.test(q.hero_img)) ? q.hero_img : null;
+  const imgSrc = crest ? `/IMG/${crest}.jpg` : (hero || `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`);
+  const fallback = `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`;
+  const spot = CATEGORY_TO_SPOT[q.category] || "teal";
+  const spotAttr = crest ? "" : ` data-spot="${spot}"`;
+  const num = q.team ? esc(q.team) : esc(THEME_PAGE_LABEL[q.category] || CAT_LABEL[q.category] || "");
+  const diff = DIFF_LABEL[q.difficulty] || "Middels";
+  const plays = (q.plays && q.plays > 0)
+    ? `<span class="quiz-plays">${q.plays.toLocaleString("nb-NO").replace(",", " ")} spilt</span>` : "";
+  const sub = q.lede && q.lede.trim() ? `<div class="quiz-sub">${esc(q.lede.trim())}</div>` : "";
+  return `<a class="quiz-card" href="/lag-quiz.html?lib=${encodeURIComponent(q.slug)}">
+        <div class="quiz-image${crest ? " is-crest" : ""}"${spotAttr}>
+          <img src="${esc(imgSrc)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">
+        </div>
+        <div class="quiz-body">
+          <div class="quiz-num">${num}</div>
+          <div class="quiz-title">${esc(q.title)}</div>
+          ${sub}
+          <div class="quiz-rating"><span>${diff}</span>${plays}</div>
+        </div>
+      </a>`;
+}
+
 function themePageHtml(cat, quizzes) {
   const label = THEME_PAGE_LABEL[cat] || CAT_LABEL[cat] || cat;
   const n = quizzes.length;
@@ -267,25 +318,13 @@ function themePageHtml(cat, quizzes) {
     })),
   };
 
-  const cards = sorted.map((q) => {
-    const diff = DIFF_LABEL[q.difficulty] || "Middels";
-    const nq = Array.isArray(q.questions) ? q.questions.length : (q.num_questions || 0);
-    const sub = q.lede && q.lede.trim() ? q.lede.trim() : "";
-    const teamTag = q.team ? `<span class="tag">${esc(q.team)}</span>` : "";
-    return `<li class="card">
-        <a href="/quiz/${encodeURI(q.slug)}/">
-          <h2>${esc(q.title)}</h2>
-          ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
-          <div class="meta">${teamTag}<span class="tag">${diff}</span><span class="tag">${nq} spørsmål</span></div>
-        </a>
-        <a class="play" href="/lag-quiz.html?lib=${encodeURIComponent(q.slug)}">▶ Spill</a>
-      </li>`;
-  }).join("\n");
+  const cards = sorted.map(themeCard).join("\n");
 
   return `<!DOCTYPE html>
 <html lang="nb">
 <head>
 <meta charset="UTF-8">
+<base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F0E6">
@@ -303,43 +342,74 @@ function themePageHtml(cat, quizzes) {
 <meta name="twitter:image" content="${esc(ogImg)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">${jsonLdSafe(ld)}</script>
 <style>
-  :root{--bg:#F5F0E6;--bg-soft:#FBF7EE;--ink:#1F1A14;--muted:#6B6256;--teal:#0A6E5A;--line:#E3D9C4;}
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;line-height:1.55;}
-  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 64px;}
-  a{color:var(--teal);}
-  .crumbs{font-size:13px;color:var(--muted);margin-bottom:22px;}
-  .crumbs a{text-decoration:none;}
-  h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(30px,5vw,46px);line-height:1.1;margin:0 0 12px;}
-  .lede{font-size:18px;color:var(--muted);margin:0 0 32px;max-width:560px;}
-  ul.list{list-style:none;padding:0;margin:0;display:grid;gap:14px;}
-  li.card{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-  li.card a{text-decoration:none;color:inherit;flex:1 1 320px;}
-  li.card h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:21px;margin:0 0 4px;color:var(--ink);}
-  li.card .sub{font-size:14px;color:var(--muted);margin:0 0 8px;}
-  .meta{display:flex;flex-wrap:wrap;gap:7px;}
-  .tag{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:12px;color:var(--muted);}
-  a.play{flex:0 0 auto;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;padding:10px 18px;border-radius:10px;font-size:15px;}
-  a.play:hover{filter:brightness(1.08);}
-  footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted);}
-  footer a{text-decoration:none;}
+  :root{
+    --bg:#F5F0E6;--bg-soft:#FBF7EE;--bg-deep:#ECE3CE;--ink:#1F1A14;--ink-soft:#4B4338;--ink-mute:#7A6F5A;
+    --rule:#E2D8C2;--rule-strong:#C9BD9F;--accent:#0A6E5A;--accent-soft:#C9E2D8;--accent-deep:#074538;
+    --spot-teal:#0A6E5A;--spot-moss:#5C7A3C;--spot-cobalt:#2C4A8F;--spot-terracotta:#B05238;
+    --spot-plum:#6B3050;--spot-saffron:#C68A2E;--spot-oker:#9A5B26;
+    --r-pill:999px;--r-card:16px;
+    --font-display:'Fraunces',Georgia,serif;--font-sans:'Manrope','Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:17px;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased;}
+  body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(201,189,159,0.30) 1px,transparent 0);background-size:4px 4px;pointer-events:none;z-index:1;}
+  .container{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:0 28px;}
+  [data-spot]{position:relative;}
+  [data-spot]::before{content:"";position:absolute;inset:0;background:var(--spot,transparent);opacity:0.55;z-index:1;pointer-events:none;}
+  [data-spot] > img{position:relative;z-index:2;mix-blend-mode:multiply;}
+  [data-spot="teal"]{--spot:var(--spot-teal);}[data-spot="moss"]{--spot:var(--spot-moss);}
+  [data-spot="cobalt"]{--spot:var(--spot-cobalt);}[data-spot="terracotta"]{--spot:var(--spot-terracotta);}
+  [data-spot="plum"]{--spot:var(--spot-plum);}[data-spot="saffron"]{--spot:var(--spot-saffron);}[data-spot="oker"]{--spot:var(--spot-oker);}
+  .crumbs{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:22px;}
+  .crumbs a{color:var(--ink-mute);text-decoration:none;}
+  .crumbs a:hover{color:var(--accent);}
+  .page-header{margin:8px 0 36px;}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;}
+  h1{font-family:var(--font-display);font-weight:500;font-size:clamp(38px,5.2vw,60px);line-height:1.0;letter-spacing:-0.025em;margin-bottom:18px;font-variation-settings:"opsz" 120;}
+  h1 em{font-style:italic;color:var(--accent);}
+  .page-lede{font-family:var(--font-display);font-size:20px;line-height:1.45;color:var(--ink-soft);max-width:560px;}
+  .quiz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:56px;}
+  .quiz-card{display:flex;flex-direction:column;background:var(--bg-soft);border:0.5px solid var(--rule);border-radius:var(--r-card);text-decoration:none;transition:border-color 200ms ease;position:relative;overflow:hidden;}
+  .quiz-card:hover{border-color:var(--accent);}
+  .quiz-card:hover .quiz-image img{transform:scale(1.025);}
+  .quiz-image{aspect-ratio:5/3;background:var(--bg);overflow:hidden;border-bottom:0.5px solid var(--rule);position:relative;}
+  .quiz-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 220ms ease;}
+  .quiz-image.is-crest{background:#F5EEDC;}
+  .quiz-image.is-crest img{object-fit:contain;mix-blend-mode:normal;padding:14px;}
+  .quiz-body{padding:18px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .quiz-num{font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-mute);}
+  .quiz-title{font-family:var(--font-display);font-size:22px;font-weight:500;line-height:1.18;color:var(--ink);font-variation-settings:"opsz" 36;}
+  .quiz-sub{font-family:var(--font-sans);font-size:13px;color:var(--ink-soft);line-height:1.45;margin-bottom:4px;}
+  .quiz-rating{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;color:var(--ink-mute);}
+  .quiz-plays{font-variant-numeric:tabular-nums;}
+  footer{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);text-align:center;padding:8px 0 64px;}
+  footer a{color:var(--ink-mute);text-decoration:none;}
+  footer a:hover{color:var(--accent);}
+  @media (max-width:560px){.container{padding:0 18px;}}
 </style>
 </head>
 <body>
-<main class="wrap">
+<div class="container">
+  <div id="cq-masthead"></div>
   <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv.html">Arkivet</a> › ${esc(label)}</nav>
-  <h1>${esc(label)}</h1>
-  <p class="lede">${n} quizer i kategorien ${esc(label.toLowerCase())} — faktasjekket og gratis å spille.</p>
-  <ul class="list">
+  <header class="page-header">
+    <div class="eyebrow">Tema</div>
+    <h1>${esc(label)}</h1>
+    <p class="page-lede">${n} <em>quizer</em> i ${esc(label.toLowerCase())} — faktasjekket og gratis å spille.</p>
+  </header>
+  <section class="quiz-grid">
 ${cards}
-  </ul>
+  </section>
   <footer>
-    <p>Utforsk <a href="/arkiv.html">hele arkivet</a>, spill <a href="/dagens.html">dagens quiz</a>, eller <a href="/lag-quiz.html">lag din egen</a> på CustomQuiz.</p>
+    <div><a href="/arkiv.html">← Tilbake til arkivet</a></div>
   </footer>
-</main>
+</div>
+<script src="/supabase-config.js"></script>
+<script src="/nav.js"></script>
+<script src="/auth.js"></script>
 </body>
 </html>
 `;
