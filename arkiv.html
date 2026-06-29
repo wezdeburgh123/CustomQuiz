@@ -1622,8 +1622,13 @@
   ];
   function countCat(cat) { return QUIZZES.filter(q => q.category === cat).length; }
   function repImg(cat) {
-    const rep = QUIZZES.find(q => q.category === cat && /^https?:\/\//.test(q.img));
-    return rep ? rep.img : 'IMG/' + (CATEGORY_TO_IMG[cat] || 'kategori-mix') + '.jpg';
+    // Representativt cover for et barne-/temakort. Dyr har lokale cover-filer
+    // navngitt etter slug (q.img = slug), så vi må rendre IMG/<slug>.jpg — ikke
+    // bare http-URL-er. Prioriter http-hero hvis det finnes, ellers første med bilde.
+    const list = QUIZZES.filter(q => q.category === cat && q.img);
+    const pick = list.find(q => /^https?:\/\//.test(q.img)) || list[0];
+    if (pick && pick.img) return /^https?:\/\//.test(pick.img) ? pick.img : 'IMG/' + pick.img + '.jpg';
+    return 'IMG/' + (CATEGORY_TO_IMG[cat] || 'kategori-mix') + '.jpg';
   }
   function relAgo(dateStr) {
     const d = new Date(dateStr); if (isNaN(d)) return '';

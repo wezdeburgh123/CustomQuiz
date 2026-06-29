@@ -271,7 +271,10 @@ ${fasitHtml}
 function themeCard(q) {
   const crest = crestForBuild(q.team);
   const hero = (q.hero_img && /^https?:\/\//i.test(q.hero_img)) ? q.hero_img : null;
-  const imgSrc = crest ? `/IMG/${crest}.jpg` : (hero || `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`);
+  // Dyr-/barneserien har lokale cover-filer navngitt etter slug (IMG/<slug>.jpg),
+  // ikke http-hero_img. Onerror faller tilbake til kategoribildet om filen mangler.
+  const slugCover = (q.category === "dyr" && q.slug) ? `/IMG/${q.slug}.jpg` : null;
+  const imgSrc = crest ? `/IMG/${crest}.jpg` : (hero || slugCover || `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`);
   const fallback = `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`;
   const spot = CATEGORY_TO_SPOT[q.category] || "teal";
   const spotAttr = crest ? "" : ` data-spot="${spot}"`;
