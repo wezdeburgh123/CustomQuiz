@@ -46,7 +46,9 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { background:var(--bg); color:var(--ink); font-family:var(--font-sans); font-size:17px; line-height:1.55; min-height:100vh; -webkit-font-smoothing:antialiased; }
   body::before { content:''; position:fixed; inset:0; background-image:radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0); background-size:4px 4px; pointer-events:none; z-index:1; }
-  .container { position:relative; z-index:2; max-width:1120px; margin:0 auto; padding:0 28px; }
+  /* Bredde/sentrering/sidepadding styres av layout.css (single source — samme
+     1080-ramme + gutter som arkivet), så topp/meny flukter på tvers av sider. */
+  .container { position:relative; z-index:2; }
 
   .page-header { margin:8px 0 36px; }
   .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
@@ -95,7 +97,6 @@
   .empty-state { text-align:center; padding:60px 20px; color:var(--ink-mute); font-family:var(--font-display); font-style:italic; font-size:19px; }
   footer { font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); text-align:center; padding:56px 0 64px; }
   footer a { color:var(--ink-mute); text-decoration:none; }
-  @media (max-width:560px){ .container{ padding:0 18px; } }
 </style>
 </head>
 <body>

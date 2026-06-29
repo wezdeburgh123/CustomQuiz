@@ -346,6 +346,9 @@ function themePageHtml(cat, quizzes) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/layout.css">
+<script src="/intro-state.js"></script>
+<script src="/reveal.js"></script>
 <script type="application/ld+json">${jsonLdSafe(ld)}</script>
 <style>
   :root{
@@ -359,7 +362,8 @@ function themePageHtml(cat, quizzes) {
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);font-size:17px;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased;}
   body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(201,189,159,0.30) 1px,transparent 0);background-size:4px 4px;pointer-events:none;z-index:1;}
-  .container{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:0 28px;}
+  /* Bredde/sentrering/sidepadding styres av layout.css (samme 1080-ramme som arkivet). */
+  .container{position:relative;z-index:2;}
   [data-spot]{position:relative;}
   [data-spot]::before{content:"";position:absolute;inset:0;background:var(--spot,transparent);opacity:0.55;z-index:1;pointer-events:none;}
   [data-spot] > img{position:relative;z-index:2;mix-blend-mode:multiply;}
@@ -391,7 +395,6 @@ function themePageHtml(cat, quizzes) {
   footer{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);text-align:center;padding:8px 0 64px;}
   footer a{color:var(--ink-mute);text-decoration:none;}
   footer a:hover{color:var(--accent);}
-  @media (max-width:560px){.container{padding:0 18px;}}
 </style>
 </head>
 <body>
