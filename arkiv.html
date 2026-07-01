@@ -20,7 +20,7 @@
 <meta property="og:description" content="Alle quizer på CustomQuiz. Sortert, filtrert, rangert.">
 <meta property="og:image" content="https://customquiz.no/IMG/og.jpg">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://customquiz.no/arkiv.html">
+<meta property="og:url" content="https://customquiz.no/arkiv">
 <meta property="og:locale" content="nb_NO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://customquiz.no/IMG/og.jpg">
@@ -865,7 +865,7 @@
     <input id="arkiv-search" placeholder="Søk i alle utgaver — tittel, tema, stikkord…" aria-label="Søk i arkivet" autocomplete="off">
     <button class="search-clear" id="search-clear" type="button" aria-label="Tøm søk" hidden>✕</button>
   </div>
-  <div class="meta-line" id="metaline">Laster arkivet …</div>
+  <div class="meta-line" id="metaline">Hele arkivet — oppdatert daglig.</div>
 
   <!-- HUB — vises når søkefeltet er tomt. -->
   <div id="hub">
@@ -918,7 +918,7 @@
       <div class="sec-l"><div class="sec-title">Søkeresultat</div><div class="sec-meta"><strong id="result-count">0</strong> treff</div></div>
     </div>
     <button class="share-filter" id="share-filter" type="button" hidden aria-hidden="true"></button>
-    <section class="quiz-grid" id="quiz-grid"></section>
+    <section class="quiz-grid" id="quiz-grid"><!--SSR-ARKIV-START--><!--SSR-ARKIV-END--></section>
     <div class="load-more-row">
       <button class="load-more-btn" id="load-more" type="button" hidden>Vis flere</button>
     </div>
@@ -937,7 +937,7 @@
   </div>
   <section class="quiz-grid" id="community-grid" hidden></section>
 
-  <section class="subscribe-tease">
+  <section class="subscribe-tease" hidden>
     <div class="eyebrow">Abonnement</div>
     <h2>Lås opp <em>hele</em> arkivet.</h2>
     <p>Abonnenter får tilgang til alle quizer, kan generere så mange egne tema-quizer de vil, og får ny utgave hver morgen rett i innboksen.</p>
@@ -1853,6 +1853,11 @@
     // abonnement-teksten, så den kommer tilbake når FREE_PERIOD=false).
     const lede = document.getElementById('page-lede');
     if (lede) lede.textContent = 'Bla i alt CustomQuiz har publisert — daglige quizer, VM-quizene og hele temaarkivet. Filtrer etter tema, sorter etter popularitet eller dato. Akkurat nå er alt gratis og åpent for alle.';
+  } else {
+    // Paywall-perioden: abonnement-teasen ligger nå «hidden» i markupen (så den
+    // ikke vises i rå server-HTML / uten JS under gratis-perioden). Vis den igjen.
+    const tease = document.querySelector('.subscribe-tease');
+    if (tease) tease.hidden = false;
   }
 
   // Åpne betalingsmodal direkte når man kommer fra arkiv.html#abonnement
@@ -1870,7 +1875,7 @@
     // Toggle-default følger nivået, men bare til brukeren rører den selv.
     if (!userToggledFree) { onlyFree = !premium; syncFreeToggle(); }
     const tease = document.querySelector('.subscribe-tease');
-    if (tease) tease.style.display = (FREE_PERIOD || premium) ? 'none' : '';
+    if (tease) tease.hidden = (FREE_PERIOD || premium);
     renderHub();
     if (searchQuery) renderResults();
   });

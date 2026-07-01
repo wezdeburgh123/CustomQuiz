@@ -30,6 +30,7 @@ const NDJSON = path.join(ROOT, "quiz-library", "library.ndjson");
 const OUT_DIR = path.join(ROOT, "quiz");
 const OUT_TEMA = path.join(ROOT, "tema");
 const SITEMAP = path.join(ROOT, "sitemap.xml");
+const ARKIV = path.join(ROOT, "arkiv.html");
 
 const SITE = "https://customquiz.no";
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -135,22 +136,32 @@ function pageHtml(q) {
     about: { "@type": "Thing", name: catLabel },
     hasPart: q.questions.slice(0, 50).map((it) => {
       const opts = Array.isArray(it.options) ? it.options : [];
-      const correct = opts[it.correct];
       const part = {
         "@type": "Question",
         eduQuestionType: "Multiple choice",
         text: it.q,
       };
-      if (correct != null) {
-        part.acceptedAnswer = { "@type": "Answer", text: String(correct) };
-        if (opts.length > 1) {
-          part.suggestedAnswer = opts
-            .filter((o) => o !== correct)
-            .map((o) => ({ "@type": "Answer", text: String(o) }));
-        }
+      // Fasit holdes BEVISST ute av server-HTML/JSON-LD (produktbeskyttelse mot
+      // skraping/spoiling). Den lastes klientside ved klikk via /api/library-get.
+      // Alternativene listes som suggestedAnswer uten å røpe hvilket som er riktig.
+      if (opts.length) {
+        part.suggestedAnswer = opts.map((o) => ({ "@type": "Answer", text: String(o) }));
       }
       return part;
     }),
+  };
+
+  // BreadcrumbList (schema.org) — speiler den synlige stien og gir Google
+  // rike breadcrumbs. Nivåer: Hjem › Arkiv › <Tema> › <Denne quizen>.
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "CustomQuiz", item: `${SITE}/` },
+      { "@type": "ListItem", position: 2, name: "Arkiv", item: `${SITE}/arkiv` },
+      { "@type": "ListItem", position: 3, name: catLabel, item: `${SITE}/tema/${encodeURI(q.category || "mix")}/` },
+      { "@type": "ListItem", position: 4, name: q.title, item: canonical },
+    ],
   };
 
   // Synlige spørsmål (crawlbar tekst) + fasit i en sammenleggbar <details>.
@@ -161,13 +172,6 @@ function pageHtml(q) {
         <p class="q-text">${esc(it.q)}</p>
         <ul class="q-opts">${optsHtml}</ul>
       </li>`;
-  }).join("\n");
-
-  const fasitHtml = q.questions.map((it, i) => {
-    const opts = Array.isArray(it.options) ? it.options : [];
-    const correct = opts[it.correct] != null ? opts[it.correct] : "";
-    const expl = it.explanation ? ` — ${esc(it.explanation)}` : "";
-    return `<li><strong>${i + 1}.</strong> ${esc(correct)}${expl}</li>`;
   }).join("\n");
 
   return `<!DOCTYPE html>
@@ -198,6 +202,7 @@ function pageHtml(q) {
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <script type="application/ld+json">${jsonLdSafe(ld)}</script>
+<script type="application/ld+json">${jsonLdSafe(breadcrumbLd)}</script>
 
 <style>
   :root{--bg:#F5F0E6;--bg-soft:#FBF7EE;--ink:#1F1A14;--muted:#6B6256;--teal:#0A6E5A;--line:#E3D9C4;}
@@ -220,17 +225,19 @@ function pageHtml(q) {
   .q-text::before{content:counter(q) ". ";color:var(--teal);}
   ul.q-opts{margin:0;padding-left:20px;color:var(--muted);}
   ul.q-opts li{margin:2px 0;}
-  details{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:8px 20px;margin-top:8px;}
-  details summary{cursor:pointer;font-weight:600;padding:10px 0;}
-  details ol, details ul{padding-left:20px;}
-  details li{margin:6px 0;}
+  .fasit-wrap{margin-top:8px;}
+  .fasit-btn{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:14px 20px;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;width:100%;text-align:left;}
+  .fasit-btn:hover{border-color:var(--teal);}
+  .fasit-btn[disabled]{opacity:.7;cursor:default;}
+  .fasit-list{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:16px 20px 16px 40px;margin-top:8px;}
+  .fasit-list li{margin:6px 0;}
   footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted);}
   footer a{text-decoration:none;}
 </style>
 </head>
 <body>
 <main class="wrap">
-  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv.html">Arkiv</a> › ${esc(catLabel)}: ${esc(q.title)}</nav>
+  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv">Arkiv</a> › <a href="/tema/${esc(encodeURI(q.category || "mix"))}/">${esc(catLabel)}</a> › ${esc(q.title)}</nav>
 
   <h1>${esc(q.title)}</h1>
   <p class="lede">${esc(lede)}</p>
@@ -247,15 +254,37 @@ function pageHtml(q) {
 ${questionsHtml}
   </ol>
 
-  <details>
-    <summary>Vis fasit med forklaringer</summary>
-    <ol>
-${fasitHtml}
-    </ol>
-  </details>
+  <div class="fasit-wrap">
+    <button id="show-fasit" class="fasit-btn" type="button">Vis fasit med forklaringer</button>
+    <ol id="fasit-list" class="fasit-list" hidden></ol>
+  </div>
+  <script>
+  (function(){
+    var SLUG=${JSON.stringify(slug)};
+    var btn=document.getElementById('show-fasit'),list=document.getElementById('fasit-list'),loaded=false;
+    if(!btn)return;
+    function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    btn.addEventListener('click',async function(){
+      if(loaded){var h=list.hidden;list.hidden=!h;btn.textContent=h?'Skjul fasit':'Vis fasit med forklaringer';return;}
+      btn.disabled=true;btn.textContent='Henter fasit …';
+      try{
+        var r=await fetch('/api/library-get?slug='+encodeURIComponent(SLUG));
+        if(!r.ok)throw new Error('http');
+        var d=await r.json();
+        list.innerHTML=(d.questions||[]).map(function(it,i){
+          var opts=Array.isArray(it.options)?it.options:[];
+          var correct=opts[it.correct]!=null?opts[it.correct]:'';
+          var expl=it.explanation?' — '+esc(it.explanation):'';
+          return '<li><strong>'+(i+1)+'.</strong> '+esc(correct)+expl+'</li>';
+        }).join('');
+        list.hidden=false;loaded=true;btn.disabled=false;btn.textContent='Skjul fasit';
+      }catch(e){btn.disabled=false;btn.textContent='Kunne ikke hente fasit — prøv igjen';}
+    });
+  })();
+  </script>
 
   <footer>
-    <p>Vil du ha flere? Spill <a href="/dagens.html">dagens quiz</a>, utforsk <a href="/arkiv.html">hele arkivet</a>, eller <a href="/lag-quiz.html">lag din egen quiz</a> på CustomQuiz — gratis quizer på norsk.</p>
+    <p>Vil du ha flere? Spill <a href="/dagens.html">dagens quiz</a>, utforsk <a href="/arkiv">hele arkivet</a>, eller <a href="/lag-quiz.html">lag din egen quiz</a> på CustomQuiz — gratis quizer på norsk.</p>
   </footer>
 </main>
 </body>
@@ -283,7 +312,10 @@ function themeCard(q) {
   const plays = (q.plays && q.plays > 0)
     ? `<span class="quiz-plays">${q.plays.toLocaleString("nb-NO").replace(",", " ")} spilt</span>` : "";
   const sub = q.lede && q.lede.trim() ? `<div class="quiz-sub">${esc(q.lede.trim())}</div>` : "";
-  return `<a class="quiz-card" href="/lag-quiz.html?lib=${encodeURIComponent(q.slug)}">
+  // SEO: kort peker på den crawlbare /quiz/<slug>/-siden (ikke spilleren), så
+  // lenkegrafen fra tema-hubben når de indekserbare sidene. Spill-handlingen
+  // ligger på quiz-siden ("▶ Spill quizen").
+  return `<a class="quiz-card" href="/quiz/${encodeURI(q.slug)}/">
         <div class="quiz-image${crest ? " is-crest" : ""}"${spotAttr}>
           <img src="${esc(imgSrc)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">
         </div>
@@ -401,7 +433,7 @@ function themePageHtml(cat, quizzes) {
 <body>
 <div class="container">
   <div id="cq-masthead"></div>
-  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv.html">Arkivet</a> › ${esc(label)}</nav>
+  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv">Arkivet</a> › ${esc(label)}</nav>
   <header class="page-header">
     <div class="eyebrow">Tema</div>
     <h1>${esc(label)}</h1>
@@ -411,7 +443,7 @@ function themePageHtml(cat, quizzes) {
 ${cards}
   </section>
   <footer>
-    <div><a href="/arkiv.html">← Tilbake til arkivet</a></div>
+    <div><a href="/arkiv">← Tilbake til arkivet</a></div>
   </footer>
 </div>
 <script src="/supabase-config.js"></script>
@@ -506,6 +538,31 @@ function writeSitemap(slugs, temaCats = []) {
   fs.writeFileSync(SITEMAP, xml, "utf8");
 }
 
+// ---------- Arkiv-SSR ----------
+// arkiv.html er ellers 100% klient-rendret (grid fylles av JS). For at crawlere
+// (og no-JS) skal se faktiske quiz-lenker injiseres en crawlbar liste inn i
+// #quiz-grid mellom to markører. JS-en overskriver #quiz-grid ved lasting, så
+// vanlige brukere får de interaktive kortene som før — dette er ren SEO-baseline.
+// Idempotent: erstatter alltid mellom markørene.
+function injectArkiv(quizzes) {
+  if (!fs.existsSync(ARKIV)) return false;
+  const START = "<!--SSR-ARKIV-START-->";
+  const END = "<!--SSR-ARKIV-END-->";
+  let html = fs.readFileSync(ARKIV, "utf8");
+  if (!html.includes(START) || !html.includes(END)) return false;
+  const sorted = quizzes.slice().sort((a, b) => (b.plays || 0) - (a.plays || 0));
+  const links = sorted.map((q) => {
+    const cat = CAT_LABEL[q.category] || "Allmennkunnskap";
+    return `<a class="quiz-card" href="/quiz/${encodeURI(q.slug)}/"><div class="quiz-body">` +
+      `<div class="quiz-num">${esc(cat)}</div>` +
+      `<div class="quiz-title">${esc(q.title)}</div></div></a>`;
+  }).join("\n");
+  const re = new RegExp(START.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "[\\s\\S]*?" + END.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  html = html.replace(re, `${START}\n${links}\n${END}`);
+  fs.writeFileSync(ARKIV, html, "utf8");
+  return true;
+}
+
 // ---------- Hovedløp ----------
 async function main() {
   let rows = null;
@@ -574,8 +631,16 @@ async function main() {
     }
   }
 
+  // Injiser crawlbar quiz-liste i arkiv.html (SEO-baseline for /arkiv).
+  let arkivOk = false;
+  try {
+    arkivOk = injectArkiv(renderable);
+  } catch (e) {
+    console.warn("build-quiz-pages: arkiv-injeksjon feilet (" + e.message + ") — ikke-blokkerende.");
+  }
+
   writeSitemap(slugs, temaCats);
-  console.log(`build-quiz-pages: skrev ${written} quiz-sider + ${temaCats.length} tema-sider (kilde: ${kilde}) + sitemap.xml.`);
+  console.log(`build-quiz-pages: skrev ${written} quiz-sider + ${temaCats.length} tema-sider${arkivOk ? " + arkiv-SSR" : ""} (kilde: ${kilde}) + sitemap.xml.`);
 }
 
 main().catch((e) => {
