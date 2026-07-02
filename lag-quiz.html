@@ -2,6 +2,16 @@
 <html lang="nb">
 <head>
 <meta charset="UTF-8">
+<script>
+/* SEO: spiller-instanser (?lib / ?quiz / ?event) skal IKKE indekseres — de
+   dupliserer den kanoniske /quiz/<slug>/-siden. Generator-landingen (uten
+   parametere) forblir indekserbar. Kjøres først i <head> så robots-metaen
+   finnes før Google rendrer. */
+(function(){try{var p=new URLSearchParams(location.search);
+if(p.has('lib')||p.has('quiz')||p.has('event')){
+var m=document.createElement('meta');m.name='robots';m.content='noindex,follow';
+document.head.appendChild(m);}}catch(e){}})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F0E6">
