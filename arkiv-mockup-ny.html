@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arkivet — forslag ny IA (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F5F0E6; --bg-soft:#FBF7EE; --bg-deep:#ECE3CE;
+    --ink:#1F1A14; --ink-soft:#4B4338; --ink-mute:#7A6F5A;
+    --rule:#E2D8C2; --rule-strong:#C9BD9F;
+    --accent:#0A6E5A; --accent-soft:#C9E2D8; --accent-deep:#074538;
+    --spot-teal:#0A6E5A; --spot-moss:#5C7A3C; --spot-cobalt:#2C4A8F;
+    --spot-terracotta:#B05238; --spot-plum:#6B3050; --spot-saffron:#C68A2E; --spot-oker:#9A5B26;
+    --spot-spill:#1F7A8A; --spot-monstere:#6F3F96;
+    --r-pill:999px; --r-card:16px; --r-md:8px;
+    --font-display:'Fraunces',Georgia,'Times New Roman',serif;
+    --font-sans:'Manrope','Inter',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { background:var(--bg); color:var(--ink); font-family:var(--font-sans); font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  body::before { content:''; position:fixed; inset:0; background-image:radial-gradient(circle at 1px 1px, rgba(201,189,159,0.30) 1px, transparent 0); background-size:4px 4px; pointer-events:none; z-index:1; }
+  .container { position:relative; z-index:2; max-width:1120px; margin:0 auto; padding:0 28px; }
+
+  .mockbar { position:relative; z-index:2; background:var(--accent-deep); color:var(--bg-soft); font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; text-align:center; padding:8px 16px; }
+
+  /* Masthead */
+  .masthead { border-top:1px solid var(--rule-strong); border-bottom:1px solid var(--rule-strong); padding:20px 0; margin-bottom:52px; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+  .masthead-logo { display:inline-flex; align-items:center; gap:11px; text-decoration:none; }
+  .masthead-mark { height:44px; width:44px; border-radius:12px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:var(--bg-soft); font-family:var(--font-display); font-style:italic; font-size:24px; font-weight:500; }
+  .masthead-wordmark { font-family:var(--font-display); font-style:italic; font-weight:500; font-size:20px; letter-spacing:-0.01em; color:var(--ink); }
+  .masthead-meta { display:flex; align-items:center; gap:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-mute); }
+  .masthead-link { color:var(--ink); text-decoration:none; border-bottom:1px solid transparent; padding-bottom:1px; }
+  .masthead-link:hover { color:var(--accent); border-bottom-color:var(--accent); }
+  .masthead-link.active { color:var(--accent); }
+  .masthead-link-vm { color:var(--spot-saffron); }
+  .masthead-sep { color:var(--rule-strong); }
+  @media (max-width:760px){ .masthead-meta .opt { display:none; } }
+
+  /* Page header */
+  .page-header { margin-bottom:40px; }
+  .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
+  h1 { font-family:var(--font-display); font-weight:500; font-size:clamp(40px,5.4vw,64px); line-height:0.98; letter-spacing:-0.025em; margin-bottom:22px; font-variation-settings:"opsz" 120; }
+  h1 em { font-style:italic; color:var(--accent); }
+  .page-lede { font-family:var(--font-display); font-size:21px; line-height:1.45; font-weight:400; color:var(--ink-soft); max-width:560px; }
+
+  /* Søk */
+  .searchbar { display:flex; align-items:center; gap:14px; background:var(--bg-soft); border:0.5px solid var(--rule-strong); border-radius:var(--r-pill); padding:16px 24px; margin:0 0 14px; transition:border-color 200ms ease; }
+  .searchbar:focus-within { border-color:var(--accent); }
+  .searchbar svg { flex:0 0 auto; color:var(--ink-mute); }
+  .searchbar input { border:none; background:transparent; flex:1; font-family:var(--font-display); font-size:19px; color:var(--ink); outline:none; }
+  .searchbar input::placeholder { color:var(--ink-mute); font-style:italic; }
+  .searchbar .kbd { font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; color:var(--ink-mute); border:1px solid var(--rule-strong); border-radius:6px; padding:3px 8px; }
+  .meta-line { font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); margin:0 0 56px 4px; min-height:14px; }
+
+  /* Topp tre — redaksjonelle innganger */
+  .lead-row { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:0 0 80px; }
+  .lead-card { display:flex; flex-direction:column; background:var(--bg-soft); border:0.5px solid var(--rule-strong); border-radius:var(--r-card); overflow:hidden; text-decoration:none; color:var(--ink); transition:border-color 240ms ease, transform 240ms cubic-bezier(.2,.6,.2,1); transform:translateZ(0); }
+  .lead-card:hover { transform:translateY(-3px); }
+  .lead-img { width:100%; height:104px; overflow:hidden; background:var(--bg-deep); border-bottom:0.5px solid var(--rule); position:relative; isolation:isolate; }
+  .lead-img img { width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.02); transform-origin:center; backface-visibility:hidden; -webkit-backface-visibility:hidden; will-change:transform; transition:transform 520ms cubic-bezier(.2,.6,.2,1); }
+  .lead-card:hover .lead-img img { transform:scale(1.06); }
+  .tint { position:absolute; inset:0; mix-blend-mode:multiply; opacity:0.20; pointer-events:none; z-index:1; }
+  .lead-body { padding:22px 24px 24px; display:flex; flex-direction:column; flex:1; }
+  .lead-eyebrow { font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:12px; }
+  .lead-title { font-family:var(--font-display); font-weight:500; font-size:26px; line-height:1.04; letter-spacing:-0.015em; margin-bottom:10px; font-variation-settings:"opsz" 60; }
+  .lead-sub { font-family:var(--font-display); font-size:15px; line-height:1.45; color:var(--ink-soft); }
+  .lead-list { margin-top:14px; display:flex; flex-direction:column; gap:9px; }
+  .lead-item { display:flex; align-items:baseline; gap:10px; font-size:14.5px; color:var(--ink-soft); }
+  .lead-item .rk { font-family:var(--font-mono); font-size:11px; color:var(--ink-mute); flex:0 0 auto; }
+  .lead-item .ago { font-family:var(--font-mono); font-size:10px; margin-left:auto; flex:0 0 auto; }
+  .crests { display:flex; gap:7px; margin-top:auto; padding-top:16px; }
+  .crests img { width:30px; height:30px; border-radius:50%; object-fit:cover; background:#F5EEDC; border:0.5px solid var(--rule); }
+
+  /* Seksjonshode */
+  .sec { display:flex; align-items:baseline; justify-content:space-between; margin:0 0 24px; padding-bottom:14px; border-bottom:1px solid var(--rule-strong); }
+  .sec-l { display:flex; align-items:baseline; gap:14px; }
+  .sec-title { font-family:var(--font-display); font-weight:500; font-size:28px; letter-spacing:-0.02em; font-variation-settings:"opsz" 72; }
+  .sec-meta { font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); }
+
+  /* Tema-rutenett */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:18px; margin:0 0 80px; }
+  .card { display:flex; flex-direction:column; background:var(--bg-soft); border:0.5px solid var(--rule); border-radius:var(--r-card); overflow:hidden; text-decoration:none; color:var(--ink); transition:border-color 240ms ease, transform 240ms cubic-bezier(.2,.6,.2,1); transform:translateZ(0); }
+  .card:hover { transform:translateY(-3px); }
+  .card-img { aspect-ratio:16/10; overflow:hidden; background:var(--bg-deep); border-bottom:0.5px solid var(--rule); position:relative; isolation:isolate; }
+  .card-img img { width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.02); transform-origin:center; backface-visibility:hidden; -webkit-backface-visibility:hidden; will-change:transform; transition:transform 520ms cubic-bezier(.2,.6,.2,1); }
+  .card:hover .card-img img { transform:scale(1.06); }
+  .card-body { padding:20px 22px 24px; }
+  .card-eyebrow { font-family:var(--font-mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:9px; }
+  .card-title { font-family:var(--font-display); font-weight:500; font-size:25px; line-height:1.05; letter-spacing:-0.015em; font-variation-settings:"opsz" 60; }
+  .ph-note { position:absolute; bottom:9px; right:11px; font-family:var(--font-mono); font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-mute); background:rgba(251,247,238,.85); padding:3px 7px; border-radius:6px; }
+  .report { position:absolute; top:11px; left:11px; z-index:3; font-family:var(--font-mono); font-size:10px; letter-spacing:.04em; padding:5px 11px; border-radius:var(--r-pill); background:rgba(20,18,14,.55); color:#fff; border:1px solid rgba(255,255,255,.28); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); opacity:0; transition:opacity 180ms ease; }
+  .card:hover .report { opacity:1; }
+
+  .barn-lede { font-family:var(--font-display); font-size:17px; color:var(--ink-soft); margin:-8px 0 22px; max-width:560px; }
+
+  footer { font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); text-align:center; padding:8px 0 64px; }
+
+  @media (max-width:820px){ .lead-row{ grid-template-columns:1fr; } }
+  @media (max-width:560px){ .container{ padding:0 18px; } }
+</style>
+</head>
+<body>
+
+<div class="mockbar">Mockup · forslag ny arkiv-IA · ingen kode i produksjon er endret</div>
+
+<div class="container">
+
+  <header class="masthead">
+    <a class="masthead-logo" href="#">
+      <span class="masthead-mark">Q</span>
+      <span class="masthead-wordmark">CustomQuiz</span>
+    </a>
+    <nav class="masthead-meta">
+      <a class="masthead-link active" href="#">Arkivet</a>
+      <span class="masthead-sep">·</span>
+      <a class="masthead-link masthead-link-vm" href="#">VM 2026</a>
+      <span class="masthead-sep">·</span>
+      <a class="masthead-link opt" href="#">Daglig quiz</a>
+      <span class="masthead-sep opt">·</span>
+      <a class="masthead-link opt" href="#">Generator</a>
+      <span class="masthead-sep opt">·</span>
+      <a class="masthead-link" href="#">Min side</a>
+    </nav>
+  </header>
+
+  <header class="page-header">
+    <div class="eyebrow">Arkivet</div>
+    <h1>Alle <em>utgaver</em>, ett sted.</h1>
+    <p class="page-lede">Bla i alt CustomQuiz har publisert. Søk fritt, eller finn veien inn via tema. Fotballen har fått sin egen verden.</p>
+  </header>
+
+  <div class="searchbar">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+    <input id="q" placeholder="Søk i alle utgaver — tittel, tema, stikkord…" aria-label="Søk i arkivet">
+    <span class="kbd">⌘K</span>
+  </div>
+  <div class="meta-line" id="metaline">335 utgaver · 12 temaer · oppdatert daglig</div>
+
+  <div class="lead-row">
+
+    <a class="lead-card" href="#">
+      <div class="lead-img"><img src="IMG/kategori-sport.jpg" alt=""><span class="tint" style="background:var(--accent)"></span></div>
+      <div class="lead-body">
+        <div class="lead-eyebrow" style="color:var(--accent)">Egen verden</div>
+        <div class="lead-title">Fotball</div>
+        <div class="lead-sub">Klubber, serier, landslag og VM 2026 — 113 utgaver med sin egen inngang.</div>
+        <div class="crests">
+          <img src="IMG/crest-liverpool.jpg" alt="">
+          <img src="IMG/crest-man-united.jpg" alt="">
+          <img src="IMG/crest-arsenal.jpg" alt="">
+          <img src="IMG/crest-bodo-glimt.jpg" alt="">
+          <img src="IMG/crest-brann.jpg" alt="">
+        </div>
+      </div>
+    </a>
+
+    <a class="lead-card" href="#">
+      <div class="lead-img"><img src="IMG/kategori-mix.jpg" alt=""><span class="tint" style="background:var(--spot-saffron)"></span></div>
+      <div class="lead-body">
+        <div class="lead-eyebrow" style="color:var(--spot-saffron)">Mest spilt nå</div>
+        <div class="lead-title">Populært</div>
+        <div class="lead-list">
+          <div class="lead-item"><span class="rk">01</span> Stanley Kubrick</div>
+          <div class="lead-item"><span class="rk">02</span> Stoikerne — roen i kaoset</div>
+          <div class="lead-item"><span class="rk">03</span> Romerrikets fall</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="lead-card" href="#">
+      <div class="lead-img"><img src="IMG/kategori-custom.jpg" alt=""><span class="tint" style="background:var(--spot-moss)"></span></div>
+      <div class="lead-body">
+        <div class="lead-eyebrow" style="color:var(--spot-moss)">Fellesskapet</div>
+        <div class="lead-title">Laget av spillere</div>
+        <div class="lead-list">
+          <div class="lead-item"><span class="rk">›</span> Norsk svartmetall <span class="ago" style="color:var(--spot-moss)">i dag</span></div>
+          <div class="lead-item"><span class="rk">›</span> Eurovision 2000–2010 <span class="ago" style="color:var(--spot-moss)">2 d</span></div>
+          <div class="lead-item"><span class="rk">›</span> Kvensk historie <span class="ago" style="color:var(--spot-moss)">4 d</span></div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="sec">
+    <div class="sec-l">
+      <div class="sec-title">Utforsk etter tema</div>
+    </div>
+    <div class="sec-meta">12 temaer</div>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <div class="sec">
+    <div class="sec-l">
+      <div class="sec-title">For barn</div>
+      <div class="sec-meta">3 serier · 8–12 år</div>
+    </div>
+  </div>
+  <p class="barn-lede">Egen verden for de yngste — enkle, morsomme og faktasjekkede utgaver.</p>
+  <div class="grid" id="barngrid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));"></div>
+
+  <div class="sec">
+    <div class="sec-l">
+      <div class="sec-title">Laget av fellesskapet</div>
+      <div class="sec-meta" style="color:var(--accent)">Fellesskapet</div>
+    </div>
+    <div class="sec-meta">Sjekket før publisering</div>
+  </div>
+  <p class="barn-lede">Quizer folk lager blir synlige for alle her — automatisk sjekket før publisering. Ser du noe som ikke hører hjemme, trykk «Rapportér».</p>
+  <div class="grid" id="commgrid" style="margin-bottom:72px;"></div>
+
+  <footer>Mockup · 23. juni 2026 · ekte cover fra IMG/ · CustomQuiz-designsystem</footer>
+
+</div>
+
+<script>
+  var themes = [
+    ["Norsk historie","kategori-norsk-historie","#B05238",18],
+    ["Verdenshistorie","kategori-verdenshistorie","#6B3050",18],
+    ["Geografi","kategori-geografi","#2C4A8F",18],
+    ["Naturvitenskap","kategori-naturvitenskap","#0A6E5A",18],
+    ["Teknologi","kategori-teknologi","#2C4A8F",18],
+    ["Musikk","kategori-musikk","#6B3050",18],
+    ["Film og TV","kategori-film","#B05238",18],
+    ["Litteratur","kategori-litteratur","#9A5B26",18],
+    ["Kunst","kategori-kunst","#C68A2E",18],
+    ["Filosofi","kategori-filosofi","#5C7A3C",18],
+    ["Sport","kategori-sport","#5C7A3C",18],
+    ["Blandet","kategori-mix","#7A6F5A",18]
+  ];
+  var grid = document.getElementById('grid');
+  var metaline = document.getElementById('metaline');
+  var DEFAULT_META = '335 utgaver · 12 temaer · oppdatert daglig';
+  function render(f){
+    grid.innerHTML = '';
+    var n = 0;
+    themes.forEach(function(t){
+      if (f && t[0].toLowerCase().indexOf(f) === -1) return;
+      n++;
+      var a = document.createElement('a');
+      a.className = 'card'; a.href = '#';
+      a.onmouseover = function(){ a.style.borderColor = t[2]; };
+      a.onmouseout  = function(){ a.style.borderColor = ''; };
+      a.innerHTML =
+        '<div class="card-img"><img src="IMG/'+t[1]+'.jpg" alt="" loading="lazy"><span class="tint" style="background:'+t[2]+'"></span></div>'+
+        '<div class="card-body"><div class="card-eyebrow" style="color:'+t[2]+'">'+t[3]+' utgaver</div>'+
+        '<div class="card-title">'+t[0]+'</div></div>';
+      grid.appendChild(a);
+    });
+    metaline.textContent = f ? (n + ' tema treffer «' + f + '»') : DEFAULT_META;
+  }
+  render('');
+  document.getElementById('q').addEventListener('input', function(e){ render(e.target.value.trim().toLowerCase()); });
+
+  var barn = [
+    ["Dyr","#9A5B26","IMG/dyr-i-dypet__lett.jpg",null,"Verdens raskeste · Dyr i dypet · Skumle dyr"],
+    ["Spill","#1F7A8A",null,"M6 8h2M7 7v2","Minecraft · Super Mario · Fortnite"],
+    ["Monstere","#6F3F96",null,"monster","Godzilla · Drager · Snille monstre"]
+  ];
+  var bg = document.getElementById('barngrid');
+  barn.forEach(function(b){
+    var a = document.createElement('a');
+    a.className = 'card'; a.href = '#';
+    a.onmouseover = function(){ a.style.borderColor = b[1]; };
+    a.onmouseout  = function(){ a.style.borderColor = ''; };
+    var img;
+    if (b[2]) {
+      img = '<div class="card-img"><img src="'+b[2]+'" alt=""><span class="tint" style="background:'+b[1]+'"></span></div>';
+    } else {
+      var icon = (b[3]==='monster')
+        ? '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="'+b[1]+'" stroke-width="1.5"><path d="M5 11a7 7 0 0 1 14 0v5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"></path><circle cx="9.5" cy="11" r="1"></circle><circle cx="14.5" cy="11" r="1"></circle><path d="M9 15l1.5-1 1.5 1 1.5-1 1.5 1"></path></svg>'
+        : '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="'+b[1]+'" stroke-width="1.5"><rect x="2.5" y="7" width="19" height="10" rx="5"></rect><path d="M6.5 10.5v3M5 12h3"></path><circle cx="16" cy="11" r="1"></circle><circle cx="18" cy="13" r="1"></circle></svg>';
+      img = '<div class="card-img" style="display:flex;align-items:center;justify-content:center;background:'+hex2tint(b[1])+'">'+icon+'<span class="ph-note">cover kommer</span></div>';
+    }
+    a.innerHTML = img +
+      '<div class="card-body"><div class="card-eyebrow" style="color:'+b[1]+'">6 utgaver · 8–12 år</div>'+
+      '<div class="card-title">'+b[0]+'</div>'+
+      '<div class="lead-sub" style="margin-top:8px">'+b[4]+'</div></div>';
+    bg.appendChild(a);
+  });
+  function hex2tint(hex){
+    var r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return 'rgba('+r+','+g+','+b+',0.10)';
+  }
+
+  var community = [
+    ["Norsk svartmetall","Sigrid","i dag","kategori-musikk","#6B3050"],
+    ["Eurovision 2000–2010","Mariann","2 dager siden","kategori-musikk","#6B3050"],
+    ["Kvensk og samisk historie","Ola","4 dager siden","kategori-norsk-historie","#B05238"],
+    ["Studio Ghibli-filmene","Lina","6 dager siden","kategori-film","#B05238"],
+    ["Romfart og raketter","Petter","1 uke siden","kategori-teknologi","#2C4A8F"],
+    ["Klatreruter i Lofoten","Jonas","1 uke siden","kategori-sport","#5C7A3C"]
+  ];
+  var cg = document.getElementById('commgrid');
+  community.forEach(function(c){
+    var a = document.createElement('a');
+    a.className = 'card'; a.href = '#';
+    a.onmouseover = function(){ a.style.borderColor = c[4]; };
+    a.onmouseout  = function(){ a.style.borderColor = ''; };
+    a.innerHTML =
+      '<div class="card-img"><img src="IMG/'+c[3]+'.jpg" alt="" loading="lazy"><span class="tint" style="background:'+c[4]+'"></span>'+
+      '<span class="report">⚐ Rapportér</span></div>'+
+      '<div class="card-body"><div class="card-eyebrow">av '+c[1]+' · '+c[2]+'</div>'+
+      '<div class="card-title">'+c[0]+'</div></div>';
+    cg.appendChild(a);
+  });
+</script>
+
+</body>
+</html>

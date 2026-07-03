@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F0E6">
-<title>CustomQuiz — daglige quizer på norsk</title>
-<meta name="description" content="Skreddersydde quizer på norsk, generert akkurat nå. Ny quiz hver morgen.">
+<title>CustomQuiz — lag en quiz om hva som helst, på norsk</title>
+<meta name="description" content="Skriv et tema — få ti norske spørsmål med forklaring på sekundet. Faktasjekket, gratis, og en ny felles quiz hver morgen.">
 
 <!-- Favicon -->
 <link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
 <link rel="apple-touch-icon" href="IMG/signature.jpg">
 
 <!-- Open Graph -->
-<meta property="og:title" content="CustomQuiz — daglige quizer på norsk">
-<meta property="og:description" content="Skreddersydde quizer på norsk, generert akkurat nå. Ny quiz hver morgen.">
+<meta property="og:title" content="CustomQuiz — lag en quiz om hva som helst, på norsk">
+<meta property="og:description" content="Skriv et tema — få ti norske spørsmål med forklaring på sekundet. Faktasjekket, gratis, og en ny felles quiz hver morgen.">
 <meta property="og:image" content="https://customquiz.no/IMG/og.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://customquiz.no">
@@ -22,8 +22,8 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CustomQuiz — daglige quizer på norsk">
-<meta name="twitter:description" content="Skreddersydde quizer på norsk, generert akkurat nå.">
+<meta name="twitter:title" content="CustomQuiz — lag en quiz om hva som helst, på norsk">
+<meta name="twitter:description" content="Skriv et tema — få ti norske spørsmål med forklaring på sekundet. Faktasjekket og gratis.">
 <meta name="twitter:image" content="https://customquiz.no/IMG/og.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -947,10 +947,11 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-text">
-      <div class="eyebrow">Ny utgave hver morgen</div>
-      <h1>Du <em>vet</em> mindre enn du tror. Heldigvis.</h1>
-      <p class="lede">En quiz om dagen er starten på løsningen. Velg blant tolv kuraterte tema — eller skriv ditt eget, fra norsk historie til japansk matkultur. Ta den alene, eller sammen med venner rundt bordet.</p>
-      <a class="btn" href="dagens.html">Start dagens quiz <span class="btn-arrow">→</span></a>
+      <div class="eyebrow" style="text-transform:none;letter-spacing:0.01em;font-size:15px;font-family:var(--font-display);font-style:italic">Du vet mindre enn du tror. Heldigvis.</div>
+      <h1>Gi oss et <em>tema</em>. Vi gir deg ti spørsmål.</h1>
+      <p class="lede">Skriv hva du vil ha quiz om — norsk historie, japansk matkultur, Romerrikets fall — og få ti spørsmål med forklaring på sekundet. På norsk, faktasjekket, klart til å deles rundt bordet. Alt er gratis akkurat nå.</p>
+      <a class="btn" href="lag-quiz.html">Lag din egen quiz <span class="btn-arrow">→</span></a>
+      <a href="dagens.html" style="display:inline-block;margin-left:20px;font-family:var(--font-mono);font-size:13px;letter-spacing:0.04em;color:var(--accent);text-decoration:none">eller ta dagens →</a>
       <form class="home-search" role="search" onsubmit="event.preventDefault();var q=this.q.value.trim();window.location.href='/arkiv'+(q?'?q='+encodeURIComponent(q):'');">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
         <input name="q" type="search" placeholder="Søk i hele arkivet — tema, tittel, stikkord…" aria-label="Søk i arkivet">
@@ -966,9 +967,9 @@
   <a class="vm-banner" href="vm.html" aria-label="Bli med i VM-quizen 2026">
     <div class="vm-banner-img"><img id="vm-banner-img" src="IMG/vm-nasjoner.jpg" alt=""></div>
     <div class="vm-banner-text">
-      <div class="vm-banner-eyebrow">Nytt · Fotball-VM 2026</div>
+      <div class="vm-banner-eyebrow">Fotball-VM 2026</div>
       <h2>Bli med i <em>VM-konkurransen</em></h2>
-      <p>Ta quizene én gang hver, samle poeng gjennom hele mesterskapet, og kjemp om topplassen — i din egen liga og mot alle andre. <span class="vm-count" id="vm-banner-count">Avspark 11. juni.</span></p>
+      <p>Ta quizene i ditt eget tempo, samle poeng gjennom hele mesterskapet, og kjemp om topplassen — i din egen liga og mot alle andre.</p>
       <span class="vm-banner-cta">Til VM-quizen <span class="btn-arrow">→</span></span>
     </div>
   </a>
@@ -977,18 +978,18 @@
   <section class="three-up">
     <div class="three-up-item">
       <div class="three-up-num">01</div>
-      <h3>Velg et <em>tema</em></h3>
-      <p>Tolv ferdige, eller skriv ditt eget.</p>
+      <h3>Skriv <em>temaet</em></h3>
+      <p>Hva som helst. Ferdig forslag, eller helt fritt.</p>
     </div>
     <div class="three-up-item">
       <div class="three-up-num">02</div>
-      <h3>Få <em>quizen din</em></h3>
-      <p>Norske spørsmål på sekundet, med forklaring.</p>
+      <h3>Få <em>quizen</em></h3>
+      <p>Ti norske spørsmål med forklaring, på sekundet.</p>
     </div>
     <div class="three-up-item">
       <div class="three-up-num">03</div>
       <h3>Hold <em>streaken</em></h3>
-      <p>Én om dagen. Vi minner deg på neste.</p>
+      <p>Ny felles quiz hver morgen kl 07:00. Vi minner deg på neste.</p>
     </div>
   </section>
 
@@ -1003,7 +1004,7 @@
     <div>
       <div class="eyebrow">Generatoren</div>
       <h2>Lag en <em>egen quiz</em> på sekunder.</h2>
-      <p>Tema-velger, nivåkontroll, antall spørsmål. Skriv «japansk matkultur» eller «Romerrikets fall» — og den genereres på flekken.</p>
+      <p>Temavelger, nivå og antall spørsmål — eller bare skriv det inn. Logg inn med e-post (gratis) for å lage dine egne. Et par om dagen på huset.</p>
       <a class="btn" href="lag-quiz.html">Åpne generatoren <span class="btn-arrow">→</span></a>
     </div>
     <div class="app-section-image gen-anim" id="gen-anim" role="img" aria-label="Kombiner tre tema til din egen quiz">
@@ -1015,8 +1016,8 @@
   <!-- SLIK GJØR ANDRE -->
   <section class="examples">
     <div class="section-label">
-      <span>Slik gjør andre</span>
-      <span class="section-meta">Sist genererte tema</span>
+      <span>Nettopp laget av andre</span>
+      <span class="section-meta">Ekte tema folk har skrevet inn</span>
     </div>
     <div class="examples-row">
       <a class="example-pill" href="lag-quiz.html?quiz=verdenshistorie-06">Romerrikets fall</a>
@@ -1139,7 +1140,7 @@
   <section class="about-section">
     <h2>Slik lager vi <em>spørsmålene</em></h2>
     <div>
-      <p>Hvert spørsmål skrives av en språkmodell instruert til å produsere kontrollerbare påstander — ikke synsing, ikke vagheter. Vi gir den tolv tematiske spor, et tonenivå (presisjonsfagspråk eller hverdagsnorsk), og krever fire svaralternativer hvor distraktorene skal være like plausible som det riktige.</p>
+      <p>Hvert spørsmål skrives av en språkmodell instruert til å produsere kontrollerbare påstander — ikke synsing, ikke vagheter. Vi gir den tolv tematiske spor, et tonenivå (presisjonsfagspråk eller hverdagsnorsk), og krever fire svaralternativer der de gale skal være like fristende som det riktige.</p>
       <details class="about-more">
         <summary>Les mer</summary>
         <p>Hver runde går gjennom en automatisert validering før den publiseres: duplikater fjernes, modellen må vise at ett og bare ett svar er riktig, og spørsmål uten verifiserbar kilde forkastes. Du kan rapportere feil på spørsmål/svar om du mener det er teit eller feil. Vi retter.</p>
@@ -1162,7 +1163,7 @@
       <details class="faq-item">
         <summary><span class="faq-q">Koster det <em>noe</em>?</span></summary>
         <div class="faq-answer">
-          <p>Nei — alt er gratis akkurat nå. Dagens quiz, hele arkivet og VM-quizene er åpne for alle. Vil du lage dine egne tema-quizer, logger du inn med e-post (også gratis) og kan lage et par om dagen.</p>
+          <p>Å spille koster ingenting akkurat nå — dagens quiz, hele arkivet og VM-quizene er åpne for alle. Vil du lage dine egne, logger du inn med e-post (også gratis) og lager et par nye om dagen. Mer enn nok til å utfordre gjengen.</p>
         </div>
       </details>
       <details class="faq-item">
@@ -1187,7 +1188,7 @@
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
       {"@type":"Question","name":"Hvor kommer spørsmålene fra?","acceptedAnswer":{"@type":"Answer","text":"De skrives av en språkmodell (Anthropic Claude) som er instruert med tematisk rammeverk og en streng valideringsregel: ett riktig svar, tre plausible distraktorer, kort forklaring med kildebar logikk. Vi leser feil-rapportene fra brukerne og forbedrer instruksene fortløpende."}},
-      {"@type":"Question","name":"Koster det noe?","acceptedAnswer":{"@type":"Answer","text":"Nei — alt er gratis akkurat nå. Dagens quiz, hele arkivet og VM-quizene er åpne for alle. Vil du lage dine egne tema-quizer, logger du inn med e-post (også gratis) og kan lage et par om dagen."}},
+      {"@type":"Question","name":"Koster det noe?","acceptedAnswer":{"@type":"Answer","text":"Å spille koster ingenting akkurat nå — dagens quiz, hele arkivet og VM-quizene er åpne for alle. Vil du lage dine egne, logger du inn med e-post (også gratis) og lager et par nye om dagen. Mer enn nok til å utfordre gjengen."}},
       {"@type":"Question","name":"Når kommer ny quiz?","acceptedAnswer":{"@type":"Answer","text":"Hver morgen kl 07:00 norsk tid. Mandag historie, tirsdag vitenskap, onsdag geografi — og slik videre. Søndag er blandet og litt vanskeligere."}},
       {"@type":"Question","name":"Kan jeg lage mine egne?","acceptedAnswer":{"@type":"Answer","text":"Ja — det er hele poenget. Velg blant tolv kuraterte tema, eller skriv ditt eget (japansk matkultur, motorsykkelens historie, norske vinregioner). Du bestemmer både tema, vanskelighet og antall spørsmål. Quizen blir generert i øyeblikket og kan deles med venner."}},
       {"@type":"Question","name":"Hva med personvern?","acceptedAnswer":{"@type":"Answer","text":"Vi lagrer bare det vi trenger for å vise deg streaken din og forbedre spørsmålene — ingen tredjeparts-tracking, ingen reklame. Dataen din ligger i EU (Frankfurt). Du kan slette kontoen din når som helst, og da slettes alt."}}

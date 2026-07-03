@@ -9,15 +9,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F0E6">
-<title>Arkivet — CustomQuiz</title>
-<meta name="description" content="Alle quizer på CustomQuiz. Filtrer etter tema, sorter etter popularitet eller dato, finn neste favoritt.">
+<title>Arkivet — alle quizene på CustomQuiz</title>
+<meta name="description" content="Alt vi og fellesskapet har publisert — søk, filtrer på tema, sorter på populært eller nyest. Finn neste quiz på norsk.">
 <!-- Quizbibliotek som global (virker også uten webserver/file://). fetch er fallback. -->
 <script src="quizzes-data.js"></script>
 
 <link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
 <link rel="apple-touch-icon" href="IMG/signature.jpg">
-<meta property="og:title" content="Arkivet — CustomQuiz">
-<meta property="og:description" content="Alle quizer på CustomQuiz. Sortert, filtrert, rangert.">
+<meta property="og:title" content="Arkivet — alle quizene på CustomQuiz">
+<meta property="og:description" content="Alt vi og fellesskapet har publisert. Søk, filtrer, sorter — og finn neste quiz.">
 <meta property="og:image" content="https://customquiz.no/IMG/og.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://customquiz.no/arkiv">
@@ -856,7 +856,9 @@
   <header class="page-header">
     <div class="eyebrow">Arkivet</div>
     <h1>Alle <em>utgaver</em>, ett sted.</h1>
-    <p class="page-lede" id="page-lede">Bla i alt CustomQuiz har publisert. Filtrer etter tema, sorter etter popularitet eller dato. Med gratis konto spiller du gratis-utvalget — se etter «Gratis»-merket. Abonnenter får tilgang til hele arkivet.</p>
+    <!-- Prisnøytral base-lede (vises i rå server-HTML / uten JS, og i paywall-perioden).
+         JS bytter til gratis-periode-versjon under (se FREE_PERIOD-blokken). -->
+    <p class="page-lede" id="page-lede">Bla i alt CustomQuiz har publisert — daglige quizer, VM-quizene og hele temaarkivet. Søk på tittel, tema eller stikkord, filtrer på kategori, sorter på populært eller nyest.</p>
   </header>
 
   <!-- Søk på topp — fritekst, filtrerer client-side i alt som er lastet. -->
@@ -922,7 +924,7 @@
     <div class="load-more-row">
       <button class="load-more-btn" id="load-more" type="button" hidden>Vis flere</button>
     </div>
-    <div class="empty-state" id="empty-state" style="display:none;">Ingen utgaver matcher søket. Prøv et annet ord.</div>
+    <div class="empty-state" id="empty-state" style="display:none;">Fant ingenting på det søket. Prøv et bredere ord — eller <a href="lag-quiz.html">lag quizen selv →</a></div>
   </div>
 
   <!-- Bekreftelse når en delelenke er kopiert. -->
@@ -933,7 +935,7 @@
   <div class="community-head" id="community-head" hidden>
     <div class="eyebrow">Fellesskapet</div>
     <h2 class="community-title">Laget av <em>fellesskapet</em></h2>
-    <p class="community-sub">Quizer folk lager lagres og blir synlige for alle her — automatisk sjekket før publisering. Vil du fjerne en du har laget, eller ser du noe som ikke hører hjemme? Trykk «Rapportér», så skjules den til vi har vurdert den.</p>
+    <p class="community-sub">Quizer folk lager lagres og blir synlige for alle her — automatisk sjekket for feil og upassende innhold før publisering. Vil du fjerne en du har laget, eller ser du noe som ikke hører hjemme? Trykk «Rapportér», så skjules den til vi har vurdert den.</p>
   </div>
   <section class="quiz-grid" id="community-grid" hidden></section>
 
@@ -1852,7 +1854,7 @@
     // når alt er åpent. Bytt til en gratis-periode-versjon (HTML-en beholder
     // abonnement-teksten, så den kommer tilbake når FREE_PERIOD=false).
     const lede = document.getElementById('page-lede');
-    if (lede) lede.textContent = 'Bla i alt CustomQuiz har publisert — daglige quizer, VM-quizene og hele temaarkivet. Filtrer etter tema, sorter etter popularitet eller dato. Akkurat nå er alt gratis og åpent for alle.';
+    if (lede) lede.textContent = 'Alt vi har publisert — og alt fellesskapet har laget. Søk på tittel, tema eller stikkord, filtrer på kategori, sorter på populært eller nyest. Alt er åpent akkurat nå: bare velg en og spill.';
   } else {
     // Paywall-perioden: abonnement-teasen ligger nå «hidden» i markupen (så den
     // ikke vises i rå server-HTML / uten JS under gratis-perioden). Vis den igjen.

@@ -49,3 +49,24 @@
 
   if (!internal) root.classList.add("cq-fresh");
 })();
+
+/**
+ * Cloudflare Web Analytics — besøks-/sidevisningssporing (gratis, cookie-fri).
+ * --------------------------------------------------------------
+ * Beacon injiseres her fordi denne fila lastes på alle live-sider
+ * (index, arkiv, dagens, lag-quiz, min-side, vm) → ett sted å vedlikeholde.
+ * Token hentes i Cloudflare → Web Analytics → Add a site (manuell JS-setup)
+ * og limes inn under. Sperren under hindrer lasting før ekte token er satt,
+ * så dette er trygt å pushe selv før token er på plass.
+ */
+(function () {
+  var CF_TOKEN = "LIM_INN_CLOUDFLARE_TOKEN_HER";
+  if (!CF_TOKEN || CF_TOKEN.indexOf("LIM_INN") === 0) return; // ingen ekte token ennå
+  try {
+    var s = document.createElement("script");
+    s.defer = true;
+    s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+    s.setAttribute("data-cf-beacon", JSON.stringify({ token: CF_TOKEN }));
+    document.head.appendChild(s);
+  } catch (e) {}
+})();
