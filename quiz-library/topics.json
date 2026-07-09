@@ -1,6 +1,6 @@
 {
   "generated": true,
-  "total": 329,
+  "total": 353,
   "topics": [
     {
       "slug": "arsenal-fc-ars-ne-wenger-aeraen__medium",
@@ -3893,6 +3893,72 @@
       ],
       "category": "monstere",
       "category_label": "Monstere",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "norge-i-vm-1994__lett",
+      "themes": [
+        "Norge i VM 1994"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "fotball-vm-2026-alt-du-ma-vite__lett",
+      "themes": [
+        "Fotball-VM 2026"
+      ],
+      "category": "fotball",
+      "category_label": "Fotball",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "verdens-geografiske-rekorder__lett",
+      "themes": [
+        "Verdens geografiske rekorder"
+      ],
+      "category": "geografi",
+      "category_label": "Geografi",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "beromte-vikinger__lett",
+      "themes": [
+        "Berømte vikinger"
+      ],
+      "category": "historie",
+      "category_label": "Historie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "norron-mytologi__lett",
+      "themes": [
+        "Norrøn mytologi"
+      ],
+      "category": "historie",
+      "category_label": "Historie",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 15
+    },
+    {
+      "slug": "vikingenes-tokt-og-slag__lett",
+      "themes": [
+        "Vikingenes tokt og slag"
+      ],
+      "category": "historie",
+      "category_label": "Historie",
       "difficulty": "lett",
       "count": 10,
       "priority": 15
