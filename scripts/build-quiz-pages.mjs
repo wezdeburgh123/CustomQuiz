@@ -118,7 +118,13 @@ function pageHtml(q) {
   const canonical = `${SITE}/quiz/${slug}/`;
   const ogImg = ogImageFor(q);
 
-  const title = `${q.title} — quiz med ${n} spørsmål | CustomQuiz`;
+  // CTR/SEO: Google kutter <title> ved ~60 tegn. Behold mest mulig informasjon
+  // uten å fortynne det keyword-rike temanavnet (som alltid står først). Faller
+  // gradvis tilbake til kortere varianter når temanavnet er langt.
+  const tTitle1 = `${q.title} — quiz med ${n} spørsmål | CustomQuiz`;
+  const tTitle2 = `${q.title} — quiz med ${n} spørsmål`;
+  const tTitle3 = `${q.title} — quiz`;
+  const title = tTitle1.length <= 60 ? tTitle1 : (tTitle2.length <= 60 ? tTitle2 : tTitle3);
   const lede = q.lede && q.lede.trim()
     ? q.lede.trim()
     : `Test kunnskapen din i denne ${catLabel.toLowerCase()}-quizen med ${n} spørsmål på norsk.`;
