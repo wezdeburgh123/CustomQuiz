@@ -3,5 +3,10 @@ Allow: /
 Disallow: /min-side.html
 Disallow: /admin.html
 Disallow: /auth-confirm.html
+# Backend-endepunkter (Netlify-funksjoner) — skal aldri crawles. Ga «Blocked due
+# to other 4xx» i GSC fordi Google traff dem uten riktige parametere/metode.
+Disallow: /api/
+# Stale Supabase-storage-URL mot eget domene (gammel cover-referanse) — 404.
+Disallow: /storage/
 
 Sitemap: https://customquiz.no/sitemap.xml

@@ -63,6 +63,65 @@
 # /quiz-app-v2?quiz=… Denne extension-løse varianten hadde ingen redirect og ga
 # 404 (78 sider i GSC, juli 2026). Rekkefølge betyr noe: den spesifikke
 # ?lib-regelen må stå FØR catch-all-en.
+# 0) DØDE gamle slugs (quizen finnes ikke lenger som /quiz/<slug>/). Uten disse
+# ville regel 1 sendt dem til en /quiz/-side som selv gir 404. Sendes i stedet til
+# nærmeste relevante tema-hub (301). MÅ stå FØR den generiske ?lib-regelen.
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/tema/sport/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = "friidretts-rekorder__lett"
+
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/tema/musikk/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = "vassenggutane__medium"
+
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/tema/musikk/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = "vassendgutane__medium"
+
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/tema/musikk/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = "pop-bandet-zuma__medium"
+
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/tema/historie/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = "historien-til-norske-fyrtarn__medium"
+
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/tema/verdenshistorie/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = "verdenshistorie__medium"
+
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/tema/mix/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = "dinamo-vs-alle-andre-oslo-byraer-heder-og-aere-historie-fun-facts__medium"
+
 # 1) ?lib=<slug> → den nye, indekserbare /quiz/<slug>/-siden (bevarer SEO-signal).
 [[redirects]]
   from = "/quiz-app-v2"

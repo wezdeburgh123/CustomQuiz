@@ -2394,6 +2394,671 @@
           "explanation": "MetLife Stadium i New Jersey er også vertsarena for VM-finalen 19. juli 2026."
         }
       ]
+    },
+    {
+      "slug": "norge-england-historie",
+      "num": "20",
+      "phase": "Historie",
+      "status": "open",
+      "sort": 20,
+      "hero_img": "vm-gruppespill-1",
+      "title": "Norge–England gjennom historien",
+      "sub": "«Maggie Thatcher, your boys took a hell of a beating!» To Oslo-sjokk — og aldri før i et VM.",
+      "difficulty": "middels",
+      "questions": [
+        {
+          "category": "Kuriosa",
+          "q": "Hva gjør kvartfinalen 11. juli historisk for Norge og England?",
+          "options": [
+            "Det er første kamp mellom dem på 40 år",
+            "Det er første gang de møtes i et VM-sluttspill",
+            "Det er første gang begge er i en kvartfinale",
+            "Det er første VM-kamp i Miami"
+          ],
+          "correct": 1,
+          "explanation": "Landene har møtt hverandre 11 ganger før, men aldri i et VM-sluttspill — kvartfinalen i Miami er det aller første VM-møtet."
+        },
+        {
+          "category": "Historie",
+          "q": "Norge har bare slått England to ganger gjennom historien. I hvilken by kom begge seirene?",
+          "options": [
+            "Oslo",
+            "Bergen",
+            "Manchester",
+            "London"
+          ],
+          "correct": 0,
+          "explanation": "Begge de norske seirene — 1981 og 1993 — kom på Ullevaal i Oslo."
+        },
+        {
+          "category": "Legende",
+          "q": "Norges 2–1-seier i 1981 ga en av tidenes mest berømte radioreportasjer. Hva ropte Bjørge Lillelien?",
+          "options": [
+            "«Maggie Thatcher, your boys took a hell of a beating!»",
+            "«England, England, farvel og takk!»",
+            "«Dette er større enn Grotli!»",
+            "«Norge er best i verden!»"
+          ],
+          "correct": 0,
+          "explanation": "Lillelien ramset opp britiske størrelser og avsluttet med «Maggie Thatcher, your boys took a hell of a beating!» — en av fotballhistoriens mest siterte reportasjer."
+        },
+        {
+          "category": "Historie",
+          "q": "Hva ble resultatet i den berømte kampen i Oslo i 1981?",
+          "options": [
+            "3–2 til Norge",
+            "2–1 til Norge",
+            "2–2",
+            "1–0 til Norge"
+          ],
+          "correct": 1,
+          "explanation": "Norge vant 2–1 i en VM-kvalifiseringskamp. Bryan Robson ga England ledelsen før Albertsen og Thoresen snudde det."
+        },
+        {
+          "category": "Stjerner",
+          "q": "Hvem scoret Norges vinnermål i 2–1-seieren over England i 1981?",
+          "options": [
+            "Roger Albertsen",
+            "Kjetil Rekdal",
+            "Tore André Flo",
+            "Hallvar Thoresen"
+          ],
+          "correct": 3,
+          "explanation": "Roger Albertsen utlignet, og Hallvar Thoresen satte vinnermålet i det 41. minutt."
+        },
+        {
+          "category": "Historie",
+          "q": "Hva ble resultatet da Norge slo England igjen i Oslo i 1993?",
+          "options": [
+            "2–0 til Norge",
+            "1–0 til Norge",
+            "2–1 til Norge",
+            "3–1 til Norge"
+          ],
+          "correct": 0,
+          "explanation": "Øyvind Leonhardsen og Lars Bohinen scoret i en 2–0-seier i VM-kvalifiseringen."
+        },
+        {
+          "category": "Drama",
+          "q": "Hva ble konsekvensen for England av å tape 0–2 i Oslo i 1993?",
+          "options": [
+            "Ingenting, begge gikk videre",
+            "England ble utestengt fra neste VM",
+            "England kom ikke til VM 1994 — Norge gjorde det",
+            "England fikk en ny sjanse i omspill"
+          ],
+          "correct": 2,
+          "explanation": "Norge vant gruppa foran Nederland og England. England endte utenfor og misset VM 1994 i USA."
+        },
+        {
+          "category": "Kuriosa",
+          "q": "I en vennskapskamp i Oslo i 1966 vant England 6–1, med én spiller som scoret fire mål. Hvem?",
+          "options": [
+            "Gary Lineker",
+            "Geoff Hurst",
+            "Jimmy Greaves",
+            "Bobby Charlton"
+          ],
+          "correct": 2,
+          "explanation": "Jimmy Greaves scoret fire i 6–1-seieren — samme år England vant sitt eneste VM."
+        },
+        {
+          "category": "Rekord",
+          "q": "Hvordan så den innbyrdes statistikken ut før VM 2026 — hvem hadde flest seire?",
+          "options": [
+            "Helt likt, tre seire hver",
+            "Norge, med flest seire",
+            "De hadde aldri møttes",
+            "England, med seks seire mot Norges to"
+          ],
+          "correct": 3,
+          "explanation": "Før kvartfinalen: England seks seire, tre uavgjort, Norge to seire på elleve møter."
+        },
+        {
+          "category": "Resonnement",
+          "q": "Norges to seire mot England har én ting til felles utover byen (Oslo). Hva?",
+          "options": [
+            "Begge ble spilt på nøytral bane",
+            "Begge kom i EM-kvalifisering",
+            "Begge var vennskapskamper",
+            "Begge var VM-kvalifiseringskamper"
+          ],
+          "correct": 3,
+          "explanation": "Både 1981 (mot VM 1982) og 1993 (mot VM 1994) var VM-kvalifiseringskamper — passende nok før det første VM-møtet i 2026."
+        }
+      ]
+    },
+    {
+      "slug": "england-stjerner",
+      "num": "21",
+      "phase": "Motstander",
+      "status": "open",
+      "sort": 21,
+      "hero_img": "vm-gruppespill-1",
+      "title": "Motstanderen: Englands stjerner",
+      "sub": "Kane, Bellingham, en tysk sjef og to vrakede stjerner — hvem møter Norge i Miami?",
+      "difficulty": "middels",
+      "questions": [
+        {
+          "category": "Kaptein",
+          "q": "Hvem er Englands kaptein og spissas i VM 2026?",
+          "options": [
+            "Harry Kane",
+            "Jude Bellingham",
+            "Bukayo Saka",
+            "Declan Rice"
+          ],
+          "correct": 0,
+          "explanation": "Harry Kane fører an og bærer kapteinsbindet for England."
+        },
+        {
+          "category": "Rekord",
+          "q": "Kane har passert hvilken legende som Englands mestscorende i VM-sluttspill?",
+          "options": [
+            "Gary Lineker",
+            "Michael Owen",
+            "Alan Shearer",
+            "Bobby Charlton"
+          ],
+          "correct": 0,
+          "explanation": "Kane gikk forbi Gary Lineker som Englands mestscorende gjennom tidene i VM-sluttspill."
+        },
+        {
+          "category": "Klubb",
+          "q": "Hvilken klubb spiller Harry Kane for i 2026?",
+          "options": [
+            "Manchester United",
+            "Real Madrid",
+            "Tottenham",
+            "Bayern München"
+          ],
+          "correct": 3,
+          "explanation": "Kane forlot Tottenham for Bayern München i 2023 og spiller fortsatt der."
+        },
+        {
+          "category": "Stjerner",
+          "q": "Jude Bellingham scoret to mål da England slo en vertsnasjon 3–2 i åttedelsfinalen. Hvilken?",
+          "options": [
+            "Mexico",
+            "USA",
+            "Brasil",
+            "Canada"
+          ],
+          "correct": 0,
+          "explanation": "Bellingham herjet da England vant 3–2 mot Mexico på Azteca i Mexico by."
+        },
+        {
+          "category": "Resonnement",
+          "q": "To av Englands startspillere er klubbkamerater med Norges kaptein Ødegaard. I hvilken klubb?",
+          "options": [
+            "Real Madrid",
+            "Chelsea",
+            "Arsenal",
+            "Manchester City"
+          ],
+          "correct": 2,
+          "explanation": "Bukayo Saka og Declan Rice spiller for Arsenal — samme klubb som Ødegaard er kaptein for."
+        },
+        {
+          "category": "Trener",
+          "q": "Hva er spesielt med Englands landslagssjef i VM 2026?",
+          "options": [
+            "Han spilte selv i VM 1998",
+            "Han er tidligere Norge-spiller",
+            "Han er tysk — Thomas Tuchel",
+            "Han er svensk"
+          ],
+          "correct": 2,
+          "explanation": "Thomas Tuchel, tysk og Champions League-vinner med Chelsea i 2021, tok over som England-sjef 1. januar 2025."
+        },
+        {
+          "category": "Kuriosa",
+          "q": "Hvilke to store offensive navn valgte Tuchel kontroversielt å ikke ta med i VM-troppen?",
+          "options": [
+            "Phil Foden og Cole Palmer",
+            "Declan Rice og Harry Kane",
+            "Bukayo Saka og Jude Bellingham",
+            "Marcus Rashford og Jack Grealish"
+          ],
+          "correct": 0,
+          "explanation": "Tuchel vraket både Phil Foden og Cole Palmer etter svakere klubbsesonger — en av mesterskapets store snakkiser."
+        },
+        {
+          "category": "Keeper",
+          "q": "Hvem er Englands førstekeeper i VM 2026?",
+          "options": [
+            "Nick Pope",
+            "Jordan Pickford",
+            "Dean Henderson",
+            "Aaron Ramsdale"
+          ],
+          "correct": 1,
+          "explanation": "Jordan Pickford har stått i alle kampene og er Englands ubestridte førstevalg i mål."
+        },
+        {
+          "category": "Sluttspill",
+          "q": "England kom til kvartfinalen etter en snuoperasjon i 16-delsfinalen. Hvem slo de i R32 (2–1)?",
+          "options": [
+            "DR Kongo",
+            "Ecuador",
+            "Senegal",
+            "Nigeria"
+          ],
+          "correct": 0,
+          "explanation": "England lå under, men snudde til 2–1 mot DR Kongo i 32-delsfinalen — Kane avgjorde sent."
+        },
+        {
+          "category": "Drama",
+          "q": "Hva gjorde slutten på Englands 3–2-seier over Mexico ekstra dramatisk?",
+          "options": [
+            "Kampen gikk til straffesparkkonkurranse",
+            "England spilte de siste minuttene med ti mann etter rødt kort",
+            "Mexico brente straffe på overtid",
+            "Kane ble båret av skadet"
+          ],
+          "correct": 1,
+          "explanation": "Jarell Quansah fikk rødt kort, Mexico reduserte på straffe, men England holdt ut 3–2 med ti mann."
+        }
+      ]
+    },
+    {
+      "slug": "pregame-norge-england",
+      "num": "22",
+      "phase": "Pre-game",
+      "status": "open",
+      "sort": 22,
+      "hero_img": "vm-gruppespill-1",
+      "title": "Før kampen: Norge–England",
+      "sub": "Norges første VM-kvartfinale noensinne. Haaland mot Kane i Miami — ta den før avspark.",
+      "difficulty": "middels",
+      "questions": [
+        {
+          "category": "Sluttspill",
+          "q": "Når og hvor møtes Norge og England i kvartfinalen?",
+          "options": [
+            "11. juli på Azteca",
+            "10. juli i Dallas",
+            "11. juli på Hard Rock Stadium i Miami",
+            "12. juli i New York"
+          ],
+          "correct": 2,
+          "explanation": "Kvartfinalen spilles lørdag 11. juli på Hard Rock Stadium i Miami, avspark 23:00 norsk tid."
+        },
+        {
+          "category": "Norge",
+          "q": "Hvordan tok Norge seg til kvartfinalen?",
+          "options": [
+            "Ved å vinne gruppe I",
+            "Ved å slå England i gruppespillet",
+            "Ved å slå Brasil 2–1 i åttedelsfinalen",
+            "På straffer mot Brasil"
+          ],
+          "correct": 2,
+          "explanation": "Norge slo den femdobbelte verdensmesteren Brasil 2–1 (1–2 borte) i åttedelsfinalen 5. juli."
+        },
+        {
+          "category": "Stjerner",
+          "q": "Hvem scoret begge Norges mål i 2–1-seieren over Brasil?",
+          "options": [
+            "Erling Haaland",
+            "Antonio Nusa",
+            "Alexander Sørloth",
+            "Martin Ødegaard"
+          ],
+          "correct": 0,
+          "explanation": "Haaland scoret begge — i det 79. og 90. minutt — og sendte Norge til deres første VM-kvartfinale."
+        },
+        {
+          "category": "Historisk",
+          "q": "Hvorfor er kvartfinalen historisk for de to nasjonene?",
+          "options": [
+            "Det er første gang Norge og England møtes i et VM-sluttspill",
+            "Det er første kamp i Miami",
+            "Det er finalen",
+            "Det er første gang begge er i VM"
+          ],
+          "correct": 0,
+          "explanation": "De har aldri før møtt hverandre i et VM-sluttspill — kvartfinalen er det aller første VM-møtet."
+        },
+        {
+          "category": "England",
+          "q": "England kom til kvartfinalen etter en thriller mot en vertsnasjon i R16. Hva ble resultatet?",
+          "options": [
+            "2–1 over USA",
+            "3–2 over Mexico",
+            "1–0 over Mexico",
+            "4–3 over Canada"
+          ],
+          "correct": 1,
+          "explanation": "England vant 3–2 mot Mexico på Azteca, og holdt ut med ti mann på tampen."
+        },
+        {
+          "category": "Kapteiner",
+          "q": "Hvem fører an som kapteiner for de to lagene?",
+          "options": [
+            "Ødegaard for Norge, Kane for England",
+            "Haaland for Norge, Bellingham for England",
+            "Sørloth for Norge, Saka for England",
+            "Berge for Norge, Rice for England"
+          ],
+          "correct": 0,
+          "explanation": "Martin Ødegaard er Norges kaptein, Harry Kane Englands."
+        },
+        {
+          "category": "Haaland",
+          "q": "Hvor mange mål har Erling Haaland scoret så langt i VM 2026?",
+          "options": [
+            "Ti",
+            "Fem",
+            "Sju",
+            "Fire"
+          ],
+          "correct": 2,
+          "explanation": "Haaland står med sju mål: fire i gruppespillet, vinnermålet mot Elfenbenskysten og begge mot Brasil."
+        },
+        {
+          "category": "Innsats",
+          "q": "Hva står på spill i kvartfinalen — hvor går vinneren?",
+          "options": [
+            "Rett til finalen",
+            "Til bronsefinalen",
+            "Tilbake til gruppespill",
+            "Til semifinalen"
+          ],
+          "correct": 3,
+          "explanation": "Vinneren av kvartfinalen går videre til VM-semifinalen."
+        },
+        {
+          "category": "Milepæl",
+          "q": "Hvorfor er Norges sluttspill i 2026 historisk?",
+          "options": [
+            "Norge er regjerende verdensmester",
+            "Det er Norges første VM-kvartfinale noensinne",
+            "Det er Norges femte strake VM",
+            "Norge har aldri vært i VM før"
+          ],
+          "correct": 1,
+          "explanation": "Norge er i sin første VM-kvartfinale noensinne — og spiller sitt første VM på 28 år."
+        },
+        {
+          "category": "Resonnement",
+          "q": "England jakter tittelen de bare har vunnet én gang. Når vant England VM?",
+          "options": [
+            "Aldri",
+            "1990",
+            "1966",
+            "2018"
+          ],
+          "correct": 2,
+          "explanation": "England vant VM én gang, på hjemmebane i 1966 — og har jaktet nummer to siden."
+        }
+      ]
+    },
+    {
+      "slug": "stjerne-haaland",
+      "num": "23",
+      "phase": "Stjerneportrett",
+      "status": "open",
+      "sort": 23,
+      "hero_img": "vm-gruppespill-1",
+      "title": "Stjerneportrett: Erling Haaland",
+      "sub": "Målmaskinen som senket Brasil — og som faktisk ble født i England. Hvor godt kjenner du ham?",
+      "difficulty": "middels",
+      "questions": [
+        {
+          "category": "Klubb",
+          "q": "Hvilken klubb spiller Erling Haaland for?",
+          "options": [
+            "Manchester United",
+            "Manchester City",
+            "Real Madrid",
+            "Borussia Dortmund"
+          ],
+          "correct": 1,
+          "explanation": "Haaland gikk til Manchester City i 2022 og vant «the treble» i sin første sesong."
+        },
+        {
+          "category": "Rekord",
+          "q": "Haaland er Norges tidenes toppscorer. Hvilken rekord fra for ~90 år siden slo han?",
+          "options": [
+            "Tore André Flos rekord",
+            "Ole Gunnar Solskjærs rekord",
+            "Jørgen Juves 33 landslagsmål",
+            "Kjetil Rekdals målrekord"
+          ],
+          "correct": 2,
+          "explanation": "Haaland passerte Jørgen Juves 33 mål — en rekord som hadde stått i rundt 90 år."
+        },
+        {
+          "category": "Premier League",
+          "q": "Hvor mange mål scoret Haaland i sin første Premier League-sesong — en ny rekord?",
+          "options": [
+            "41",
+            "30",
+            "25",
+            "36"
+          ],
+          "correct": 3,
+          "explanation": "36 mål i 2022–23 er rekord for flest mål i en 38-kampers Premier League-sesong."
+        },
+        {
+          "category": "Ungdom",
+          "q": "Hvilke to norske klubber spilte Haaland for før han dro utenlands?",
+          "options": [
+            "Vålerenga og Lillestrøm",
+            "Bryne og Molde",
+            "Start og Viking",
+            "Rosenborg og Brann"
+          ],
+          "correct": 1,
+          "explanation": "Haaland startet i Bryne og fikk gjennombruddet i Molde før overgangen til Salzburg."
+        },
+        {
+          "category": "Karriere",
+          "q": "Ved hvilken tysk klubb fikk Haaland sitt store europeiske gjennombrudd før City?",
+          "options": [
+            "Bayern München",
+            "RB Leipzig",
+            "Borussia Dortmund",
+            "Schalke 04"
+          ],
+          "correct": 2,
+          "explanation": "Haaland herjet for Borussia Dortmund (2020–22) og vant DFB-Pokal i 2021."
+        },
+        {
+          "category": "VM-kvalik",
+          "q": "Haaland satte europarekord i VM-kvalifiseringen til 2026. Hvor mange mål scoret han?",
+          "options": [
+            "20 mål",
+            "10 mål",
+            "16 mål på 8 kamper",
+            "12 mål"
+          ],
+          "correct": 2,
+          "explanation": "16 mål på 8 kamper — han scoret i hver eneste kvalifiseringskamp, en europeisk rekord han deler med Lewandowski."
+        },
+        {
+          "category": "Fakta",
+          "q": "Haaland er født i 2000. Hvor gammel er han under VM 2026?",
+          "options": [
+            "25",
+            "23",
+            "21",
+            "28"
+          ],
+          "correct": 0,
+          "explanation": "Født 21. juli 2000 — Haaland er 25 år gjennom hele sluttspillet og fyller 26 den 21. juli, etter VM-finalen."
+        },
+        {
+          "category": "Familie",
+          "q": "Haalands far var også proffspiller i Premier League. Hva heter han?",
+          "options": [
+            "Kjetil Rekdal",
+            "Ole Gunnar Solskjær",
+            "Jostein Flo",
+            "Alf-Inge Håland"
+          ],
+          "correct": 3,
+          "explanation": "Alf-Inge Håland spilte for blant andre Leeds United og Manchester City."
+        },
+        {
+          "category": "Kuriosa",
+          "q": "I hvilket land ble Erling Haaland faktisk født — passende nok før kvartfinalen?",
+          "options": [
+            "Spania",
+            "Norge",
+            "Tyskland",
+            "England"
+          ],
+          "correct": 3,
+          "explanation": "Haaland ble født i Leeds i England mens faren spilte for Leeds United — han vokste opp som Leeds-supporter."
+        },
+        {
+          "category": "VM 2026",
+          "q": "Haalands to sene mål slo ut hvilken femdobbelt verdensmester i åttedelsfinalen?",
+          "options": [
+            "Argentina",
+            "Italia",
+            "Tyskland",
+            "Brasil"
+          ],
+          "correct": 3,
+          "explanation": "Haaland scoret begge målene da Norge slo Brasil 2–1 i åttedelsfinalen 5. juli."
+        }
+      ]
+    },
+    {
+      "slug": "stjerne-odegaard",
+      "num": "24",
+      "phase": "Stjerneportrett",
+      "status": "open",
+      "sort": 24,
+      "hero_img": "vm-gruppespill-1",
+      "title": "Stjerneportrett: Martin Ødegaard",
+      "sub": "Vidunderbarnet som ble kaptein i to land. Dirigenten Norge bygger spillet rundt.",
+      "difficulty": "middels",
+      "questions": [
+        {
+          "category": "Klubb",
+          "q": "Hvilken klubb er Martin Ødegaard kaptein for?",
+          "options": [
+            "Real Madrid",
+            "Manchester City",
+            "Arsenal",
+            "Real Sociedad"
+          ],
+          "correct": 2,
+          "explanation": "Ødegaard ble utnevnt til Arsenal-kaptein i 2022 og er også kaptein for Norge."
+        },
+        {
+          "category": "Rekord",
+          "q": "Ødegaard er Norges yngste landslagsspiller noensinne. Hvor gammel var han da han debuterte?",
+          "options": [
+            "18 år",
+            "19 år",
+            "17 år",
+            "15 år"
+          ],
+          "correct": 3,
+          "explanation": "Han debuterte for Norge i 2014, 15 år og 253 dager gammel — fortsatt Norges yngste landslagsspiller."
+        },
+        {
+          "category": "Karriere",
+          "q": "Som tenåring signerte Ødegaard for en av verdens største klubber. Hvilken?",
+          "options": [
+            "Juventus",
+            "Bayern München",
+            "Barcelona",
+            "Real Madrid"
+          ],
+          "correct": 3,
+          "explanation": "Real Madrid hentet ham som 16-åring i 2015 — han ble klubbens yngste spiller på det tidspunktet."
+        },
+        {
+          "category": "Ungdom",
+          "q": "Ved hvilken norsk klubb fikk Ødegaard gjennombruddet sitt?",
+          "options": [
+            "Vålerenga",
+            "Rosenborg",
+            "Molde",
+            "Strømsgodset"
+          ],
+          "correct": 3,
+          "explanation": "Ødegaard slo gjennom i Strømsgodset som 15-åring og satte rekord som yngste målscorer i eliteserien."
+        },
+        {
+          "category": "Posisjon",
+          "q": "Hvilken posisjon spiller Ødegaard?",
+          "options": [
+            "Midtstopper",
+            "Offensiv midtbane (playmaker)",
+            "Spiss",
+            "Keeper"
+          ],
+          "correct": 1,
+          "explanation": "Ødegaard er en kreativ, offensiv midtbanespiller — dirigenten som styrer angrepsspillet."
+        },
+        {
+          "category": "Landslag",
+          "q": "Siden hvilket år har Ødegaard vært kaptein for Norge?",
+          "options": [
+            "2021",
+            "2018",
+            "2016",
+            "2023"
+          ],
+          "correct": 0,
+          "explanation": "Ødegaard har vært Norges kaptein siden mars 2021."
+        },
+        {
+          "category": "Karriere",
+          "q": "Før han slo rot i Arsenal, var Ødegaard på lån i Spania. Hvilken spansk klubb?",
+          "options": [
+            "Sevilla",
+            "Real Sociedad",
+            "Valencia",
+            "Real Betis"
+          ],
+          "correct": 1,
+          "explanation": "Ødegaard var på lån i Real Sociedad før den permanente overgangen til Arsenal i 2021."
+        },
+        {
+          "category": "VM-rolle",
+          "q": "Hvilken rolle har Ødegaard for Norge i VM 2026?",
+          "options": [
+            "Høyreback",
+            "Trener",
+            "Kaptein",
+            "Reservekeeper"
+          ],
+          "correct": 2,
+          "explanation": "Ødegaard er kaptein og Norges dirigent på midtbanen."
+        },
+        {
+          "category": "Arsenal",
+          "q": "I hvilket år ble Ødegaard utnevnt til kaptein i Arsenal?",
+          "options": [
+            "2020",
+            "2022",
+            "2021",
+            "2023"
+          ],
+          "correct": 1,
+          "explanation": "Ødegaard fikk kapteinsbindet i Arsenal i 2022, året etter den permanente overgangen."
+        },
+        {
+          "category": "Resonnement",
+          "q": "Ødegaard møter to av sine egne Arsenal-lagkamerater på Englands lag. Hvem spiller de for til daglig?",
+          "options": [
+            "Bayern — Kane",
+            "Arsenal — Saka og Rice",
+            "Real Madrid — Bellingham",
+            "Manchester City — Haaland"
+          ],
+          "correct": 1,
+          "explanation": "Bukayo Saka og Declan Rice er Ødegaards klubbkamerater i Arsenal, men motstandere i kvartfinalen."
+        }
+      ]
     }
   ]
 }
