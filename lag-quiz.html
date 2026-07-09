@@ -3,12 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <script>
-/* SEO: spiller-instanser (?lib / ?quiz / ?event) skal IKKE indekseres — de
-   dupliserer den kanoniske /quiz/<slug>/-siden. Generator-landingen (uten
-   parametere) forblir indekserbar. Kjøres først i <head> så robots-metaen
-   finnes før Google rendrer. */
-(function(){try{var p=new URLSearchParams(location.search);
-if(p.has('lib')||p.has('quiz')||p.has('event')){
+/* SEO: spiller-instanser dupliserer den kanoniske /quiz/<slug>/-siden.
+   - ?lib=<slug>: sett rel=canonical til /quiz/<slug>/ så Google konsoliderer
+     signalet til den indekserbare siden (løser «Duplicate without user-selected
+     canonical» i GSC). Ingen noindex her — canonical er det riktige signalet.
+   - ?quiz / ?event: ingen kanonisk /quiz/-motpart → noindex,follow.
+   Kjøres først i <head> så taggen finnes før Google rendrer. */
+(function(){try{var p=new URLSearchParams(location.search);var lib=p.get('lib');
+if(lib){var c=document.createElement('link');c.rel='canonical';
+c.href='https://customquiz.no/quiz/'+lib+'/';document.head.appendChild(c);}
+else if(p.has('quiz')||p.has('event')){
 var m=document.createElement('meta');m.name='robots';m.content='noindex,follow';
 document.head.appendChild(m);}}catch(e){}})();
 </script>

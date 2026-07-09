@@ -59,6 +59,26 @@
 # lag-quiz.html (18. juni 2026). 301 (permanent) så Google flytter ranking,
 # og bokmerker/delelenker/?lib/?quiz/?utfordring-strenger følger med (Netlify
 # bevarer query-strengen automatisk på redirects).
+# Gammel generator-URL UTEN .html — Google indekserte /quiz-app-v2?lib=… og
+# /quiz-app-v2?quiz=… Denne extension-løse varianten hadde ingen redirect og ga
+# 404 (78 sider i GSC, juli 2026). Rekkefølge betyr noe: den spesifikke
+# ?lib-regelen må stå FØR catch-all-en.
+# 1) ?lib=<slug> → den nye, indekserbare /quiz/<slug>/-siden (bevarer SEO-signal).
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/quiz/:slug/"
+  status = 301
+  force = true
+  [redirects.query]
+    lib = ":slug"
+
+# 2) Alt annet på /quiz-app-v2 (?quiz=, ?event=, uten parametere) → generatoren.
+[[redirects]]
+  from = "/quiz-app-v2"
+  to = "/lag-quiz"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/quiz-app-v2.html"
   to = "/lag-quiz.html"
