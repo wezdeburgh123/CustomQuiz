@@ -142,15 +142,25 @@ function pageHtml(q) {
     about: { "@type": "Thing", name: catLabel },
     hasPart: q.questions.slice(0, 50).map((it) => {
       const opts = Array.isArray(it.options) ? it.options : [];
+      const ci = Number.isInteger(it.correct) ? it.correct : -1;
       const part = {
         "@type": "Question",
         eduQuestionType: "Multiple choice",
         text: it.q,
       };
-      // Fasit holdes BEVISST ute av server-HTML/JSON-LD (produktbeskyttelse mot
-      // skraping/spoiling). Den lastes klientside ved klikk via /api/library-get.
-      // Alternativene listes som suggestedAnswer uten å røpe hvilket som er riktig.
-      if (opts.length) {
+      // Google «Practice problems» krever acceptedAnswer (fasiten) på hvert
+      // spørsmål for at siden skal kvalifisere som rikt resultat. Fasiten legges
+      // derfor i JSON-LD — men holdes fortsatt SKJULT på selve siden (lastes
+      // klientside bak «Vis fasit» via /api/library-get), så spillere ikke
+      // spoiles. De gale alternativene listes som suggestedAnswer.
+      if (opts.length && ci >= 0 && ci < opts.length) {
+        part.acceptedAnswer = { "@type": "Answer", text: String(opts[ci]) };
+        const wrong = opts.filter((_, i) => i !== ci);
+        if (wrong.length) {
+          part.suggestedAnswer = wrong.map((o) => ({ "@type": "Answer", text: String(o) }));
+        }
+      } else if (opts.length) {
+        // Fallback ved manglende/ugyldig fasit-indeks: behold gammel oppførsel.
         part.suggestedAnswer = opts.map((o) => ({ "@type": "Answer", text: String(o) }));
       }
       return part;
