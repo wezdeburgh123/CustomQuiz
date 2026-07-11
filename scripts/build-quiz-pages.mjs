@@ -29,6 +29,7 @@ const ROOT = path.join(__dirname, "..");
 const NDJSON = path.join(ROOT, "quiz-library", "library.ndjson");
 const OUT_DIR = path.join(ROOT, "quiz");
 const OUT_TEMA = path.join(ROOT, "tema");
+const OUT_LAG = path.join(ROOT, "lag");
 const SITEMAP = path.join(ROOT, "sitemap.xml");
 const ARKIV = path.join(ROOT, "arkiv.html");
 
@@ -87,6 +88,13 @@ const makeSlug = (themes, difficulty) =>
   (Array.isArray(themes) ? themes : [themes]).map(normToken).filter(Boolean).sort().join("+") +
   "__" + normToken(difficulty || "medium");
 
+// Lag-slug (speiler arkiv.html sin teamSlug) — brukes til /lag/<slug>/-hubbene
+// og breadcrumb-lenkene, så URL-ene er stabile og matcher resten av kodebasen.
+const teamSlug = (name) =>
+  String(name || "").toLowerCase()
+    .replace(/æ/g, "ae").replace(/ø/g, "o").replace(/å/g, "a")
+    .replace(/[^a-z0-9_-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+
 // ---------- HTML-hjelpere ----------
 const esc = (s) => String(s == null ? "" : s)
   .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -117,6 +125,11 @@ function pageHtml(q) {
   const n = q.questions.length;
   const canonical = `${SITE}/quiz/${slug}/`;
   const ogImg = ogImageFor(q);
+  // Klubblag-quizer får et ekstra breadcrumb-nivå til lag-hubben (/lag/<slug>/),
+  // som også gir hubben innkommende interne lenker.
+  const teamHub = (q.category === "fotball" && q.team && String(q.team).trim())
+    ? { name: String(q.team).trim(), url: `${SITE}/lag/${teamSlug(String(q.team).trim())}/` }
+    : null;
 
   // CTR/SEO: Google kutter <title> ved ~60 tegn. Behold mest mulig informasjon
   // uten å fortynne det keyword-rike temanavnet (som alltid står først). Faller
@@ -169,7 +182,8 @@ function pageHtml(q) {
       { "@type": "ListItem", position: 1, name: "CustomQuiz", item: `${SITE}/` },
       { "@type": "ListItem", position: 2, name: "Arkiv", item: `${SITE}/arkiv` },
       { "@type": "ListItem", position: 3, name: catLabel, item: `${SITE}/tema/${encodeURI(q.category || "mix")}/` },
-      { "@type": "ListItem", position: 4, name: q.title, item: canonical },
+      ...(teamHub ? [{ "@type": "ListItem", position: 4, name: teamHub.name, item: teamHub.url }] : []),
+      { "@type": "ListItem", position: teamHub ? 5 : 4, name: q.title, item: canonical },
     ],
   };
 
@@ -246,7 +260,7 @@ function pageHtml(q) {
 </head>
 <body>
 <main class="wrap">
-  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv">Arkiv</a> › <a href="/tema/${esc(encodeURI(q.category || "mix"))}/">${esc(catLabel)}</a> › ${esc(q.title)}</nav>
+  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv">Arkiv</a> › <a href="/tema/${esc(encodeURI(q.category || "mix"))}/">${esc(catLabel)}</a>${teamHub ? ` › <a href="${esc(teamHub.url)}">${esc(teamHub.name)}</a>` : ""} › ${esc(q.title)}</nav>
 
   <h1>${esc(q.title)}</h1>
   <p class="lede">${esc(lede)}</p>
@@ -337,14 +351,21 @@ function themeCard(q) {
       </a>`;
 }
 
-function themePageHtml(cat, quizzes) {
-  const label = THEME_PAGE_LABEL[cat] || CAT_LABEL[cat] || cat;
+function themePageHtml(cat, quizzes, teamOpts = null) {
+  const isTeam = !!teamOpts;
+  const label = isTeam ? teamOpts.team : (THEME_PAGE_LABEL[cat] || CAT_LABEL[cat] || cat);
   const n = quizzes.length;
-  const canonical = `${SITE}/tema/${cat}/`;
+  const canonical = isTeam ? `${SITE}/lag/${teamOpts.slug}/` : `${SITE}/tema/${cat}/`;
   const imgKey = CATEGORY_TO_IMG[cat] || CATEGORY_TO_IMG.mix;
-  const ogImg = `${SITE}/IMG/${imgKey}.jpg`;
-  const title = `${label} — ${n} quizer | CustomQuiz`;
-  const metaDesc = `Utforsk ${n} ${label.toLowerCase()}-quizer på CustomQuiz. Test kunnskapen din med faktasjekkede spørsmål på norsk — gratis å spille.`;
+  const teamCrest = isTeam ? crestForBuild(teamOpts.team) : null;
+  const ogImg = teamCrest ? `${SITE}/IMG/${teamCrest}.jpg` : `${SITE}/IMG/${imgKey}.jpg`;
+  const title = isTeam
+    ? `${label}-quiz — ${n} quizer | CustomQuiz`
+    : `${label} — ${n} quizer | CustomQuiz`;
+  const metaRaw = isTeam
+    ? `Test deg på ${label}! ${n} faktasjekkede ${label}-quizer på norsk — historie, legender og rekorder. Gratis å spille.`
+    : `Utforsk ${n} ${label.toLowerCase()}-quizer på CustomQuiz. Test kunnskapen din med faktasjekkede spørsmål på norsk — gratis å spille.`;
+  const metaDesc = metaRaw.length > 155 ? metaRaw.slice(0, 152).trim() + "…" : metaRaw;
 
   const sorted = quizzes.slice().sort((a, b) => (b.plays || 0) - (a.plays || 0));
 
@@ -437,16 +458,24 @@ function themePageHtml(cat, quizzes) {
   footer{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);text-align:center;padding:8px 0 64px;}
   footer a{color:var(--ink-mute);text-decoration:none;}
   footer a:hover{color:var(--accent);}
+  .cq-share{margin-top:24px;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:transparent;border:1px solid var(--accent);border-radius:var(--r-pill);padding:9px 18px;cursor:pointer;transition:background 160ms ease,color 160ms ease;}
+  .cq-share:hover{background:var(--accent);color:var(--bg-soft);}
+  .cq-share.copied{background:var(--accent);color:var(--bg-soft);}
 </style>
 </head>
 <body>
 <div class="container">
   <div id="cq-masthead"></div>
-  <nav class="crumbs"><a href="/">CustomQuiz</a> › <a href="/arkiv">Arkivet</a> › ${esc(label)}</nav>
+  <nav class="crumbs">${isTeam
+    ? `<a href="/">CustomQuiz</a> › <a href="/arkiv">Arkivet</a> › <a href="/tema/fotball/">Fotball</a> › ${esc(label)}`
+    : `<a href="/">CustomQuiz</a> › <a href="/arkiv">Arkivet</a> › ${esc(label)}`}</nav>
   <header class="page-header">
-    <div class="eyebrow">Tema</div>
+    <div class="eyebrow">${isTeam ? "Fotball · Klubb" : "Tema"}</div>
     <h1>${esc(label)}</h1>
-    <p class="page-lede">${n} <em>quizer</em> i ${esc(label.toLowerCase())} — faktasjekket og gratis å spille.</p>
+    <p class="page-lede">${isTeam
+      ? `${n} <em>quizer</em> om ${esc(label)} — historie, legender og rekorder. Gratis å spille.`
+      : `${n} <em>quizer</em> i ${esc(label.toLowerCase())} — faktasjekket og gratis å spille.`}</p>
+    <button id="cq-share" class="cq-share" type="button" data-url="${esc(canonical)}">Del denne siden</button>
   </header>
   <section class="quiz-grid">
 ${cards}
@@ -458,6 +487,21 @@ ${cards}
 <script src="/supabase-config.js"></script>
 <script src="/nav.js"></script>
 <script src="/auth.js"></script>
+<script>
+(function(){
+  var b=document.getElementById('cq-share'); if(!b) return;
+  var url=b.getAttribute('data-url')||location.href;
+  b.addEventListener('click', async function(){
+    try{ if(navigator.share){ await navigator.share({title:document.title,url:url}); return; } }
+    catch(e){ if(e&&e.name==='AbortError') return; }
+    try{
+      await navigator.clipboard.writeText(url);
+      var t=b.textContent; b.textContent='Lenke kopiert ✓'; b.classList.add('copied');
+      setTimeout(function(){ b.textContent=t; b.classList.remove('copied'); },1800);
+    }catch(e){}
+  });
+})();
+</script>
 </body>
 </html>
 `;
@@ -520,7 +564,7 @@ function isRenderable(q) {
 }
 
 // ---------- Sitemap ----------
-function writeSitemap(slugs, temaCats = []) {
+function writeSitemap(slugs, temaCats = [], teamSlugs = []) {
   const core = [
     { loc: `${SITE}/`, freq: "daily", pri: "1.0" },
     { loc: `${SITE}/dagens.html`, freq: "daily", pri: "0.9" },
@@ -536,6 +580,12 @@ function writeSitemap(slugs, temaCats = []) {
   for (const cat of temaCats) {
     urls.push(
       `  <url>\n    <loc>${SITE}/tema/${encodeURI(cat)}/</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`
+    );
+  }
+  // Lag-hubber (/lag/<slug>/).
+  for (const s of teamSlugs) {
+    urls.push(
+      `  <url>\n    <loc>${SITE}/lag/${encodeURI(s)}/</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`
     );
   }
   for (const slug of slugs) {
@@ -640,6 +690,36 @@ async function main() {
     }
   }
 
+  // Lag-hubber per klubb (SEO) — egen crawlbar /lag/<slug>/-side per klubblag,
+  // så «<klubb> quiz»-søk får en dedikert, indekserbar landingsside. Kun
+  // fotball-quizer med team-tagg grupperes.
+  try {
+    if (fs.existsSync(OUT_LAG)) fs.rmSync(OUT_LAG, { recursive: true, force: true });
+  } catch (e) {
+    console.warn("build-quiz-pages: kunne ikke rense gammel lag/ (" + e.message + ").");
+  }
+  fs.mkdirSync(OUT_LAG, { recursive: true });
+  const byTeam = new Map();
+  for (const q of renderable) {
+    if (q.category !== "fotball" || !q.team || !String(q.team).trim()) continue;
+    const t = String(q.team).trim();
+    if (!byTeam.has(t)) byTeam.set(t, []);
+    byTeam.get(t).push(q);
+  }
+  const teamSlugs = [];
+  for (const [team, list] of byTeam) {
+    try {
+      const slug = teamSlug(team);
+      if (!slug) continue;
+      const dir = path.join(OUT_LAG, slug);
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, "index.html"), themePageHtml("fotball", list, { team, slug }), "utf8");
+      teamSlugs.push(slug);
+    } catch (e) {
+      console.warn("build-quiz-pages: hoppet over lag '" + team + "' (" + e.message + ")");
+    }
+  }
+
   // Injiser crawlbar quiz-liste i arkiv.html (SEO-baseline for /arkiv).
   let arkivOk = false;
   try {
@@ -648,8 +728,8 @@ async function main() {
     console.warn("build-quiz-pages: arkiv-injeksjon feilet (" + e.message + ") — ikke-blokkerende.");
   }
 
-  writeSitemap(slugs, temaCats);
-  console.log(`build-quiz-pages: skrev ${written} quiz-sider + ${temaCats.length} tema-sider${arkivOk ? " + arkiv-SSR" : ""} (kilde: ${kilde}) + sitemap.xml.`);
+  writeSitemap(slugs, temaCats, teamSlugs);
+  console.log(`build-quiz-pages: skrev ${written} quiz-sider + ${temaCats.length} tema-sider + ${teamSlugs.length} lag-hubber${arkivOk ? " + arkiv-SSR" : ""} (kilde: ${kilde}) + sitemap.xml.`);
 }
 
 main().catch((e) => {

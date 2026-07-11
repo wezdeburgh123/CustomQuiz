@@ -28,6 +28,7 @@ __pycache__/
 # scripts/build-quiz-pages.mjs ved hver Netlify-deploy. Skal IKKE committes.
 /quiz/
 /tema/
+/lag/
 
 .fuse_hidden*
 
