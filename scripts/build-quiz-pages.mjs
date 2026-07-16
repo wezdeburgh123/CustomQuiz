@@ -126,7 +126,31 @@ function ogImageFor(q) {
   return `${SITE}/IMG/${key}.jpg`;
 }
 
-function pageHtml(q) {
+// Tema-basis for en slug: fjern vanskelighets-suffikset (__lett/__medium/__vanskelig)
+// så vi kan gruppere de tre variantene av samme quiz som "samme tema".
+function baseTopic(slug) {
+  return String(slug || "").replace(/__(lett|medium|vanskelig)$/, "");
+}
+
+// Relaterte quizer for intern lenking (SEO: topical clustering). Prioriterer
+// andre vanskelighetsgrader av samme tema, deretter resten av kategorien.
+function relatedFor(q, byCat, max = 6) {
+  const pool = (byCat.get(q.category || "mix") || []).filter((x) => x.slug !== q.slug);
+  const base = baseTopic(q.slug);
+  const sameTopic = pool.filter((x) => baseTopic(x.slug) === base);
+  const others = pool.filter((x) => baseTopic(x.slug) !== base);
+  const out = [];
+  const seen = new Set();
+  for (const x of [...sameTopic, ...others]) {
+    if (seen.has(x.slug)) continue;
+    seen.add(x.slug);
+    out.push(x);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+function pageHtml(q, related = []) {
   const slug = q.slug;
   const playUrl = `/lag-quiz.html?lib=${encodeURIComponent(slug)}`;
   const catLabel = q.category_label || CAT_LABEL[q.category] || "Allmennkunnskap";
@@ -250,6 +274,10 @@ function pageHtml(q) {
   .tag{background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--muted);}
   .cta{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:12px;font-size:17px;margin-bottom:40px;}
   .cta:hover{filter:brightness(1.08);}
+  .related{margin:8px 0 36px;}
+  .related ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;}
+  .related li a{text-decoration:none;color:var(--teal);}
+  .related li a:hover{text-decoration:underline;}
   h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:24px;margin:40px 0 16px;}
   ol.qs{list-style:none;counter-reset:q;padding:0;margin:0;}
   ol.qs > li.q{counter-increment:q;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px;}
@@ -315,8 +343,12 @@ ${questionsHtml}
   })();
   </script>
 
+  ${related.length ? `<nav class="related" aria-label="Relaterte quizer">
+    <h2>Relaterte quizer</h2>
+    <ul>${related.map((r) => `<li><a href="/quiz/${esc(encodeURI(r.slug))}/">${esc(r.title)}${DIFF_LABEL[r.difficulty] ? ` — ${esc(DIFF_LABEL[r.difficulty])}` : ""}</a></li>`).join("")}</ul>
+  </nav>` : ""}
   <footer>
-    <p>Vil du ha flere? Spill <a href="/dagens.html">dagens quiz</a>, utforsk <a href="/arkiv">hele arkivet</a>, eller <a href="/lag-quiz.html">lag din egen quiz</a> på CustomQuiz — gratis quizer på norsk.</p>
+    <p>Vil du ha flere? Spill <a href="/dagens">dagens quiz</a>, utforsk <a href="/arkiv">hele arkivet</a>, eller <a href="/lag-quiz">lag din egen quiz</a> på CustomQuiz — gratis quizer på norsk.</p>
   </footer>
 </main>
 </body>
@@ -662,13 +694,22 @@ async function main() {
   }
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
+  // Kategori-kart bygd FØR quiz-løkka så hver side kan lenke til relaterte quizer
+  // (intern lenking / topical clustering for SEO). Gjenbrukes til tema-sidene under.
+  const byCat = new Map();
+  for (const q of renderable) {
+    const cat = q.category || "mix";
+    if (!byCat.has(cat)) byCat.set(cat, []);
+    byCat.get(cat).push(q);
+  }
+
   const slugs = [];
   let written = 0;
   for (const q of renderable) {
     try {
       const dir = path.join(OUT_DIR, q.slug);
       fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, "index.html"), pageHtml(q), "utf8");
+      fs.writeFileSync(path.join(dir, "index.html"), pageHtml(q, relatedFor(q, byCat)), "utf8");
       slugs.push(q.slug);
       written++;
     } catch (e) {
@@ -684,12 +725,6 @@ async function main() {
   }
   fs.mkdirSync(OUT_TEMA, { recursive: true });
 
-  const byCat = new Map();
-  for (const q of renderable) {
-    const cat = q.category || "mix";
-    if (!byCat.has(cat)) byCat.set(cat, []);
-    byCat.get(cat).push(q);
-  }
   const temaCats = [];
   for (const [cat, list] of byCat) {
     try {
