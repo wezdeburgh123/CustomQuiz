@@ -566,12 +566,15 @@ function isRenderable(q) {
 // ---------- Sitemap ----------
 function writeSitemap(slugs, temaCats = [], teamSlugs = []) {
   const core = [
+    // Rene URL-er (uten .html) — må matche <link rel=canonical> på hver side, ellers
+    // ser Google sitemap-URL og canonical som ulike (bidro til «Duplicate»-flagg i GSC).
+    // Alle disse serverer 200 på ren sti (verifisert live 16.7.26).
     { loc: `${SITE}/`, freq: "daily", pri: "1.0" },
-    { loc: `${SITE}/dagens.html`, freq: "daily", pri: "0.9" },
-    { loc: `${SITE}/vm.html`, freq: "daily", pri: "0.9" },
-    { loc: `${SITE}/arkiv.html`, freq: "daily", pri: "0.8" },
+    { loc: `${SITE}/dagens`, freq: "daily", pri: "0.9" },
+    { loc: `${SITE}/vm`, freq: "daily", pri: "0.9" },
+    { loc: `${SITE}/arkiv`, freq: "daily", pri: "0.8" },
     { loc: `${SITE}/fotball`, freq: "weekly", pri: "0.7" },
-    { loc: `${SITE}/lag-quiz.html`, freq: "weekly", pri: "0.6" },
+    { loc: `${SITE}/lag-quiz`, freq: "weekly", pri: "0.6" },
   ];
   const urls = core.map((u) =>
     `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`

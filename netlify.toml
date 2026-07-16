@@ -155,6 +155,21 @@
   to = "/arkiv.html"
   status = 200
 
+# /tema-ROTEN hadde ingen index.html og ga 404 i GSC. De ekte /tema/<kategori>/-
+# sidene er statiske mapper og serveres direkte — kun den bare roten sendes til
+# arkivet (301). Ingen wildcard her, så /tema/geografi/ o.l. berøres ikke.
+[[redirects]]
+  from = "/tema"
+  to = "/arkiv"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tema/"
+  to = "/arkiv"
+  status = 301
+  force = true
+
 # Fotball — egen verden (klubber/serier/landslag/VM). Pen URL /fotball serverer
 # fotball.html (status=200 = rewrite, adressen beholdes). NB: /tema/<kategori>
 # trenger INGEN regel — det er statiske mapper generert av build-quiz-pages.mjs
