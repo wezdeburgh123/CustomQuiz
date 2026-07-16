@@ -64,3 +64,42 @@
   s.textContent = css;
   document.head.appendChild(s);
 })();
+
+/* ── Trafikk-beacon (personvernvennlig) ──────────────────────────────────
+ * Teller sidevisning aggregert per dag+sti — ingen cookies, ingen IP,
+ * ingen fingerprinting (se db/migration-page-views.sql + track.js).
+ * newVisit: «første visning i dag» via sessionStorage-flagg (per fane/økt)
+ * — grov unike-besøk-approksimasjon uten noe person-identifiserende.
+ * Egen IIFE: kjører også på sider uten #cq-masthead, og helt uavhengig av
+ * mastheaden over. Alt i try/catch + fire-and-forget — kan aldri blokkere
+ * sidelasting eller kaste synlige feil. Respekterer Do Not Track / GPC. */
+(function () {
+  try {
+    if (navigator.doNotTrack === "1" || window.doNotTrack === "1" || navigator.globalPrivacyControl) return;
+    if (location.protocol !== "https:" && location.protocol !== "http:") return; // file:// o.l.
+    var host = location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") return; // ikke tell lokal utvikling
+
+    var path = String(location.pathname || "/").slice(0, 200);
+
+    var newVisit = false;
+    try {
+      var today = new Date().toISOString().slice(0, 10);
+      if (sessionStorage.getItem("cq_pv_day") !== today) {
+        sessionStorage.setItem("cq_pv_day", today);
+        newVisit = true;
+      }
+    } catch (_) { /* sessionStorage blokkert → telles kun som visning */ }
+
+    var url = "/.netlify/functions/track";
+    var payload = JSON.stringify({ path: path, newVisit: newVisit });
+    var sent = false;
+    if (navigator.sendBeacon) {
+      try { sent = navigator.sendBeacon(url, payload); } catch (_) { sent = false; }
+    }
+    if (!sent && window.fetch) {
+      fetch(url, { method: "POST", body: payload, keepalive: true, headers: { "Content-Type": "text/plain" } })
+        .catch(function () { /* stille */ });
+    }
+  } catch (_) { /* aldri synlig feil */ }
+})();

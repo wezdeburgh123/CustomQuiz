@@ -1,10 +1,10 @@
 {
-  "nights_run": 7,
+  "nights_run": 8,
   "total_generated": 353,
-  "last_run": "2026-07-14T17:05:30+00:00",
+  "last_run": "2026-07-15T00:00:00+00:00",
   "last_batch": 0,
   "skipped": [],
   "queue_complete": true,
-  "note": "Nattskift 14. juli 2026: ingenting generert — køen er fortsatt tom (353/353 emner i topics.json finnes i library.ndjson, verifisert). Utvid topics.json med nye emner for å generere mer.",
-  "queue_note": "KØEN TOM per 10.7.26 — alle 353 emner i topics.json er generert. Utvid topics.json for å generere mer neste natt."
+  "note": "Nattskift 15. juli 2026: ingenting generert — køen er tom. topics.json har nå 358 emner (5 nye siden sist), men alle 358 finnes allerede i library.ndjson (verifisert). Utvid topics.json med nye ugenererte emner for å generere mer.",
+  "queue_note": "KØEN TOM per 10.7.26 — alle emner i topics.json er generert. Utvid topics.json for å generere mer neste natt."
 }

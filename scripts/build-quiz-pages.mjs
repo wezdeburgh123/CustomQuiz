@@ -110,9 +110,18 @@ const CAT_LABEL = {
 };
 const DIFF_LABEL = { lett: "Lett", medium: "Middels", vanskelig: "Vanskelig" };
 
+// Bygg-tid: bruk et lokalt cover IMG/<slug>.jpg hvis det er committet (uansett
+// kategori). Trygt — returnerer null når fila ikke finnes, så vi aldri peker på
+// et 404-bilde. Erstatter den gamle harde dyr/spill/monstere-listen.
+function localCoverSlug(slug) {
+  return (slug && fs.existsSync(path.join(ROOT, "IMG", `${slug}.jpg`))) ? `/IMG/${slug}.jpg` : null;
+}
+
 function ogImageFor(q) {
   const hero = q.hero_img;
   if (hero && /^https?:\/\//i.test(hero)) return hero;            // AI-cover (full URL)
+  const local = localCoverSlug(q.slug);
+  if (local) return `${SITE}${local}`;                            // lokalt slug-cover
   const key = CATEGORY_TO_IMG[q.category] || CATEGORY_TO_IMG.mix; // kategori-bilde
   return `${SITE}/IMG/${key}.jpg`;
 }
@@ -325,7 +334,7 @@ function themeCard(q) {
   const hero = (q.hero_img && /^https?:\/\//i.test(q.hero_img)) ? q.hero_img : null;
   // Dyr-/barneserien har lokale cover-filer navngitt etter slug (IMG/<slug>.jpg),
   // ikke http-hero_img. Onerror faller tilbake til kategoribildet om filen mangler.
-  const slugCover = (["dyr", "spill", "monstere"].includes(q.category) && q.slug) ? `/IMG/${q.slug}.jpg` : null;
+  const slugCover = localCoverSlug(q.slug);
   const imgSrc = crest ? `/IMG/${crest}.jpg` : (hero || slugCover || `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`);
   const fallback = `/IMG/${CATEGORY_TO_IMG[q.category] || "kategori-mix"}.jpg`;
   const spot = CATEGORY_TO_SPOT[q.category] || "teal";
