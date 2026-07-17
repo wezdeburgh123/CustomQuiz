@@ -1,6 +1,6 @@
 {
   "generated": true,
-  "total": 358,
+  "total": 362,
   "topics": [
     {
       "slug": "arsenal-fc-ars-ne-wenger-aeraen__medium",
@@ -4017,6 +4017,50 @@
       "difficulty": "lett",
       "count": 10,
       "priority": 15
+    },
+    {
+      "slug": "pokemon-spillet__medium",
+      "themes": [
+        "Pokémon"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "medium",
+      "count": 10,
+      "priority": 8
+    },
+    {
+      "slug": "pokemon-spillet__vanskelig",
+      "themes": [
+        "Pokémon"
+      ],
+      "category": "spill",
+      "category_label": "Spill",
+      "difficulty": "vanskelig",
+      "count": 10,
+      "priority": 8
+    },
+    {
+      "slug": "grand-tours-giro-og-vuelta__lett",
+      "themes": [
+        "Grand Tours — Giro d'Italia og Vuelta a España"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 8
+    },
+    {
+      "slug": "sykkelklassikerne-monumentene__lett",
+      "themes": [
+        "Sykkelklassikerne — de fem monumentene"
+      ],
+      "category": "sport",
+      "category_label": "Sport",
+      "difficulty": "lett",
+      "count": 10,
+      "priority": 8
     }
   ]
 }

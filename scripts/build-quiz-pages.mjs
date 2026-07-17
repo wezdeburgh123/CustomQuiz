@@ -392,7 +392,7 @@ function themeCard(q) {
       </a>`;
 }
 
-function themePageHtml(cat, quizzes, teamOpts = null) {
+function themePageHtml(cat, quizzes, teamOpts = null, extra = null) {
   const isTeam = !!teamOpts;
   const label = isTeam ? teamOpts.team : (THEME_PAGE_LABEL[cat] || CAT_LABEL[cat] || cat);
   const n = quizzes.length;
@@ -425,6 +425,16 @@ function themePageHtml(cat, quizzes, teamOpts = null) {
   };
 
   const cards = sorted.map(themeCard).join("\n");
+
+  // Crawlbar «Utforsk klubbene»-seksjon (kun /tema/fotball/): sprer lenkeautoritet
+  // fra fotball-hubben inn til de dedikerte /lag/<slug>/-klubbsidene.
+  const teamHubs = (!isTeam && extra && Array.isArray(extra.teamHubs)) ? extra.teamHubs : [];
+  const hubsHtml = teamHubs.length
+    ? `<section class="team-hubs" aria-label="Klubber">
+    <h2>Utforsk klubbene</h2>
+    <div class="hub-row">${teamHubs.map((h) => `<a class="hub-chip" href="/lag/${esc(encodeURI(h.slug))}/">${esc(h.team)}</a>`).join("")}</div>
+  </section>`
+    : "";
 
   return `<!DOCTYPE html>
 <html lang="nb">
@@ -496,6 +506,11 @@ function themePageHtml(cat, quizzes, teamOpts = null) {
   .quiz-sub{font-family:var(--font-sans);font-size:13px;color:var(--ink-soft);line-height:1.45;margin-bottom:4px;}
   .quiz-rating{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;color:var(--ink-mute);}
   .quiz-plays{font-variant-numeric:tabular-nums;}
+  .team-hubs{margin:0 0 56px;}
+  .team-hubs h2{font-family:var(--font-display);font-weight:500;font-size:26px;letter-spacing:-0.02em;margin:0 0 18px;}
+  .hub-row{display:flex;flex-wrap:wrap;gap:10px;}
+  .hub-chip{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--accent);background:var(--bg-soft);border:1px solid var(--rule);border-radius:var(--r-pill);padding:8px 16px;text-decoration:none;transition:border-color 160ms ease,background 160ms ease;}
+  .hub-chip:hover{border-color:var(--accent);background:var(--accent-soft);}
   footer{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);text-align:center;padding:8px 0 64px;}
   footer a{color:var(--ink-mute);text-decoration:none;}
   footer a:hover{color:var(--accent);}
@@ -521,6 +536,7 @@ function themePageHtml(cat, quizzes, teamOpts = null) {
   <section class="quiz-grid">
 ${cards}
   </section>
+  ${hubsHtml}
   <footer>
     <div><a href="/arkiv">← Tilbake til arkivet</a></div>
   </footer>
@@ -725,12 +741,29 @@ async function main() {
   }
   fs.mkdirSync(OUT_TEMA, { recursive: true });
 
+  // Klubb-hubb-liste (for crawlbar lenking fra /tema/fotball/ → /lag/<slug>/).
+  // Samme gruppering som lag-hub-seksjonen under, bygd på forhånd så tema-siden
+  // kan lenke til hubbene.
+  const teamHubList = [];
+  {
+    const seen = new Set();
+    for (const q of renderable) {
+      if (q.category !== "fotball" || !q.team || !String(q.team).trim()) continue;
+      const team = String(q.team).trim();
+      const slug = teamSlug(team);
+      if (!slug || seen.has(slug)) continue;
+      seen.add(slug);
+      teamHubList.push({ team, slug });
+    }
+    teamHubList.sort((a, b) => a.team.localeCompare(b.team, "nb"));
+  }
+
   const temaCats = [];
   for (const [cat, list] of byCat) {
     try {
       const dir = path.join(OUT_TEMA, cat);
       fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, "index.html"), themePageHtml(cat, list), "utf8");
+      fs.writeFileSync(path.join(dir, "index.html"), themePageHtml(cat, list, null, cat === "fotball" ? { teamHubs: teamHubList } : null), "utf8");
       temaCats.push(cat);
     } catch (e) {
       console.warn("build-quiz-pages: hoppet over tema '" + cat + "' (" + e.message + ")");
