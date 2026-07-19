@@ -18,6 +18,12 @@ for hver natt, innenfor kontoens grenser. Faktisk korrekthet er ikke-forhandling
 
 Gjør nøyaktig dette:
 
+0. **Rydd stale git-låser FØRST.** Kjør i arbeidsmappa:
+   `rm -f .git/index.lock .git/HEAD.lock .git/*.lock .git/*.lock.stale*`
+   En gjenglemt lås fra et krasjet skift blokkerer både skriving og commit
+   (dette har stoppet skiftet før — bl.a. 15. og 19. juli). Rydd alltid før du
+   rører filer. Låsefilene er trygge å slette når ingen annen git-prosess kjører.
+
 1. **Les køen og status.**
    - Les `quiz-library/topics.json` (feltet `topics` = alle emner med `slug`).
    - Les `quiz-library/library.ndjson` hvis den finnes; samle alle `slug` som
