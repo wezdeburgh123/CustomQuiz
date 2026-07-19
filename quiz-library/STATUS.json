@@ -1,10 +1,10 @@
 {
-  "nights_run": 9,
-  "total_generated": 357,
-  "last_run": "2026-07-19T00:00:00+00:00",
-  "last_batch": 4,
+  "nights_run": 10,
+  "total_generated": 387,
+  "last_run": "2026-07-20T00:00:00+00:00",
+  "last_batch": 30,
   "skipped": [],
-  "queue_complete": false,
-  "note": "Nattskift 19. juli 2026: 4 nye emner var lagt til i topics.json siden sist (362 emner totalt) og ble generert i natt: pokemon-spillet (medium + vanskelig), grand-tours-giro-og-vuelta (lett), sykkelklassikerne-monumentene (lett). Alle grunnet med websøk. Etter dette er alle 362 emner i library.ndjson.",
-  "queue_note": "KØEN PÅFYLT 20.7.26: 30 nye SEO-vinner-emner lagt til (geografi, sykkel, viking/norrønt, antikken, klassisk musikk, spill, anatomi — ingen VM). 392 emner totalt; de nye har priority 3 og genereres neste natt."
+  "queue_complete": true,
+  "note": "Manuelt nattskift 20. juli 2026: 30 nye SEO-vinner-quizer generert (geografi/sykkel/viking/antikken/musikk/spill/anatomi, ingen VM). Alle websøk-grunnet, skjema-validert, correct-fordeling balansert, ferske sportsfakta (TdF 2025) uavhengig verifisert.",
+  "queue_note": "KØEN TOM per 20.7.26 — alle emner i topics.json er generert."
 }
