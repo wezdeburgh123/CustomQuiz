@@ -1,6 +1,6 @@
 {
  "generated": true,
- "total": 392,
+ "total": 402,
  "topics": [
   {
    "slug": "arsenal-fc-ars-ne-wenger-aeraen__medium",
@@ -4391,6 +4391,116 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 3
+  },
+  {
+   "slug": "afrikas-hovedsteder__lett",
+   "themes": [
+    "Afrikas hovedsteder"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "afrikas-hovedsteder__medium",
+   "themes": [
+    "Afrikas hovedsteder"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "afrikas-hovedsteder__vanskelig",
+   "themes": [
+    "Afrikas hovedsteder"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "verdenshistorie-de-store-epokene__lett",
+   "themes": [
+    "Verdenshistorie – de store epokene"
+   ],
+   "category": "verdenshistorie",
+   "category_label": "Verdenshistorie",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "verdenshistorie-de-store-epokene__medium",
+   "themes": [
+    "Verdenshistorie – de store epokene"
+   ],
+   "category": "verdenshistorie",
+   "category_label": "Verdenshistorie",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "verdenshistorie-de-store-epokene__vanskelig",
+   "themes": [
+    "Verdenshistorie – de store epokene"
+   ],
+   "category": "verdenshistorie",
+   "category_label": "Verdenshistorie",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "beromte-malerier-og-kunstnere__lett",
+   "themes": [
+    "Berømte malerier og kunstnere"
+   ],
+   "category": "kunst",
+   "category_label": "Kunst",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "beromte-malerier-og-kunstnere__medium",
+   "themes": [
+    "Berømte malerier og kunstnere"
+   ],
+   "category": "kunst",
+   "category_label": "Kunst",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "norske-byer__lett",
+   "themes": [
+    "Norske byer"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "norske-byer__medium",
+   "themes": [
+    "Norske byer"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 15
   }
  ]
 }
