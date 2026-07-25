@@ -110,6 +110,19 @@ const CAT_LABEL = {
 };
 const DIFF_LABEL = { lett: "Lett", medium: "Middels", vanskelig: "Vanskelig" };
 
+// SEO-tittel-override (SERP-CTR): enkelte sider rangerer for ETT dominerende søk
+// der temanavnet ikke matcher søkefrasen — da fanger vi visninger, men få klikk.
+// Her overstyrer vi KUN <title> (det Google viser i søk), ikke H1/q.title/OG/
+// breadcrumb/JSON-LD. Hold hver tittel ≤ ~60 tegn og still gjerne spørsmålet
+// UTEN å røpe svaret. VERIFISER FAKTA før du legger til nye oppføringer.
+//   norge-i-fotball-vm-gjennom-historien__medium: rangerte pos ~10,8 med 883
+//   visninger / 0,3 % CTR (28 d, juli 2026) på «hvor langt kom norge i vm 1994»,
+//   men gammel tittel nevnte verken «1994» eller søkefrasen.
+const SEO_TITLE_OVERRIDE = {
+  "norge-i-fotball-vm-gjennom-historien__medium":
+    "Hvor langt kom Norge i VM 1994? Quiz + fasit",
+};
+
 // Bygg-tid: bruk et lokalt cover IMG/<slug>.jpg hvis det er committet (uansett
 // kategori). Trygt — returnerer null når fila ikke finnes, så vi aldri peker på
 // et 404-bilde. Erstatter den gamle harde dyr/spill/monstere-listen.
@@ -170,7 +183,8 @@ function pageHtml(q, related = []) {
   const tTitle1 = `${q.title} — quiz med ${n} spørsmål | CustomQuiz`;
   const tTitle2 = `${q.title} — quiz med ${n} spørsmål`;
   const tTitle3 = `${q.title} — quiz`;
-  const title = tTitle1.length <= 60 ? tTitle1 : (tTitle2.length <= 60 ? tTitle2 : tTitle3);
+  const title = SEO_TITLE_OVERRIDE[slug]
+    || (tTitle1.length <= 60 ? tTitle1 : (tTitle2.length <= 60 ? tTitle2 : tTitle3));
   const lede = q.lede && q.lede.trim()
     ? q.lede.trim()
     : `Test kunnskapen din i denne ${catLabel.toLowerCase()}-quizen med ${n} spørsmål på norsk.`;
