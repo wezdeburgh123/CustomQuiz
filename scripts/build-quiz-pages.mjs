@@ -118,9 +118,20 @@ const DIFF_LABEL = { lett: "Lett", medium: "Middels", vanskelig: "Vanskelig" };
 //   norge-i-fotball-vm-gjennom-historien__medium: rangerte pos ~10,8 med 883
 //   visninger / 0,3 % CTR (28 d, juli 2026) på «hvor langt kom norge i vm 1994»,
 //   men gammel tittel nevnte verken «1994» eller søkefrasen.
+//   verdens-hovedsteder__lett: 63 visn. / 0 klikk / pos ~33 (28 d, 27/7 2026) på
+//   klyngen «hovedsteder i verden quiz» (20), «hovedstad quiz» (20), «quiz
+//   hovedsteder» (17), «hovedsteder quiz med svar» (14) — gammel tittel matchet
+//   ikke søkefrasen. Ny tittel speiler «hovedsteder i verden» + «quiz med svar».
+//   norges-fylker-og-byer__lett: 45 visn. / 0 klikk / pos ~36 på «norge(s) fylker
+//   quiz» (14+7) + «byer i norge quiz» (6). Ny tittel setter «fylker og byer» +
+//   «quiz med svar» først.
 const SEO_TITLE_OVERRIDE = {
   "norge-i-fotball-vm-gjennom-historien__medium":
     "Hvor langt kom Norge i VM 1994? Quiz + fasit",
+  "verdens-hovedsteder__lett":
+    "Hovedsteder i verden — quiz med svar",
+  "norges-fylker-og-byer__lett":
+    "Norges fylker og byer — quiz med svar",
 };
 
 // Direkte SVAR-utdrag (SERP-CTR + featured snippet / «Andre spør om»): sider som
@@ -143,6 +154,36 @@ const ANSWER_SNIPPET = {
   "norge-i-fotball-vm-gjennom-historien__medium": {
     q: "Hvor langt kom Norge i VM 1994?",
     a: NORGE_VM_1994_SVAR,
+  },
+};
+
+// Fastlaaste (kuraterte) relaterte lenker: garanterer en toveis intern lenke
+// mellom to sider som strategisk boer peke paa hverandre, selv naar affinitets-
+// sorteringen ellers ikke ville plassert dem i topp-6. Pinnede lenker legges
+// FOERST i «Relaterte quizer». Resolves paa tvers av kategori-pools saa en pin
+// aldri stilltiende forsvinner.
+//   1994-klyngen: den brede historie-siden (1 234 visn., pos ~11 paa «hvor langt
+//   kom norge i vm 1994») og den dedikerte 1994-siden (pos ~7, faa visn.)
+//   konkurrerer om samme frase. Toveis lenke signaliserer at de hoerer sammen og
+//   lar autoritet fra den store siden loefte den dedikerte.
+const RELATED_PIN = {
+  "norge-i-fotball-vm-gjennom-historien__medium": ["norge-i-vm-1994__lett"],
+  "norge-i-vm-1994__lett": ["norge-i-fotball-vm-gjennom-historien__medium"],
+};
+
+// Kontekstuell kryss-lenke (intern lenking med soekeordrik ankertekst) rett under
+// svar-blokken — sterkere SEO-signal enn «Relaterte»-lista fordi den staar i
+// broedteksten. Samme 1994-klynge som RELATED_PIN.
+const CROSS_LINK = {
+  "norge-i-fotball-vm-gjennom-historien__medium": {
+    slug: "norge-i-vm-1994__lett",
+    before: "Vil du teste deg spesifikt på Drillos 1994-lag? Ta den dedikerte quizen ",
+    anchor: "Norge i VM 1994 — Drillos gutter i USA",
+  },
+  "norge-i-vm-1994__lett": {
+    slug: "norge-i-fotball-vm-gjennom-historien__medium",
+    before: "Vil du se hele bildet? Ta den brede quizen ",
+    anchor: "Norge i fotball-VM gjennom historien",
   },
 };
 
@@ -191,9 +232,20 @@ function relatedFor(q, byCat, max = 6) {
   const shares = (x) => [...topicTokens(x.slug)].some((t) => myTokens.has(t));
   const affine = rest.filter(shares);
   const others = rest.filter((x) => !shares(x));
+  // Kuraterte pins foerst (garantert toveis intern lenke). Resolves paa tvers av
+  // kategori-pools saa en pin aldri stilltiende forsvinner.
+  const pinnedSlugs = RELATED_PIN[q.slug] || [];
+  const findBySlug = (sl) => {
+    for (const list of byCat.values()) {
+      const hit = list.find((x) => x.slug === sl);
+      if (hit) return hit;
+    }
+    return null;
+  };
+  const pinned = pinnedSlugs.map(findBySlug).filter((x) => x && x.slug !== q.slug);
   const out = [];
   const seen = new Set();
-  for (const x of [...sameTopic, ...affine, ...others]) {
+  for (const x of [...pinned, ...sameTopic, ...affine, ...others]) {
     if (seen.has(x.slug)) continue;
     seen.add(x.slug);
     out.push(x);
@@ -293,6 +345,12 @@ function pageHtml(q, related = []) {
       }
     : null;
 
+  // Kontekstuell kryss-lenke rett under svar-blokken (se CROSS_LINK).
+  const cross = CROSS_LINK[slug] || null;
+  const crossHtml = cross
+    ? `  <p class="cross-link">${esc(cross.before)}<a href="/quiz/${esc(encodeURI(cross.slug))}/">${esc(cross.anchor)}</a>.</p>\n`
+    : "";
+
   // Synlige spørsmål (crawlbar tekst) + fasit i en sammenleggbar <details>.
   const questionsHtml = q.questions.map((it, i) => {
     const opts = Array.isArray(it.options) ? it.options : [];
@@ -350,6 +408,8 @@ ${faqLd ? `<script type="application/ld+json">${jsonLdSafe(faqLd)}</script>\n` :
   .answer{background:var(--bg-soft);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px;padding:18px 22px;margin:0 0 32px;}
   .answer .answer-q{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:20px;line-height:1.25;margin:0 0 8px;}
   .answer p{margin:0;color:var(--ink);}
+  .cross-link{margin:0 0 32px;font-size:15px;color:var(--muted);}
+  .cross-link a{color:var(--teal);font-weight:600;}
   .related{margin:8px 0 36px;}
   .related ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;}
   .related li a{text-decoration:none;color:var(--teal);}
@@ -382,7 +442,7 @@ ${faqLd ? `<script type="application/ld+json">${jsonLdSafe(faqLd)}</script>\n` :
     <span class="tag">${esc(diffLabel)}</span>
     <span class="tag">${n} spørsmål</span>
   </div>
-${answerHtml}
+${answerHtml}${crossHtml}
   <a class="cta" href="${esc(playUrl)}">▶ Spill quizen</a>
 
   <h2>Spørsmålene i denne quizen</h2>
