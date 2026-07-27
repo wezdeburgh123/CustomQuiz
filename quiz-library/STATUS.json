@@ -1,10 +1,10 @@
 {
   "nights_run": 10,
   "total_generated": 387,
-  "last_run": "2026-07-20T00:00:00+00:00",
-  "last_batch": 30,
+  "last_run": "2026-07-27T00:00:00+00:00",
+  "last_batch": 0,
   "skipped": [],
   "queue_complete": true,
-  "note": "Manuelt nattskift 20. juli 2026: 30 nye SEO-vinner-quizer generert (geografi/sykkel/viking/antikken/musikk/spill/anatomi, ingen VM). Alle websøk-grunnet, skjema-validert, correct-fordeling balansert, ferske sportsfakta (TdF 2025) uavhengig verifisert.",
-  "queue_note": "KØEN TOM per 20.7.26 — alle emner i topics.json er generert."
+  "note": "Nattskift 27. juli 2026: ingen generering — køen er tom. Alle 402 emner i topics.json finnes allerede i library.ndjson (402 linjer, alle slug matcher). Counts uendret siden 20.7. GSC-forslag-serien (merget 25.7) er inkludert i tellingen av ferdige emner.",
+  "queue_note": "KØEN TOM per 27.7.26 — alle 402 emner i topics.json er generert."
 }

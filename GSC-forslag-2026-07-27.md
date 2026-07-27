@@ -1,74 +1,81 @@
 # GSC-forslag customquiz.no — 27. juli 2026 (siste 28 dager, 27/6–24/7)
 
-Kilde: Google Search Console, sc-domain:customquiz.no. 226 queries, 358 sider med visninger.
+Kilde: Google Search Console, sc-domain:customquiz.no. 226 queries, 358 sider med visninger. Data hentet på nytt via nettleser (bekreftet, ikke gjenbruk).
 
-> **Merk:** Vinduet overlapper nesten helt med forrige rutine (25/7, vindu 25/6–22/7). Bildet er derfor så godt som identisk, og forslagene under er i praksis de samme som sist — de er fortsatt **ikke produsert**. Denne fila reaffirmerer backloggen og noterer de få nye signalene.
+> **Viktigste endring denne runden:** 4 av 6 forslag fra forrige rutine (25/7) er nå **produsert og publisert** — de ligger i `quiz/`-mappa. Backloggen har altså beveget seg. Det som gjenstår som ekte dekningsgap er nå tynt; hovedgrepet fremover er **optimalisering av eksisterende (og nypubliserte) sider**, ikke mengder nye quizer.
 
 ## (a) Ukens nøkkeltall
 
-| Måltall | Nå (27/6–24/7) | Forrige (25/6–22/7) | 15/6–12/7 | Endring |
+| Måltall | Nå (27/6–24/7) | 27/7-fil (samme vindu) | 25/7 (25/6–22/7) | Endring vs 25/7 |
 |---|---|---|---|---|
-| Klikk | 97 | 99 | 105 | −2 (svakt fallende) |
-| Visninger | 3 280 | 3 520 | 3 560 | −240 |
-| CTR | 3,0 % | 2,8 % | 3,0 % | ≈ flat |
-| Snittposisjon | 13,8 | 13,7 | 13,1 | ≈ flat |
-| Antall queries | 226 | 228 | 237 | −2 |
+| Klikk | 97 | 97 | 99 | −2 |
+| Visninger | 3 280 | 3 280 | 3 520 | −240 |
+| CTR | 3,0 % | 3,0 % | 2,8 % | +0,2 pp |
+| Snittposisjon | 13,8 | 13,8 | 13,7 | ≈ flat |
+| Antall queries | 226 | 226 | 228 | −2 |
 
-Stabilt, svakt fallende. Trafikken bæres fortsatt av VM-fotball: **«hvor langt kom norge i vm 1994»** alene = 795 visninger / 3 klikk (pos 10,9). Den store CTR-muligheten ligger fortsatt her, ikke i ny dekning.
+Stabilt, svakt fallende visningsvolum. Vinduet er så godt som identisk med forrige kjøring, så tallbildet er uendret. Trafikken bæres fortsatt av VM-fotball: **«hvor langt kom norge i vm 1994»** alene = 795 visn. / 3 klikk (pos 10,9) — fremdeles den enkeltstående største muligheten på hele nettstedet.
 
-**Nytt/bevegelse denne uka:**
-- *norrøn mytologi quiz* opp til **3 klikk** (10 visn., pos 9,2) — nå en av topp-tre klikkerne. norron-mytologi__lett er en av de sterkeste sidene (3 klikk / 23 visn.).
-- *pokémon quiz norsk* holder 3 klikk (pokemon-spillet__lett: 3 klikk / 31 visn.).
-- *quiz leonardo da vinci* konverterte (1 klikk / pos 1,0) — kunst-klyngen lever.
-- Nye sider som klatrer: **manchester-united-historie-og-legender__medium** (3 klikk), **the-beatles__vanskelig** (3 klikk), **tromso-trivia-nordens-paris__medium** (2 klikk / 9 visn.).
-- *dagens quiz* + *dagens quiz gratis* = ~34 visn., 0 klikk, pos ~16 → feature-/merkevaresøk mot /dagens, optimaliseringssak (ikke ny quiz).
+**Topp klikk-sider (28 d):** /vm (3 klikk / 138 visn.), fotball-vm-gjennom-tidene__vanskelig (7 / 120), __lett (4 / 75), fotball-vm-2026-alt-du-ma-vite__lett (2 / 46), pokemon-spillet__lett (3 / 31).
 
-## (b) Klynger uten god dekning (grunnlag for nye quizer)
+**Bevegelse denne uka:**
+- *norrøn mytologi quiz* holder 3 klikk (pos 9,2) — topp-tre klikker.
+- *pokémon quiz norsk* 3 klikk (pos 5,1) — sterk.
+- *quiz leonardo da vinci* konverterer (1 klikk / pos 1,0) — kunst-klyngen lever.
+- *dagens quiz* + *dagens quiz gratis* ≈ 34 visn., 0 klikk, pos ~14–16 → merkevare-/feature-søk mot /dagens, optimaliseringssak.
 
-Samme dekningsgap som sist — verdt å vite at de fortsatt står åpne:
+## (b) Status på forrige ukes forslag — 4 av 6 er nå LIVE
 
-- **Verdenshistorie som samlequiz** — *quiz verdenshistorie* (11, pos 47) + *verdenshistorie quiz* (10, pos 49) ≈ 21 visn. Vi har enkeltquizer (Romerriket, Egypt, Bysants, Mesopotamia …) men ingen bred «Verdenshistorie»-inngang.
-- **Norske byer som egen quiz** — *byer i norge rebus* (16, pos 63) + *byer i norge quiz* (6) + *norske byer quiz* (3) + *norsk geografi quiz* (3) ≈ 28 visn. Byer ligger i dag sammenslått i «Norges fylker og byer».
-- **Kunst / berømte kunstnere** — *kunst quiz* (3, pos 18) + van gogh / leonardo / munch-enkeltsøk. Enkeltsider finnes, men ingen samlende «Berømte malerier og kunstnere»-quiz som fanger generisk *kunst quiz*.
-- **Kroppen – lett/morsom variant** — *quiz om kroppen* (9, pos 43) + *kroppen quiz* (5) + *anatomi quiz med svar* (8, pos 24) + *anatomi quiz* (7) ≈ 29 visn. Anatomi-serien finnes, men er for tung for den lette/barnevennlige intensjonen.
-- **Afrikas hovedsteder** — afrika-vinkelen mangler egen inngang (vi har asias-land-og-hovedsteder, verdens-/europas-hovedsteder, men ikke Afrika spesifikt).
+| Forslag (25/7) | Slug i `quiz/` | Status |
+|---|---|---|
+| Verdenshistorie – de store epokene | `verdenshistorie-de-store-epokene__lett/medium/vanskelig` | ✅ Publisert |
+| Norske byer | `norske-byer__lett/medium` | ✅ Publisert |
+| Berømte malerier og kunstnere | `beromte-malerier-og-kunstnere__lett/medium` | ✅ Publisert |
+| Afrikas hovedsteder | `afrikas-hovedsteder__lett/medium/vanskelig` | ✅ Publisert |
+| Kroppen for nysgjerrige (lett) | — | ⏳ Ikke laget |
+| Verdens elver – og Norges egne | — | ⏳ Ikke laget |
 
-**Long-tail verdt å merke (ikke egen quiz nå):**
-- *verdens lengste elv* (29, pos 22) — dekket globalt av verdens-lengste-elver; ren posisjonssak.
+De fire nye rangerer ennå ikke i topp (nypubliserte, GSC viser dem ikke i topp-sider enda) — normalt, de trenger indekserings-/modningstid. Verdt å følge posisjonen deres neste runde.
+
+## (c) Ekte dekningsgap som fortsatt står åpne
+
+- **Kroppen – lett/barnevennlig variant** — *quiz om kroppen* (9, pos 43) + *anatomi quiz med svar* (8, pos 24) + *anatomi quiz* (7, pos 20) + *kroppen quiz* (5, pos 29) ≈ **29 visn.** Vi har `menneskekroppens-anatomi` + `menneskekroppens-organer`, men de er for tunge for den lette/morsomme intensjonen. **Klart sterkeste gjenstående gap.**
+- **Verdens/Norges elver (norsk vinkel)** — *verdens lengste elv* (29, pos 22) er dekket globalt av `verdens-lengste-elver`, men den norske vinkelen (*hva heter norges lengste elv*, *norsk geografi quiz*) mangler egen inngang. Mer et supplement enn et stort gap.
+
+**Long-tail (ikke egen quiz nå):**
 - *i hvilket land vant brasil sin første vm tittel* (18, pos 11) — evergreen VM-fakta, dekket.
-- *test rotter* (5) / *rotte som kjæledyr* (3) — trolig støy fra enkeltspørsmål-side.
-- *roser betydning* (10) — støy, ikke quiztema.
+- *roser betydning* (10, pos 27) og *test rotter* (5) / *rotte som kjæledyr* — trolig støy fra enkeltspørsmål, ikke quiztema.
+- *mat og drikke quiz* (6+6=12, pos 47–57) — dekket av `mat-og-drikke-fra-hele-verden` + `norske-mattradisjoner`; posisjonssak.
+- *quiz allmennkunnskap* / *almennkunnskap quiz* (~17, pos 68–78) — dekket av `blandet-`/`norsk-allmennkunnskap`; posisjonssak.
+- *eliteserien quiz* (4, pos 8,8) og *molde kallenavn* (12, pos 8–11) — dekket og rangerer godt.
 
-## (c) Quizforslag (kun forslag, ikke generert)
+## (d) Quizforslag — kun forslag, ikke generert
 
-Uendret prioritet fra 25/7 — rangert etter visningsvolum × dekningsgap. Christian tar stilling.
+Tynn liste denne uka fordi backloggen i stor grad er levert. Rangert etter visningsvolum × reelt dekningsgap. Christian tar stilling.
 
-1. **Verdenshistorie – de store epokene** · slug `verdenshistorie-de-store-epokene` · historie · lett/medium/vanskelig
-   Dekker *quiz verdenshistorie* (11) + *verdenshistorie quiz* (10). Ingen bred inngang i dag; kan hubbe/internlenke alle enkelt-historiequizene.
+1. **Kroppen for nysgjerrige (lett kroppsquiz)** · slug `kroppen-for-nysgjerrige` · kropp · lett
+   *quiz om kroppen* (9) + *anatomi quiz med svar* (8) + *anatomi quiz* (7) + *kroppen quiz* (5) ≈ 29 visn. Lettere/morsommere vinkel enn dagens anatomi-serie, mot barn/familie-intensjon. **Høyest prioritet.**
 
-2. **Norske byer – kjenner du dem?** · slug `norske-byer` · geografi · lett/medium
-   *byer i norge rebus* (16) + *byer i norge quiz* (6) + *norske byer quiz* (3) ≈ 25+ visn. Egen side matcher bedre enn dagens sammenslåtte «fylker og byer».
+2. **Verdens elver – og Norges egne** · slug `norges-og-verdens-elver` · geografi · lett/medium
+   *verdens lengste elv* (29) + norsk elve-vinkel som mangler. Supplerer `verdens-lengste-elver`; kan internlenke.
 
-3. **Berømte malerier og kunstnere** · slug `beromte-malerier-og-kunstnere` · kunst/kultur · lett/medium
-   Fanger generisk *kunst quiz* (3) + van gogh/leonardo/munch-momentum. Hub for eksisterende kunstner-quizer.
+3. **Norsk geografi – blandet** · slug `norsk-geografi` · geografi · lett/medium
+   *geografi quiz verden* (12) + *norsk geografi quiz* — samlende geografi-inngang som kan hubbe byer/fylker/fjell/elver og fange de generiske geografi-søkene (i dag spredt på pos 25–63).
 
-4. **Kroppen for nysgjerrige (lett kroppsquiz)** · slug `kroppen-for-nysgjerrige` · kropp · lett
-   *quiz om kroppen* (9) + *kroppen quiz* (5) + *anatomi quiz med svar* (8). Lettere/morsommere vinkel enn dagens anatomi-serie.
+4. **VM-fotball – de store øyeblikkene (samlequiz)** · slug `vm-fotball-store-oyeblikk` · fotball · medium
+   *vm quiz* (25) + *vm quiz 2026* (17) + *quiz vm 2026* (8) + *quiz om vm* (7) ≈ 57 visn. Sterkt cluster; vi har mange VM-quizer men en bred «VM-quiz»-inngang kan fange det generiske *vm quiz* og internlenke resten. (Vurder om `/vm`-siden alt dekker dette — da er det optimalisering, ikke ny quiz.)
 
-5. **Afrikas hovedsteder** · slug `afrikas-hovedsteder` · geografi · lett/medium/vanskelig
-   Verdensdels-spesifikk vinkel som utfyller verdens-/europas-/asias-hovedsteder.
+*(Under 4 solide forslag i uka fordi de øvrige klyngene enten er levert eller er posisjonssaker. Ikke tvunget fram flere for å nå «5–10».)*
 
-6. **Verdens elver – og Norges egne** · slug `norges-og-verdens-elver` · geografi · lett/medium
-   *verdens lengste elv* (29) + *lengste elv i asia* (3) + *elver i verden* (3); norsk vinkel mangler. Supplerer verdens-lengste-elver.
+## (e) Sideoptimalisering (ikke nye quizer) — størst løftepotensial
 
-## Sideoptimalisering (ikke nye quizer) — størst løftepotensial
+Sidene som allerede rangerer men ikke får klikk — dette er der de raske gevinstene ligger nå:
 
-Sidene som allerede rangerer men ikke får klikk:
-
-- **hvor langt kom norge i vm 1994** (795 visn., 3 klikk, pos 10,9): tittel/meta + tydelig «svar»-utdrag øverst for featured snippet. Fortsatt den enkeltstående største muligheten på hele nettstedet.
-- **Hovedsteder-klyngen** (*hovedstad quiz* 20/pos 67, *quiz hovedsteder* 17/56, *hovedsteder quiz med svar* 14/71, *hovedsteder i verden quiz* 20/45 …): match tittel/H1 mot «hovedsteder quiz med svar», styrk intern lenking. Sidene ligger på pos 45–75 → ren snippet-/relevansjobb.
-- **Fylker** (*norge fylker quiz* 14/pos 25, *norges fylker quiz* 7/29): samme grep.
-- **/dagens** (*dagens quiz* + *dagens quiz gratis* ~34 visn., pos ~16): merkevaresøk, bør ligge topp 3 — sjekk tittel/indeksering.
+- **hvor langt kom norge i vm 1994** (795 visn., 3 klikk, pos 10,9): tittel/meta + tydelig «svar»-utdrag øverst for featured snippet. Fortsatt den enkeltstående største muligheten på hele nettstedet. Beslektede: *…vm 94* (37), *…fotball vm 1994* (35), *…vm i 1994* (14) — alle pos ~10, samme grep.
+- **Hovedsteder-klyngen** (*hovedsteder i verden quiz* 20/pos 45, *hovedstad quiz* 20/67, *quiz hovedsteder* 17/56, *hovedsteder quiz med svar* 14/71): match tittel/H1 mot «hovedsteder quiz med svar», styrk intern lenking. `verdens-hovedsteder__lett` ligger pos 32,7 med 63 visn. / 0 klikk.
+- **Fylker** (*norge fylker quiz* 14/pos 25, *norges fylker quiz* 7/29): `norges-fylker-og-byer__lett` = 45 visn. / 0 klikk / pos 36. Samme grep.
+- **/dagens** (*dagens quiz* 29 + *dagens quiz gratis* 5, pos ~14–16): merkevaresøk, bør ligge topp 3 — sjekk tittel/indeksering.
+- **Følg de 4 nypubliserte** (verdenshistorie, norske byer, berømte malerier, afrikas hovedsteder): sjekk at de er indeksert og internlenket, så de begynner å hente sine respektive klynger (*quiz verdenshistorie* 11, *byer i norge rebus* 16, *kunst quiz*, afrika-hovedsteder).
 
 ---
-*Kjørt automatisk (ukentlig SEO-rutine, 27.7.26). Produktnavn: Allmennkunnskap (dobbel l, dobbel n). Ingen quizer er generert eller publisert — dette er forslag.*
+*Kjørt automatisk (ukentlig SEO-rutine, 27.7.26). Data hentet på nytt fra GSC samme dag; erstatter tidligere 27/7-fil med oppdatert status (4 forslag nå live). Produktnavn: Allmennkunnskap (dobbel l, dobbel n). Ingen quizer er generert eller publisert — dette er forslag.*
