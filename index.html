@@ -966,17 +966,6 @@
     </div>
   </section>
 
-  <!-- VM-BANNER -->
-  <a class="vm-banner" href="vm.html" aria-label="Bli med i VM-quizen 2026">
-    <div class="vm-banner-img"><img id="vm-banner-img" src="IMG/vm-nasjoner.jpg" alt=""></div>
-    <div class="vm-banner-text">
-      <div class="vm-banner-eyebrow">Fotball-VM 2026</div>
-      <h2>Bli med i <em>VM-konkurransen</em></h2>
-      <p>Ta quizene i ditt eget tempo, samle poeng gjennom hele mesterskapet, og kjemp om topplassen — i din egen liga og mot alle andre.</p>
-      <span class="vm-banner-cta">Til VM-quizen <span class="btn-arrow">→</span></span>
-    </div>
-  </a>
-
   <!-- THREE-UP -->
   <section class="three-up">
     <div class="three-up-item">
@@ -1220,6 +1209,17 @@
     <div class="lb-foot"><a class="btn btn-ghost" href="dagens.html">Spill dagens quiz <span class="btn-arrow">→</span></a></div>
   </section>
 
+  <!-- VM-BANNER (avsluttet — arkiv) -->
+  <a class="vm-banner" href="vm.html" aria-label="Gjenopplev VM-quizene 2026">
+    <div class="vm-banner-img"><img id="vm-banner-img" src="IMG/vm-nasjoner.jpg" alt=""></div>
+    <div class="vm-banner-text">
+      <div class="vm-banner-eyebrow">Fotball-VM 2026 · Avsluttet</div>
+      <h2>Gjenopplev <em>VM-quizene</em></h2>
+      <p>Mesterskapet er over, men quizene lever videre. Gjenopplev dramaet fra sommeren og test hvor godt du fulgte med — hele veien fra åpningskampen til finalen.</p>
+      <span class="vm-banner-cta">Til VM-quizene <span class="btn-arrow">→</span></span>
+    </div>
+  </a>
+
   <footer>
     <div><span class="brand">CustomQuiz</span> · customquiz.no</div>
     <div>© 2026 · Daglige quizer på norsk</div>
@@ -1240,7 +1240,7 @@
     if (el) el.src = 'IMG/kategori-' + valgt + '.jpg';
   })();
 
-  // Tilfeldig VM-bilde i banneren ved hver innlasting + nedtelling til avspark
+  // Tilfeldig VM-bilde i arkiv-banneret ved hver innlasting
   (function () {
     var vmBilder = [
       'vm-nasjoner', 'vm-vertsbyer', 'vm-kvalik', 'vm-historie',
@@ -1249,22 +1249,6 @@
     var pick = vmBilder[Math.floor(Math.random() * vmBilder.length)];
     var img = document.getElementById('vm-banner-img');
     if (img) img.src = 'IMG/' + pick + '.jpg';
-
-    var c = document.getElementById('vm-banner-count');
-    if (c) {
-      var start = new Date('2026-06-11T18:00:00+02:00');
-      if (start.getTime() - Date.now() > 0) {
-        // Tell kalenderdager (lokal tid), ikke 24t-bolker — ellers vises «2 dager» dagen før avspark.
-        var now = new Date();
-        var d = Math.round((new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime()
-                          - new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()) / 86400000);
-        c.textContent = d <= 0 ? 'Avspark i dag!'
-                      : d === 1 ? 'Avspark i morgen.'
-                      : d + ' dager til avspark.';
-      } else {
-        c.textContent = 'VM er i gang.';
-      }
-    }
   })();
 
   // Generator-animasjon: logo males inn, så tre tema som stadig veksles ut

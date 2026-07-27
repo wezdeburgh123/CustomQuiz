@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F0E6">
 <title>VM-quiz 2026 — CustomQuiz</title>
-<meta name="description" content="Fotball-VM-quizen på CustomQuiz. Ta quizene én gang hver, samle poeng gjennom hele mesterskapet, og konkurrer mot venner og alle andre.">
+<meta name="description" content="VM-quizene fra fotball-VM 2026 på CustomQuiz. Mesterskapet er over — gjenopplev dramaet og test hvor godt du fulgte med, fra åpningskampen til finalen.">
 
 <!-- Kanonisk URL: konsoliderer /vm.html og /vm til én side (løser «Duplicate without user-selected canonical» i GSC). -->
 <link rel="canonical" href="https://customquiz.no/vm">
@@ -21,7 +21,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta property="og:title" content="VM-quiz 2026 — CustomQuiz">
-<meta property="og:description" content="Ta quizene, samle poeng gjennom hele VM, og konkurrer mot venner og alle andre.">
+<meta property="og:description" content="Mesterskapet er over — gjenopplev dramaet fra fotball-VM 2026 og test hvor godt du fulgte med.">
 <meta property="og:image" content="https://customquiz.no/IMG/vm-share.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://customquiz.no/vm">
@@ -240,9 +240,9 @@
       <img src="IMG/vm-stempel.jpg" alt="Fotball-VM 2026-stempel">
     </div>
     <div class="hero-text">
-      <div class="eyebrow"><span>Fotball-VM 2026</span> <span class="count" id="kickoff">· avspark 11. juni</span></div>
-      <h1>VM-<em>konkurransen</em></h1>
-      <p class="lede">Ta quizene én gang hver, samle poeng gjennom hele mesterskapet, og kjemp om topplassen — i din egen liga og mot alle andre.</p>
+      <div class="eyebrow"><span>Fotball-VM 2026</span> <span class="count" id="kickoff">· avsluttet</span></div>
+      <h1>Gjenopplev <em>VM 2026</em></h1>
+      <p class="lede">Mesterskapet er over, men quizene lever videre. Gjenopplev dramaet fra sommeren og test hvor godt du fulgte med — hele veien fra åpningskampen til finalen.</p>
       <a class="btn" href="#quizer">Se quizene <span class="btn-arrow">→</span></a>
     </div>
   </section>
@@ -335,17 +335,17 @@
     <div class="three-up-item">
       <div class="three-up-num">01</div>
       <h3>Ta <em>quizene</em></h3>
-      <p>Hver quiz tas kun én gang. Pre-VM-temaene er åpne nå; sluttspill-rundene låses opp etter hvert som lagene går videre.</p>
+      <p>Alle rundene fra mesterskapet er åpne — fra gruppespillet til sluttspillet. Hver quiz tas kun én gang.</p>
     </div>
     <div class="three-up-item">
       <div class="three-up-num">02</div>
       <h3>Samle <em>poeng</em></h3>
-      <p>Riktige svar gir poeng som legges sammen gjennom hele mesterskapet. Jo flere quizer, jo høyere kan du klatre.</p>
+      <p>Riktige svar gir poeng som legges sammen på tvers av rundene. Jo flere quizer, jo høyere kan du klatre.</p>
     </div>
     <div class="three-up-item">
       <div class="three-up-num">03</div>
       <h3>Vinn <em>ligaen</em></h3>
-      <p>Følg stillingen i din egen vennegruppe og på den globale tavla. Kåringen står når finalen er spilt.</p>
+      <p>Se hvem som kan mest i din egen vennegruppe og på den globale tavla. Slå vennene dine — og alle andre.</p>
     </div>
   </section>
 
@@ -750,15 +750,8 @@
 
   (function kickoff(){
     var el=document.getElementById('kickoff'); if(!el) return;
-    var start=new Date('2026-06-11T18:00:00+02:00');
-    if(start.getTime()-Date.now()<=0){ el.textContent='· VM er i gang'; return; }
-    // Tell kalenderdager (lokal tid), ikke 24t-bolker — ellers vises «2 dager» dagen før avspark.
-    var now=new Date();
-    var d=Math.round((new Date(start.getFullYear(),start.getMonth(),start.getDate()).getTime()
-                     -new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime())/86400000);
-    el.textContent = d<=0 ? '· avspark i dag!'
-                   : d===1 ? '· avspark i morgen'
-                   : '· '+d+' dager til avspark';
+    // Mesterskapet er ferdigspilt — quizene ligger som arkiv.
+    el.textContent='· avsluttet';
   })();
 
   wireTabs();
