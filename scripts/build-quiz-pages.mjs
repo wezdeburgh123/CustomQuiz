@@ -123,6 +123,29 @@ const SEO_TITLE_OVERRIDE = {
     "Hvor langt kom Norge i VM 1994? Quiz + fasit",
 };
 
+// Direkte SVAR-utdrag (SERP-CTR + featured snippet / «Andre spør om»): sider som
+// rangerer for et konkret FAKTASPØRSMÅL, men der svaret bare finnes i den
+// klientlastede fasiten (usynlig for Google). Her legger vi et kort, crawlbart
+// svar øverst på siden + FAQPage-schema, så siden kan vinne utdraget og
+// berolige klikket. Svaret røper ett faktum — spørsmålene/fasiten forblir
+// sp-beskyttet. VERIFISER FAKTA før du legger til nye oppføringer (svaret her er
+// bekreftet mot gruppe E-tabellen i VM 1994 og stemmer med quizens egen fasit).
+//   «hvor langt kom norge i vm 1994»: 795 visn. / pos ~11 / 0,4 % CTR (28 d,
+//   juli 2026) — nettstedets største enkeltmulighet. To sider rangerer for
+//   frasen (den brede historie-quizen + den dedikerte 1994-quizen); begge får
+//   samme svar-blokk så Google kan velge, og begge blir sterke svar.
+const NORGE_VM_1994_SVAR = "Norge kom ikke videre fra gruppespillet i VM 1994 i USA. Egil «Drillo» Olsens lag tok 4 poeng på tre kamper — 1–0 over Mexico, 0–1 mot Italia og 0–0 mot Irland — men i den ekstremt jevne gruppe E endte alle fire lagene på 4 poeng og 0 i målforskjell. Norge røk ut på siste skilleregel: færrest scorede mål (kun Kjetil Rekdals mål mot Mexico). Mexico, Irland og Italia gikk videre.";
+const ANSWER_SNIPPET = {
+  "norge-i-vm-1994__lett": {
+    q: "Hvor langt kom Norge i VM 1994?",
+    a: NORGE_VM_1994_SVAR,
+  },
+  "norge-i-fotball-vm-gjennom-historien__medium": {
+    q: "Hvor langt kom Norge i VM 1994?",
+    a: NORGE_VM_1994_SVAR,
+  },
+};
+
 // Bygg-tid: bruk et lokalt cover IMG/<slug>.jpg hvis det er committet (uansett
 // kategori). Trygt — returnerer null når fila ikke finnes, så vi aldri peker på
 // et 404-bilde. Erstatter den gamle harde dyr/spill/monstere-listen.
@@ -147,14 +170,30 @@ function baseTopic(slug) {
 
 // Relaterte quizer for intern lenking (SEO: topical clustering). Prioriterer
 // andre vanskelighetsgrader av samme tema, deretter resten av kategorien.
+const RELATED_STOP = new Set([
+  "og", "i", "for", "fc", "fk", "sk", "bk", "the", "de", "den", "det",
+  "historie", "legender", "gjennom", "lett", "medium", "vanskelig",
+]);
+const topicTokens = (slug) => new Set(
+  baseTopic(slug).split(/[-+]/).filter((t) => t.length >= 2 && !RELATED_STOP.has(t))
+);
 function relatedFor(q, byCat, max = 6) {
   const pool = (byCat.get(q.category || "mix") || []).filter((x) => x.slug !== q.slug);
   const base = baseTopic(q.slug);
   const sameTopic = pool.filter((x) => baseTopic(x.slug) === base);
-  const others = pool.filter((x) => baseTopic(x.slug) !== base);
+  // Nøkkelord-affinitet: quizer som deler et meningsbærende slug-token (f.eks.
+  // «vm», «norge», «1994») prioriteres over generisk kategori-utfyll. Re-ordner
+  // KUN innenfor samme kategori-pool (aldri kryss-kategori, aldri færre lenker),
+  // så dette er nøytralt-eller-bedre for alle sider. Fikser bl.a. at
+  // norge-i-vm-1994 lenket til tilfeldige klubblag i stedet for VM/Norge-quizer.
+  const myTokens = topicTokens(q.slug);
+  const rest = pool.filter((x) => baseTopic(x.slug) !== base);
+  const shares = (x) => [...topicTokens(x.slug)].some((t) => myTokens.has(t));
+  const affine = rest.filter(shares);
+  const others = rest.filter((x) => !shares(x));
   const out = [];
   const seen = new Set();
-  for (const x of [...sameTopic, ...others]) {
+  for (const x of [...sameTopic, ...affine, ...others]) {
     if (seen.has(x.slug)) continue;
     seen.add(x.slug);
     out.push(x);
@@ -234,6 +273,26 @@ function pageHtml(q, related = []) {
     ],
   };
 
+  // Direkte svar-utdrag + FAQPage-schema (kun for sider i ANSWER_SNIPPET).
+  const answer = ANSWER_SNIPPET[slug] || null;
+  const answerHtml = answer
+    ? `\n  <div class="answer">
+    <h2 class="answer-q">${esc(answer.q)}</h2>
+    <p>${esc(answer.a)}</p>
+  </div>\n`
+    : "";
+  const faqLd = answer
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [{
+          "@type": "Question",
+          name: answer.q,
+          acceptedAnswer: { "@type": "Answer", text: answer.a },
+        }],
+      }
+    : null;
+
   // Synlige spørsmål (crawlbar tekst) + fasit i en sammenleggbar <details>.
   const questionsHtml = q.questions.map((it, i) => {
     const opts = Array.isArray(it.options) ? it.options : [];
@@ -273,7 +332,7 @@ function pageHtml(q, related = []) {
 
 <script type="application/ld+json">${jsonLdSafe(ld)}</script>
 <script type="application/ld+json">${jsonLdSafe(breadcrumbLd)}</script>
-
+${faqLd ? `<script type="application/ld+json">${jsonLdSafe(faqLd)}</script>\n` : ""}
 <style>
   :root{--bg:#F5F0E6;--bg-soft:#FBF7EE;--ink:#1F1A14;--muted:#6B6256;--teal:#0A6E5A;--line:#E3D9C4;}
   *{box-sizing:border-box;}
@@ -288,6 +347,9 @@ function pageHtml(q, related = []) {
   .tag{background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--muted);}
   .cta{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:12px;font-size:17px;margin-bottom:40px;}
   .cta:hover{filter:brightness(1.08);}
+  .answer{background:var(--bg-soft);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px;padding:18px 22px;margin:0 0 32px;}
+  .answer .answer-q{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:20px;line-height:1.25;margin:0 0 8px;}
+  .answer p{margin:0;color:var(--ink);}
   .related{margin:8px 0 36px;}
   .related ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;}
   .related li a{text-decoration:none;color:var(--teal);}
@@ -320,7 +382,7 @@ function pageHtml(q, related = []) {
     <span class="tag">${esc(diffLabel)}</span>
     <span class="tag">${n} spørsmål</span>
   </div>
-
+${answerHtml}
   <a class="cta" href="${esc(playUrl)}">▶ Spill quizen</a>
 
   <h2>Spørsmålene i denne quizen</h2>
