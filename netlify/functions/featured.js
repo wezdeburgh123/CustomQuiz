@@ -16,7 +16,7 @@ const library = require("./_library");
 
 const PINNED_CATS = ["mix", "sport", "fotball"];
 const ROTATING_POOL = ["historie", "verdenshistorie", "vitenskap", "geografi", "litteratur", "kunst", "film", "musikk", "filosofi", "teknologi"];
-const ROTATING_COUNT = 2;
+const ROTATING_COUNT = 3;
 const COMMUNITY_COUNT = 3;
 
 const SELECT = "slug, title, lede, difficulty, category, category_label, team, hero_img, num_questions, plays, source, created_at";
@@ -77,13 +77,14 @@ exports.handler = async (event) => {
     // Dagsfrø: stabil per dag (cachebart), varierer dag til dag.
     const rng = seededRng(daySeed());
 
-    // Pinnet: per kategori, velg dagsfrø-tilfeldig mellom mest spilt og nest mest
-    // spilt — bryter plays-tregheten uten å miste «dette er de beste»-følelsen.
+    // Pinnet: per kategori, velg dagsfrø-tilfeldig blant de fire mest spilte —
+    // bryter plays-tregheten og gir større dag-til-dag-spenn uten å miste
+    // «dette er de beste»-følelsen.
     const pinned = [];
     for (const cat of PINNED_CATS) {
-      const top = inCat(cat).slice(0, 2);
+      const top = inCat(cat).slice(0, 4);
       if (!top.length) continue;
-      const r = (top.length > 1 && rng() < 0.5) ? top[1] : top[0];
+      const r = top[Math.floor(rng() * top.length)];
       pinned.push(lean(r)); used.add(r.slug);
     }
 
