@@ -375,6 +375,19 @@
   }
   .btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
   .btn-arrow { font-family: var(--font-display); font-size: 17px; line-height: 1; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .btn-secondary:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
 
   /* Section */
   .section-label {
@@ -953,8 +966,10 @@
       <div class="eyebrow" style="text-transform:none;letter-spacing:0.01em;font-size:15px;font-family:var(--font-display);font-style:italic">Du vet mindre enn du tror. Heldigvis.</div>
       <h1>Gi oss et <em>tema</em>. Vi gir deg ti spørsmål.</h1>
       <p class="lede">Skriv hva du vil ha quiz om — norsk historie, japansk matkultur, Romerrikets fall — og få ti spørsmål med forklaring på sekundet. På norsk, faktasjekket, klart til å deles rundt bordet. Alt er gratis akkurat nå.</p>
-      <a class="btn" href="lag-quiz.html">Lag din egen quiz <span class="btn-arrow">→</span></a>
-      <a href="dagens.html" style="display:inline-block;margin-left:20px;font-family:var(--font-mono);font-size:13px;letter-spacing:0.04em;color:var(--accent);text-decoration:none">eller ta dagens →</a>
+      <div class="hero-actions">
+        <a class="btn" href="lag-quiz.html">Lag din egen quiz <span class="btn-arrow">→</span></a>
+        <a class="btn btn-secondary" href="dagens.html">Ta dagens quiz <span class="btn-arrow">→</span></a>
+      </div>
       <form class="home-search" role="search" onsubmit="event.preventDefault();var q=this.q.value.trim();window.location.href='/arkiv'+(q?'?q='+encodeURIComponent(q):'');">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
         <input name="q" type="search" placeholder="Søk i hele arkivet — tema, tittel, stikkord…" aria-label="Søk i arkivet">
