@@ -134,6 +134,21 @@ const SEO_TITLE_OVERRIDE = {
     "Norges fylker og byer — quiz med svar",
 };
 
+// SEO-meta-override (SERP-CTR): overstyrer KUN <meta name="description"> (det
+// Google viser under tittelen i søk) — ikke og:/twitter:description (delinger)
+// eller JSON-LD, som fortsatt bruker leden. Brukes når siden rangerer for ett
+// konkret spørsmål og beskrivelsen bør speile/tease akkurat det søket. Hold
+// ≤ ~155 tegn. VERIFISER FAKTA før du legger til nye oppføringer.
+//   norge-i-fotball-vm-gjennom-historien__medium: «hvor langt kom norge i vm
+//   1994» (142 visn. + ~35 på varianter, pos ~11, 0,7 % CTR per 3/8 2026 — data
+//   mest fra FØR tittel-overriden 25/7). Gammel beskrivelse åpnet generisk
+//   («Hvor langt kom Norge i VM?»); ny speiler 1994-frasen ordrett og lover
+//   svar + fasit, i par med tittelen over.
+const SEO_META_OVERRIDE = {
+  "norge-i-fotball-vm-gjennom-historien__medium":
+    "Hvor langt kom Norge i VM 1994 — og hva skjedde i 1938 og 1998? Se svaret og test deg med 10 spørsmål om Norges VM-historie. Gratis quiz med fasit.",
+};
+
 // Direkte SVAR-utdrag (SERP-CTR + featured snippet / «Andre spør om»): sider som
 // rangerer for et konkret FAKTASPØRSMÅL, men der svaret bare finnes i den
 // klientlastede fasiten (usynlig for Google). Her legger vi et kort, crawlbart
@@ -279,7 +294,8 @@ function pageHtml(q, related = []) {
   const lede = q.lede && q.lede.trim()
     ? q.lede.trim()
     : `Test kunnskapen din i denne ${catLabel.toLowerCase()}-quizen med ${n} spørsmål på norsk.`;
-  const metaDesc = lede.length > 155 ? lede.slice(0, 152).trim() + "…" : lede;
+  const shareDesc = lede.length > 155 ? lede.slice(0, 152).trim() + "…" : lede;
+  const metaDesc = SEO_META_OVERRIDE[slug] || shareDesc;
 
   // JSON-LD: schema.org Quiz med spørsmål + fasit.
   const ld = {
@@ -375,13 +391,13 @@ function pageHtml(q, related = []) {
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(q.title)} — quiz med ${n} spørsmål">
-<meta property="og:description" content="${esc(metaDesc)}">
+<meta property="og:description" content="${esc(shareDesc)}">
 <meta property="og:image" content="${esc(ogImg)}">
 <meta property="og:url" content="${esc(canonical)}">
 <meta property="og:locale" content="nb_NO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(q.title)} — quiz med ${n} spørsmål">
-<meta name="twitter:description" content="${esc(metaDesc)}">
+<meta name="twitter:description" content="${esc(shareDesc)}">
 <meta name="twitter:image" content="${esc(ogImg)}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
