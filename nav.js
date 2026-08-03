@@ -29,7 +29,7 @@
       '<span class="masthead-sep">·</span>' +
       '<a href="vm.html" class="masthead-link masthead-link-vm' + active("vm.html") + '">VM 2026</a>' +
       '<span class="masthead-sep">·</span>' +
-      '<a href="dagens.html" class="masthead-link' + active("dagens.html") + '">Daglig quiz</a>' +
+      '<a href="dagens.html" class="masthead-link' + active("dagens.html") + '">Dagens quiz</a>' +
       '<span class="masthead-sep">·</span>' +
       '<a href="lag-quiz.html" class="masthead-link' + active("lag-quiz.html") + '">Generator</a>' +
     "</nav>";

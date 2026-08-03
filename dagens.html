@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F0E6">
 <title>Dagens quiz — gratis quiz hver dag | CustomQuiz</title>
-<meta name="description" content="Dagens quiz fra CustomQuiz — én ny gratis fellesquiz hver dag. Spill, del resultatet, og konkurrer på ukens ledertavle.">
+<meta name="description" content="Dagens quiz — gratis daglig quiz med svar og forklaring. Ti nye spørsmål hver morgen kl. 07, samme quiz for alle. Spill, del resultatet og konkurrer på ukens ledertavle.">
 <!-- Kanonisk URL: konsoliderer /dagens.html og /dagens til én side. -->
 <link rel="canonical" href="https://customquiz.no/dagens">
 <link rel="icon" type="image/jpeg" href="IMG/signature.jpg">
@@ -19,6 +19,21 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dagens quiz — CustomQuiz">
 <meta name="twitter:image" content="https://customquiz.no/IMG/dagens-share.jpg">
+<!-- Strukturerte data: breadcrumb + FAQ (matcher den synlige FAQ-seksjonen nederst på siden). -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+  {"@type":"ListItem","position":1,"name":"CustomQuiz","item":"https://customquiz.no/"},
+  {"@type":"ListItem","position":2,"name":"Dagens quiz","item":"https://customquiz.no/dagens"}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"Er dagens quiz gratis?","acceptedAnswer":{"@type":"Answer","text":"Ja. Dagens quiz er helt gratis og krever ingen innlogging. Vil du bygge streak og stå på ukens ledertavle, logger du inn med e-post — det er også gratis."}},
+  {"@type":"Question","name":"Får jeg svar og fasit?","acceptedAnswer":{"@type":"Answer","text":"Ja — du får riktig svar og en kort forklaring rett etter hvert spørsmål, så du lærer noe underveis. Til slutt ser du totalscoren din av ti."}},
+  {"@type":"Question","name":"Når kommer ny quiz?","acceptedAnswer":{"@type":"Answer","text":"Hver morgen kl. 07:00 norsk tid, sju dager i uka. Ukedagene har faste tema — historie, vitenskap, geografi og mer — og søndagsquizen er blandet og litt vanskeligere."}},
+  {"@type":"Question","name":"Kan jeg spille tidligere dagens-quizer?","acceptedAnswer":{"@type":"Answer","text":"Gårsdagens quiz roterer ut, men arkivet har flere hundre gratis quizer i alle kategorier. Du kan også lage din egen quiz om akkurat det temaet du vil."}}
+]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -309,6 +324,45 @@
         </a>
       </div>
     </div>
+  </section>
+
+  <!-- OM DAGENS QUIZ — statisk, alltid synlig (crawlbar tekst uavhengig av JS-tilstand).
+       FAQ-innholdet speiles i FAQPage-schemaet i <head>; endres det ene, endre det andre. -->
+  <style>
+    #s-om { padding:48px 0 40px; }
+    #s-om h2 { font-family:var(--font-display); font-weight:600; font-size:clamp(22px,3.4vw,28px);
+               line-height:1.2; margin:10px 0 14px; }
+    #s-om .om-lede { color:var(--ink-soft); max-width:62ch; margin:0 0 26px; }
+    #s-om details { border-top:.5px solid var(--rule); padding:14px 0; }
+    #s-om details:last-of-type { border-bottom:.5px solid var(--rule); }
+    #s-om summary { cursor:pointer; font-weight:600; font-size:15px; list-style:none; position:relative; padding-right:28px; }
+    #s-om summary::-webkit-details-marker { display:none; }
+    #s-om summary::after { content:'+'; position:absolute; right:2px; top:0; font-family:var(--font-mono);
+                           color:var(--ink-mute); transition:transform .16s; }
+    #s-om details[open] summary::after { content:'–'; }
+    #s-om details p { color:var(--ink-soft); font-size:15px; margin:10px 0 2px; max-width:62ch; }
+  </style>
+  <section id="s-om" aria-labelledby="om-title">
+    <hr class="sep" style="margin-bottom:34px;">
+    <div class="eyebrow">Om dagens quiz</div>
+    <h2 id="om-title">Gratis daglig quiz — med svar og forklaring</h2>
+    <p class="om-lede">Dagens quiz er en gratis daglig quiz på norsk: ti nye spørsmål hver morgen kl. 07:00, samme quiz for alle. Du får svar og en kort forklaring på hvert spørsmål underveis, og til slutt kan du dele resultatet og utfordre venner. Vil du ha mer, har <a href="arkiv.html">arkivet</a> flere hundre gratis quizer — eller du kan <a href="lag-quiz.html">lage din egen</a> om akkurat ditt tema.</p>
+    <details>
+      <summary>Er dagens quiz gratis?</summary>
+      <p>Ja. Dagens quiz er helt gratis og krever ingen innlogging. Vil du bygge streak og stå på ukens ledertavle, logger du inn med e-post — det er også gratis.</p>
+    </details>
+    <details>
+      <summary>Får jeg svar og fasit?</summary>
+      <p>Ja — du får riktig svar og en kort forklaring rett etter hvert spørsmål, så du lærer noe underveis. Til slutt ser du totalscoren din av ti.</p>
+    </details>
+    <details>
+      <summary>Når kommer ny quiz?</summary>
+      <p>Hver morgen kl. 07:00 norsk tid, sju dager i uka. Ukedagene har faste tema — historie, vitenskap, geografi og mer — og søndagsquizen er blandet og litt vanskeligere.</p>
+    </details>
+    <details>
+      <summary>Kan jeg spille tidligere dagens-quizer?</summary>
+      <p>Gårsdagens quiz roterer ut, men <a href="arkiv.html">arkivet</a> har flere hundre gratis quizer i alle kategorier. Du kan også <a href="lag-quiz.html">lage din egen quiz</a> om akkurat det temaet du vil.</p>
+    </details>
   </section>
 </div>
 
