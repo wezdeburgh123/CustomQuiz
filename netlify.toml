@@ -186,20 +186,34 @@
 # 200-rewrite til /arkiv.html (over), og en 301 tilbake er den ene varianten
 # her med reell loop-risiko. Den statiske canonical-taggen i arkiv.html gjør
 # jobben i stedet. Samme grunn for /fotball.html (se 200-rewrite under).
+#
+# force = true ER NØDVENDIG. Netlify serverer en eksisterende fil framfor å
+# behandle en redirect-regel for samme sti — så uten force ble disse tre reglene
+# helt inerte (verifisert live 6.8.26: /vm.html svarte fortsatt 200). Filene
+# vm.html, dagens.html og lag-quiz.html finnes jo på disk.
+#
+# Ingen loop-risiko: /vm, /dagens og /lag-quiz har INGEN egen redirect-regel —
+# Netlify løser dem til .html-fila internt, og intern filoppslag kjører ikke
+# redirect-motoren på nytt. Bevist i prod av den eksisterende regelen
+# /quiz-app-v2.html -> /lag-quiz (force = true), som følger til
+# /lag-quiz?lib=… med status 200 uten å loope.
 [[redirects]]
   from = "/vm.html"
   to = "/vm"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/dagens.html"
   to = "/dagens"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/lag-quiz.html"
   to = "/lag-quiz"
   status = 301
+  force = true
 
 # Fotball — egen verden (klubber/serier/landslag/VM). Pen URL /fotball serverer
 # fotball.html (status=200 = rewrite, adressen beholdes). NB: /tema/<kategori>
