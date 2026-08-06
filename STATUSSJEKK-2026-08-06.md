@@ -130,7 +130,7 @@ Deretter: be om **ny validering** i GSC (den forrige feilet før fiksen var på 
 | — mangler `hero_img` | **195 (45 %)** 🟡 |
 | — `free = true` | 74 (17 %) |
 | — ikke `grounded` | 2 |
-| `daily_quiz` | 927 rader / 68 unike datoer (31. mai – 6. aug) = **16 kategorier per natt** |
+| `daily_quiz` | 927 rader / 68 unike datoer (31. mai – 6. aug) = 16 kategorier per dag — men se rettelsen under: dette er **kopier fra arkivet**, ikke ny generering |
 | Totale `plays` | **814** fordelt på 335 quizer |
 | Quizer aldri spilt | **102** |
 | `page_views`, `profiles`, `leagues` | Lest av RLS (deny for anon) — som designet |
@@ -149,7 +149,20 @@ Deretter: be om **ny validering** i GSC (den forrige feilet før fiksen var på 
 
 **Det interessante her:** de mest spilte quizene er i hovedsak *egengenererte / personlige* quizer (Dinamo, Igorrr, Brønnøysund, Tromsø, Zuma) — ikke SEO-quizene. SEO-innholdet henter visninger og klikk, men konverterer i liten grad til faktisk spilling. Det er to nesten uavhengige trafikkmønstre.
 
-**Kostnad vs. nytte på dagensquizen:** 16 AI-genererte quizer hver natt = 927 så langt. `/dagens` fikk 4 klikk på 28 dager. Det er mye modellkjøring per besøk.
+**RETTET 6.8. samme kveld — «kostnad vs. nytte på dagensquizen»:** Jeg skrev først
+at 16 AI-genererte quizer per natt var mye modellkjøring for 4 klikk. **Det var
+feil.** `daily-quiz-generate.js` genererer ingenting i normal drift — den plukker
+eksisterende quizer fra `quiz_library` (`pickFromLibrary`), deterministisk rotert
+på dato. Null API-kall, ingen kostnad. API-generering skjer kun i
+`ensureFallback()` hvis en dato ender med null utgaver.
+
+Bevis: 927 rader har bare **276 unike titler**, og **269 av dem finnes allerede i
+`quiz_library`** (7 avvik, trolig fallback-genererte fra slutten av mai da
+arkivet var tomt). Se `DAGENS-GJENBRUK-plan.md` for query og full retting.
+
+Konsekvens: det finnes ingen kostnad å kutte her, og ingen skjult
+innholdsressurs å hente ut av `/dagens`. Punkt 8 i prioriteringslista under
+utgår.
 
 **Repo-drift:** `quiz-library/library.ndjson` har 402 linjer, DB har 437. 35 quizer finnes bare i databasen. `STATUS.json` sier «alle 402 emner i topics.json er generert» — den tellingen er utdatert som bilde av hva som er live.
 
@@ -182,7 +195,7 @@ Alle KLAR-FOR-ARKIV-seriene er derimot merget inn (verifisert slug for slug: bar
 7. **Hovedsteder- og fylker-clusteret** (75 + 22 visninger) — posisjonssak, ikke innholdssak. Match tittel/H1 mot «hovedsteder quiz med svar», internlenk fra kontinent-quizene.
 
 ### P3 — vurder
-8. **Kutt antall dagens-kategorier** fra 16 til 3–5. 16 quizer per natt for 4 klikk på 28 dager er skjev kost/nytte.
+8. ~~**Kutt antall dagens-kategorier** fra 16 til 3–5.~~ **UTGÅR** — bygget på feil premiss. Dagensutgavene koster ingenting (rotasjon fra arkivet, ikke generering). Å kutte antall kategorier frigjør ingen kapasitet; det er bare et produktvalg om bredde. Se rettelsen over.
 9. **Synk `library.ndjson` fra DB** (402 → 437) så repoet igjen speiler live.
 10. **Undersøk de 79 404-ene** i GSC — sannsynligvis gamle VM-/event-URLer, men ubekreftet.
 11. **301 i stedet for 200 på `.html`-variantene** (`/vm.html`, `/arkiv.html`, `/dagens.html`, `/lag-quiz.html`). De har riktig canonical i dag, så det er ikke akutt, men 301 er et sterkere signal og `/vm.html` henter fortsatt klikk parallelt med `/vm`.

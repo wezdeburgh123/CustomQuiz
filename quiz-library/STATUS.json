@@ -1,11 +1,11 @@
 {
-  "nights_run": 10,
-  "total_generated": 387,
-  "last_run": "2026-07-27T00:00:00+00:00",
-  "last_batch": 0,
+  "nights_run": 11,
+  "total_generated": 394,
+  "last_run": "2026-08-06T15:47:46+00:00",
+  "last_batch": 7,
   "skipped": [],
-  "queue_complete": false,
-  "note": "6. august 2026: køen er ÅPNET IGJEN. 7 nye emner lagt inn FORAN i topics.json (402 -> 409), alle drevet av dokumenterte GSC-gap fra rapportene 25.7/27.7/3.8: kroppen/anatomi (~42 visn., foreslått 3 runder på rad uten å bli laget), elver (~42 visn.), norsk geografi blandet (~25 visn.), quiz for voksne/allmennkunnskap (~30 visn.), litteratur-inngang. Hvert nytt emne har et gsc_begrunnelse-felt med søketallene bak. NB: GSC-rapporten foreslo kategori 'kropp' — den finnes ikke i _library.CATEGORY_TO_IMG og ville blitt stille omskrevet til 'mix' av sync-library. Emnene ligger derfor under 'vitenskap'.",
-  "queue_note": "7 emner i kø per 6.8.26. Nattskiftet plukker de første emnene som ikke finnes i library.ndjson, så de nye tas først.",
+  "queue_complete": true,
+  "note": "6. august 2026 (nattskift 11): genererte alle 7 emnene i den gjenapnede GSC-koen (kroppen lett+medium, elver lett+medium, norsk geografi lett, allmennkunnskap medium, litteratur medium). Koen i topics.json er na tom igjen: 409 emner, 409 linjer i library.ndjson. Ikke pushet - Christian pusher selv.",
+  "queue_note": "0 emner igjen i topics.json per 6.8.26 etter nattskiftet.",
   "advarsel_teller": "total_generated (387) og nights_run gjelder nattskiftets egne kjøringer og sier ikke hva som er live. Målt 6.8.26: quiz_library i Supabase har 437 rader mens library.ndjson har 402 linjer. DB er source of truth — se quiz-library/README.md og scripts/dump-library.mjs."
 }
