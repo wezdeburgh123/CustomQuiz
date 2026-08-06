@@ -138,9 +138,13 @@
   status = 301
   force = true
 
+# Peker direkte på den rene URL-en, ikke på /lag-quiz.html — ellers ble dette en
+# to-hopps kjede (quiz-app-v2.html -> lag-quiz.html -> /lag-quiz) etter at
+# .html-301-ene ble lagt inn 6.8.26. Google følger kjeder, men mister litt
+# signal per hopp.
 [[redirects]]
   from = "/quiz-app-v2.html"
-  to = "/lag-quiz.html"
+  to = "/lag-quiz"
   status = 301
   force = true
 
@@ -169,6 +173,33 @@
   to = "/arkiv"
   status = 301
   force = true
+
+# .html-variantene -> rene URL-er (301). Bakgrunn: GSC listet /vm.html og
+# /lag-quiz.html som «Duplicate without user-selected canonical», og /vm.html
+# hentet fortsatt egne klikk parallelt med /vm (28 d, målt 6.8.26). Sidene har
+# riktig <link rel=canonical> fra 16.7, men 301 er et sterkere signal og
+# konsoliderer raskere. Query-strenger følger med automatisk i Netlify, så
+# /lag-quiz.html?lib=<slug> lander på /lag-quiz?lib=<slug> og treffer
+# og-quiz-edge-funksjonen som før (delte lenker i iMessage/FB overlever).
+#
+# NB: /arkiv.html står BEVISST igjen uten 301. /arkiv har en eksplisitt
+# 200-rewrite til /arkiv.html (over), og en 301 tilbake er den ene varianten
+# her med reell loop-risiko. Den statiske canonical-taggen i arkiv.html gjør
+# jobben i stedet. Samme grunn for /fotball.html (se 200-rewrite under).
+[[redirects]]
+  from = "/vm.html"
+  to = "/vm"
+  status = 301
+
+[[redirects]]
+  from = "/dagens.html"
+  to = "/dagens"
+  status = 301
+
+[[redirects]]
+  from = "/lag-quiz.html"
+  to = "/lag-quiz"
+  status = 301
 
 # Fotball — egen verden (klubber/serier/landslag/VM). Pen URL /fotball serverer
 # fotball.html (status=200 = rewrite, adressen beholdes). NB: /tema/<kategori>

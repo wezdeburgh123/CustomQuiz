@@ -80,11 +80,34 @@ export default async (request, context) => {
     img = `${url.origin}/IMG/${CATEGORY_TO_IMG[quiz.category] || "og"}.jpg`;
   }
 
-  // og:url = den delte siden (fungerer for både arkiv- og custom-quizer).
-  const pageUrl = `${url.origin}${url.pathname}?lib=${encodeURIComponent(slug)}`;
+  // SEO: /lag-quiz?lib=<slug> er en DUPLIKAT av den kanoniske, indekserbare
+  // /quiz/<slug>/-siden. Fram til 6.8.26 ble canonical bare satt av JavaScript
+  // i lag-quiz.html — Google behandlet det som et svakt signal, og 138 sider
+  // endte som «Duplicate without user-selected canonical» (validering feilet
+  // 25.7). I tillegg pekte og:url på duplikatet SELV, som motvirket fiksen.
+  // Nå settes begge server-side her, før svaret når crawleren.
+  //
+  // Trygt fordi library-get bare returnerer published + review_status=auto_ok,
+  // og build-quiz-pages.mjs genererer en /quiz/<slug>/-side for nøyaktig samme
+  // utvalg. Finner vi ikke quizen, returnerer vi tidlig (over) og rører ingenting.
+  const canonicalUrl = `${url.origin}/quiz/${encodeURIComponent(slug)}/`;
   const fullTitle = `${title} — quiz | CustomQuiz`;
 
   let html = await response.text();
+
+  // Injiser canonical tidlig i <head>. lag-quiz.html har ingen statisk
+  // canonical-tagg, så vi kan ikke bruke .replace() på en eksisterende tagg.
+  const canonicalTag = `<link rel="canonical" href="${esc(canonicalUrl)}">`;
+  if (/<link[^>]*rel=["']canonical["']/i.test(html)) {
+    // Skulle det en dag komme en statisk canonical i fila: bytt den ut i stedet
+    // for å legge til en nummer to (to canonicals = Google ignorerer begge).
+    html = html.replace(/<link[^>]*rel=["']canonical["'][^>]*>/i, canonicalTag);
+  } else if (/<meta charset="UTF-8">/i.test(html)) {
+    html = html.replace(/(<meta charset="UTF-8">)/i, `$1\n${canonicalTag}`);
+  } else {
+    html = html.replace(/(<head[^>]*>)/i, `$1\n${canonicalTag}`);
+  }
+
   html = html
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(fullTitle)}</title>`)
     .replace(
@@ -103,7 +126,10 @@ export default async (request, context) => {
       /(<meta property="og:image" content=")[^"]*(">)/,
       `$1${esc(img)}$2`
     )
-    .replace(/(<meta property="og:url" content=")[^"]*(">)/, `$1${esc(pageUrl)}$2`)
+    // og:url = den KANONISKE URL-en, ikke ?lib=-duplikatet. Delefunksjonen
+    // virker like godt (quiz-siden har egne OG-tagger), og vi slutter å fortelle
+    // Google at duplikatet er sin egen kanoniske adresse.
+    .replace(/(<meta property="og:url" content=")[^"]*(">)/, `$1${esc(canonicalUrl)}$2`)
     .replace(/(<meta property="og:type" content=")[^"]*(">)/, `$1article$2`)
     .replace(
       /(<meta name="twitter:title" content=")[^"]*(">)/,

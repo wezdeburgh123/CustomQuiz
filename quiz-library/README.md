@@ -37,6 +37,38 @@ via repo-fil + din `git push` (ev. `node scripts/sync-library.mjs` lokalt).
 - `STATUS.json` — teller + ramp-tilstand (skrives av nattskiftet).
 - `NATTSKIFT-PROMPT.md` — instruksen den planlagte oppgaven kjører.
 
+## ⚠️ Supabase er source of truth — ikke denne fila
+
+`library.ndjson` er en **snapshot som kan ligge bak**. Quizer havner i
+`quiz_library` fra flere kanaler (nattskiftet, `library-sync`, og brukere som
+lager egne quizer live), mens fila bare oppdateres når noen husker det.
+
+Målt 6. august 2026: fila hadde **402** linjer, basen hadde **437** rader — 35
+quizer fantes bare i DB. Det er lett å feildiagnosere ut fra fila (det skjedde
+under statussjekken samme dag: `sitemap.xml` i repoet var også frosset på 1. juli,
+mens den live var korrekt fordi Netlify regenererer den ved build).
+
+**Vil du vite hva som faktisk er live?** Spør DB-en, ikke repoet:
+
+```
+GET /api/library-list?limit=2000
+```
+
+**Hente basen ned i repoet** (tørrkjøring først, viser diff uten å endre noe):
+
+```
+cd "/Users/christian/Documents/Claude/Projects/Quiz generator"
+SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… node scripts/dump-library.mjs
+```
+
+Ser diffen riktig ut, kjør på nytt med `--skriv`. Den tar backup av forrige
+versjon automatisk. Retningene:
+
+```
+sync-library.mjs   fil -> DB   (push: legg nye quizer inn i basen)
+dump-library.mjs   DB -> fil   (pull: hent basen ned i repoet)
+```
+
 ## Engangs-oppsett (i denne rekkefølgen)
 
 1. **Kjør DB-migrasjonen** i Supabase → SQL Editor:

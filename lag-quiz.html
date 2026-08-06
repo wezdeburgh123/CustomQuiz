@@ -4,15 +4,17 @@
 <meta charset="UTF-8">
 <script>
 /* SEO: spiller-instanser dupliserer den kanoniske /quiz/<slug>/-siden.
-   - ?lib=<slug>: sett rel=canonical til /quiz/<slug>/ så Google konsoliderer
-     signalet til den indekserbare siden (løser «Duplicate without user-selected
-     canonical» i GSC). Ingen noindex her — canonical er det riktige signalet.
-   - ?quiz / ?event: ingen kanonisk /quiz/-motpart → noindex,follow.
+   - ?lib=<slug>: canonical settes nå SERVER-SIDE av
+     netlify/edge-functions/og-quiz.js (sammen med og:url). Den JS-injiserte
+     canonical-taggen som lå her t.o.m. 6.8.26 virket ikke — Google behandlet
+     den som et svakt signal, og 138 sider ble liggende som «Duplicate without
+     user-selected canonical». Ikke legg den tilbake her: to canonicals (én
+     server-side + én fra JS) gjør at Google ignorerer begge.
+   - ?quiz / ?event: ingen kanonisk /quiz/-motpart → noindex,follow. Denne
+     må fortsatt settes av JS, siden edge-funksjonen bare trigger på ?lib.
    Kjøres først i <head> så taggen finnes før Google rendrer. */
-(function(){try{var p=new URLSearchParams(location.search);var lib=p.get('lib');
-if(lib){var c=document.createElement('link');c.rel='canonical';
-c.href='https://customquiz.no/quiz/'+lib+'/';document.head.appendChild(c);}
-else if(p.has('quiz')||p.has('event')){
+(function(){try{var p=new URLSearchParams(location.search);
+if(!p.has('lib')&&(p.has('quiz')||p.has('event'))){
 var m=document.createElement('meta');m.name='robots';m.content='noindex,follow';
 document.head.appendChild(m);}}catch(e){}})();
 </script>

@@ -13,11 +13,17 @@ const daily = require("./_daily");
 const lib = require("./_library");
 
 // Rene visningsnavn for chips (uavhengig av hva som er lagret i `theme`).
+// MÅ dekke ALLE kategorier i _library.CATEGORY_TO_IMG. Mangler en kategori her,
+// faller chip-teksten tilbake til slug-en og brukeren ser «dyr | dyr» i stedet
+// for «Dyr». Det skjedde med dyr/spill/monstere fra de ble lagt til (19.–23.
+// juni 2026) til 6. august — utgavene ble generert hver natt og vist med rå
+// slug som navn. Legger du til en ny kategori: oppdater denne lista samtidig.
 const CATEGORY_LABEL = {
   mix: "Blandet", historie: "Norsk historie", verdenshistorie: "Verdenshistorie",
   vitenskap: "Naturvitenskap", geografi: "Geografi", litteratur: "Litteratur",
   kunst: "Kunst", film: "Film og TV", musikk: "Musikk", sport: "Sport",
   fotball: "Fotball", filosofi: "Filosofi", teknologi: "Teknologi",
+  dyr: "Dyr", spill: "Spill", monstere: "Monstere",
 };
 // Ukedag → kategori som forhåndsvelges (matcher temarytmen i nattjobben).
 const DEFAULT_CAT_BY_WEEKDAY = {

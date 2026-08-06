@@ -774,6 +774,9 @@
   .theme-chip[data-spot-name="terracotta"] { --spot: var(--spot-terracotta); }
   .theme-chip[data-spot-name="plum"]       { --spot: var(--spot-plum); }
   .theme-chip[data-spot-name="saffron"]    { --spot: var(--spot-saffron); }
+  /* 7. spotfarge (oker) — hørte til Dyr-kategorien fra 19.6.26, men det fantes
+     aldri en selector for den, så en Dyr-chip ville falt tilbake til --accent. */
+  .theme-chip[data-spot-name="oker"]       { --spot: var(--spot-oker); }
   .theme-chip:hover {
     border-color: var(--spot, var(--accent));
     background: var(--bg);
@@ -1121,20 +1124,29 @@
       <span>Bla etter tema</span>
       <span class="section-meta">Egen side per tema</span>
     </div>
+    <!-- Lenkene MÅ ha avsluttende skråstrek. /tema/mix gir 301 til /tema/mix/,
+         så uten den gikk hver eneste kategori-lenke på forsiden via en redirect
+         (unødvendig hopp + svakere internlenke-signal). Sitemap og canonical
+         bruker formen med skråstrek — hold disse like. Fikset 6.8.26.
+         Dyr/Spill/Monstere manglet helt her, selv om /tema/dyr/, /tema/spill/ og
+         /tema/monstere/ har ligget live siden 19.–23. juni. -->
     <div class="theme-grid">
-      <a class="theme-chip" data-spot-name="teal"       href="/tema/mix"><span class="theme-chip-dot"></span>Blandet</a>
-      <a class="theme-chip" data-spot-name="terracotta" href="/tema/historie"><span class="theme-chip-dot"></span>Norsk historie</a>
-      <a class="theme-chip" data-spot-name="terracotta" href="/tema/verdenshistorie"><span class="theme-chip-dot"></span>Verdenshistorie</a>
-      <a class="theme-chip" data-spot-name="cobalt"     href="/tema/vitenskap"><span class="theme-chip-dot"></span>Naturvitenskap</a>
-      <a class="theme-chip" data-spot-name="moss"       href="/tema/geografi"><span class="theme-chip-dot"></span>Geografi</a>
-      <a class="theme-chip" data-spot-name="plum"       href="/tema/litteratur"><span class="theme-chip-dot"></span>Litteratur</a>
-      <a class="theme-chip" data-spot-name="saffron"    href="/tema/kunst"><span class="theme-chip-dot"></span>Kunst</a>
-      <a class="theme-chip" data-spot-name="terracotta" href="/tema/film"><span class="theme-chip-dot"></span>Film og TV</a>
-      <a class="theme-chip" data-spot-name="saffron"    href="/tema/musikk"><span class="theme-chip-dot"></span>Musikk</a>
-      <a class="theme-chip" data-spot-name="saffron"    href="/tema/sport"><span class="theme-chip-dot"></span>Sport</a>
+      <a class="theme-chip" data-spot-name="teal"       href="/tema/mix/"><span class="theme-chip-dot"></span>Blandet</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="/tema/historie/"><span class="theme-chip-dot"></span>Norsk historie</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="/tema/verdenshistorie/"><span class="theme-chip-dot"></span>Verdenshistorie</a>
+      <a class="theme-chip" data-spot-name="cobalt"     href="/tema/vitenskap/"><span class="theme-chip-dot"></span>Naturvitenskap</a>
+      <a class="theme-chip" data-spot-name="moss"       href="/tema/geografi/"><span class="theme-chip-dot"></span>Geografi</a>
+      <a class="theme-chip" data-spot-name="plum"       href="/tema/litteratur/"><span class="theme-chip-dot"></span>Litteratur</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="/tema/kunst/"><span class="theme-chip-dot"></span>Kunst</a>
+      <a class="theme-chip" data-spot-name="terracotta" href="/tema/film/"><span class="theme-chip-dot"></span>Film og TV</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="/tema/musikk/"><span class="theme-chip-dot"></span>Musikk</a>
+      <a class="theme-chip" data-spot-name="saffron"    href="/tema/sport/"><span class="theme-chip-dot"></span>Sport</a>
       <a class="theme-chip" data-spot-name="moss"       href="/fotball"><span class="theme-chip-dot"></span>Fotball</a>
-      <a class="theme-chip" data-spot-name="plum"       href="/tema/filosofi"><span class="theme-chip-dot"></span>Filosofi</a>
-      <a class="theme-chip" data-spot-name="cobalt"     href="/tema/teknologi"><span class="theme-chip-dot"></span>Teknologi</a>
+      <a class="theme-chip" data-spot-name="plum"       href="/tema/filosofi/"><span class="theme-chip-dot"></span>Filosofi</a>
+      <a class="theme-chip" data-spot-name="cobalt"     href="/tema/teknologi/"><span class="theme-chip-dot"></span>Teknologi</a>
+      <a class="theme-chip" data-spot-name="oker"       href="/tema/dyr/"><span class="theme-chip-dot"></span>Dyr</a>
+      <a class="theme-chip" data-spot-name="cobalt"     href="/tema/spill/"><span class="theme-chip-dot"></span>Spill</a>
+      <a class="theme-chip" data-spot-name="plum"       href="/tema/monstere/"><span class="theme-chip-dot"></span>Monstere</a>
     </div>
   </section>
 

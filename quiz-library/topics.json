@@ -1,7 +1,91 @@
 {
  "generated": true,
- "total": 402,
+ "total": 409,
  "topics": [
+  {
+   "slug": "kroppen-for-nysgjerrige__lett",
+   "themes": [
+    "Kroppen for nysgjerrige"
+   ],
+   "category": "vitenskap",
+   "category_label": "Naturvitenskap",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1,
+   "gsc_begrunnelse": "anatomi quiz 12 + quiz om kroppen 9 + anatomi quiz med svar 8 + kroppen quiz 6 ~= 42 visn, cluster vokser 29->42"
+  },
+  {
+   "slug": "menneskekroppen-med-svar__medium",
+   "themes": [
+    "Menneskekroppen med svar"
+   ],
+   "category": "vitenskap",
+   "category_label": "Naturvitenskap",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 1,
+   "gsc_begrunnelse": "samme cluster, medium-intensjon"
+  },
+  {
+   "slug": "norges-og-verdens-elver__lett",
+   "themes": [
+    "Norges og verdens elver"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 1,
+   "gsc_begrunnelse": "verdens lengste elv ~35 + norges lengste elv + lengste elv i asia ~= 42 visn"
+  },
+  {
+   "slug": "norges-og-verdens-elver__medium",
+   "themes": [
+    "Norges og verdens elver"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 2,
+   "gsc_begrunnelse": "samme cluster, dypere nivaa"
+  },
+  {
+   "slug": "norsk-geografi-blandet__lett",
+   "themes": [
+    "Norsk geografi blandet"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 2,
+   "gsc_begrunnelse": "geografi quiz verden 14 + norsk geografi quiz 5 + quiz norge rundt 5 ~= 25 visn"
+  },
+  {
+   "slug": "quiz-for-voksne-allmennkunnskap__medium",
+   "themes": [
+    "Quiz for voksne allmennkunnskap"
+   ],
+   "category": "mix",
+   "category_label": "Blandet",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 2,
+   "gsc_begrunnelse": "quiz allmennkunnskap 6 + almennkunnskap quiz 6 + allmennkunnskap quiz 5 + allmennkunnskap sporsmal 4 ~= 30 visn, dagens sider rangerer pos 60-70"
+  },
+  {
+   "slug": "litteratur-norsk-og-internasjonal__medium",
+   "themes": [
+    "Litteratur norsk og internasjonal"
+   ],
+   "category": "litteratur",
+   "category_label": "Litteratur",
+   "difficulty": "medium",
+   "count": 10,
+   "priority": 3,
+   "gsc_begrunnelse": "litteratur quiz med svar 3 + generiske kultursok; kultursegmentet konverterer best (hoy CTR)"
+  },
   {
    "slug": "arsenal-fc-ars-ne-wenger-aeraen__medium",
    "themes": [
