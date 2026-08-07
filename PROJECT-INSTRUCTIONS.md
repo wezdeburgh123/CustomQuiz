@@ -115,6 +115,7 @@ git push
 - Verifiser live-tilstand via JS-probe mot egne `/api`-endepunkter fra customquiz.no.
 
 **Ikke gjør:**
+- **Ikke slutt fra at et felt mangler til at egenskapen mangler — les pipelinen.** Se felle 1 under.
 - Aldri skriv «Almenkunnskap» — det er «Allmennkunnskap» (dobbel l, dobbel n).
 - Aldri legg API-nøkler/hemmeligheter i frontend eller GitHub. **Christian limer alltid hemmeligheter selv** (Claude limer ikke nøkler, oppretter ikke kontoer, skriver ikke passord).
 - Aldri SaaS-stil shadows/gradients/glow.
@@ -127,6 +128,58 @@ git push
 - Brevo: maler MÅ være «Active»; `BREVO_SENDER_EMAIL` settes for å unngå @brevosend.com-rewrite.
 - Supabase nytt UI: bruk `sb_secret_…` som service-role.
 - Stripe-dashbord, checkout.stripe.com og billing.stripe.com er BLOKKERT for nettleser-automatisering — Christian gjør de stegene selv.
+
+---
+
+## 7b. Feller som faktisk har lurt oss
+
+Konkrete feilslutninger som er gjort i dette prosjektet, med hva som var sant.
+Les denne før du konkluderer om drift, data eller SEO. Legg til nye når de skjer.
+
+**1. `daily_quiz` er kopier, ikke ny generering** *(feil gjort 6.8.2026)*
+Feilslutning: «`grounded` mangler på radene → vi vet ikke om dagensquizene er
+faktasjekket» → derav «927 AI-genererte quizer per natt = høy kostnad» og «en
+uforløst innholdsressurs å løfte inn i arkivet». Alt galt.
+Sant: `daily-quiz-generate.js` → `_daily.pickFromLibrary()` plukker en eksisterende
+`quiz_library`-rad og kopierer bare `{title, lede, questions}`. Null API-kall i
+normal drift. Metadata følger ikke med — derfor mangler `grounded`, ikke fordi
+innholdet er ugrunnet. Bevis: 927 rader = 276 unike titler, 269 alt i arkivet.
+**Lærdom: et manglende felt beviser ingenting om egenskapen. Les koden som
+skriver raden.** Detaljer: `DAGENS-GJENBRUK-plan.md` + kommentar i `_daily.js`.
+
+**2. Netlify-redirect gjør ingenting uten `force = true`** *(feil gjort 6.8.2026)*
+Feilslutning: la inn 301 fra `/vm.html` → `/vm` og antok den virket.
+Sant: finnes det en fil på stien, serverer Netlify fila og hopper over
+redirect-regelen. Reglene var helt inerte — `/vm.html` svarte fortsatt 200 etter
+deploy. `force = true` kreves.
+Loop-frykten som holdt oss tilbake var ubegrunnet for disse tre: `/vm`, `/dagens`
+og `/lag-quiz` har ingen egen redirect-regel, så Netlify løser dem til `.html`
+internt uten å kjøre redirect-motoren på nytt. `/arkiv.html` og `/fotball.html`
+er derimot fortsatt utelatt med vilje — de HAR en 200-rewrite, og der er
+loop-risikoen reell. **Lærdom: verifiser redirects live etter deploy, ikke anta.**
+
+**3. Repo-filer lyver om hva som er live**
+`sitemap.xml` i repoet var frosset på 1. juli mens den live var korrekt (Netlify
+regenererer ved build). `library.ndjson` lå på 402 mens databasen hadde 437.
+**Supabase er source of truth.** Spør `/api/library-list?limit=2000`, ikke repoet.
+Kjører du `build-quiz-pages.mjs` lokalt uten DB-nøkler, bygger den en *staler*
+sitemap fra ndjson — ikke commit den (`git checkout -- sitemap.xml`).
+Hente basen ned: `node scripts/dump-library.mjs` (tørrkjøring; `--skriv` for alvor).
+
+**4. Git-låsefiler i den monterte mappa**
+Sandkassen får ikke slettet `.git/*.lock` (EPERM på unlink i FUSE-mounten).
+Symptom som er lett å misforstå: **`git commit` kan feile mens `git push` lykkes** —
+da pushes forrige commit, og du tror alt gikk bra. Tre låser har dukket opp:
+`index.lock`, `HEAD.lock`, `refs/heads/main.lock`. Christian rydder lokalt med
+`rm -f .git/refs/heads/main.lock .git/HEAD.lock .git/index.lock`.
+**Les alltid `git status` etter push i dette repoet.**
+
+**5. Nye kategorier må wires flere steder**
+`dyr`/`spill`/`monstere` lå live fra 19.–23. juni, men manglet visningsnavn i
+`daily-quiz.js` (`CATEGORY_LABEL`) → `/dagens` viste «dyr | dyr» i halvannen
+måned, og forsiden lenket ikke til dem i det hele tatt. Ny kategori krever minst:
+`_library.CATEGORY_TO_IMG`, `daily-quiz.CATEGORY_LABEL`, forside-chip i
+`index.html` + tilhørende `[data-spot-name]`-selector.
 
 ---
 

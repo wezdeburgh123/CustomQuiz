@@ -276,6 +276,16 @@ function pageHtml(q, related = []) {
   // quizen»-klikk på alle 409 quizsider gjennom et unødvendig redirect-hopp —
   // og det er den primære CTA-en på sidene som får all søketrafikken.
   const playUrl = `/lag-quiz?lib=${encodeURIComponent(slug)}`;
+  // Tema til «lag din egen»-invitasjonen. Bruker quizens eget theme framfor
+  // kategorien, fordi «norrøn mytologi» inviterer langt bedre enn «Historie».
+  // Kappes for lengde — noen themes er hele setninger, og de leses dårlig i en
+  // overskrift. Faller tilbake på kategorilabelen hvis themes mangler.
+  const ownTheme = (() => {
+    const t = Array.isArray(q.themes) && q.themes.length ? String(q.themes[0]).trim() : "";
+    const rent = t.split(/\s+[—–-]\s+/)[0].trim(); // «Bergen — byen og historien» -> «Bergen»
+    const valgt = rent && rent.length <= 40 ? rent : (t && t.length <= 40 ? t : "");
+    return valgt || q.category_label || CAT_LABEL[q.category] || "allmennkunnskap";
+  })();
   const catLabel = q.category_label || CAT_LABEL[q.category] || "Allmennkunnskap";
   const diffLabel = DIFF_LABEL[q.difficulty] || "Middels";
   const n = q.questions.length;
@@ -432,6 +442,14 @@ ${faqLd ? `<script type="application/ld+json">${jsonLdSafe(faqLd)}</script>\n` :
   .share-btn{background:transparent;color:var(--teal);border:1.5px solid var(--teal);
     font-family:inherit;font-weight:600;padding:13px 24px;border-radius:12px;font-size:17px;cursor:pointer;}
   .share-btn:hover{background:var(--teal);color:#fff;}
+  /* «Lag din egen om <tema>» — konverterer spiller til skaper. Brukerlagde
+     quizer spilles 5,2 ganger hver mot 1,4 for nattgenererte (målt 6.8.2026). */
+  .make-own{border:1.5px solid var(--line,#e0d9c9);border-radius:16px;padding:24px 26px;margin:44px 0 8px;}
+  .make-own h2{margin:0 0 8px;}
+  .make-own p{margin:0 0 16px;}
+  .make-own-cta{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;
+    font-weight:600;padding:12px 24px;border-radius:12px;}
+  .make-own-cta:hover{filter:brightness(1.08);}
   .answer{background:var(--bg-soft);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px;padding:18px 22px;margin:0 0 32px;}
   .answer .answer-q{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:20px;line-height:1.25;margin:0 0 8px;}
   .answer p{margin:0;color:var(--ink);}
@@ -531,6 +549,13 @@ ${questionsHtml}
     });
   })();
   </script>
+
+  <aside class="make-own">
+    <h2>Lag din egen om ${esc(ownTheme)}</h2>
+    <p>Skriv inn ditt eget vri på temaet — om hjembyen din, jobben, vennegjengen eller
+       akkurat det du kan best — så lager CustomQuiz quizen på sekunder. Gratis.</p>
+    <a class="make-own-cta" href="/lag-quiz?tema=${encodeURIComponent(ownTheme)}">Lag quiz om ${esc(ownTheme)} →</a>
+  </aside>
 
   ${related.length ? `<nav class="related" aria-label="Relaterte quizer">
     <h2>Relaterte quizer</h2>
@@ -797,6 +822,10 @@ function fromNdjson() {
       category: d.category || "mix",
       category_label: d.category_label || null,
       team: d.team || null,
+      // themes MÅ være med — «Lag din egen om <tema>» bruker den for å invitere
+      // med quizens faktiske emne («norrøn mytologi») i stedet for kategorien
+      // («Historie»), som er langt svakere som invitasjon.
+      themes,
       hero_img: d.hero_img || null,
     });
   }

@@ -3136,9 +3136,40 @@ document.head.appendChild(m);}}catch(e){}})();
     }
   }
 
+  /* --------------- PREFILL AV TEMA (?tema=) ---------------
+     Brukes av «Lag din egen quiz om <tema>»-lenken på /quiz/<slug>/-sidene.
+     Poenget: gjøre en passiv spiller til en skaper. Brukerlagde quizer spilles
+     5,2 ganger hver mot 1,4 for de nattgenererte (målt 6.8.2026), så det er den
+     desidert mest verdifulle handlingen vi kan invitere til.
+
+     Kjøres bare når vi IKKE allerede spiller noe: ?lib, ?quiz og ?event tar
+     forrang, ellers ville prefillen skrevet i et skjema som er skjult bak
+     quiz-skjermen. Skriver til fritekstfeltet (ikke chips), fordi temaet fra en
+     arkivquiz sjelden matcher en chip ordrett. */
+  function prefillThemeFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('lib') || params.has('quiz') || params.has('event')) return;
+    const tema = (params.get('tema') || '').trim();
+    if (!tema) return;
+    // Tak på lengde så en manipulert lenke ikke fyller feltet med søppel.
+    const rent = tema.slice(0, 80);
+    const input = document.getElementById('custom-theme');
+    if (!input) return;
+    input.value = rent;
+    state.customTheme = rent;
+    updateThemeCounter();
+    // Gi et synlig hint om at feltet er forhåndsutfylt for deg.
+    requestAnimationFrame(() => {
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      input.focus({ preventScroll: true });
+      input.setSelectionRange(rent.length, rent.length);
+    });
+  }
+
   renderStats();
   updateThemeCounter();
   loadLibraryQuizFromUrl();
+  prefillThemeFromUrl();
   // Vis sticky generer-bar dersom hjem-skjermen er aktiv ved innlasting
   // (deep-link til en quiz lar showScreen styre synligheten videre).
   (function () {

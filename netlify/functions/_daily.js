@@ -38,6 +38,25 @@ function dayNumber(dateStr) {
 }
 
 // ── Utgaver (én rad per (dato, kategori)) ─────────────────────────────
+// ⚠️ LES DETTE FØR DU KONKLUDERER OM `daily_quiz`.
+// Radene i daily_quiz er KOPIER av quizer som allerede ligger i quiz_library —
+// ikke nytt, AI-generert innhold. `pickFromLibrary()` under velger en eksisterende
+// arkivquiz (deterministisk rotert på dato) og lagrer bare {title, lede, questions}.
+//
+// Konsekvensen som har lurt folk (7.8.2026): kopien tar IKKE med metadata som
+// `grounded`, `difficulty`, `slug` eller `review_status`. At `grounded` mangler på
+// en daily_quiz-rad betyr altså IKKE at quizen er ugrunnet — kildequizen er
+// websøk-grunnet av nattskiftet, og pickFromLibrary filtrerer dessuten på
+// `published = true` og `review_status = 'auto_ok'`.
+//
+// Målt 6.8.2026: 927 rader = bare 276 unike titler, hvorav 269 finnes i
+// quiz_library. De ~7 avvikene er fallback-genererte fra slutten av mai, da
+// arkivet var tomt (se `ensureFallback()` i daily-quiz-generate.js — eneste sted
+// det brukes API-kall, og bare når en dato ender med null utgaver).
+//
+// Kort sagt: /dagens koster ingenting i modellbruk, og inneholder ingen skjult
+// innholdsressurs å «hente ut» — alt er allerede publisert som /quiz/<slug>/.
+// Full utredning: DAGENS-GJENBRUK-plan.md.
 async function getEditions(dateStr) {
   const { data, error } = await anonClient()
     .from("daily_quiz")
