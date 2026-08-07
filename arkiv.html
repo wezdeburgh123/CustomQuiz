@@ -1347,7 +1347,7 @@
     <div class="load-more-row">
       <button class="load-more-btn" id="load-more" type="button" hidden>Vis flere</button>
     </div>
-    <div class="empty-state" id="empty-state" style="display:none;">Fant ingenting på det søket. Prøv et bredere ord — eller <a href="lag-quiz.html">lag quizen selv →</a></div>
+    <div class="empty-state" id="empty-state" style="display:none;">Fant ingenting på det søket. Prøv et bredere ord — eller <a href="/lag-quiz">lag quizen selv →</a></div>
   </div>
 
   <!-- Bekreftelse når en delelenke er kopiert. -->
@@ -2134,7 +2134,7 @@
     if (comList) {
       comList.innerHTML = com.length
         ? com.map(q => `<a class="lead-item" href="${q.url}"><span class="rk">›</span><span class="nm">${stripEm(q.title)}</span><span class="ago">${relAgo(q.date)}</span></a>`).join('')
-        : '<div class="lead-sub">Ingen ennå — <a href="/lag-quiz.html" style="color:var(--spot-moss)">lag den første</a>.</div>';
+        : '<div class="lead-sub">Ingen ennå — <a href="/lag-quiz" style="color:var(--spot-moss)">lag den første</a>.</div>';
     }
 
     // Meta-linje
@@ -2210,7 +2210,7 @@
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: q.date || '2026-05-28',
-            url: 'lag-quiz.html?quiz=' + encodeURIComponent(q.id),
+            url: '/lag-quiz?quiz=' + encodeURIComponent(q.id),
             free: !!q.free,      // gratis-biblioteket (free:true i quizzes-data.json)
             locked: !q.free,     // alt annet er premium-gated
             source: 'curated',   // statisk gratis-bibliotek = kuratert
@@ -2239,7 +2239,7 @@
             rating: typeof q.rating === 'number' ? q.rating : 4.5,
             plays: typeof q.plays === 'number' ? q.plays : 0,
             date: (q.created_at || '').slice(0, 10) || '2026-06-01',
-            url: 'lag-quiz.html?lib=' + encodeURIComponent(q.slug),
+            url: '/lag-quiz?lib=' + encodeURIComponent(q.slug),
             // Fellesskaps-quizer (source='user') er åpne for alle — aldri premium-
             // gatet og aldri skjult av «kun gratis». Driver organisk vekst (BASEN-spec).
             free: q.source === 'user' ? false : !!q.free,

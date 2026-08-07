@@ -15,8 +15,11 @@
   var host = document.getElementById("cq-masthead");
   if (!host) return;
 
-  var path = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-  function active(file) { return path === file ? " is-active" : ""; }
+  // Normaliser bort .html: fra 6.8.26 er /vm.html, /dagens.html og /lag-quiz.html
+  // 301-er til rene URL-er, så pathname er «lag-quiz», ikke «lag-quiz.html».
+  // Uten strippingen ble ingen menylenke markert aktiv på de rene URL-ene.
+  var path = (location.pathname.split("/").pop() || "index.html").toLowerCase().replace(/\.html$/, "");
+  function active(file) { return path === file.replace(/\.html$/, "") ? " is-active" : ""; }
 
   host.className = "masthead";
   host.innerHTML =
@@ -31,7 +34,7 @@
       '<span class="masthead-sep">·</span>' +
       '<a href="dagens.html" class="masthead-link' + active("dagens.html") + '">Dagens quiz</a>' +
       '<span class="masthead-sep">·</span>' +
-      '<a href="lag-quiz.html" class="masthead-link' + active("lag-quiz.html") + '">Generator</a>' +
+      '<a href="/lag-quiz" class="masthead-link' + active("lag-quiz.html") + '">Generator</a>' +
     "</nav>";
 
   if (document.getElementById("cq-nav-style")) return;

@@ -268,7 +268,7 @@
         plays: typeof q.plays === 'number' ? q.plays : 0,
         date: (q.created_at || q.date || '').slice(0, 10),
         img: q.hero_img || CATEGORY_TO_IMG_FB,
-        url: fromLib ? ('lag-quiz.html?lib=' + encodeURIComponent(q.slug)) : ('lag-quiz.html?quiz=' + encodeURIComponent(q.id))
+        url: fromLib ? ('/lag-quiz?lib=' + encodeURIComponent(q.slug)) : ('/lag-quiz?quiz=' + encodeURIComponent(q.id))
       });
     });
   }
