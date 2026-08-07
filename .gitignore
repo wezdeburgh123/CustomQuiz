@@ -36,6 +36,10 @@ __pycache__/
 *.bak
 *.bak-*
 quiz-library/*.bak-*
+# .ny = utkast-før-innbytte. Konvensjonen brukes av scripts/dump-library.mjs
+# (library.ndjson.ny) og av kø-påfyll (topics.json.ny). Lagt til 7.8.26 etter at
+# quiz-library/topics.json.ny ved et uhell ble committet i 7b65d46.
+*.ny
 AI-kompetanse-analyse — kjor per prosjekt.md
 VM-runde-utkast-2026-06-15.md
 VM-runde-utkast-gruppespill-1-15juni.md
