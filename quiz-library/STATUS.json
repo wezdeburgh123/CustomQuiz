@@ -1,11 +1,12 @@
 {
-  "nights_run": 11,
-  "total_generated": 394,
-  "last_run": "2026-08-06T15:47:46+00:00",
-  "last_batch": 7,
+  "nights_run": 12,
+  "total_generated": 405,
+  "last_run": "2026-08-07T00:22:48+00:00",
+  "last_batch": 11,
   "skipped": [],
   "queue_complete": true,
-  "note": "6. august 2026 (nattskift 11): genererte alle 7 emnene i den gjenapnede GSC-koen (kroppen lett+medium, elver lett+medium, norsk geografi lett, allmennkunnskap medium, litteratur medium). Koen i topics.json er na tom igjen: 409 emner, 409 linjer i library.ndjson. Ikke pushet - Christian pusher selv.",
-  "queue_note": "0 emner igjen i topics.json per 6.8.26 etter nattskiftet.",
+  "queue_paafyll_7aug": "11 nye emner lagt FORAN i køen 7.8.26 (409 -> 420), valgt ut fra hva som MÅLBART presterer, ikke magefølelse: (1) norrøn mytologi medium+vanskelig — 'norron mytologi quiz' har 3 klikk/11 visn = høyeste CTR i hele GSC, men bare __lett fantes. (2) SEKS norske byquizer (Bergen, Trondheim, Stavanger, Tromsø, Kristiansand, Ålesund) — det fantes NULL byquizer, samtidig som lokalquiz er den mest spilte typen (Tromsø trivia, Brønnøysund lokalhistorie; user-source 5,2 plays/quiz mot 1,4 for nattlig). Disse er også kjernen i Facebook-gruppe-planen, se SYNLIGHET-plan-2026-08-07.md. (3) Zelda + Pokémon-figurer medium — spill konverterer ('pokemon quiz norsk' 3 klikk/10 visn) men begge fantes bare i __lett. (4) Norske forfattere — kultursegmentet har høyest CTR (Ibsen 3 klikk/11 visn) men samlende inngang manglet. Hvert emne har gsc_begrunnelse med tallene.",
+  "note": "7. august 2026 (nattskift 12): genererte alle 11 emnene i paafyllskoen fra 7.8 — norron mytologi medium+vanskelig, seks norske byquizer (Bergen, Trondheim, Stavanger, Tromso, Kristiansand, Alesund), Zelda medium, Pokemon-figurer medium og norske forfattere medium. Alle grunnet med websok mot SNL/Wikipedia/offisielle kilder. Koen i topics.json er na tom igjen. Ikke pushet - Christian pusher selv.",
+  "queue_note": "0 emner igjen i topics.json per 7.8.26 etter nattskift 12.",
   "advarsel_teller": "total_generated (387) og nights_run gjelder nattskiftets egne kjøringer og sier ikke hva som er live. Målt 6.8.26: quiz_library i Supabase har 437 rader mens library.ndjson har 402 linjer. DB er source of truth — se quiz-library/README.md og scripts/dump-library.mjs."
 }

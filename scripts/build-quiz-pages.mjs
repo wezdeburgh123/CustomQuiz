@@ -271,7 +271,11 @@ function relatedFor(q, byCat, max = 6) {
 
 function pageHtml(q, related = []) {
   const slug = q.slug;
-  const playUrl = `/lag-quiz.html?lib=${encodeURIComponent(slug)}`;
+  // Ren URL, ikke /lag-quiz.html. Fra 6.8.26 er /lag-quiz.html en 301 til
+  // /lag-quiz (force = true), så .html-varianten sendte hver eneste «Spill
+  // quizen»-klikk på alle 409 quizsider gjennom et unødvendig redirect-hopp —
+  // og det er den primære CTA-en på sidene som får all søketrafikken.
+  const playUrl = `/lag-quiz?lib=${encodeURIComponent(slug)}`;
   const catLabel = q.category_label || CAT_LABEL[q.category] || "Allmennkunnskap";
   const diffLabel = DIFF_LABEL[q.difficulty] || "Middels";
   const n = q.questions.length;
@@ -419,8 +423,15 @@ ${faqLd ? `<script type="application/ld+json">${jsonLdSafe(faqLd)}</script>\n` :
   .lede{font-size:18px;color:var(--muted);margin:0 0 20px;}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
   .tag{background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--muted);}
-  .cta{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:12px;font-size:17px;margin-bottom:40px;}
+  .cta{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:12px;font-size:17px;}
   .cta:hover{filter:brightness(1.08);}
+  /* Deling lå tidligere på tema- og lag-hubbene, men IKKE på quizsidene — altså
+     ikke der søketrafikken faktisk lander (målt 7.8.26: 0 av 409 sider hadde
+     del-knapp). Det er quizen folk vil dele, ikke kategorisiden. */
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:40px;}
+  .share-btn{background:transparent;color:var(--teal);border:1.5px solid var(--teal);
+    font-family:inherit;font-weight:600;padding:13px 24px;border-radius:12px;font-size:17px;cursor:pointer;}
+  .share-btn:hover{background:var(--teal);color:#fff;}
   .answer{background:var(--bg-soft);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px;padding:18px 22px;margin:0 0 32px;}
   .answer .answer-q{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:20px;line-height:1.25;margin:0 0 8px;}
   .answer p{margin:0;color:var(--ink);}
@@ -459,7 +470,12 @@ ${faqLd ? `<script type="application/ld+json">${jsonLdSafe(faqLd)}</script>\n` :
     <span class="tag">${n} spørsmål</span>
   </div>
 ${answerHtml}${crossHtml}
-  <a class="cta" href="${esc(playUrl)}">▶ Spill quizen</a>
+  <div class="cta-row">
+    <a class="cta" href="${esc(playUrl)}">▶ Spill quizen</a>
+    <button class="share-btn" type="button" id="share-quiz"
+            data-title="${esc(q.title || "Quiz")}"
+            data-url="${esc(`${SITE}/quiz/${encodeURI(slug)}/`)}">Del quizen</button>
+  </div>
 
   <h2>Spørsmålene i denne quizen</h2>
   <ol class="qs">
@@ -471,6 +487,27 @@ ${questionsHtml}
     <ol id="fasit-list" class="fasit-list" hidden></ol>
   </div>
   <script>
+  /* Deling av quizen. Native delingsark der det finnes (mobil — der folk faktisk
+     deler), utklippstavle som fallback på desktop. Deler den KANONISKE
+     /quiz/<slug>/-URL-en, ikke ?lib=-varianten, så delte lenker peker på siden
+     som er indeksert — og og-quiz-edge-funksjonen gir uansett riktig preview. */
+  (function(){
+    var b=document.getElementById('share-quiz');
+    if(!b)return;
+    b.addEventListener('click',async function(){
+      var url=b.getAttribute('data-url'),tittel=b.getAttribute('data-title');
+      var tekst='Klarer du denne? «'+tittel+'» på CustomQuiz';
+      if(navigator.share){
+        try{ await navigator.share({title:tittel,text:tekst,url:url}); return; }
+        catch(e){ if(e && e.name==='AbortError') return; /* ellers: fall til kopiering */ }
+      }
+      try{
+        await navigator.clipboard.writeText(tekst+'\\n'+url);
+        var org=b.textContent; b.textContent='Lenke kopiert ✓';
+        setTimeout(function(){ b.textContent=org; },1800);
+      }catch(e){ window.prompt('Kopier lenken:',url); }
+    });
+  })();
   (function(){
     var SLUG=${JSON.stringify(slug)};
     var btn=document.getElementById('show-fasit'),list=document.getElementById('fasit-list'),loaded=false;

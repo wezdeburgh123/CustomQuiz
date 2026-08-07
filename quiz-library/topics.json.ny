@@ -12,7 +12,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "norron mytologi quiz: 3 klikk/11 visn = hoyeste CTR i hele GSC, men bare __lett fantes"
+   "gsc_begrunnelse": "norron mytologi quiz: 3 klikk/11 visn = beste CTR i hele GSC, men bare __lett finnes"
   },
   {
    "slug": "norron-mytologi__vanskelig",
@@ -24,7 +24,7 @@
    "difficulty": "vanskelig",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "samme klynge, toppnivaa"
+   "gsc_begrunnelse": "samme klynge, toppnivaa for de ivrige"
   },
   {
    "slug": "bergen-byen-og-historien__medium",
@@ -36,7 +36,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "ingen Bergen-quiz fantes. Lokalquiz topper plays-lista (Tromso trivia, Bronnoysund) og er delbar i lokale FB-grupper"
+   "gsc_begrunnelse": "ingen Bergen-quiz finnes. Lokalquiz er den mest spilte typen (Tromso/Bronnoysund topper plays-lista) og er delbar i lokale FB-grupper"
   },
   {
    "slug": "trondheim-byen-og-historien__medium",
@@ -48,7 +48,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "ingen Trondheim-quiz fantes. Lokalquiz topper plays-lista (Tromso trivia, Bronnoysund) og er delbar i lokale FB-grupper"
+   "gsc_begrunnelse": "ingen Trondheim-quiz finnes. Lokalquiz er den mest spilte typen (Tromso/Bronnoysund topper plays-lista) og er delbar i lokale FB-grupper"
   },
   {
    "slug": "stavanger-byen-og-historien__medium",
@@ -60,7 +60,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "ingen Stavanger-quiz fantes. Lokalquiz topper plays-lista (Tromso trivia, Bronnoysund) og er delbar i lokale FB-grupper"
+   "gsc_begrunnelse": "ingen Stavanger-quiz finnes. Lokalquiz er den mest spilte typen (Tromso/Bronnoysund topper plays-lista) og er delbar i lokale FB-grupper"
   },
   {
    "slug": "tromso-byen-og-historien__medium",
@@ -72,7 +72,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "ingen Tromsø-quiz fantes. Lokalquiz topper plays-lista (Tromso trivia, Bronnoysund) og er delbar i lokale FB-grupper"
+   "gsc_begrunnelse": "ingen Tromsø-quiz finnes. Lokalquiz er den mest spilte typen (Tromso/Bronnoysund topper plays-lista) og er delbar i lokale FB-grupper"
   },
   {
    "slug": "kristiansand-byen-og-historien__medium",
@@ -84,7 +84,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "ingen Kristiansand-quiz fantes. Lokalquiz topper plays-lista (Tromso trivia, Bronnoysund) og er delbar i lokale FB-grupper"
+   "gsc_begrunnelse": "ingen Kristiansand-quiz finnes. Lokalquiz er den mest spilte typen (Tromso/Bronnoysund topper plays-lista) og er delbar i lokale FB-grupper"
   },
   {
    "slug": "alesund-byen-og-historien__medium",
@@ -96,7 +96,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 1,
-   "gsc_begrunnelse": "ingen Ålesund-quiz fantes. Lokalquiz topper plays-lista (Tromso trivia, Bronnoysund) og er delbar i lokale FB-grupper"
+   "gsc_begrunnelse": "ingen Ålesund-quiz finnes. Lokalquiz er den mest spilte typen (Tromso/Bronnoysund topper plays-lista) og er delbar i lokale FB-grupper"
   },
   {
    "slug": "the-legend-of-zelda__medium",
@@ -108,10 +108,10 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 2,
-   "gsc_begrunnelse": "spill konverterer hoyt (pokemon quiz norsk 3 klikk/10 visn); bare __lett fantes"
+   "gsc_begrunnelse": "pokemon quiz norsk 3 klikk/10 visn viser at spill konverterer; Zelda finnes bare i __lett"
   },
   {
-   "slug": "pokemon-figurer-og-typer__medium",
+   "slug": "pok-mon-figurer-og-typer__medium",
    "themes": [
     "Pokémon-figurer og typer"
    ],
@@ -120,7 +120,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 2,
-   "gsc_begrunnelse": "samme; bare __lett fantes"
+   "gsc_begrunnelse": "samme: bare __lett finnes"
   },
   {
    "slug": "norske-forfattere-gjennom-tidene__medium",
@@ -132,7 +132,7 @@
    "difficulty": "medium",
    "count": 10,
    "priority": 2,
-   "gsc_begrunnelse": "forfattersidene (Ibsen 3 klikk/11 visn, Hamsun, Undset) viser hoy CTR, men samlende inngang manglet"
+   "gsc_begrunnelse": "samlende inngang mangler; forfattersidene (Ibsen 3 klikk/11, Hamsun, Undset) beviser at kultursegmentet har hoy CTR"
   },
   {
    "slug": "kroppen-for-nysgjerrige__lett",
