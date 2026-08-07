@@ -790,7 +790,12 @@ async function fromSupabase() {
   for (let from = 0; ; from += PAGE) {
     const { data, error } = await db
       .from("quiz_library")
-      .select("slug, title, lede, questions, difficulty, category, category_label, team, hero_img")
+      // NB: `themes` MÅ være med. Prod bygger fra Supabase (denne veien), mens et
+      // lokalt bygg uten DB-nøkler faller tilbake på library.ndjson — så en kolonne
+      // som mangler HER, men finnes i ndjson-normaliseringen, gir en feil du ikke
+      // ser lokalt. Det skjedde 7.8.26: «Lag din egen om <tema>» viste riktig
+      // «Bergen» lokalt, men «Geografi» i prod.
+      .select("slug, title, lede, questions, difficulty, category, category_label, team, themes, hero_img")
       .eq("published", true)
       .eq("review_status", "auto_ok")
       .range(from, from + PAGE - 1);
