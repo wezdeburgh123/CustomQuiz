@@ -125,11 +125,19 @@ const DIFF_LABEL = { lett: "Lett", medium: "Middels", vanskelig: "Vanskelig" };
 //   norges-fylker-og-byer__lett: 45 visn. / 0 klikk / pos ~36 på «norge(s) fylker
 //   quiz» (14+7) + «byer i norge quiz» (6). Ny tittel setter «fylker og byer» +
 //   «quiz med svar» først.
+//   verdens-hovedsteder__vanskelig: 9 visn. / pos ~25 (28 d, 10/8 2026) — nesten
+//   usynlig, selv om klyngen har en egen «vanskelig»-intensjon på 26 visn.
+//   («hovedsteder quiz vanskelig» 20 + «vanskelige hovedsteder» 6) som INGEN side
+//   matcher i tittel. Gammel tittel («for den belesne globetrotteren») inneholdt
+//   verken «vanskelig» eller «quiz». Skiller seg bevisst fra __lett-tittelen
+//   over, så de to ikke konkurrerer om samme frase.
 const SEO_TITLE_OVERRIDE = {
   "norge-i-fotball-vm-gjennom-historien__medium":
     "Hvor langt kom Norge i VM 1994? Quiz + fasit",
   "verdens-hovedsteder__lett":
     "Hovedsteder i verden — quiz med svar",
+  "verdens-hovedsteder__vanskelig":
+    "Hovedsteder quiz vanskelig — verden, med svar",
   "norges-fylker-og-byer__lett":
     "Norges fylker og byer — quiz med svar",
 };
@@ -144,9 +152,15 @@ const SEO_TITLE_OVERRIDE = {
 //   mest fra FØR tittel-overriden 25/7). Gammel beskrivelse åpnet generisk
 //   («Hvor langt kom Norge i VM?»); ny speiler 1994-frasen ordrett og lover
 //   svar + fasit, i par med tittelen over.
+//   verdens-hovedsteder__vanskelig: i par med tittelen over. Gammel lede («De
+//   klassiske fellene: ikke den største byen, men hovedstaden.») er kort og
+//   nevner ikke at det er en vanskelig quiz med svar. Ny beskrivelse beholder
+//   samme premiss (den er dekkende for quizens innhold) og legger til nivå + svar.
 const SEO_META_OVERRIDE = {
   "norge-i-fotball-vm-gjennom-historien__medium":
     "Hvor langt kom Norge i VM 1994 — og hva skjedde i 1938 og 1998? Se svaret og test deg med 10 spørsmål om Norges VM-historie. Gratis quiz med fasit.",
+  "verdens-hovedsteder__vanskelig":
+    "Den klassiske fella: hovedstaden er ikke alltid største by. 10 vanskelige spørsmål om verdens hovedsteder — gratis quiz med svar og forklaring.",
 };
 
 // Direkte SVAR-utdrag (SERP-CTR + featured snippet / «Andre spør om»): sider som
@@ -181,9 +195,30 @@ const ANSWER_SNIPPET = {
 //   kom norge i vm 1994») og den dedikerte 1994-siden (pos ~7, faa visn.)
 //   konkurrerer om samme frase. Toveis lenke signaliserer at de hoerer sammen og
 //   lar autoritet fra den store siden loefte den dedikerte.
+//   hovedsteder-klyngen (10/8 2026): 12 hovedsteder-sider konkurrerer om de SAMME
+//   generiske søkene («hovedstad quiz» 27, «quiz hovedsteder» 18, «hovedsteder
+//   quiz med svar» 16, «hovedsteder i verden quiz» 64 …) = klassisk
+//   kannibalisering. Klyngen har 194 visn. men snittposisjon 24,7 — ingen enkelt
+//   side er sterk nok til side 1. Tittelgrep alene løser ikke pos 25; signalet må
+//   SAMLES. Vi utpeker to mål: verdens-hovedsteder__lett for den generiske
+//   «med svar»-intensjonen, og __vanskelig for «vanskelig»-intensjonen. De
+//   regionale sidene (Europa/Afrika/Asia/Sør-Amerika) peker INN i navet i stedet
+//   for å slåss mot det. Toveis, så de regionale sidene ikke mister lenkeverdi.
 const RELATED_PIN = {
   "norge-i-fotball-vm-gjennom-historien__medium": ["norge-i-vm-1994__lett"],
   "norge-i-vm-1994__lett": ["norge-i-fotball-vm-gjennom-historien__medium"],
+  // Hovedsteder-navet ← regionale sider (toveis)
+  "verdens-hovedsteder__lett": [
+    "europas-hovedsteder__lett",
+    "afrikas-hovedsteder__lett",
+    "asias-land-og-hovedsteder__lett",
+  ],
+  "europas-hovedsteder__lett": ["verdens-hovedsteder__lett"],
+  "europas-hovedsteder__medium": ["verdens-hovedsteder__lett"],
+  "europas-hovedsteder__vanskelig": ["verdens-hovedsteder__vanskelig"],
+  "afrikas-hovedsteder__lett": ["verdens-hovedsteder__lett"],
+  "asias-land-og-hovedsteder__lett": ["verdens-hovedsteder__lett"],
+  "sor-amerikas-land-og-hovedsteder__lett": ["verdens-hovedsteder__lett"],
 };
 
 // Kontekstuell kryss-lenke (intern lenking med soekeordrik ankertekst) rett under
@@ -199,6 +234,44 @@ const CROSS_LINK = {
     slug: "norge-i-fotball-vm-gjennom-historien__medium",
     before: "Vil du se hele bildet? Ta den brede quizen ",
     anchor: "Norge i fotball-VM gjennom historien",
+  },
+  // Hovedsteder-klyngen (se RELATED_PIN): brødtekst-lenke med søkeordrik
+  // ankertekst fra de regionale sidene inn i navet. Ankerteksten speiler
+  // søkefrasen klyngen faktisk rangerer for, ikke sidens eget temanavn.
+  "verdens-hovedsteder__lett": {
+    slug: "verdens-hovedsteder__vanskelig",
+    before: "Var dette for enkelt? Prøv ",
+    anchor: "hovedsteder quiz vanskelig — verdens verste feller",
+  },
+  "europas-hovedsteder__lett": {
+    slug: "verdens-hovedsteder__lett",
+    before: "Vil du utenfor Europa? Ta den store ",
+    anchor: "quizen om hovedsteder i verden — med svar",
+  },
+  "europas-hovedsteder__medium": {
+    slug: "verdens-hovedsteder__lett",
+    before: "Klar for hele kloden? Ta ",
+    anchor: "quizen om hovedsteder i verden — med svar",
+  },
+  "europas-hovedsteder__vanskelig": {
+    slug: "verdens-hovedsteder__vanskelig",
+    before: "Vil du ha de vanskeligste fra hele verden? Ta ",
+    anchor: "hovedsteder quiz vanskelig",
+  },
+  "afrikas-hovedsteder__lett": {
+    slug: "verdens-hovedsteder__lett",
+    before: "Vil du teste deg på hele kloden? Ta ",
+    anchor: "quizen om hovedsteder i verden — med svar",
+  },
+  "asias-land-og-hovedsteder__lett": {
+    slug: "verdens-hovedsteder__lett",
+    before: "Vil du utenfor Asia? Ta ",
+    anchor: "quizen om hovedsteder i verden — med svar",
+  },
+  "sor-amerikas-land-og-hovedsteder__lett": {
+    slug: "verdens-hovedsteder__lett",
+    before: "Vil du ha alle verdensdeler? Ta ",
+    anchor: "quizen om hovedsteder i verden — med svar",
   },
 };
 
