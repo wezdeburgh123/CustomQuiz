@@ -1,6 +1,6 @@
 {
  "generated": true,
- "total": 420,
+ "total": 421,
  "topics": [
   {
    "slug": "norron-mytologi__medium",
@@ -4715,6 +4715,17 @@
    "category": "geografi",
    "category_label": "Geografi",
    "difficulty": "medium",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "byer-i-norge-rebus__lett",
+   "themes": [
+    "Byer i Norge — rebus"
+   ],
+   "category": "geografi",
+   "category_label": "Geografi",
+   "difficulty": "lett",
    "count": 10,
    "priority": 15
   }
