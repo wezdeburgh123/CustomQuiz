@@ -1,6 +1,6 @@
 {
  "generated": true,
- "total": 421,
+ "total": 423,
  "topics": [
   {
    "slug": "norron-mytologi__medium",
@@ -4725,6 +4725,28 @@
    ],
    "category": "geografi",
    "category_label": "Geografi",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "gresk-mytologi-guder-og-helter__vanskelig",
+   "themes": [
+    "Gresk mytologi — guder og helter"
+   ],
+   "category": "verdenshistorie",
+   "category_label": "Verdenshistorie",
+   "difficulty": "vanskelig",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "fysikk-krefter-og-energi__lett",
+   "themes": [
+    "Fysikk — krefter og energi"
+   ],
+   "category": "vitenskap",
+   "category_label": "Vitenskap",
    "difficulty": "lett",
    "count": 10,
    "priority": 15
