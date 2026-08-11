@@ -1,6 +1,6 @@
 {
  "generated": true,
- "total": 423,
+ "total": 425,
  "topics": [
   {
    "slug": "norron-mytologi__medium",
@@ -4744,6 +4744,28 @@
    "slug": "fysikk-krefter-og-energi__lett",
    "themes": [
     "Fysikk — krefter og energi"
+   ],
+   "category": "vitenskap",
+   "category_label": "Vitenskap",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "vaer-og-klima__lett",
+   "themes": [
+    "Vær og klima"
+   ],
+   "category": "vitenskap",
+   "category_label": "Vitenskap",
+   "difficulty": "lett",
+   "count": 10,
+   "priority": 15
+  },
+  {
+   "slug": "geologi-jordas-oppbygning__lett",
+   "themes": [
+    "Geologi — jordas oppbygning"
    ],
    "category": "vitenskap",
    "category_label": "Vitenskap",
