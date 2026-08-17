@@ -12,9 +12,20 @@
      server-side + én fra JS) gjør at Google ignorerer begge.
    - ?quiz / ?event: ingen kanonisk /quiz/-motpart → noindex,follow. Denne
      må fortsatt settes av JS, siden edge-funksjonen bare trigger på ?lib.
+   - ?tema=<navn>: LAGT TIL 17.8.26. Hver av de 420 /quiz/<slug>/-sidene lenker
+     til /lag-quiz?tema=<temanavn> («Lag quiz om X →»), og Google hadde 17.8
+     oppdaget 48 slike URLer (crawlet 8.–15.8, altså etter canonical-fiksen).
+     De er bare forhåndsutfylt generator — samme side, ulikt input — og endte
+     som «Duplicate without user-selected canonical» (validering FEILET 8.8.26;
+     bøtta vokste 138 → 195 nettopp fordi ?tema=-URLene kom inn i den, mens de
+     gamle ?lib=-oppføringene ennå ikke var recrawlet). Edge-funksjonen trigger bare på
+     ?lib, så vi bruker samme JS-noindex-mekanisme som for ?quiz/?event —
+     den er bevist virksom (58 sider ligger korrekt som «Excluded by noindex»).
+     Lenkene i build-quiz-pages.mjs har i tillegg fått rel="nofollow" så nye
+     ?tema=-URLer ikke oppdages.
    Kjøres først i <head> så taggen finnes før Google rendrer. */
 (function(){try{var p=new URLSearchParams(location.search);
-if(!p.has('lib')&&(p.has('quiz')||p.has('event'))){
+if(!p.has('lib')&&(p.has('quiz')||p.has('event')||p.has('tema'))){
 var m=document.createElement('meta');m.name='robots';m.content='noindex,follow';
 document.head.appendChild(m);}}catch(e){}})();
 </script>

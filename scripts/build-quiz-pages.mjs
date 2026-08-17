@@ -627,7 +627,12 @@ ${questionsHtml}
     <h2>Lag din egen om ${esc(ownTheme)}</h2>
     <p>Skriv inn ditt eget vri på temaet — om hjembyen din, jobben, vennegjengen eller
        akkurat det du kan best — så lager CustomQuiz quizen på sekunder. Gratis.</p>
-    <a class="make-own-cta" href="/lag-quiz?tema=${encodeURIComponent(ownTheme)}">Lag quiz om ${esc(ownTheme)} →</a>
+    <!-- rel="nofollow" (17.8.26): denne lenken finnes på alle 420 quizsider med
+         unik ?tema=-verdi, og var kilden til 195 «Duplicate without user-selected
+         canonical» i GSC (validering feilet 8.8.26). ?tema= er forhåndsutfylt
+         generator, ikke egen side. lag-quiz.html setter i tillegg noindex,follow
+         på ?tema=. Ikke fjern nofollow uten å håndtere duplikatene på annen måte. -->
+    <a class="make-own-cta" rel="nofollow" href="/lag-quiz?tema=${encodeURIComponent(ownTheme)}">Lag quiz om ${esc(ownTheme)} →</a>
   </aside>
 
   ${related.length ? `<nav class="related" aria-label="Relaterte quizer">
