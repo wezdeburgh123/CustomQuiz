@@ -104,6 +104,82 @@
   .mod-actions { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
   .mod-actions .btn { padding:9px 18px; }
 
+  /* ── Trafikk (page_views) ──────────────────────────────────────────────
+     Lys modus bevisst: hele admin-siden er color-scheme:light, saa grafen
+     foelger den og har ingen egen mork variant. Alle marker bruker EN farge
+     (--accent) fordi baade dagsgrafen og kildelista maaler EN stoerrelse -
+     kategorifarger her ville kodet identitet som ikke finnes. */
+  .section-rule { border-top:1px solid var(--rule-strong); margin:56px 0 32px; }
+  h2 { font-family:var(--font-display); font-size:28px; font-weight:500; line-height:1.15; margin-bottom:8px; }
+  h2 em { font-style:italic; color:var(--accent); }
+  h3 { font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute); font-weight:400; margin:28px 0 12px; }
+
+  .range { display:flex; gap:6px; }
+  .range button {
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; cursor:pointer;
+    background:none; border:1px solid var(--rule-strong); border-radius:var(--r-pill);
+    padding:7px 14px; color:var(--ink-soft);
+  }
+  .range button:hover { color:var(--accent); border-color:var(--accent); }
+  .range button[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:var(--bg-soft); }
+
+  .tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:8px; }
+  .tile { background:var(--bg-soft); border:1px solid var(--rule); border-radius:var(--r-card); padding:16px 18px; }
+  .tile-label { font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); }
+  .tile-value { font-family:var(--font-display); font-size:34px; font-weight:500; line-height:1.1; margin-top:6px; }
+  .tile-note { font-family:var(--font-mono); font-size:11px; color:var(--ink-mute); margin-top:2px; }
+
+  /* Dagsgraf: soyler ankret til grunnlinjen, 4px avrundet toppende, 2px
+     flate-glipe mellom soylene (ingen ramme - glipen gjoer skillet). */
+  .chart { background:var(--bg-soft); border:1px solid var(--rule); border-radius:var(--r-card); padding:18px 18px 14px; }
+  .chart-readout { font-family:var(--font-mono); font-size:11px; color:var(--ink-mute); height:16px; margin-bottom:10px; }
+  .chart-readout strong { color:var(--accent); }
+  .bars { display:flex; align-items:flex-end; gap:2px; height:96px; }
+  .bar-col { flex:1 1 0; height:100%; display:flex; align-items:flex-end; cursor:default; min-width:0; }
+  .bar {
+    width:100%; background:var(--accent); border-radius:4px 4px 0 0;
+    min-height:2px; transition:background .12s;
+  }
+  .bar-col:hover .bar { background:var(--accent-deep); }
+  .bar.is-zero { background:var(--rule-strong); height:2px !important; border-radius:2px; }
+  .chart-axis { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10px; color:var(--ink-mute); margin-top:8px; }
+
+  /* Kildeliste: vannrette soyler, samme ene farge, verdien som direkte etikett. */
+  .srcs { display:flex; flex-direction:column; gap:8px; }
+  .src-row { display:grid; grid-template-columns:170px 1fr auto; align-items:center; gap:12px; }
+  .src-name { font-size:14px; color:var(--ink-soft); }
+  .src-track { display:block; background:var(--bg-deep); border-radius:var(--r-pill); height:10px; overflow:hidden; }
+  /* display:block er ikke pynt: .src-fill er en <span> inne i en <span>, og en
+     inline-boks ignorerer baade height og width i prosent. Uten dette blir
+     sporet tomt. (.src-track slipper unna fordi grid blokkifiserer barna sine.) */
+  .src-fill { display:block; height:100%; background:var(--accent); border-radius:var(--r-pill); min-width:3px; }
+  .src-val { font-family:var(--font-mono); font-size:12px; color:var(--ink); min-width:46px; text-align:right; }
+
+  /* Toppsider: tabell, fordi mange rader med to tall leses best som tabell. */
+  .tbl { width:100%; border-collapse:collapse; font-size:14px; }
+  .tbl th { font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); font-weight:400; text-align:right; padding:0 0 8px; border-bottom:1px solid var(--rule-strong); }
+  .tbl th:first-child { text-align:left; }
+  .tbl td { padding:9px 0; border-bottom:1px solid var(--rule); text-align:right; font-family:var(--font-mono); font-size:12px; color:var(--ink-soft); }
+  .tbl td:first-child { text-align:left; font-family:var(--font-sans); font-size:14px; color:var(--ink); word-break:break-all; }
+  .tbl tr:last-child td { border-bottom:none; }
+  .tbl th:not(:first-child), .tbl td:not(:first-child) { padding-left:14px; }
+  .tbl a { color:inherit; text-decoration:none; border-bottom:1px solid var(--rule-strong); }
+  .tbl a:hover { color:var(--accent); border-color:var(--accent); }
+
+  @media (max-width:560px) {
+    .tiles { grid-template-columns:1fr; }
+    /* Mindre etikett og tettere linjeavstand: «Facebook / Instagram» og «Andre
+       søkemotorer» maa fortsatt kunne brytes, men uten aa sprenge radhoeyden. */
+    .src-row { grid-template-columns:104px 1fr auto; gap:10px; }
+    .src-name { font-size:13px; line-height:1.25; }
+    .src-val { min-width:34px; font-size:11px; }
+    /* Tabellhodet kolliderte («VISNINGERBESØK») paa smal skjerm. */
+    .tbl th { font-size:9px; letter-spacing:.04em; }
+    .tbl th:not(:first-child), .tbl td:not(:first-child) { padding-left:10px; }
+    .tbl td:first-child { font-size:13px; }
+    h2 { font-size:23px; }
+  }
+
   .empty { text-align:center; padding:64px 20px; color:var(--ink-mute); font-family:var(--font-display); font-style:italic; font-size:19px; }
   .hidden { display:none !important; }
   @media (max-width:560px) { h1 { font-size:30px; } }
@@ -139,6 +215,60 @@
     </div>
     <div class="queue" id="queue"></div>
     <div class="empty hidden" id="empty">Ingenting i køen — alt er rent. ✦</div>
+
+    <!-- ── Trafikk ─────────────────────────────────────────────────────── -->
+    <div class="section-rule"></div>
+    <div class="eyebrow">Trafikk</div>
+    <h2>Hvor mange, og <em>hvorfra</em></h2>
+    <p class="lede">Egne tall fra <code>page_views</code> — aggregert per dag og sti, uten cookies, IP eller
+       noe person-identifiserende. «Besøk» er en grov tilnærming: første visning i en fane den dagen.</p>
+
+    <div class="toolbar">
+      <div class="range" role="group" aria-label="Tidsrom">
+        <button data-days="7" aria-pressed="false">7 dager</button>
+        <button data-days="30" aria-pressed="true">30 dager</button>
+        <button data-days="90" aria-pressed="false">90 dager</button>
+      </div>
+      <button class="refresh-btn" onclick="loadTraffic()">↻ Oppdater</button>
+    </div>
+
+    <div id="traffic-msg" class="msg"></div>
+
+    <div id="traffic" class="hidden">
+      <div class="tiles">
+        <div class="tile">
+          <div class="tile-label">Visninger</div>
+          <div class="tile-value" id="t-views">—</div>
+          <div class="tile-note" id="t-views-note"></div>
+        </div>
+        <div class="tile">
+          <div class="tile-label">Besøk</div>
+          <div class="tile-value" id="t-visitors">—</div>
+          <div class="tile-note" id="t-visitors-note"></div>
+        </div>
+        <div class="tile">
+          <div class="tile-label">Sider med trafikk</div>
+          <div class="tile-value" id="t-pages">—</div>
+          <div class="tile-note" id="t-pages-note"></div>
+        </div>
+      </div>
+
+      <h3>Visninger per dag</h3>
+      <div class="chart">
+        <div class="chart-readout" id="chart-readout">Hold over en dag for tall.</div>
+        <div class="bars" id="bars"></div>
+        <div class="chart-axis"><span id="axis-from"></span><span id="axis-to"></span></div>
+      </div>
+
+      <h3>Kilde — nye besøk</h3>
+      <div class="srcs" id="srcs"></div>
+
+      <h3>Toppsider</h3>
+      <table class="tbl">
+        <thead><tr><th>Side</th><th>Visninger</th><th>Besøk</th></tr></thead>
+        <tbody id="pages-body"></tbody>
+      </table>
+    </div>
   </div>
 
 </div>
@@ -171,6 +301,7 @@
       document.getElementById('gate').classList.add('hidden');
       document.getElementById('panel').classList.remove('hidden');
       renderQueue(r.data.items || []);
+      loadTraffic();
     } else {
       msg.className = 'msg error';
       msg.textContent = r.status === 403 ? 'Feil token.' : (r.data.error || 'Kunne ikke laste køen.');
@@ -253,8 +384,147 @@
       document.getElementById('gate').classList.add('hidden');
       document.getElementById('panel').classList.remove('hidden');
       renderQueue(r.data.items || []);
+      loadTraffic();
     } else { sessionStorage.removeItem(TOKEN_KEY); token = ''; }
   }
+  /* ── Trafikk (page_views) ───────────────────────────────────────────────
+     Leser via /api/page-views, som er ADMIN_TOKEN-gated akkurat som koen.
+     Aggregeringen skjer server-side i netlify/functions/page-views.js. */
+
+  var trafficDays = 30;
+
+  // Kilde-boettene fra nav.js-beaconen, oversatt til lesbare navn.
+  var SOURCE_LABELS = {
+    google: 'Google',
+    'annet-sok': 'Andre søkemotorer',
+    facebook: 'Facebook / Instagram',
+    sosialt: 'Sosiale medier',
+    ai: 'AI-svar',
+    annet: 'Andre nettsteder',
+    direkte: 'Direkte / ukjent'
+  };
+
+  function num(n) { return Number(n || 0).toLocaleString('nb-NO'); }
+
+  function dayLabel(iso) {
+    var d = new Date(iso + 'T12:00:00');
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'short' });
+  }
+  function dayShort(iso) {
+    var d = new Date(iso + 'T12:00:00');
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
+  }
+
+  window.loadTraffic = async function () {
+    var msg = document.getElementById('traffic-msg');
+    var wrap = document.getElementById('traffic');
+    msg.className = 'msg';
+    msg.textContent = 'Henter tall …';
+    var res = await fetch('/api/page-views', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: token, days: trafficDays })
+    });
+    var data = await res.json().catch(function () { return {}; });
+    if (!res.ok || !data.ok) {
+      wrap.classList.add('hidden');
+      msg.className = 'msg error';
+      msg.textContent = res.status === 403
+        ? 'Token utløpt — lås opp på nytt.'
+        : (data.error || ('Kunne ikke hente trafikk (HTTP ' + res.status + ').'));
+      return;
+    }
+    msg.textContent = data.truncated
+      ? 'Merk: taket på 20 000 rader ble nådd — tallene er ufullstendige for dette vinduet.'
+      : '';
+    if (data.truncated) msg.className = 'msg error';
+    wrap.classList.remove('hidden');
+    renderTraffic(data);
+  };
+
+  function renderTraffic(d) {
+    var days = d.days || trafficDays;
+
+    // ── Tall-fliser ──
+    document.getElementById('t-views').textContent = num(d.totals.views);
+    document.getElementById('t-views-note').textContent =
+      'snitt ' + num(Math.round(d.totals.views / days)) + ' per dag';
+    document.getElementById('t-visitors').textContent = num(d.totals.visitors);
+    document.getElementById('t-visitors-note').textContent =
+      d.totals.views ? (Math.round((d.totals.visitors / d.totals.views) * 100) + ' % av visningene') : '';
+    document.getElementById('t-pages').textContent = num(d.totals.pages_tracked);
+    document.getElementById('t-pages-note').textContent = 'siste ' + days + ' dager';
+
+    // ── Dagsgraf ──
+    var daily = d.daily || [];
+    var max = daily.reduce(function (m, x) { return Math.max(m, x.views); }, 0);
+    var bars = document.getElementById('bars');
+    bars.innerHTML = daily.map(function (x) {
+      var zero = !x.views;
+      var pct = max ? Math.max((x.views / max) * 100, 2) : 0;
+      var title = dayLabel(x.day) + ' — ' + num(x.views) + ' visninger, ' + num(x.visitors) + ' besøk';
+      return '<div class="bar-col" title="' + esc(title) + '"' +
+             ' data-day="' + esc(x.day) + '" data-views="' + x.views + '" data-visitors="' + x.visitors + '">' +
+             '<div class="bar' + (zero ? ' is-zero' : '') + '" style="height:' + pct.toFixed(1) + '%"></div>' +
+             '</div>';
+    }).join('');
+    document.getElementById('axis-from').textContent = daily.length ? dayShort(daily[0].day) : '';
+    document.getElementById('axis-to').textContent = daily.length ? dayShort(daily[daily.length - 1].day) : '';
+
+    // ── Kilder ──
+    var srcs = d.sources || [];
+    var srcMax = srcs.reduce(function (m, s) { return Math.max(m, s.visits); }, 0);
+    var srcWrap = document.getElementById('srcs');
+    if (!srcs.length) {
+      srcWrap.innerHTML = '<p class="tile-note">Ingen kilde-data ennå. Sporingen ble skrudd på 25. august 2026 — ' +
+                          'første tall kommer etter hvert som folk besøker siden.</p>';
+    } else {
+      srcWrap.innerHTML = srcs.map(function (s) {
+        var pct = srcMax ? (s.visits / srcMax) * 100 : 0;
+        var label = SOURCE_LABELS[s.source] || s.source;
+        return '<div class="src-row">' +
+          '<span class="src-name">' + esc(label) + '</span>' +
+          '<span class="src-track"><span class="src-fill" style="width:' + pct.toFixed(1) + '%"></span></span>' +
+          '<span class="src-val">' + num(s.visits) + '</span>' +
+        '</div>';
+      }).join('');
+    }
+
+    // ── Toppsider ──
+    var pages = d.pages || [];
+    var body = document.getElementById('pages-body');
+    body.innerHTML = pages.length
+      ? pages.map(function (x) {
+          return '<tr><td><a href="https://customquiz.no' + esc(x.path) + '" target="_blank" rel="noopener">' +
+                 esc(x.path) + '</a></td><td>' + num(x.views) + '</td><td>' + num(x.visitors) + '</td></tr>';
+        }).join('')
+      : '<tr><td colspan="3" style="text-align:center;color:var(--ink-mute)">Ingen sidevisninger i vinduet.</td></tr>';
+  }
+
+  // Les av dagen man holder over (bedre enn bare native title).
+  document.getElementById('bars').addEventListener('mouseover', function (e) {
+    var col = e.target.closest('.bar-col');
+    if (!col) return;
+    document.getElementById('chart-readout').innerHTML =
+      esc(dayLabel(col.dataset.day)) + ' — <strong>' + num(col.dataset.views) +
+      '</strong> visninger, <strong>' + num(col.dataset.visitors) + '</strong> besøk';
+  });
+  document.getElementById('bars').addEventListener('mouseleave', function () {
+    document.getElementById('chart-readout').textContent = 'Hold over en dag for tall.';
+  });
+
+  // Tidsrom-velger.
+  document.querySelector('.range').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-days]');
+    if (!btn) return;
+    trafficDays = parseInt(btn.dataset.days, 10) || 30;
+    this.querySelectorAll('button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    loadTraffic();
+  });
+
 })();
 </script>
 </body>

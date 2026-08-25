@@ -252,6 +252,14 @@
   to = "/.netlify/functions/library-flag"
   status = 200
 
+# Trafikk-lesning for admin (aggregert page_views). Skrivingen skjer paa
+# /.netlify/functions/track direkte fra nav.js-beaconen og trenger ingen
+# /api-alias; dette er LESE-siden, og den krever ADMIN_TOKEN.
+[[redirects]]
+  from = "/api/page-views"
+  to = "/.netlify/functions/page-views"
+  status = 200
+
 # Plays-teller: bumper plays for en arkiv-quiz (datagrunnlag for forside-utvalg)
 [[redirects]]
   from = "/api/library-play"
