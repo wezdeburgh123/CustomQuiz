@@ -46,6 +46,29 @@ export default async (request, context) => {
   // Hent det opprinnelige (statiske) svaret først.
   const response = await context.next();
 
+  // SEO (25.8.26): ?quiz=, ?event= og ?tema= er forhåndsutfylt generator, ikke
+  // egne sider. JS-injisert <meta name="robots"> holder IKKE. Verifisert live
+  // 25.8: /lag-quiz?quiz=geografi-06 FÅR "noindex,follow" etter rendring, men
+  // Google la den likevel i «Duplicate without user-selected canonical» — den
+  // bøtta vokste 195 → 356 mellom 17. og 25.8, og noindex-bøtta stod nesten
+  // stille (58 → 64). Samme lærdom som canonical-buggen 6.8: alt SEO-signal på
+  // /lag-quiz må settes server-side. En HTTP-header krever ingen rendring og
+  // kan ikke overses — det er mekanismen som er bevist virksom her, jf. ?lib=-
+  // canonicalen lenger ned (70 sider ligger trygt som "Alternate page with
+  // proper canonical tag"). rel="nofollow" på CTA-en i build-quiz-pages.mjs
+  // stopper OPPDAGELSEN av nye URLer; denne headeren rydder opp i de som alt
+  // er oppdaget. Ikke fjern uten å håndtere duplikatene på annen måte.
+  if (!slug && (url.searchParams.has("quiz") ||
+                url.searchParams.has("event") ||
+                url.searchParams.has("tema"))) {
+    const noindexHeaders = new Headers(response.headers);
+    noindexHeaders.set("x-robots-tag", "noindex, follow");
+    return new Response(response.body, {
+      status: response.status,
+      headers: noindexHeaders,
+    });
+  }
+
   // Bare rør ved svaret når det finnes en ?lib=<slug> OG det er en HTML-side.
   if (!slug) return response;
   const ctype = response.headers.get("content-type") || "";
