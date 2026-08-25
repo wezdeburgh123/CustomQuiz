@@ -94,6 +94,38 @@
       }
     } catch (_) { /* sessionStorage blokkert → telles kun som visning */ }
 
+    /* Kilde-bøtte (25.8.26) — hvorfor: GSC forteller hvor mange som KLIKKER
+     * fra Google, men ingenting om hva som skjer etterpå, og page_views har
+     * bare (dag, sti). Vi visste derfor ikke hvor trafikken kom fra i det hele
+     * tatt: organisk, direkte, delt lenke i Messenger, eller AI-svar.
+     * Løsningen bruker den tellerkanalen som ALT finnes — en ekstra virtuell
+     * sti «/_kilde/<boette>» gjennom samme beacon. Ingen DB-migrasjon, ingen
+     * ny tjeneste, ingen cookie: vi lagrer BARE bøttenavnet, aldri full
+     * referrer, aldri query, aldri noe person-identifiserende. Sendes kun ved
+     * første visning per økt, så tallet = «nye besøk per kilde per dag».
+     * Interne treff droppes (ellers teller vi hver klikk internt som en kilde). */
+    var kilde = "";
+    try {
+      var r = document.referrer ? new URL(document.referrer).hostname.toLowerCase() : "";
+      if (!r) {
+        kilde = "direkte";
+      } else if (r === host || r.indexOf("customquiz.no") !== -1) {
+        kilde = ""; // intern navigasjon — ikke en kilde
+      } else if (/(^|\.)google\./.test(r)) {
+        kilde = "google";
+      } else if (/(^|\.)(bing|duckduckgo|ecosia|yahoo|kvasir)\./.test(r)) {
+        kilde = "annet-sok";
+      } else if (/(^|\.)(facebook|fb|messenger|instagram)\./.test(r)) {
+        kilde = "facebook";
+      } else if (/(^|\.)(snapchat|tiktok|x|twitter|t|reddit|linkedin)\./.test(r)) {
+        kilde = "sosialt";
+      } else if (/(chatgpt|openai|perplexity|claude|gemini|copilot)\./.test(r)) {
+        kilde = "ai";
+      } else {
+        kilde = "annet";
+      }
+    } catch (_) { kilde = "annet"; }
+
     var url = "/.netlify/functions/track";
     var payload = JSON.stringify({ path: path, newVisit: newVisit });
     var sent = false;
@@ -103,6 +135,19 @@
     if (!sent && window.fetch) {
       fetch(url, { method: "POST", body: payload, keepalive: true, headers: { "Content-Type": "text/plain" } })
         .catch(function () { /* stille */ });
+    }
+
+    // Kilde-treffet: bare ved nytt besøk, og bare når kilden er ekstern.
+    if (newVisit && kilde) {
+      var kp = JSON.stringify({ path: "/_kilde/" + kilde, newVisit: true });
+      var ks = false;
+      if (navigator.sendBeacon) {
+        try { ks = navigator.sendBeacon(url, kp); } catch (_) { ks = false; }
+      }
+      if (!ks && window.fetch) {
+        fetch(url, { method: "POST", body: kp, keepalive: true, headers: { "Content-Type": "text/plain" } })
+          .catch(function () { /* stille */ });
+      }
     }
   } catch (_) { /* aldri synlig feil */ }
 })();
