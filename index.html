@@ -1542,5 +1542,12 @@
   })();
 })();
 </script>
+
+<!-- nav.js KUN for trafikkmåling (25.8.26). Forsiden har sin egen animerte
+     masthead, og masthead-delen av nav.js avbryter av seg selv når
+     #cq-masthead mangler — så dette gir bare de to beaconene: vår egen
+     page_views-teller og Cloudflare Web Analytics. Fram til nå manglet «/»
+     HELT i page_views, siden forsiden var den ene siden uten nav.js. -->
+<script src="nav.js"></script>
 </body>
 </html>

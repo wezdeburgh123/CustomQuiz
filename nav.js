@@ -151,3 +151,34 @@
     }
   } catch (_) { /* aldri synlig feil */ }
 })();
+
+/* ── Cloudflare Web Analytics ────────────────────────────────────────────
+ * Gratis, cookiefritt ambient-lag ved SIDEN av vår egen teller over. De to
+ * svarer på ulike spørsmål: Cloudflare gir referrere, land, enheter og Core
+ * Web Vitals-feltdata (som GSC mangler — «not enough usage data»), mens
+ * page_views i Supabase er det PERMANENTE arkivet med ubegrenset historikk.
+ * Valgt 25.8.26 framfor GA4 (krever samtykkebanner i Norge og bryter
+ * personvernløftet på forsiden), Plausible ($9/mnd) og Umami (6 mnd historikk).
+ *
+ * Cloudflare setter ingen cookies, ingen localStorage og ingen identifikator
+ * på enheten. Vi respekterer likevel Do Not Track / GPC og hopper over
+ * localhost, av samme grunn som beaconen over: konsistens med det siden lover.
+ *
+ * Lastes dynamisk her i stedet for som statisk tagg i hver enkelt fil, så alt
+ * som måler trafikk står på ETT sted. Dekker alle sider som laster nav.js —
+ * inkludert de 463 SSR-genererte /quiz/-sidene og forsiden (som laster nav.js
+ * kun for sporing; mastheaden over avbryter selv når #cq-masthead mangler). */
+(function () {
+  try {
+    if (navigator.doNotTrack === "1" || window.doNotTrack === "1" || navigator.globalPrivacyControl) return;
+    var h = location.hostname;
+    if (h === "localhost" || h === "127.0.0.1") return;
+    if (location.pathname.toLowerCase().indexOf("/admin") === 0) return; // egen admin skal ikke telles
+    var s = document.createElement("script");
+    s.type = "module";
+    s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+    // Beaconen leser sin egen tagg, så attributtet MÅ settes før innsetting.
+    s.setAttribute("data-cf-beacon", '{"token": "b6ab175d9bc545c192154784198209e1"}');
+    (document.body || document.head).appendChild(s);
+  } catch (_) { /* aldri synlig feil */ }
+})();
